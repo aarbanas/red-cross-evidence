@@ -7,28 +7,38 @@
     "build": "next build",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:prod": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "prepare": "husky"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.4.0",
     "@prisma/client": "^5.10.2",
+    "@radix-ui/react-slot": "^1.0.2",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "^5.25.0",
     "@trpc/client": "next",
     "@trpc/react-query": "next",
     "@trpc/server": "next",
+    "bcrypt": "^5.1.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "next": "^14.2.1",
     "next-auth": "^4.24.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
+    "tailwind-merge": "^2.3.0",
     "zod": "^3.23.3"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/eslint": "^8.56.2",
     "@types/node": "^20.11.20",
     "@types/react": "^18.2.57",
@@ -41,11 +51,16 @@
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "prisma": "^5.10.2",
+    "prisma-dbml-generator": "^0.12.0",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
   },
   "ct3aMetadata": {
     "initVersion": "7.32.1"
   },
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "yarn@1.22.22",
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  }
 }
