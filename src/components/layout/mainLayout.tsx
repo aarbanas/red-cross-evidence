@@ -18,7 +18,7 @@ const MainLayout: React.FC<Readonly<Props>> = ({
   return (
     <>
       <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
-        <NewNavbar title="User Management">
+        <NewNavbar title="Evidencija DCK PGŽ">
           <Navigation />
         </NewNavbar>
 
@@ -37,10 +37,10 @@ const Navigation = () => {
     <nav className="grid items-start text-sm font-medium lg:px-4">
       <Link
         className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900`}
-        href="/admin/users"
+        href="/"
       >
         <Users />
-        User List
+        Lista volontera
       </Link>
       <Link
         className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900`}
