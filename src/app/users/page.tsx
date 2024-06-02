@@ -8,11 +8,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/ui/Table";
+} from "~/components/organisms/Table";
 import { CheckCircle2, Pencil, XCircle } from "lucide-react";
-import CreateButton from "~/components/ui/CreateButton";
+import CreateButton from "~/components/atoms/CreateButton";
+import { useState } from "react";
+import CreateUser from "~/app/users/components/CreateUser/CreateUser";
 
 const Users = () => {
+  const [userModalOpen, setUserModalOpen] = useState(false);
   const { data } = api.user.find.useQuery({
     sort: "id",
     dir: "asc",
@@ -28,7 +31,7 @@ const Users = () => {
         <div className="flex items-center">
           <h1 className="text-lg font-semibold md:text-2xl">Lista volontera</h1>
           <CreateButton
-            onClick={() => console.log("pressed")}
+            onClick={() => setUserModalOpen(true)}
             className={"ml-auto"}
             title="Kreiraj volontera"
           />
@@ -70,6 +73,12 @@ const Users = () => {
           </Table>
         </div>
       </main>
+      {userModalOpen && (
+        <CreateUser
+          isOpen={userModalOpen}
+          onClose={() => setUserModalOpen(false)}
+        />
+      )}
     </MainLayout>
   );
 };

@@ -3,8 +3,8 @@ import { Building, CornerDownLeft, Users } from "lucide-react";
 import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import NewNavbar from "~/components/ui/navbar/navbar";
-import Header from "~/components/ui/Header";
+import NewNavbar from "~/components/organisms/navbar/navbar";
+import Header from "~/components/organisms/Header";
 
 type Props = {
   children: ReactNode;

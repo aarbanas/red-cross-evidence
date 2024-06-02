@@ -2,7 +2,7 @@ import React, { type PropsWithChildren } from "react";
 import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
 import styles from "./navbar.module.scss";
-import NewNavbarMenuDrawer from "~/components/ui/navbar/navbar-menu-drawer/navbar-menu-drawer";
+import NewNavbarMenuDrawer from "~/components/organisms/navbar/navbar-menu-drawer/navbar-menu-drawer";
 
 type Props = {
   title: string;
