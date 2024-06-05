@@ -1,4 +1,0 @@
-.container {
-  @apply absolute z-50 flex h-full w-full items-center justify-center bg-inherit;
-  @apply left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform;
-}
