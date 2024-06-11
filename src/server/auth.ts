@@ -5,16 +5,12 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import DiscordProvider from "next-auth/providers/discord";
-
-import { env } from "~/env";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "~/server/db";
-import {
-  accounts,
-  sessions,
-  users,
-  verificationTokens,
-} from "~/server/db/schema";
+
+import { eq } from "drizzle-orm";
+import { compare } from "bcrypt";
+import { users } from "~/server/db/schema";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -43,25 +39,41 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    session: ({ session, user }) => ({
+    session: ({ session, token }) => ({
       ...session,
       user: {
         ...session.user,
-        id: user.id,
+        id: token.sub,
       },
     }),
   },
-  adapter: DrizzleAdapter(db, {
-    usersTable: users,
-    accountsTable: accounts,
-    sessionsTable: sessions,
-    verificationTokensTable: verificationTokens,
-  }) as Adapter,
+  adapter: DrizzleAdapter(db) as Adapter,
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+    CredentialsProvider({
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials, req) {
+        if (!credentials?.email || !credentials?.password) return null;
+
+        const [user] = await db
+          .select()
+          .from(users)
+          .where(eq(users.email, credentials.email))
+          .limit(1);
+
+        if (!user?.active || !user?.password) return null;
+
+        const isValid = await compare(credentials.password, user.password);
+        if (!isValid) return null;
+
+        return user;
+      },
     }),
     /**
      * ...add more providers here.
