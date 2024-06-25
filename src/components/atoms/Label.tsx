@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -13,6 +15,7 @@ const Label = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     VariantProps<typeof labelVariants>
 >(({ className, ...props }, ref) => (
   <LabelPrimitive.Root

@@ -1,51 +1,6 @@
-# Red cross evidence 
+# Create T3 App
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
-
-## Prerequisites
-1. Node.js
-2. Yarn
-3. Docker
-
-## Getting Started
-Copy the `.env.example` file to `.env` and fill in the necessary values.
-
-```bash
-cp .env.example .env
-```
-
-Run docker-compose to start the database. It will use all the data provided in the `.env` file.
-
-```bash
-docker-compose up -d
-```
-
-Install the dependencies
-
-```bash
-yarn install
-```
-
-### Prepare PrismaORM 
-
-#### Prisma generate:
-```bash
-yarn postinstall
-```
-#### Run the migration files to create the tables:
-```bash
-yarn db:migrate:dev
-```
-#### Seed initial data into database:
-```bash
-yarn db:seed
-```
-
-### Start the development server
-
-```bash
-yarn dev
-```
 
 ## What's next? How do I make an app with this?
 

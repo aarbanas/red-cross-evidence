@@ -1,20 +1,18 @@
-import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import userService from "~/server/services/user/user.service";
+import { z } from "zod";
 
 export const userRouter = createTRPCRouter({
-  find: protectedProcedure
-    .input(
-      z.object({
-        page: z.string(),
-        limit: z.string(),
-        sort: z.string(),
-        dir: z.string(),
-        filter: z.any(),
-      }),
-    )
+  findById: protectedProcedure
+    .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
-      const { data, meta } = await userService.find({ ...input });
-      return { data, meta };
+      const result = await userService.getById(input.id);
+
+      return result;
     }),
+  find: protectedProcedure.query(async () => {
+    const result = await userService.find();
+
+    return result;
+  }),
 });

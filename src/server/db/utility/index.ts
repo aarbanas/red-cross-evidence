@@ -1,4 +1,7 @@
-export const prepareOrderBy = (sort?: string, dir?: string) => {
+export const prepareOrderBy = (
+  sort?: string,
+  dir?: string,
+): Record<string, string> | null => {
   if (!sort || !(dir === "asc" || dir === "desc")) return null;
 
   if (!sort.includes(".")) return { [sort]: dir };

@@ -1,4 +1,9 @@
-import { FC, PropsWithChildren, MouseEvent, useRef } from "react";
+import {
+  type FC,
+  type PropsWithChildren,
+  type MouseEvent,
+  useRef,
+} from "react";
 import styles from "./Modal.module.scss";
 import { classNames } from "~/components/utils";
 

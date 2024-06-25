@@ -6,10 +6,9 @@ import NewNavbarMenuDrawer from "~/components/organisms/navbar/navbar-menu-drawe
 
 type Props = {
   title: string;
-  color?: "primary" | "secondary";
 } & PropsWithChildren;
 
-const NewNavbar: React.FC<Props> = ({ title, children, color = "primary" }) => {
+const NewNavbar: React.FC<Props> = ({ title, children }) => {
   async function onLogoutClick() {
     if (typeof window !== "undefined") {
       await signOut();
@@ -34,7 +33,7 @@ const NewNavbar: React.FC<Props> = ({ title, children, color = "primary" }) => {
       </div>
 
       <div className={styles.menuDrawer}>
-        <NewNavbarMenuDrawer title={title} color={color}>
+        <NewNavbarMenuDrawer title={title}>
           <NavbarNavigation onLogoutClick={onLogoutClick}>
             {children}
           </NavbarNavigation>

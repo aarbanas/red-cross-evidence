@@ -1,5 +1,8 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-unsafe-assignment,
+@typescript-eslint/no-unsafe-call,
+@typescript-eslint/no-unsafe-member-access,
+@typescript-eslint/no-unsafe-argument */
 import {
   Popover,
   PopoverContent,
@@ -8,7 +11,7 @@ import {
 import { Input } from "~/components/atoms/Input";
 import { CalendarDaysIcon } from "lucide-react";
 import { Calendar } from "~/components/organisms/Calendar";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 
 const DatePicker: React.FC = () => {
