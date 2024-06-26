@@ -1,73 +1,87 @@
 import { db } from "~/server/db";
 import { profiles, users } from "~/server/db/schema";
 import { asc, desc, eq, type SQL } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
+import { type FindUserQuery } from "~/server/services/user/types";
 
 enum SortableKeys {
-  "id",
-  "firstname",
-  "lastname",
-  "email",
-  "city",
-  "country",
-  "active",
+  id = "id",
+  firstname = "firstname",
+  lastname = "lastname",
+  email = "email",
+  city = "city",
+  country = "country",
+  active = "active",
 }
 
-type FindUserQueryDto = {
-  page?: number;
-  limit?: number;
-  sort?: Record<string, "asc" | "desc">;
-};
-
-const mapKeyToColumn = (key: string) => {
+const mapKeyToColumn = (key: SortableKeys) => {
   switch (key) {
-    case "id":
+    case SortableKeys.id:
       return users.id;
-    case "firstname":
+    case SortableKeys.firstname:
       return profiles.firstName;
-    case "lastname":
+    case SortableKeys.lastname:
       return profiles.lastName;
-    case "email":
+    case SortableKeys.email:
       return users.email;
-    case "city":
+    case SortableKeys.city:
       return profiles.city;
-    case "country":
+    case SortableKeys.country:
       return profiles.country;
-    case "active":
+    case SortableKeys.active:
       return users.active;
     default:
       return users.id;
   }
 };
 
-const prepareOrderBy = (sort?: Pick<FindUserQueryDto, "sort">) => {
-  if (!sort || !Object.keys(sort).length) {
-    return asc(users.id);
-  }
-
-  if (Object.keys(sort).length === 1) {
-    const key = Object.keys(sort)[0];
-    const value = Object.values(sort)[0];
-
-    if (value) {
-      return value === "asc"
-        ? asc(mapKeyToColumn(key!))
-        : desc(mapKeyToColumn(key!));
+const generateSortFunction = (
+  key: SortableKeys | undefined | string,
+  value: undefined | string,
+) => {
+  if (
+    value &&
+    Object.keys(SortableKeys).findIndex((sortableKey) => sortableKey === key) >
+      -1
+  ) {
+    if (value === "asc") {
+      return asc(mapKeyToColumn(key as SortableKeys));
+    } else if (value === "desc") {
+      return desc(mapKeyToColumn(key as SortableKeys));
+    } else {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Invalid sort direction",
+      });
     }
   }
+};
 
-  //(asc(users.id), desc(profiles.firstName))
+const prepareOrderBy = (sort?: string | string[]): SQL[] => {
+  if (!sort) {
+    return [asc(users.email)];
+  }
+
+  if (typeof sort === "string") {
+    const [key, value] = sort.split(":");
+
+    return [generateSortFunction(key, value)!];
+  }
+
   const sorts = [];
-  for (const [key, value] of Object.entries(sort)) {
-    sorts.push(
-      value === "asc" ? asc(mapKeyToColumn(key)) : desc(mapKeyToColumn(key)),
-    );
+  for (const _sort of sort) {
+    const [key, value] = _sort.split(":");
+    const sortValue = generateSortFunction(key, value);
+    if (sortValue) {
+      sorts.push(sortValue);
+    }
   }
 
   return sorts;
 };
 
 const userRepository = {
-  find: async (data: FindUserQueryDto) => {
+  find: async (data: FindUserQuery) => {
     const { page, limit, sort } = data;
     const orderBy = prepareOrderBy(sort);
 
@@ -86,6 +100,7 @@ const userRepository = {
       })
       .from(users)
       .leftJoin(profiles, eq(users.id, profiles.userId))
+      .orderBy(...orderBy)
       .limit(limit ?? 10)
       .offset(page ? Number(page) * (limit ?? 10) : 0)
       .execute();

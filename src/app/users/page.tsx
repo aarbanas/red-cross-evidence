@@ -12,7 +12,11 @@ import {
 import { CheckCircle2, Pencil, XCircle } from "lucide-react";
 
 const Users = () => {
-  const { data } = api.user.find.useQuery();
+  const { data } = api.user.find.useQuery({
+    page: "0",
+    limit: "10",
+    sort: ["firstname:asc"],
+  });
   if (!data?.length) return <div>Loading...</div>;
 
   return (
@@ -28,6 +32,7 @@ const Users = () => {
               <TableRow>
                 <TableHead className="md:table-cell">Ime</TableHead>
                 <TableHead className="md:table-cell">Prezime</TableHead>
+                <TableHead className="md:table-cell">Email</TableHead>
                 <TableHead className="md:table-cell">Status</TableHead>
                 <TableHead className="md:table-cell">Uredi profil</TableHead>
               </TableRow>
@@ -42,6 +47,7 @@ const Users = () => {
                   <TableCell className="md:table-cell">
                     {user?.profile?.lastName}
                   </TableCell>
+                  <TableCell className="md:table-cell">{user?.email}</TableCell>
                   <TableCell className="md:table-cell">
                     {user.active ? (
                       <CheckCircle2 color="#00ff04" />

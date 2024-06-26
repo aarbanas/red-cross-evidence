@@ -30,6 +30,8 @@ const DrivingLicense = {
   H: "H",
 };
 
+const SALT_OR_ROUNDS = 10;
+
 const populateLicenses = async () => {
   const _licenses = Object.values(DrivingLicense).map((type) => ({
     type: License.DRIVING,
@@ -40,9 +42,51 @@ const populateLicenses = async () => {
   await db.insert(licenses).values(_licenses).returning();
 };
 
+const generateUsers = async () => {
+  const cities = ["Rijeka", "Zagreb", "Split", "Osijek", "Dubrovnik"];
+
+  for (let i = 0; i < 20; i++) {
+    const userPwd = await hash(
+      Math.random().toString(36).slice(-8),
+      SALT_OR_ROUNDS,
+    );
+    const email = `test_${i + 1}@test.com`;
+    const userExists = await db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
+    if (!userExists) {
+      await db.transaction(async (tx) => {
+        const [user] = await tx
+          .insert(users)
+          .values({
+            email,
+            password: userPwd,
+            active: true,
+          })
+          .returning();
+
+        if (!user) throw new Error("User could not be created");
+
+        await tx.insert(profiles).values({
+          userId: user?.id,
+          firstName: `Test ${i + 1}`,
+          lastName: `User ${i + 1}`,
+          phone: "123456789",
+          address: "Test address 1",
+          city: cities[Math.floor(Math.random() * cities.length)],
+          country: "Croatia",
+          education:
+            Object.values(EducationLevel)[
+              Math.floor(Math.random() * Object.values(EducationLevel).length)
+            ],
+        });
+      });
+    }
+  }
+};
+
 const main = async () => {
-  const saltOrRounds = 10;
-  const adminPassword = await hash(env.ADMIN_PASSWORD, saltOrRounds);
+  const adminPassword = await hash(env.ADMIN_PASSWORD, SALT_OR_ROUNDS);
   const email = "admin@dck-pgz.hr";
 
   const licences = await db.query.licenses.findMany();
@@ -52,38 +96,34 @@ const main = async () => {
 
   const adminExists = await db.query.users.findFirst({
     where: eq(users.email, email),
-    with: {
-      profile: true,
-    },
   });
-  if (adminExists) {
-    console.log("Admin user already exists");
-    return;
+  if (!adminExists) {
+    await db.transaction(async (tx) => {
+      const [admin] = await tx
+        .insert(users)
+        .values({
+          email,
+          password: adminPassword,
+          active: true,
+        })
+        .returning();
+
+      if (!admin) throw new Error("Admin user could not be created");
+
+      await tx.insert(profiles).values({
+        userId: admin?.id,
+        firstName: "Admin",
+        lastName: "Admin",
+        phone: "123456789",
+        address: "Test address 1",
+        city: "Zagreb",
+        country: "Croatia",
+        education: EducationLevel.BACHELOR,
+      });
+    });
   }
 
-  await db.transaction(async (tx) => {
-    const [admin] = await tx
-      .insert(users)
-      .values({
-        email,
-        password: adminPassword,
-        active: true,
-      })
-      .returning();
-
-    if (!admin) throw new Error("Admin user could not be created");
-
-    await tx.insert(profiles).values({
-      userId: admin?.id,
-      firstName: "Admin",
-      lastName: "Admin",
-      phone: "123456789",
-      address: "Test address 1",
-      city: "Zagreb",
-      country: "Croatia",
-      education: EducationLevel.BACHELOR,
-    });
-  });
+  await generateUsers();
 };
 
 main()
