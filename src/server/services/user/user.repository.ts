@@ -5,30 +5,30 @@ import { TRPCError } from "@trpc/server";
 import { type FindUserQuery } from "~/server/services/user/types";
 
 enum SortableKeys {
-  id = "id",
-  firstname = "firstname",
-  lastname = "lastname",
-  email = "email",
-  city = "city",
-  country = "country",
-  active = "active",
+  ID = "id",
+  FIRSTNAME = "firstname",
+  LASTNAME = "lastname",
+  EMAIL = "email",
+  CITY = "city",
+  COUNTRY = "country",
+  ACTIVE = "active",
 }
 
 const mapKeyToColumn = (key: SortableKeys) => {
   switch (key) {
-    case SortableKeys.id:
+    case SortableKeys.ID:
       return users.id;
-    case SortableKeys.firstname:
+    case SortableKeys.FIRSTNAME:
       return profiles.firstName;
-    case SortableKeys.lastname:
+    case SortableKeys.LASTNAME:
       return profiles.lastName;
-    case SortableKeys.email:
+    case SortableKeys.EMAIL:
       return users.email;
-    case SortableKeys.city:
+    case SortableKeys.CITY:
       return profiles.city;
-    case SortableKeys.country:
+    case SortableKeys.COUNTRY:
       return profiles.country;
-    case SortableKeys.active:
+    case SortableKeys.ACTIVE:
       return users.active;
     default:
       return users.id;
@@ -36,36 +36,39 @@ const mapKeyToColumn = (key: SortableKeys) => {
 };
 
 const generateSortFunction = (
-  key: SortableKeys | undefined | string,
-  value: undefined | string,
-) => {
+  key?: SortableKeys | string,
+  value?: string,
+): SQL => {
   if (
     value &&
     Object.keys(SortableKeys).findIndex((sortableKey) => sortableKey === key) >
       -1
   ) {
-    if (value === "asc") {
-      return asc(mapKeyToColumn(key as SortableKeys));
-    } else if (value === "desc") {
-      return desc(mapKeyToColumn(key as SortableKeys));
-    } else {
+    if (!["asc", "desc"].includes(value)) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Invalid sort direction",
       });
     }
+
+    return value === "asc"
+      ? asc(mapKeyToColumn(key as SortableKeys))
+      : desc(mapKeyToColumn(key as SortableKeys));
   }
+
+  // If there is no 'value' or key is not a member of SortableKeys
+  return asc(users.id);
 };
 
 const prepareOrderBy = (sort?: string | string[]): SQL[] => {
   if (!sort) {
-    return [asc(users.email)];
+    return [asc(users.id)];
   }
 
   if (typeof sort === "string") {
     const [key, value] = sort.split(":");
 
-    return [generateSortFunction(key, value)!];
+    return [generateSortFunction(key, value)];
   }
 
   const sorts = [];
@@ -119,7 +122,6 @@ const userRepository = {
       })
       .from(users)
       .where(eq(users.id, id))
-      .orderBy(users.id)
       .leftJoin(profiles, eq(users.id, profiles.userId))
       .execute();
   },
