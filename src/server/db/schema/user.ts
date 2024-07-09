@@ -52,17 +52,3 @@ export const profiles = pgTable("profile", {
   education: varchar("education"),
   profession: varchar("profession"),
 });
-
-export const licenses = pgTable("license", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  type: varchar("type").notNull(),
-  name: varchar("name", { length: 255 }).notNull(),
-  description: text("description"),
-});
-
-// export const licensesRelations = relations(licenses, ({ one }) => ({
-//   author: one(users, {
-//     fields: [licenses.userId],
-//     references: [users.id],
-//   }),
-// }));

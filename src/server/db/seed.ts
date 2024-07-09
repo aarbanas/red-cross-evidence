@@ -3,32 +3,13 @@ import { env } from "~/env";
 import { db } from "../db/index";
 import { eq } from "drizzle-orm";
 import {
+  DrivingLicense,
   EducationLevel,
   License,
   licenses,
   profiles,
   users,
 } from "../db/schema";
-
-const DrivingLicense = {
-  AM: "AM",
-  A1: "A1",
-  A2: "A2",
-  A: "A",
-  B: "B",
-  BE: "BE",
-  C1: "C1",
-  C1E: "C1E",
-  C: "C",
-  CE: "CE",
-  D1: "D1",
-  D1E: "D1E",
-  D: "D",
-  DE: "DE",
-  F: "F",
-  G: "G",
-  H: "H",
-};
 
 const SALT_OR_ROUNDS = 10;
 

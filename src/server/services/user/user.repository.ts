@@ -1,8 +1,21 @@
 import { db } from "~/server/db";
 import { profiles, users } from "~/server/db/schema";
-import { asc, desc, eq, type SQL } from "drizzle-orm";
+import { and, asc, count, desc, eq, ilike, sql, type SQL } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { type FindUserQuery } from "~/server/services/user/types";
+
+type FindUserReturnDTO = {
+  id: string;
+  email: string;
+  active: boolean | null;
+  profile: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    city: string | null;
+    country: string | null;
+  } | null;
+};
 
 enum SortableKeys {
   ID = "id",
@@ -14,7 +27,27 @@ enum SortableKeys {
   ACTIVE = "active",
 }
 
-const mapKeyToColumn = (key: SortableKeys) => {
+enum FilterableKeys {
+  FIRSTNAME = "firstname",
+  LASTNAME = "lastname",
+  EMAIL = "email",
+  CITY = "city",
+}
+
+const mapFilterableKeyToConditional = (
+  key: FilterableKeys,
+  value: string,
+): SQL | undefined => {
+  if (key === FilterableKeys.FIRSTNAME || key === FilterableKeys.LASTNAME)
+    return ilike(mapKeyToColumn(key as FilterableKeys), `${value}%`);
+
+  if (key === FilterableKeys.EMAIL || key === FilterableKeys.CITY)
+    return eq(mapKeyToColumn(key as FilterableKeys), value);
+
+  return undefined;
+};
+
+const mapKeyToColumn = (key: SortableKeys | FilterableKeys) => {
   switch (key) {
     case SortableKeys.ID:
       return users.id;
@@ -83,30 +116,85 @@ const prepareOrderBy = (sort?: string | string[]): SQL[] => {
   return sorts;
 };
 
+const prepareWhere = (
+  filter: Record<string, string> | undefined,
+): SQL | undefined => {
+  if (!filter) return undefined;
+
+  if (Object.keys(filter).length === 1) {
+    const [key, value] = Object.entries(filter)[0] ?? ["", ""];
+    if (!Object.values(FilterableKeys).includes(key as FilterableKeys)) {
+      return undefined;
+    }
+
+    return mapFilterableKeyToConditional(key as FilterableKeys, value);
+  }
+
+  const conditionals = [];
+  for (const [key, value] of Object.entries(filter)) {
+    if (!Object.values(FilterableKeys).includes(key as FilterableKeys)) {
+      continue;
+    }
+
+    conditionals.push(
+      mapFilterableKeyToConditional(key as FilterableKeys, value),
+    );
+  }
+
+  return and(...conditionals);
+};
+
 const userRepository = {
   find: async (data: FindUserQuery) => {
-    const { page, limit, sort } = data;
+    const { page, limit, sort, filter } = data;
     const orderBy = prepareOrderBy(sort);
+    const where = prepareWhere(filter);
 
-    return db
-      .select({
-        id: users.id,
-        email: users.email,
-        active: users.active,
-        profile: {
-          id: profiles.id,
-          firstName: profiles.firstName,
-          lastName: profiles.lastName,
-          city: profiles.city,
-          country: profiles.country,
-        },
-      })
-      .from(users)
-      .leftJoin(profiles, eq(users.id, profiles.userId))
-      .orderBy(...orderBy)
-      .limit(limit ?? 10)
-      .offset(page ? Number(page) * (limit ?? 10) : 0)
-      .execute();
+    const { totalCount, returnData } = await db.transaction(
+      async (
+        tx,
+      ): Promise<{
+        totalCount: number;
+        returnData: FindUserReturnDTO[];
+      }> => {
+        const [totalCount] = await tx
+          .select({ count: count() })
+          .from(users)
+          .leftJoin(profiles, eq(users.id, profiles.userId))
+          .where(where);
+
+        const returnData = await tx
+          .select({
+            id: users.id,
+            email: users.email,
+            active: users.active,
+            profile: {
+              id: profiles.id,
+              firstName: profiles.firstName,
+              lastName: profiles.lastName,
+              city: profiles.city,
+              country: profiles.country,
+            },
+          })
+          .from(users)
+          .leftJoin(profiles, eq(users.id, profiles.userId))
+          .where(where)
+          .orderBy(...orderBy)
+          .limit(limit ?? 10)
+          .offset(page ? Number(page) * (limit ?? 10) : 0);
+
+        return { totalCount: totalCount?.count ?? 0, returnData };
+      },
+    );
+
+    return {
+      data: returnData,
+      meta: {
+        count: totalCount,
+        limit: limit ?? 10,
+        page: page ?? 0,
+      },
+    };
   },
   findById: async (id: string) => {
     return db

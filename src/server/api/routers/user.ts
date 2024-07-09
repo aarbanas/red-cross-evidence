@@ -16,12 +16,12 @@ export const userRouter = createTRPCRouter({
       z.object({
         page: z.string(),
         limit: z.string(),
-        sort: z.string().or(z.array(z.string())),
-        // filter: z.any(),
+        sort: z.string().or(z.array(z.string())).optional(),
+        filter: z.record(z.string(), z.string()).optional(),
       }),
     )
     .query(async ({ input }) => {
-      const { page, limit, sort } = input;
+      const { page, limit, sort, filter } = input;
       if (isNaN(Number(page)) || isNaN(Number(limit)) || Number(limit) > 50) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -33,6 +33,7 @@ export const userRouter = createTRPCRouter({
         page: Number(page),
         limit: Number(limit),
         sort,
+        filter,
       });
     }),
 });
