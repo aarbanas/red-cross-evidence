@@ -12,6 +12,8 @@
     "db:seed": "dotenv npx tsx ./src/server/db/seed.ts",
     "dev": "next dev",
     "lint": "next lint",
+    "lint:test": "eslint --ignore-pattern .gitignore .",
+    "prettier:check": "prettier --check .",
     "start": "next start",
     "prepare": "husky"
   },
