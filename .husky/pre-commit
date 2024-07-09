@@ -1,3 +1,2 @@
-yarn run commitlint --edit "${1}"
 yarn lint
 yarn prettier:check
