@@ -15,7 +15,7 @@ import {
   PaginationContent,
   PaginationPages,
 } from "~/components/organisms/Pagination";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Users = () => {
   const [page, setPage] = useState<number>(0);
@@ -27,10 +27,16 @@ const Users = () => {
     sort: ["email:asc"],
     filter: { firstname: "test" },
   });
+
+  useEffect(() => {
+    if (data?.meta) {
+      setTotalPageNumber(Math.ceil(data.meta.count / data.meta.limit));
+    }
+  }, [data]);
+
   if (!data) return <div>Loading...</div>;
 
   const { data: users, meta } = data;
-  setTotalPageNumber(Math.ceil(data.meta.count / data.meta.limit));
 
   return (
     <MainLayout headerChildren={<div>Test</div>}>

@@ -1,6 +1,6 @@
 import { db } from "~/server/db";
 import { profiles, users } from "~/server/db/schema";
-import { and, asc, count, desc, eq, ilike, sql, type SQL } from "drizzle-orm";
+import { and, asc, count, desc, eq, ilike, type SQL } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { type FindUserQuery } from "~/server/services/user/types";
 
@@ -8,6 +8,7 @@ type FindUserReturnDTO = {
   id: string;
   email: string;
   active: boolean | null;
+  createdAt: Date;
   profile: {
     id: string;
     firstName: string;
@@ -90,12 +91,12 @@ const generateSortFunction = (
   }
 
   // If there is no 'value' or key is not a member of SortableKeys
-  return asc(users.id);
+  return asc(users.createdAt);
 };
 
 const prepareOrderBy = (sort?: string | string[]): SQL[] => {
   if (!sort) {
-    return [asc(users.id)];
+    return [asc(users.createdAt)];
   }
 
   if (typeof sort === "string") {
@@ -168,6 +169,7 @@ const userRepository = {
             id: users.id,
             email: users.email,
             active: users.active,
+            createdAt: users.createdAt,
             profile: {
               id: profiles.id,
               firstName: profiles.firstName,
@@ -192,7 +194,6 @@ const userRepository = {
       meta: {
         count: totalCount,
         limit: limit ?? 10,
-        page: page ?? 0,
       },
     };
   },
