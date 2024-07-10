@@ -1,4 +1,11 @@
-import { boolean, pgTable, text, uuid, varchar } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  index,
+  pgTable,
+  timestamp,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export enum EducationLevel {
@@ -23,12 +30,24 @@ export enum License {
   DRIVING = "driving",
 }
 
-export const users = pgTable("user", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  email: varchar("email", { length: 255 }).notNull(),
-  password: varchar("password", { length: 255 }),
-  active: boolean("active").default(false),
-});
+export const users = pgTable(
+  "user",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    email: varchar("email", { length: 255 }).notNull(),
+    password: varchar("password", { length: 255 }),
+    active: boolean("active").default(false),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => {
+    return {
+      idx_created_at_uuid: index("idx_created_at_uuid").on(
+        table.createdAt,
+        table.id,
+      ), // composite index
+    };
+  },
+);
 
 export const usersRelations = relations(users, ({ one }) => ({
   profile: one(profiles, {

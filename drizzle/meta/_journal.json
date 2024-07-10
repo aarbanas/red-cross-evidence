@@ -8,6 +8,13 @@
       "when": 1718028801114,
       "tag": "0000_broken_shadow_king",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1720634758422,
+      "tag": "0001_sudden_firebrand",
+      "breakpoints": true
     }
   ]
 }
