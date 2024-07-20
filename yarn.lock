@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@aduh95/viz.js@3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@aduh95/viz.js/-/viz.js-3.4.0.tgz#635a020d95386c8acafbe025b2158238de889668"
+  integrity sha512-KI2nVf9JdwWCXqK6RVf+9/096G7VWN4Z84mnynlyZKao2xQENW8WNEjLmvdlxS5X8PNWXFC1zqwm7tveOXw/4A==
+
 "@alloc/quick-lru@^5.2.0":
   version "5.2.0"
   resolved "https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz"
@@ -1012,6 +1017,15 @@
   version "1.10.3"
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.10.3.tgz"
   integrity sha512-qC/xYId4NMebE6w/V33Fh9gWxLgURiNYgVNObbJl2LZv0GUUItCcCqC5axQSwRaAgaxl2mELq1rMzlswaQ0Zxg==
+
+"@softwaretechnik/dbml-renderer@^1.0.30":
+  version "1.0.30"
+  resolved "https://registry.yarnpkg.com/@softwaretechnik/dbml-renderer/-/dbml-renderer-1.0.30.tgz#de2cc5d0ed84a0bacd49ddd11cd33a831a7b92e5"
+  integrity sha512-cGSeiZg5/IsW76mfKXAV39hveGnOOosLJLyIbFi/EcbUz/wqBlnPYnAgF/0d5lW+4AtzoBSMA8SNHkDMxCu/5Q==
+  dependencies:
+    "@aduh95/viz.js" "3.4.0"
+    yargs "^17.7.2"
+    zod "^3.22.4"
 
 "@swc/counter@^0.1.3":
   version "0.1.3"
@@ -2043,6 +2057,13 @@ dreamopt@~0.8.0:
   dependencies:
     wordwrap ">=0.0.2"
 
+drizzle-dbml-generator@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/drizzle-dbml-generator/-/drizzle-dbml-generator-0.8.0.tgz#bf26e5bbd85d16ed195ba98439db327c4834cc19"
+  integrity sha512-aNKsjKrpkYPTzOozzPh9kUp2QIS/YG3on0j2IrR7yRD+/hb/vdj5bPA5mj6MxyAGHnTxBIYrCJnSIeFS7p9grw==
+  dependencies:
+    drizzle-orm "^0.32.0"
+
 drizzle-kit@^0.21.4:
   version "0.21.4"
   resolved "https://registry.npmjs.org/drizzle-kit/-/drizzle-kit-0.21.4.tgz"
@@ -2062,6 +2083,11 @@ drizzle-orm@^0.30.10:
   version "0.30.10"
   resolved "https://registry.npmjs.org/drizzle-orm/-/drizzle-orm-0.30.10.tgz"
   integrity sha512-IRy/QmMWw9lAQHpwbUh1b8fcn27S/a9zMIzqea1WNOxK9/4EB8gIo+FZWLiPXzl2n9ixGSv8BhsLZiOppWEwBw==
+
+drizzle-orm@^0.32.0:
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/drizzle-orm/-/drizzle-orm-0.32.0.tgz#c85b48eec6350631442f5ee3e65604f963e35f62"
+  integrity sha512-99IlfVGPNHzOFEXo9Phyu5At5TALLsY2t6WxFFy68rYd9Ej4cHX/7WjdPOn7JNRW69MNeNtP8XrDQg43SppuAA==
 
 eastasianwidth@^0.2.0:
   version "0.2.0"
@@ -5064,7 +5090,7 @@ yargs-parser@^21.1.1:
   resolved "https://registry.npmjs.org/yargs-parser/-/yargs-parser-21.1.1.tgz"
   integrity sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==
 
-yargs@^17.0.0:
+yargs@^17.0.0, yargs@^17.7.2:
   version "17.7.2"
   resolved "https://registry.npmjs.org/yargs/-/yargs-17.7.2.tgz"
   integrity sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==
@@ -5092,7 +5118,7 @@ yocto-queue@^1.0.0:
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-1.1.1.tgz"
   integrity sha512-b4JR1PFR10y1mKjhHY9LaGo6tmrgjit7hxVIeAmyMw3jegXR4dhYqLaQF5zMXZxY7tLpMyJeLjr1C4rLmkVe8g==
 
-zod@^3.20.2, zod@^3.23.3:
+zod@^3.20.2, zod@^3.22.4, zod@^3.23.3:
   version "3.23.8"
   resolved "https://registry.npmjs.org/zod/-/zod-3.23.8.tgz"
   integrity sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==
