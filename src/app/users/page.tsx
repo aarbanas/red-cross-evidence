@@ -16,9 +16,9 @@ import {
   PaginationPages,
 } from "~/components/organisms/Pagination";
 import { useState, useEffect, useRef } from "react";
-import { debounce } from "next/dist/server/utils";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 import SearchInput from "~/components/atoms/SearchInput";
+import { useDebounce } from "@uidotdev/usehooks";
 
 const Users = () => {
   const [page, setPage] = useState<number>(0);
@@ -26,12 +26,13 @@ const Users = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
     undefined,
   );
+  const debouncedSearchTerm = useDebounce(filter, 500);
 
-  const { data } = api.user.find.useQuery({
+  const { data, isLoading, error } = api.user.find.useQuery({
     page: page.toString(),
     limit: "10",
     sort: ["email:asc"],
-    filter,
+    filter: debouncedSearchTerm,
   });
 
   useEffect(() => {
@@ -40,16 +41,10 @@ const Users = () => {
     }
   }, [data]);
 
-  const debounceSearch = useRef(
-    debounce((key: string, value: string) => {
-      setFilter({ [key]: value });
-      setPage(0);
-    }, 1000),
-  ).current;
-
-  if (!data) return <LoadingSpinner />;
-
-  const { data: users, meta } = data;
+  const onSearch = (key: string, value: string) => {
+    setFilter({ [key]: value });
+    setPage(0);
+  };
 
   return (
     <MainLayout headerChildren={<div>Test</div>}>
@@ -61,13 +56,15 @@ const Users = () => {
         <div className="flex gap-5">
           <SearchInput
             title={"Ime"}
-            onSearch={debounceSearch}
+            onSearch={onSearch}
             searchKey={"firstname"}
           />
         </div>
 
-        {users?.length === 0 ? (
-          "No users found"
+        {isLoading && <LoadingSpinner />}
+        {error && <div>Greška</div>}
+        {data?.data.length === 0 ? (
+          "Nema rezultata"
         ) : (
           <>
             <div className="rounded-lg border shadow-sm">
@@ -85,7 +82,7 @@ const Users = () => {
                 </TableHeader>
 
                 <TableBody>
-                  {users?.map((user) => (
+                  {data?.data?.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell className="md:table-cell">
                         {user.profile?.firstName}
