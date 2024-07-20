@@ -15,17 +15,24 @@ import {
   PaginationContent,
   PaginationPages,
 } from "~/components/organisms/Pagination";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
+import SearchInput from "~/components/atoms/SearchInput";
+import { useDebounce } from "@uidotdev/usehooks";
 
 const Users = () => {
   const [page, setPage] = useState<number>(0);
   const [totalPageNumber, setTotalPageNumber] = useState<number>(1);
+  const [filter, setFilter] = useState<Record<string, string> | undefined>(
+    undefined,
+  );
+  const debouncedSearchTerm = useDebounce(filter, 500);
 
-  const { data } = api.user.find.useQuery({
+  const { data, isLoading, error } = api.user.find.useQuery({
     page: page.toString(),
     limit: "10",
     sort: ["email:asc"],
-    filter: { firstname: "test" },
+    filter: debouncedSearchTerm,
   });
 
   useEffect(() => {
@@ -34,9 +41,10 @@ const Users = () => {
     }
   }, [data]);
 
-  if (!data) return <div>Loading...</div>;
-
-  const { data: users, meta } = data;
+  const onSearch = (key: string, value: string) => {
+    setFilter({ [key]: value });
+    setPage(0);
+  };
 
   return (
     <MainLayout headerChildren={<div>Test</div>}>
@@ -45,8 +53,18 @@ const Users = () => {
           <h1 className="text-lg font-semibold md:text-2xl">Lista volontera</h1>
         </div>
 
-        {users?.length === 0 ? (
-          "No users found"
+        <div className="flex gap-5">
+          <SearchInput
+            title={"Ime"}
+            onSearch={onSearch}
+            searchKey={"firstname"}
+          />
+        </div>
+
+        {isLoading && <LoadingSpinner />}
+        {error && <div>Greška</div>}
+        {data?.data.length === 0 ? (
+          "Nema rezultata"
         ) : (
           <>
             <div className="rounded-lg border shadow-sm">
@@ -64,16 +82,16 @@ const Users = () => {
                 </TableHeader>
 
                 <TableBody>
-                  {users?.map((user) => (
+                  {data?.data?.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell className="md:table-cell">
-                        {user?.profile?.firstName}
+                        {user.profile?.firstName}
                       </TableCell>
                       <TableCell className="md:table-cell">
-                        {user?.profile?.lastName}
+                        {user.profile?.lastName}
                       </TableCell>
                       <TableCell className="md:table-cell">
-                        {user?.email}
+                        {user.email}
                       </TableCell>
                       <TableCell className="md:table-cell">
                         {user.active ? (
