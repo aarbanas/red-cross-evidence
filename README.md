@@ -1,6 +1,52 @@
-# Create T3 App
+# Red cross evidence
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+
+## Prerequisites
+
+1. Node.js
+2. Yarn
+3. Docker
+
+## Getting Started
+
+Copy the `.env.example` file to `.env` and fill in the necessary values.
+
+```bash
+cp .env.example .env
+```
+
+Run docker-compose to start the database. It will use all the data provided in the `.env` file.
+
+```bash
+docker-compose up -d
+```
+
+Install the dependencies
+
+```bash
+yarn install
+```
+
+### Database
+
+#### Run the migrations:
+
+```bash
+yarn db:migrate
+```
+
+#### Seed initial data into database:
+
+```bash
+yarn db:seed
+```
+
+### Start the development server
+
+```bash
+yarn dev
+```
 
 ## What's next? How do I make an app with this?
 
