@@ -42,7 +42,7 @@ const Users = () => {
   }, [data]);
 
   const onSearch = (key: string, value: string) => {
-    setFilter({ [key]: value });
+    setFilter((prevFilter) => ({ ...prevFilter, [key]: value }));
     setPage(0);
   };
 
@@ -54,6 +54,11 @@ const Users = () => {
             title={"Ime"}
             onSearch={onSearch}
             searchKey={"firstname"}
+          />
+          <SearchInput
+            title={"Prezime"}
+            onSearch={onSearch}
+            searchKey={"lastname"}
           />
         </div>
 
