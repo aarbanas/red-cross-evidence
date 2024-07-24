@@ -1,4 +1,4 @@
-const isOibValid = (input: number) => {
+const isOibValid = (input: number): boolean => {
   const oib = input.toString();
 
   if (oib.match(/\d{11}/) === null) {
