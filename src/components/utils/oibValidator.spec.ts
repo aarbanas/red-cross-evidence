@@ -1,6 +1,6 @@
 import isOibValid from "./oibValidator";
 
-describe("oibValidator function", () => {
+describe("isOibValid function", () => {
   it("incorrect OIB length", () => {
     expect(isOibValid(1)).toBe(false);
     expect(isOibValid(1234567891012)).toBe(false);
