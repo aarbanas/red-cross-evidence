@@ -8,6 +8,8 @@ import {
   ClothingSize,
   countries,
   DrivingLicense,
+  LanguageLevel,
+  languages,
   License,
   licenses,
   profiles,
@@ -140,7 +142,37 @@ const generateWorkStatuses = async (): Promise<string[]> => {
   return res.map(({ id }) => id);
 };
 
-const generateUsers = async (addressIds: string[], workStatusIds: string[]) => {
+const generateLanguages = async (): Promise<string[]> => {
+  const _languages = [
+    "Croatian",
+    "English",
+    "German",
+    "Italian",
+    "Spanish",
+    "French",
+    "Russian",
+  ];
+
+  const existingLanguages = await db.query.languages.findMany({
+    columns: { id: true },
+  });
+  if (existingLanguages.length) return existingLanguages.map(({ id }) => id);
+  const items: { name: string; level: LanguageLevel }[] = [];
+  for (const lang of _languages) {
+    for (const level of Object.values(LanguageLevel)) {
+      items.push({ name: lang, level });
+    }
+  }
+
+  const res = await db.insert(languages).values(items).returning();
+  return res.map(({ id }) => id);
+};
+
+const generateUsers = async (
+  addressIds: string[],
+  workStatusIds: string[],
+  languageIds: string[],
+) => {
   for (let i = 0; i < 20; i++) {
     const userPwd = await hash(
       Math.random().toString(36).slice(-8),
@@ -184,7 +216,7 @@ const generateUsers = async (addressIds: string[], workStatusIds: string[]) => {
           lastName:
             surnames[Math.floor(Math.random() * surnames.length)]?.toString() ??
             `User ${i + 1}`,
-          pin: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
+          oib: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
           sex: i % 2 === 0 ? Sex.MALE : Sex.FEMALE,
           nationality: "Foo",
           parentName: "Test",
@@ -193,6 +225,8 @@ const generateUsers = async (addressIds: string[], workStatusIds: string[]) => {
           addressId: addressIds[Math.floor(Math.random() * addressIds.length)],
           workStatusId:
             workStatusIds[Math.floor(Math.random() * workStatusIds.length)],
+          languageId:
+            languageIds[Math.floor(Math.random() * languageIds.length)],
         });
       });
     }
@@ -211,6 +245,7 @@ const main = async () => {
   const cityIds = await generateCountriesWithCities();
   const addressIds = await generateAddresses(cityIds);
   const workStatusIds = await generateWorkStatuses();
+  const languageIds = await generateLanguages();
 
   const adminExists = await db.query.users.findFirst({
     where: eq(users.email, email),
@@ -232,7 +267,7 @@ const main = async () => {
         userId: admin?.id,
         firstName: "Admin",
         lastName: "Admin",
-        pin: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
+        oib: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
         sex: Sex.MALE,
         nationality: "Foo",
         parentName: "Test",
@@ -240,11 +275,12 @@ const main = async () => {
         addressId: addressIds[Math.floor(Math.random() * addressIds.length)],
         workStatusId:
           workStatusIds[Math.floor(Math.random() * workStatusIds.length)],
+        languageId: languageIds[Math.floor(Math.random() * languageIds.length)],
       });
     });
   }
 
-  await generateUsers(addressIds, workStatusIds);
+  await generateUsers(addressIds, workStatusIds, languageIds);
 };
 
 main()
