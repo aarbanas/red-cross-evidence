@@ -13,8 +13,6 @@ type FindUserReturnDTO = {
     id: string;
     firstName: string;
     lastName: string;
-    city: string | null;
-    country: string | null;
   } | null;
 };
 
@@ -58,10 +56,6 @@ const mapKeyToColumn = (key: SortableKeys | FilterableKeys) => {
       return profiles.lastName;
     case SortableKeys.EMAIL:
       return users.email;
-    case SortableKeys.CITY:
-      return profiles.city;
-    case SortableKeys.COUNTRY:
-      return profiles.country;
     case SortableKeys.ACTIVE:
       return users.active;
     default:
@@ -174,8 +168,6 @@ const userRepository = {
               id: profiles.id,
               firstName: profiles.firstName,
               lastName: profiles.lastName,
-              city: profiles.city,
-              country: profiles.country,
             },
           })
           .from(users)

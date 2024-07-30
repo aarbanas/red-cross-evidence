@@ -6,6 +6,7 @@ import {
   pgTable,
   real,
   timestamp,
+  uniqueIndex,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -47,6 +48,15 @@ export enum WorkStatus {
   RETIRED = "RETIRED",
 }
 
+export enum LanguageLevel {
+  A1 = "A1",
+  A2 = "A2",
+  B1 = "B1",
+  B2 = "B2",
+  C1 = "C1",
+  C2 = "C2",
+}
+
 export const sexEnum = pgEnum(
   "sexenum",
   Object.values(Sex) as [string, ...string[]],
@@ -60,6 +70,11 @@ export const clothingSizeEnum = pgEnum(
 export const workStatusEnum = pgEnum(
   "workstatus",
   Object.values(WorkStatus) as [string, ...string[]],
+);
+
+export const languageLevelEnum = pgEnum(
+  "languagelevel",
+  Object.values(LanguageLevel) as [string, ...string[]],
 );
 
 export const users = pgTable(
@@ -94,7 +109,7 @@ export const profiles = pgTable("profile", {
   id: uuid("id").defaultRandom().primaryKey(),
   firstName: varchar("first_name", { length: 255 }).notNull(),
   lastName: varchar("last_name", { length: 255 }).notNull(),
-  pin: varchar("pin", { length: 11 }).notNull(),
+  oib: varchar("oib", { length: 11 }).notNull().unique(),
   sex: sexEnum("sex").notNull(),
   birthDate: date("birth_date"),
   parentName: varchar("parent_name", { length: 255 }),
@@ -107,6 +122,9 @@ export const profiles = pgTable("profile", {
   workStatusId: uuid("work_status_id").references(() => workStatuses.id, {
     onDelete: "cascade",
   }),
+  languageId: uuid("language_id").references(() => languages.id, {
+    onDelete: "cascade",
+  }),
 });
 
 export const profilesRelations = relations(profiles, ({ one, many }) => ({
@@ -115,12 +133,17 @@ export const profilesRelations = relations(profiles, ({ one, many }) => ({
     references: [sizes.id],
     fields: [profiles.sizeId],
   }),
-  addresses: many(addresses),
   workStatus: one(workStatuses, {
     relationName: "profiles_work_statuses",
     references: [workStatuses.id],
     fields: [profiles.workStatusId],
   }),
+  language: one(languages, {
+    relationName: "profiles_languages",
+    references: [languages.id],
+    fields: [profiles.languageId],
+  }),
+  addresses: many(addresses),
 }));
 
 export const sizes = pgTable("profile_size", {
@@ -172,7 +195,7 @@ export const citiesRelations = relations(cities, ({ one, many }) => ({
     references: [countries.id],
     fields: [cities.countryId],
   }),
-  address: many(addresses),
+  addresses: many(addresses),
 }));
 
 export const countries = pgTable("country", {
@@ -194,3 +217,19 @@ export const workStatuses = pgTable("work_status", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at"),
 });
+
+export const languages = pgTable(
+  "language",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    name: varchar("name", { length: 255 }).notNull(),
+    level: languageLevelEnum("level").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at"),
+  },
+  (table) => {
+    return {
+      idx_name: uniqueIndex("idx_name").on(table.name, table.level),
+    };
+  },
+);
