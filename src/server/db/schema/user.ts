@@ -4,6 +4,7 @@ import {
   index,
   pgEnum,
   pgTable,
+  primaryKey,
   real,
   timestamp,
   uniqueIndex,
@@ -11,6 +12,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { licenses } from "~/server/db/schema/licence";
 
 export enum EducationLevel {
   PRIMARY = "primary", // Osnovno obrazovanje (OŠ)
@@ -25,6 +27,7 @@ export enum EducationLevel {
 export enum Sex {
   MALE = "M",
   FEMALE = "F",
+  OTHER = "O",
 }
 
 export enum ClothingSize {
@@ -72,6 +75,11 @@ export const workStatusEnum = pgEnum(
   Object.values(WorkStatus) as [string, ...string[]],
 );
 
+export const educationLevelEnum = pgEnum(
+  "educationlevel",
+  Object.values(EducationLevel) as [string, ...string[]],
+);
+
 export const languageLevelEnum = pgEnum(
   "languagelevel",
   Object.values(LanguageLevel) as [string, ...string[]],
@@ -112,6 +120,7 @@ export const profiles = pgTable("profile", {
   oib: varchar("oib", { length: 11 }).notNull().unique(),
   sex: sexEnum("sex").notNull(),
   birthDate: date("birth_date"),
+  birthPlace: varchar("birth_place", { length: 255 }),
   parentName: varchar("parent_name", { length: 255 }),
   nationality: varchar("nationality", { length: 255 }),
   userId: uuid("user_id")
@@ -214,6 +223,7 @@ export const workStatuses = pgTable("work_status", {
   status: workStatusEnum("status").notNull(),
   profession: varchar("profession", { length: 255 }),
   institution: varchar("institution", { length: 255 }),
+  educationLevel: educationLevelEnum("education_level"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at"),
 });
@@ -233,3 +243,30 @@ export const languages = pgTable(
     };
   },
 );
+
+export const profilesLicences = pgTable(
+  "profile_licence",
+  {
+    profileId: uuid("profile_id")
+      .notNull()
+      .references(() => profiles.id),
+    licenceId: uuid("licence_id")
+      .notNull()
+      .references(() => licenses.id),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => {
+    return {
+      pk_profile_licence: primaryKey({
+        columns: [table.profileId, table.licenceId],
+      }),
+    };
+  },
+);
+
+export const skills = pgTable("skill", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at"),
+});

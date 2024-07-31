@@ -8,11 +8,13 @@ import {
   ClothingSize,
   countries,
   DrivingLicense,
+  EducationLevel,
   LanguageLevel,
   languages,
   License,
   licenses,
   profiles,
+  profilesLicences,
   Sex,
   sizes,
   users,
@@ -30,7 +32,7 @@ const populateLicenses = async () => {
     description: "",
   }));
 
-  await db.insert(licenses).values(_licenses).returning();
+  return db.insert(licenses).values(_licenses).returning();
 };
 
 const generateCountriesWithCities = async (): Promise<string[]> => {
@@ -125,16 +127,19 @@ const generateWorkStatuses = async (): Promise<string[]> => {
       status: "EMPLOYED",
       profession: "Developer",
       institution: "Company",
+      educationLevel: EducationLevel.BACHELOR,
     },
     {
       status: "UNEMPLOYED",
       profession: "Unemployed",
       institution: "None",
+      educationLevel: EducationLevel.PRIMARY,
     },
     {
       status: "STUDENT",
       profession: "Student",
       institution: "School",
+      educationLevel: EducationLevel.SECONDARY,
     },
   ];
 
@@ -172,6 +177,12 @@ const generateUsers = async (
   addressIds: string[],
   workStatusIds: string[],
   languageIds: string[],
+  _licences: {
+    id: string;
+    name: string;
+    description: string | null;
+    type: string;
+  }[],
 ) => {
   for (let i = 0; i < 20; i++) {
     const userPwd = await hash(
@@ -208,26 +219,41 @@ const generateUsers = async (
           })
           .returning();
 
-        await tx.insert(profiles).values({
-          userId: user?.id,
-          firstName:
-            names[Math.floor(Math.random() * names.length)]?.toString() ??
-            `Test ${i + 1}`,
-          lastName:
-            surnames[Math.floor(Math.random() * surnames.length)]?.toString() ??
-            `User ${i + 1}`,
-          oib: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
-          sex: i % 2 === 0 ? Sex.MALE : Sex.FEMALE,
-          nationality: "Foo",
-          parentName: "Test",
-          birthDate: new Date(1990, 1, 1).toISOString(),
-          sizeId: size?.id,
-          addressId: addressIds[Math.floor(Math.random() * addressIds.length)],
-          workStatusId:
-            workStatusIds[Math.floor(Math.random() * workStatusIds.length)],
-          languageId:
-            languageIds[Math.floor(Math.random() * languageIds.length)],
-        });
+        const [userProfile] = await tx
+          .insert(profiles)
+          .values({
+            userId: user?.id,
+            firstName:
+              names[Math.floor(Math.random() * names.length)]?.toString() ??
+              `Test ${i + 1}`,
+            lastName:
+              surnames[
+                Math.floor(Math.random() * surnames.length)
+              ]?.toString() ?? `User ${i + 1}`,
+            oib: Math.floor(
+              10000000000 + Math.random() * 90000000000,
+            ).toString(),
+            sex: i % 2 === 0 ? Sex.MALE : Sex.FEMALE,
+            nationality: "Foo",
+            parentName: "Test",
+            birthDate: new Date(1990, 1, 1).toISOString(),
+            sizeId: size?.id,
+            addressId:
+              addressIds[Math.floor(Math.random() * addressIds.length)],
+            workStatusId:
+              workStatusIds[Math.floor(Math.random() * workStatusIds.length)],
+            languageId:
+              languageIds[Math.floor(Math.random() * languageIds.length)],
+          })
+          .returning({ insertedId: profiles.id });
+
+        if (userProfile)
+          await tx.insert(profilesLicences).values({
+            profileId: userProfile.insertedId,
+            licenceId:
+              _licences[Math.floor(Math.random() * _licences.length)]?.id ??
+              _licences[0]!.id,
+          });
       });
     }
   }
@@ -237,9 +263,9 @@ const main = async () => {
   const adminPassword = await hash(env.ADMIN_PASSWORD, SALT_OR_ROUNDS);
   const email = "admin@dck-pgz.hr";
 
-  const licences = await db.query.licenses.findMany();
-  if (!licences.length) {
-    await populateLicenses();
+  let _licences = await db.query.licenses.findMany();
+  if (!_licences.length) {
+    _licences = await populateLicenses();
   }
 
   const cityIds = await generateCountriesWithCities();
@@ -263,24 +289,37 @@ const main = async () => {
 
       if (!admin) throw new Error("Admin user could not be created");
 
-      await tx.insert(profiles).values({
-        userId: admin?.id,
-        firstName: "Admin",
-        lastName: "Admin",
-        oib: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
-        sex: Sex.MALE,
-        nationality: "Foo",
-        parentName: "Test",
-        birthDate: new Date(1990, 1, 1).toISOString(),
-        addressId: addressIds[Math.floor(Math.random() * addressIds.length)],
-        workStatusId:
-          workStatusIds[Math.floor(Math.random() * workStatusIds.length)],
-        languageId: languageIds[Math.floor(Math.random() * languageIds.length)],
-      });
+      const [adminProfile] = await tx
+        .insert(profiles)
+        .values({
+          userId: admin?.id,
+          firstName: "Admin",
+          lastName: "Admin",
+          oib: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
+          sex: Sex.MALE,
+          nationality: "Foo",
+          parentName: "Test",
+          birthDate: new Date(1990, 1, 1).toISOString(),
+          addressId: addressIds[Math.floor(Math.random() * addressIds.length)],
+          workStatusId:
+            workStatusIds[Math.floor(Math.random() * workStatusIds.length)],
+          languageId:
+            languageIds[Math.floor(Math.random() * languageIds.length)],
+        })
+        .returning();
+
+      if (adminProfile && _licences.length) {
+        await tx.insert(profilesLicences).values({
+          profileId: adminProfile.id,
+          licenceId:
+            _licences[Math.floor(Math.random() * _licences.length)]?.id ??
+            _licences[0]!.id,
+        });
+      }
     });
   }
 
-  await generateUsers(addressIds, workStatusIds, languageIds);
+  await generateUsers(addressIds, workStatusIds, languageIds, _licences);
 };
 
 main()
