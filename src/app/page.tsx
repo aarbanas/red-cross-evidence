@@ -1,7 +1,6 @@
 import { getServerAuthSession } from "~/server/auth";
 import Users from "~/app/users/page";
 import Wizard from "~/components/organisms/wizard/Wizard";
-import { placeholder } from "drizzle-orm";
 
 const Home = async () => {
   const session = await getServerAuthSession();
