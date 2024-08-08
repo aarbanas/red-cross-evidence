@@ -15,6 +15,13 @@
       "when": 1720634758422,
       "tag": "0001_sudden_firebrand",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1723036610778,
+      "tag": "0002_polite_sway",
+      "breakpoints": true
     }
   ]
 }
