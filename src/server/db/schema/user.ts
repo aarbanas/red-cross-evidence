@@ -1,15 +1,16 @@
 import {
   boolean,
   date,
-  index,
   pgEnum,
   pgTable,
   primaryKey,
   real,
+  text,
   timestamp,
   uniqueIndex,
   uuid,
   varchar,
+  index,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { licenses } from "~/server/db/schema/licence";
@@ -153,6 +154,7 @@ export const profilesRelations = relations(profiles, ({ one, many }) => ({
     fields: [profiles.languageId],
   }),
   addresses: many(addresses),
+  profileSkills: many(profileSkills),
 }));
 
 export const sizes = pgTable("profile_size", {
@@ -249,10 +251,10 @@ export const profilesLicences = pgTable(
   {
     profileId: uuid("profile_id")
       .notNull()
-      .references(() => profiles.id),
+      .references(() => profiles.id, { onDelete: "cascade" }),
     licenceId: uuid("licence_id")
       .notNull()
-      .references(() => licenses.id),
+      .references(() => licenses.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => {
@@ -264,9 +266,21 @@ export const profilesLicences = pgTable(
   },
 );
 
-export const skills = pgTable("skill", {
+export const profileSkills = pgTable("profile_skill", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
+  description: text("description").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at"),
+  profileId: uuid("profile_id").references(() => profiles.id, {
+    onDelete: "cascade",
+  }),
 });
+
+export const profileSkillsRelations = relations(profileSkills, ({ one }) => ({
+  profile: one(profiles, {
+    relationName: "profile_skills_profiles",
+    references: [profiles.id],
+    fields: [profileSkills.profileId],
+  }),
+}));

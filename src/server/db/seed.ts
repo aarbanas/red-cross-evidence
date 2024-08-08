@@ -14,6 +14,7 @@ import {
   License,
   licenses,
   profiles,
+  profileSkills,
   profilesLicences,
   Sex,
   sizes,
@@ -24,6 +25,24 @@ import {
 const SALT_OR_ROUNDS = 10;
 const names = ["John", "Jane", "Alice", "Bob", "Charlie", "Diana"];
 const surnames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia"];
+
+const getRandomLoremIpsum = (length: number): string => {
+  const loremIpsum =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+  let result = "";
+
+  // Loop until we get the desired length of text
+  while (result.length < length) {
+    const remainingLength = length - result.length;
+    const start = Math.floor(
+      Math.random() * (loremIpsum.length - remainingLength),
+    );
+    result += loremIpsum.substring(start, start + remainingLength);
+  }
+
+  // Truncate to the exact desired length if necessary
+  return result.substring(0, length);
+};
 
 const populateLicenses = async () => {
   const _licenses = Object.values(DrivingLicense).map((type) => ({
@@ -173,6 +192,26 @@ const generateLanguages = async (): Promise<string[]> => {
   return res.map(({ id }) => id);
 };
 
+const generateProfileSkills = (
+  profileId: string,
+): { name: string; description: string; profileId: string }[] => {
+  const skills = [
+    "Rad na računalu",
+    "Varenje",
+    "Piljenje drva",
+    "Telekomunikacije",
+  ];
+  const items: { name: string; description: string; profileId: string }[] = [];
+  for (const skill of skills) {
+    items.push({
+      name: skill,
+      description: getRandomLoremIpsum(40),
+      profileId,
+    });
+  }
+  return items;
+};
+
 const generateUsers = async (
   addressIds: string[],
   workStatusIds: string[],
@@ -247,13 +286,16 @@ const generateUsers = async (
           })
           .returning({ insertedId: profiles.id });
 
-        if (userProfile)
+        if (userProfile) {
           await tx.insert(profilesLicences).values({
             profileId: userProfile.insertedId,
             licenceId:
               _licences[Math.floor(Math.random() * _licences.length)]?.id ??
               _licences[0]!.id,
           });
+          const _profileSkills = generateProfileSkills(userProfile.insertedId);
+          await tx.insert(profileSkills).values(_profileSkills);
+        }
       });
     }
   }
@@ -315,6 +357,9 @@ const main = async () => {
             _licences[Math.floor(Math.random() * _licences.length)]?.id ??
             _licences[0]!.id,
         });
+
+        const _profileSkills = generateProfileSkills(adminProfile.id);
+        await tx.insert(profileSkills).values(_profileSkills);
       }
     });
   }
