@@ -1,0 +1,158 @@
+enum clothingsize {
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+}
+
+enum educationlevel {
+  primary
+  secondary
+  college
+  bachelor
+  master
+  doctorate
+  post_doctorate
+}
+
+enum languagelevel {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+enum sexenum {
+  M
+  F
+  O
+}
+
+enum workstatus {
+  EMPLOYED
+  UNEMPLOYED
+  SELF_EMPLOYED
+  STUDENT
+  RETIRED
+}
+
+table address {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  street varchar(255) [not null]
+  street_number varchar(10) [not null]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp
+  city_id uuid
+}
+
+table city {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  name varchar(255) [not null]
+  postal_code varchar(10)
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp
+  country_id uuid
+}
+
+table country {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  name varchar(255) [not null]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp
+}
+
+table language {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  name varchar(255) [not null]
+  level languagelevel [not null]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp
+}
+
+table license {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  type varchar [not null]
+  name varchar(255) [not null]
+  description text
+}
+
+table profile_skill {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  name varchar(255) [not null]
+  description text [not null]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp
+  profile_id uuid
+}
+
+table profile {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  first_name varchar(255) [not null]
+  last_name varchar(255) [not null]
+  oib varchar(11) [not null, unique]
+  sex sexenum [not null]
+  birth_date date
+  birth_place varchar(255)
+  parent_name varchar(255)
+  nationality varchar(255)
+  user_id uuid [not null]
+  size_id uuid
+  address_id uuid
+  work_status_id uuid
+  language_id uuid
+}
+
+table profile_licence {
+  profile_id uuid [not null]
+  licence_id uuid [not null]
+  created_at timestamp [not null, default: `now()`]
+}
+
+table profile_size {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  shoe_size real
+  clothing_size clothingsize
+  height real
+  weight real
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp
+}
+
+table user {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  email varchar(255) [not null]
+  password varchar(255)
+  active boolean [default: false]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp
+}
+
+table work_status {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  status workstatus [not null]
+  profession varchar(255)
+  institution varchar(255)
+  education_level educationlevel
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp
+}
+
+ref: address.city_id - city.id
+
+ref: address.id - profile.id
+
+ref: city.country_id - country.id
+
+ref: profile_skill.profile_id - profile.id
+
+ref: profile.size_id - profile_size.id
+
+ref: profile.work_status_id - work_status.id
+
+ref: profile.language_id - language.id
+
+ref: user.id - profile.user_id

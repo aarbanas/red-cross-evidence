@@ -43,5 +43,6 @@ yarn-error.log*
 *.tsbuildinfo
 
 # dbml
-schema.dbml
-erd.svg
+# TODO Remove before merging PR
+#schema.dbml
+#erd.svg
