@@ -1,4 +1,6 @@
 import { pgTable, text, uuid, varchar } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { users } from "~/server/db/schema/user";
 
 export const DrivingLicense = {
   AM: "AM",
@@ -27,9 +29,6 @@ export const licenses = pgTable("license", {
   description: text("description"),
 });
 
-// export const licensesRelations = relations(licenses, ({ one }) => ({
-//   author: one(users, {
-//     fields: [licenses.userId],
-//     references: [users.id],
-//   }),
-// }));
+export const licensesRelations = relations(licenses, ({ many }) => ({
+  users: many(users),
+}));
