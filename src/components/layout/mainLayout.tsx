@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import { Building, CornerDownLeft, Users } from "lucide-react";
+import { Bold, BookMarked, Building, CornerDownLeft, Users } from "lucide-react";
 import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -49,6 +49,14 @@ const Navigation = () => {
         <Building />
         Organisation list
       </Link>
+      <Link
+        className="flex items-center gap-3 rounded-lg px-3 py-2 transition"
+        href="/educations"  
+      >
+        <BookMarked />
+         Educations
+      </Link>
+
       <Link
         className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900`}
         href="/dashboard"

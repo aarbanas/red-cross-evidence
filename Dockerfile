@@ -51,3 +51,23 @@ EXPOSE 3000
 ENV PORT 3000
 
 CMD ["server.js"]
+
+# EDUCATIONS
+
+FROM node:14.17.0
+
+WORKDIR /app
+
+RUN npm install -g yarn@1.22.10
+
+COPY package.json yarn.lock ./
+
+RUN yarn install
+
+COPY . .
+
+RUN yarn build
+
+EXPOSE 3000
+
+CMD ["yarn", "dev"]
