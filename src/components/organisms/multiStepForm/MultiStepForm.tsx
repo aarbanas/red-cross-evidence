@@ -6,23 +6,29 @@ import FormInput from "../form/formInput/FormInput";
 import { useForm } from "react-hook-form";
 import FormComponent from "../form/formComponent/FormComponent";
 
-interface InputConfig {
-  type: string;
-  placeholder: string;
+export interface Fields {
+  type: "text" | "password" | "email" | "number" | "tel" | "url" | "search";
   label: string;
+  placeholder: string;
 }
 
-interface WizardProps {
-  steps: string[];
-  inputs: InputConfig[][];
+export interface FormStep {
+  name: string;
+  fields: Fields[];
 }
 
-const Wizard: React.FC<WizardProps> = ({ steps, inputs }) => {
+interface FormProps {
+  form: FormStep[];
+}
+
+const MultiStepForm: React.FC<FormProps> = ({ form }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Record<string, string>>({});
 
+  const numSteps = form.length;
+
   const nextStep = () => {
-    if (currentStep < steps.length - 1) {
+    if (currentStep < numSteps - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -48,7 +54,7 @@ const Wizard: React.FC<WizardProps> = ({ steps, inputs }) => {
     // Add submission logic here
   };
 
-  const progressPercentage = ((currentStep + 1) / steps.length) * 100;
+  const progressPercentage = ((currentStep + 1) / numSteps) * 100;
   const methods = useForm();
 
   return (
@@ -60,19 +66,19 @@ const Wizard: React.FC<WizardProps> = ({ steps, inputs }) => {
         ></div>
       </div>
       <nav className="mb-4 flex space-x-4 pb-3">
-        {steps.map((step, index) => (
+        {form.map((formStep, index) => (
           <Button
             key={index}
             variant={`${currentStep === index ? "default" : "ghost"}`}
             onClick={() => setCurrentStep(index)}
           >
-            {index + 1}. {step}
+            {index + 1}. {formStep.name}
           </Button>
         ))}
       </nav>
       <div className="pb-6">
         <FormComponent form={methods} onSubmit={handleSubmit}>
-          {inputs[currentStep]!.map((input, index) => (
+          {form[currentStep]!.fields.map((input, index) => (
             <FormInput
               key={index}
               id={`${currentStep}-${index}`}
@@ -92,7 +98,7 @@ const Wizard: React.FC<WizardProps> = ({ steps, inputs }) => {
             Back
           </Button>
         )}
-        {currentStep < steps.length - 1 ? (
+        {currentStep < numSteps - 1 ? (
           <Button onClick={nextStep} variant="default">
             Continue
           </Button>
@@ -106,4 +112,4 @@ const Wizard: React.FC<WizardProps> = ({ steps, inputs }) => {
   );
 };
 
-export default Wizard;
+export default MultiStepForm;
