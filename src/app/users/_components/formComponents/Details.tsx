@@ -1,7 +1,12 @@
 "use client";
 
-import FormInput from "../form/formInput/FormInput";
+import FormInput from "~/components/organisms/form/formInput/FormInput";
 import { useFormContext } from "react-hook-form";
+
+export interface ContactInfo {
+  email: string;
+  phone: string;
+}
 
 export function DetailsForm() {
   const { register } = useFormContext();

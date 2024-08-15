@@ -10,9 +10,6 @@ export interface FormStep {
   form: ReactElement;
 }
 
-interface FormProps {
-  forms: FormStep[];
-}
 type Inputs = {
   username: string;
   password: string;
@@ -22,7 +19,13 @@ type Inputs = {
   creditCard: string;
   billingAddr: string;
 };
-const MultiStepForm: React.FC<FormProps> = ({ forms }) => {
+
+interface FormProps {
+  forms: FormStep[];
+  onSubmit: (data: Inputs) => void;
+}
+
+const MultiStepForm: React.FC<FormProps> = ({ forms, onSubmit }) => {
   const [currentStep, setCurrentStep] = useState(0);
   let isLastStep = false;
   let newStep = currentStep;
@@ -50,10 +53,10 @@ const MultiStepForm: React.FC<FormProps> = ({ forms }) => {
     }
   };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const handleFormSubmit = (data: Inputs) => {
     //nextStep();
     //console.log(typeof data);
-    if (currentStep == numSteps - 1 && isLastStep) alert(JSON.stringify(data));
+    if (currentStep == numSteps - 1 && isLastStep) onSubmit(data);
     // Add submission logic here
   };
 
@@ -83,7 +86,7 @@ const MultiStepForm: React.FC<FormProps> = ({ forms }) => {
 
       {/* form contents */}
       <div className="flex items-center justify-center">
-        <FormComponent form={methods} onSubmit={onSubmit}>
+        <FormComponent form={methods} onSubmit={handleFormSubmit}>
           <div className="w-96 space-y-10 pb-6">{forms[currentStep]!.form}</div>
 
           {/* form navigaiton and submission */}

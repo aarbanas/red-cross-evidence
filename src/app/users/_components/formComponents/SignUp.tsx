@@ -1,7 +1,13 @@
 "use client";
 
-import FormInput from "../form/formInput/FormInput";
+import FormInput from "~/components/organisms/form/formInput/FormInput";
 import { useFormContext } from "react-hook-form";
+
+export interface UserCredentials {
+  username: string;
+  password: string;
+  password2: string;
+}
 
 export function SignUpForm() {
   const { register } = useFormContext();
