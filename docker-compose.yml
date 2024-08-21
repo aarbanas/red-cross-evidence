@@ -23,11 +23,11 @@ services:
     ports:
       - '3000:3000'
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
     volumes:
       - .:/app
       - /app/node_modules
-    command: yarn dev
+    command: yarn start
     depends_on:
       - postgres
 

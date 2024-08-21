@@ -10,16 +10,10 @@ import {
   TableRow,
 } from "~/components/organisms/Table";
 import { CheckCircle2, XCircle } from "lucide-react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationPages,
-} from "~/components/organisms/Pagination";
 import { useState, useEffect } from "react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 import SearchInput from "~/components/atoms/SearchInput";
 import { useDebounce } from "@uidotdev/usehooks";
-import Modal from "~/components/atoms/Modal";
 
 type Education = {
   id: number;
@@ -34,15 +28,6 @@ const initialEducations: Education[] = [
   { id: 2, title: "Drugi događaj", date: "2024-09-15", description: "Opis drugog događaja", active: false },
 ];
 
-const getStoredEducations = (): Education[] => {
-  const storedData = localStorage.getItem('educations');
-  return storedData ? (JSON.parse(storedData) as Education[]) : initialEducations;
-};
-
-const saveEducationsToStorage = (educations: Education[]) => {
-  localStorage.setItem('educations', JSON.stringify(educations));
-};
-
 const Educations = () => {
   const [page, setPage] = useState<number>(0);
   const [totalPageNumber, setTotalPageNumber] = useState<number>(1);
@@ -52,8 +37,7 @@ const Educations = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [educations, setEducations] = useState<Education[]>(getStoredEducations());
-  const [selectedEducation, setSelectedEducation] = useState<Education | null>(null);
+  const [educations, setEducations] = useState<Education[]>(initialEducations);
   const [newEducationTitle, setNewEducationTitle] = useState<string>("");
   const [newEducationDescription, setNewEducationDescription] = useState<string>("");
 
@@ -65,12 +49,8 @@ const Educations = () => {
       let filteredData = educations;
       if (debouncedSearchTerm) {
         filteredData = filteredData.filter((education) => {
-          return Object.entries(debouncedSearchTerm).every(
-            ([key, value]) =>
-              education[key as keyof Education]
-                ?.toString()
-                .toLowerCase()
-                .includes(value.toLowerCase())
+          return Object.entries(debouncedSearchTerm).every(([key, value]) =>
+            education[key as keyof Education]?.toString().toLowerCase().includes(value.toLowerCase())
           );
         });
       }
@@ -83,10 +63,6 @@ const Educations = () => {
       setIsLoading(false);
     }
   }, [page, debouncedSearchTerm, educations]);
-
-  useEffect(() => {
-    saveEducationsToStorage(educations);
-  }, [educations]);
 
   const onSearch = (key: string, value: string) => {
     setFilter((prevFilter) => ({ ...prevFilter, [key]: value }));
@@ -111,7 +87,6 @@ const Educations = () => {
     setNewEducationTitle(""); 
     setNewEducationDescription(""); 
   };
-  
 
   const deleteEducation = (id: number) => {
     setEducations(educations.filter((education) => education.id !== id));
@@ -120,19 +95,9 @@ const Educations = () => {
   const toggleEducationStatus = (id: number) => {
     setEducations(
       educations.map((education) =>
-        education.id === id
-          ? { ...education, active: !education.active }
-          : education
+        education.id === id ? { ...education, active: !education.active } : education
       )
     );
-  };
-
-  const openEducationModal = (education: Education) => {
-    setSelectedEducation(education);
-  };
-
-  const closeEducationModal = () => {
-    setSelectedEducation(null);
   };
 
   return (
@@ -160,7 +125,6 @@ const Educations = () => {
             Dodati događaj
           </button>
         </div>
-        <br></br><br></br>
 
         {isLoading && <LoadingSpinner />}
         {error && <div>{error}</div>}
@@ -182,10 +146,7 @@ const Educations = () => {
                 <TableBody>
                   {data?.map((education) => (
                     <TableRow key={education.id}>
-                      <TableCell
-                        className="cursor-pointer md:table-cell"
-                        onClick={() => openEducationModal(education)}
-                      >
+                      <TableCell className="cursor-pointer md:table-cell">
                         {education.title}
                       </TableCell>
                       <TableCell className="md:table-cell">
@@ -208,32 +169,7 @@ const Educations = () => {
                 </TableBody>
               </Table>
             </div>
-            <Pagination>
-              <PaginationContent>
-                <PaginationPages
-                  totalPageNumber={totalPageNumber}
-                  currentPage={page + 1}
-                  onChangePage={(pageNumber) => setPage(pageNumber)}
-                  onPreviousPage={() => {
-                    if (page === 0) return;
-                    setPage(page - 1);
-                  }}
-                  onNextPage={() => {
-                    if (page === totalPageNumber - 1) return;
-                    setPage(page + 1);
-                  }}
-                />
-              </PaginationContent>
-            </Pagination>
           </>
-        )}
-
-        {selectedEducation && (
-          <Modal onClose={closeEducationModal}>
-            <h2>{selectedEducation.title}</h2>
-            <p>Datum: {selectedEducation.date}</p>
-            <p>Opis: {selectedEducation.description}</p>
-          </Modal>
         )}
       </main>
     </MainLayout>
