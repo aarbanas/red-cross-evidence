@@ -1,115 +1,108 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Button } from "~/components/atoms/Button";
-import FormInput from "../form/formInput/FormInput";
-import { useForm } from "react-hook-form";
+import { useForm, FieldValues } from "react-hook-form";
 import FormComponent from "../form/formComponent/FormComponent";
-
-export interface Fields {
-  type: "text" | "password" | "email" | "number" | "tel" | "url" | "search";
-  label: string;
-  placeholder: string;
-}
 
 export interface FormStep {
   name: string;
-  fields: Fields[];
+  form: ReactElement;
 }
 
-interface FormProps {
-  form: FormStep[];
-}
+function generateForm<T extends FieldValues>(
+  forms: FormStep[],
+  onSubmit: (data: T) => void,
+): ReactElement {
+  interface FormProps {
+    forms: FormStep[];
+    onSubmit: (data: T) => void;
+  }
 
-const MultiStepForm: React.FC<FormProps> = ({ form }) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<Record<string, string>>({});
+  const MultiStepForm: React.FC<FormProps> = ({ forms, onSubmit }) => {
+    const [currentStep, setCurrentStep] = useState(0);
+    let isLastStep = false;
+    let newStep = currentStep;
 
-  const numSteps = form.length;
-
-  const nextStep = () => {
-    if (currentStep < numSteps - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const prevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    setFormData({
-      ...formData,
-      [`${currentStep}-${index}`]: e.target.value,
+    const methods = useForm<T>({
+      //shouldUseNativeValidation: true,
+      // reValidateMode: "onSubmit",
+      mode: "all",
     });
-  };
+    console.log(newStep);
+    const numSteps = forms.length;
 
-  const handleSubmit = () => {
-    console.log("Form Data:", formData);
-    // Add submission logic here
-  };
+    const nextStep = () => {
+      if (currentStep < numSteps - 1) {
+        newStep += 1;
 
-  const progressPercentage = ((currentStep + 1) / numSteps) * 100;
-  const methods = useForm();
+        setCurrentStep(currentStep + 1);
+      } else isLastStep = true;
+    };
 
-  return (
-    <div className="mx-auto flex w-1/3 flex-col items-center rounded-lg border bg-white p-4">
-      <div className="mb-4 h-2.5 w-full rounded-full bg-gray-200">
-        <div
-          className="h-2.5 rounded-full bg-gray-900/90 duration-500"
-          style={{ width: `${progressPercentage}%` }}
-        ></div>
-      </div>
-      <nav className="mb-4 flex space-x-4 pb-3">
-        {form.map((formStep, index) => (
-          <Button
-            key={index}
-            variant={`${currentStep === index ? "default" : "ghost"}`}
-            onClick={() => setCurrentStep(index)}
-          >
-            {index + 1}. {formStep.name}
-          </Button>
-        ))}
-      </nav>
-      <div className="pb-6">
-        <FormComponent form={methods} onSubmit={handleSubmit}>
-          {form[currentStep]!.fields.map((input, index) => (
-            <FormInput
+    const prevStep = () => {
+      if (currentStep > 0) {
+        newStep -= 1;
+        setCurrentStep(currentStep - 1);
+      }
+    };
+
+    const handleFormSubmit = (data: T) => {
+      //nextStep();
+      //console.log(typeof data);
+      if (isLastStep) onSubmit(data);
+      // Add submission logic here
+    };
+
+    const progressPercentage = ((currentStep + 1) / numSteps) * 100;
+
+    return (
+      <div className="mx-auto flex w-1/3 flex-col items-center rounded-lg border bg-white p-4">
+        <div className="mb-4 h-2.5 w-full rounded-full bg-gray-200">
+          <div
+            className="h-2.5 rounded-full bg-gray-900/90 duration-500"
+            style={{ width: `${progressPercentage}%` }}
+          ></div>
+        </div>
+
+        {/* form navbar */}
+        <nav className="mb-4 flex space-x-4 pb-3">
+          {forms.map((formStep, index) => (
+            <Button
               key={index}
-              id={`${currentStep}-${index}`}
-              type={input.type}
-              placeholder={input.placeholder}
-              value={formData[`${currentStep}-${index}`] ?? ""}
-              onChange={(e) => handleChange(e, index)}
-              className="w-96"
-              label={input.label}
-            />
+              variant={`${currentStep === index ? "default" : "ghost"}`}
+              onClick={() => setCurrentStep(index)}
+            >
+              {index + 1}. {formStep.name}
+            </Button>
           ))}
-        </FormComponent>
-      </div>
-      <div className="flex space-x-4">
-        {currentStep > 0 && (
-          <Button onClick={prevStep} variant="outline">
-            Back
-          </Button>
-        )}
-        {currentStep < numSteps - 1 ? (
-          <Button onClick={nextStep} variant="default">
-            Continue
-          </Button>
-        ) : (
-          <Button onClick={handleSubmit} variant="default">
-            Submit
-          </Button>
-        )}
-      </div>
-    </div>
-  );
-};
+        </nav>
 
-export default MultiStepForm;
+        {/* form contents */}
+        <div className="flex items-center justify-center">
+          <FormComponent form={methods} onSubmit={handleFormSubmit}>
+            <div className="w-96 space-y-10 pb-6">
+              {forms[currentStep]!.form}
+            </div>
+
+            {/* form navigaiton and submission */}
+            <div className="flex items-center justify-center space-x-4">
+              {currentStep > 0 && (
+                <Button onClick={prevStep} variant="outline">
+                  Back
+                </Button>
+              )}
+
+              <Button type="submit" onClick={nextStep} variant="default">
+                {currentStep < numSteps - 1 ? "Continue" : "Submit"}
+              </Button>
+            </div>
+          </FormComponent>
+        </div>
+      </div>
+    );
+  };
+
+  return <MultiStepForm forms={forms} onSubmit={onSubmit} />;
+}
+export default generateForm;

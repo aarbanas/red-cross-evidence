@@ -6,8 +6,8 @@ import {
 } from "./_components/formComponents/SignUp";
 import { ContactInfo, DetailsForm } from "./_components/formComponents/Details";
 import { BillingForm, PaymentInfo } from "./_components/formComponents/Billing";
-import generateForm from "~/components/organisms/multiStepForm/MultiStepFormNEW2";
-import { FormStep } from "~/components/organisms/multiStepForm/MultiStepFormNEW2";
+import generateForm from "~/components/organisms/multiStepForm/MultiStepForm";
+import { FormStep } from "~/components/organisms/multiStepForm/MultiStepForm";
 
 const CustomForm = () => {
   const test: FormStep[] = [
