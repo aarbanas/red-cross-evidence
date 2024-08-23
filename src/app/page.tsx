@@ -1,6 +1,5 @@
 import { getServerAuthSession } from "~/server/auth";
 import Users from "~/app/users/page";
-import CustomForm from "./users/testForm";
 
 const Home = async () => {
   const session = await getServerAuthSession();
@@ -9,7 +8,6 @@ const Home = async () => {
   return (
     <>
       <Users />
-      <CustomForm />
     </>
   );
 };

@@ -1,6 +1,6 @@
 ##### DEPENDENCIES
 
-FROM --platform=linux/amd64 node:20-alpine AS deps
+FROM --platform=linux/amd64 node:22-alpine AS deps
 RUN apk add --no-cache libc6-compat openssl
 RUN apk update
 
@@ -17,7 +17,7 @@ RUN \
 
 ##### BUILDER
 
-FROM --platform=linux/amd64 node:20-alpine AS builder
+FROM --platform=linux/amd64 node:22-alpine AS builder
 ARG DATABASE_URL
 ARG NEXT_PUBLIC_CLIENTVAR
 WORKDIR /app
@@ -33,7 +33,7 @@ RUN \
 
 ##### RUNNER
 
-FROM --platform=linux/amd64 gcr.io/distroless/nodejs20-debian12 AS runner
+FROM --platform=linux/amd64 gcr.io/distroless/nodejs22-debian12 AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
@@ -51,3 +51,23 @@ EXPOSE 3000
 ENV PORT 3000
 
 CMD ["server.js"]
+
+# EDUCATIONS
+
+FROM node:22-alpine
+
+WORKDIR /app
+
+RUN npm install -g yarn@1.22.10
+
+COPY package.json yarn.lock ./
+
+RUN yarn install
+
+COPY . .
+
+RUN yarn build
+
+EXPOSE 3000
+
+CMD ["yarn", "start"]
