@@ -36,13 +36,19 @@ const Modal: FC<PropsWithChildren<Props>> = ({
   return (
     <div
       ref={overlayRef}
-      className={`${styles.overlay} fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50`}
+      className={`${styles.overlay} fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50`}
       onClick={handleClose}
     >
-      <div className={classNames(styles.content, className, "relative bg-white p-6 rounded-md shadow-md w-full max-w-lg")}>
+      <div
+        className={classNames(
+          styles.content,
+          className,
+          "relative w-full max-w-lg rounded-md bg-white p-6 shadow-md",
+        )}
+      >
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-xl font-bold text-black hover:text-red-500"
+          className="absolute right-2 top-2 text-xl font-bold text-black hover:text-red-500"
           aria-label="Close modal"
         >
           ×
