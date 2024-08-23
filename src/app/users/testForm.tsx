@@ -1,13 +1,22 @@
 "use client";
 
+/**
+ * This is a boilerplate for a multi-step form.
+ */
 import {
   SignUpForm,
-  UserCredentials,
+  type UserCredentials,
 } from "./_components/formComponents/SignUp";
-import { ContactInfo, DetailsForm } from "./_components/formComponents/Details";
-import { BillingForm, PaymentInfo } from "./_components/formComponents/Billing";
+import {
+  type ContactInfo,
+  DetailsForm,
+} from "./_components/formComponents/Details";
+import {
+  BillingForm,
+  type PaymentInfo,
+} from "./_components/formComponents/Billing";
 import generateForm from "~/components/organisms/multiStepForm/MultiStepForm";
-import { FormStep } from "~/components/organisms/multiStepForm/MultiStepForm";
+import { type FormStep } from "~/components/organisms/multiStepForm/MultiStepForm";
 
 const CustomForm = () => {
   const test: FormStep[] = [
