@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import MainLayout from "~/components/layout/mainLayout";
 import { api } from "~/trpc/react";
 import {
@@ -15,28 +16,25 @@ import {
   PaginationContent,
   PaginationPages,
 } from "~/components/organisms/Pagination";
-import { useState, useEffect } from "react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 import SearchInput from "~/components/atoms/SearchInput";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-// Define the types for user and API response
 interface UserProfile {
   firstName: string;
   lastName: string;
 }
 
-interface FindUserReturnDTO {
+export interface FindUserReturnDTO {
   id: string;
   email: string;
   active: boolean | null;
   profile: UserProfile | null;
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 const Users = () => {
-  const router = useRouter();
   const [page, setPage] = useState<number>(0);
   const [totalPageNumber, setTotalPageNumber] = useState<number>(1);
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
@@ -60,10 +58,6 @@ const Users = () => {
   const onSearch = (key: string, value: string) => {
     setFilter((prevFilter) => ({ ...prevFilter, [key]: value }));
     setPage(0);
-  };
-
-  const handleEditClick = (user: FindUserReturnDTO) => {
-    router.push(`/users/${user.id}`);
   };
 
   return (
@@ -121,11 +115,14 @@ const Users = () => {
                           <XCircle color="#ff0000" />
                         )}
                       </TableCell>
-                      <TableCell
-                        className="cursor-pointer md:table-cell"
-                        onClick={() => handleEditClick(user)}
-                      >
-                        <Pencil />
+                      <TableCell className="cursor-pointer md:table-cell">
+                        <Link
+                          href={{
+                            pathname: `/users/${user.id}`,
+                          }}
+                        >
+                          <Pencil />
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))}
