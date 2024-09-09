@@ -87,6 +87,12 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+const rateLimiter = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(2, "10 s"),
+});
 /**
  * Protected (authenticated) procedure
  *
@@ -95,9 +101,13 @@ export const publicProcedure = t.procedure;
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  const { success } = await rateLimiter.limit(ctx.session.user.id);
+  if (!success) {
+    throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
   }
   return next({
     ctx: {
