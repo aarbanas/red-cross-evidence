@@ -13,6 +13,7 @@ import { ZodError } from "zod";
 
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
+import { env } from "~/env"; // Import the environment variables
 
 /**
  * 1. CONTEXT
@@ -89,10 +90,15 @@ export const publicProcedure = t.procedure;
 
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-const rateLimiter = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(2, "10 s"),
-});
+
+let rateLimiter: Ratelimit | null = null;
+if (env.RATE_LIMITER_ENABLED) {
+  rateLimiter = new Ratelimit({
+    redis: Redis.fromEnv(),
+    limiter: Ratelimit.slidingWindow(10, "10 s"),
+  });
+}
+
 /**
  * Protected (authenticated) procedure
  *
@@ -105,10 +111,13 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  const { success } = await rateLimiter.limit(ctx.session.user.id);
-  if (!success) {
-    throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+  if (rateLimiter) {
+    const { success } = await rateLimiter.limit(ctx.session.user.id);
+    if (!success) {
+      throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+    }
   }
+
   return next({
     ctx: {
       // infers the `session` as non-nullable

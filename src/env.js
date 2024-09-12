@@ -23,6 +23,11 @@ export const env = createEnv({
       process.env.VERCEL ? z.string() : z.string().url(),
     ),
     ADMIN_PASSWORD: z.string(),
+    RATE_LIMITER_ENABLED: z
+      .string()
+      .transform((val) => val === "true")
+      .optional()
+      .default("false"),
   },
 
   /**
@@ -44,6 +49,7 @@ export const env = createEnv({
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+    RATE_LIMITER_ENABLED: process.env.RATE_LIMITER_ENABLED,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
