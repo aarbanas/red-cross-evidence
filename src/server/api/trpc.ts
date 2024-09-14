@@ -15,6 +15,9 @@ import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
 import { env } from "~/env"; // Import the environment variables
 
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
 /**
  * 1. CONTEXT
  *
@@ -87,9 +90,6 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
-
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
 
 let rateLimiter: Ratelimit | null = null;
 if (env.RATE_LIMITER_ENABLED) {
