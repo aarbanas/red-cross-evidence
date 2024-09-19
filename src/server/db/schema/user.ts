@@ -132,9 +132,6 @@ export const profiles = pgTable("profile", {
   workStatusId: uuid("work_status_id").references(() => workStatuses.id, {
     onDelete: "cascade",
   }),
-  languageId: uuid("language_id").references(() => languages.id, {
-    onDelete: "cascade",
-  }),
 });
 
 export const profilesRelations = relations(profiles, ({ one, many }) => ({
@@ -148,13 +145,9 @@ export const profilesRelations = relations(profiles, ({ one, many }) => ({
     references: [workStatuses.id],
     fields: [profiles.workStatusId],
   }),
-  language: one(languages, {
-    relationName: "profiles_languages",
-    references: [languages.id],
-    fields: [profiles.languageId],
-  }),
   addresses: many(addresses),
   profileSkills: many(profileSkills),
+  profilesLanguages: many(profilesLanguages),
 }));
 
 export const sizes = pgTable("profile_size", {
@@ -244,6 +237,42 @@ export const languages = pgTable(
       idx_name: uniqueIndex("idx_name").on(table.name, table.level),
     };
   },
+);
+
+export const languagesRelations = relations(languages, ({ many }) => ({
+  profilesLanguages: many(profilesLanguages),
+}));
+
+export const profilesLanguages = pgTable(
+  "profile_language",
+  {
+    profileId: uuid("profile_id")
+      .notNull()
+      .references(() => profiles.id, { onDelete: "cascade" }),
+    languageId: uuid("language_id")
+      .notNull()
+      .references(() => languages.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.profileId, table.languageId] }),
+  }),
+);
+
+export const profilesLanguagesRelations = relations(
+  profilesLanguages,
+  ({ one }) => ({
+    profile: one(profiles, {
+      relationName: "profiles_languages_profiles",
+      fields: [profilesLanguages.profileId],
+      references: [profiles.id],
+    }),
+    language: one(languages, {
+      relationName: "profiles_languages_languages",
+      fields: [profilesLanguages.languageId],
+      references: [languages.id],
+    }),
+  }),
 );
 
 export const profilesLicences = pgTable(

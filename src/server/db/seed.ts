@@ -15,6 +15,7 @@ import {
   licenses,
   profiles,
   profileSkills,
+  profilesLanguages,
   profilesLicences,
   Sex,
   sizes,
@@ -212,6 +213,22 @@ const generateProfileSkills = (
   return items;
 };
 
+const getRandomLanguages = (
+  userId: string,
+  languageIds: string[],
+): { profileId: string; languageId: string }[] => {
+  const shuffled = languageIds.sort(() => 0.5 - Math.random());
+  const selected = shuffled.slice(
+    0,
+    Math.floor(Math.random() * shuffled.length),
+  );
+
+  return selected.map((languageId) => ({
+    profileId: userId,
+    languageId,
+  }));
+};
+
 const generateUsers = async (
   addressIds: string[],
   workStatusIds: string[],
@@ -281,8 +298,6 @@ const generateUsers = async (
               addressIds[Math.floor(Math.random() * addressIds.length)],
             workStatusId:
               workStatusIds[Math.floor(Math.random() * workStatusIds.length)],
-            languageId:
-              languageIds[Math.floor(Math.random() * languageIds.length)],
           })
           .returning({ insertedId: profiles.id });
 
@@ -295,6 +310,10 @@ const generateUsers = async (
           });
           const _profileSkills = generateProfileSkills(userProfile.insertedId);
           await tx.insert(profileSkills).values(_profileSkills);
+
+          await tx
+            .insert(profilesLanguages)
+            .values(getRandomLanguages(userProfile.insertedId, languageIds));
         }
       });
     }
@@ -345,8 +364,6 @@ const main = async () => {
           addressId: addressIds[Math.floor(Math.random() * addressIds.length)],
           workStatusId:
             workStatusIds[Math.floor(Math.random() * workStatusIds.length)],
-          languageId:
-            languageIds[Math.floor(Math.random() * languageIds.length)],
         })
         .returning();
 
@@ -360,6 +377,10 @@ const main = async () => {
 
         const _profileSkills = generateProfileSkills(adminProfile.id);
         await tx.insert(profileSkills).values(_profileSkills);
+
+        await tx
+          .insert(profilesLanguages)
+          .values(getRandomLanguages(adminProfile.id, languageIds));
       }
     });
   }
