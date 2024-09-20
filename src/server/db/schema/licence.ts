@@ -1,6 +1,6 @@
 import { pgTable, text, uuid, varchar } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { users } from "~/server/db/schema/user";
+import { profilesLicences } from "~/server/db/schema/user";
 
 export const DrivingLicense = {
   AM: "AM",
@@ -30,5 +30,5 @@ export const licenses = pgTable("license", {
 });
 
 export const licensesRelations = relations(licenses, ({ many }) => ({
-  users: many(users),
+  profileLicences: many(profilesLicences),
 }));

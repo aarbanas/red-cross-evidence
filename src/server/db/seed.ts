@@ -4,6 +4,7 @@ import { db } from "../db/index";
 import { eq } from "drizzle-orm";
 import {
   addresses,
+  AddressType,
   cities,
   ClothingSize,
   countries,
@@ -14,6 +15,7 @@ import {
   License,
   licenses,
   profiles,
+  profilesAddresses,
   profileSkills,
   profilesLanguages,
   profilesLicences,
@@ -22,6 +24,7 @@ import {
   users,
   workStatuses,
 } from "../db/schema";
+import { PgTransaction } from "drizzle-orm/pg-core";
 
 const SALT_OR_ROUNDS = 10;
 const names = ["John", "Jane", "Alice", "Bob", "Charlie", "Diana"];
@@ -112,14 +115,13 @@ const generateAddresses = async (cityIds: string[]): Promise<string[]> => {
   });
   if (existingAddresses.length) return existingAddresses.map(({ id }) => id);
 
-  const _addresses = [
-    { street: "Foo", streetNumber: "1" },
-    { street: "Bar", streetNumber: "2" },
-    { street: "Baz", streetNumber: "3" },
-    { street: "Qux", streetNumber: "4" },
-    { street: "Quux", streetNumber: "5" },
-    { street: "Corge", streetNumber: "6" },
-  ];
+  const streetNames = ["Foo", "Bar", "Baz", "Qux", "Quux", "Corge"];
+
+  const _addresses: { street: string; streetNumber: string }[] = streetNames
+    .concat(streetNames)
+    .concat(streetNames)
+    .concat(streetNames)
+    .map((street, index) => ({ street, streetNumber: (index + 1).toString() }));
 
   const insertedAddresses = await db
     .insert(addresses)
@@ -128,6 +130,8 @@ const generateAddresses = async (cityIds: string[]): Promise<string[]> => {
         street: _address.street,
         streetNumber: _address.streetNumber,
         cityId: cityIds[i % cityIds.length],
+        isPrimary: true,
+        type: AddressType.PERMANENT_RESIDENCE,
       })),
     )
     .returning({ insertedId: addresses.id });
@@ -135,36 +139,39 @@ const generateAddresses = async (cityIds: string[]): Promise<string[]> => {
   return insertedAddresses.map((address) => address.insertedId);
 };
 
-const generateWorkStatuses = async (): Promise<string[]> => {
-  const existingWorkStatuses = await db.query.workStatuses.findMany({
-    columns: { id: true },
-  });
-  if (existingWorkStatuses.length)
-    return existingWorkStatuses.map(({ id }) => id);
-
+const insertWorkStatus = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tx: PgTransaction<any>,
+  profileId: string,
+): Promise<void> => {
   const _workStatuses = [
     {
       status: "EMPLOYED",
       profession: "Developer",
       institution: "Company",
       educationLevel: EducationLevel.BACHELOR,
+      profileId,
     },
     {
       status: "UNEMPLOYED",
       profession: "Unemployed",
       institution: "None",
       educationLevel: EducationLevel.PRIMARY,
+      profileId,
     },
     {
       status: "STUDENT",
       profession: "Student",
       institution: "School",
       educationLevel: EducationLevel.SECONDARY,
+      profileId,
     },
   ];
 
-  const res = await db.insert(workStatuses).values(_workStatuses).returning();
-  return res.map(({ id }) => id);
+  await tx
+    .insert(workStatuses)
+    .values(_workStatuses[Math.floor(Math.random() * _workStatuses.length)]!)
+    .returning();
 };
 
 const generateLanguages = async (): Promise<string[]> => {
@@ -231,7 +238,6 @@ const getRandomLanguages = (
 
 const generateUsers = async (
   addressIds: string[],
-  workStatusIds: string[],
   languageIds: string[],
   _licences: {
     id: string;
@@ -262,19 +268,6 @@ const generateUsers = async (
 
         if (!user) throw new Error("User could not be created");
 
-        const [size] = await tx
-          .insert(sizes)
-          .values({
-            clothingSize:
-              Object.values(ClothingSize)[
-                Math.floor(Math.random() * Object.values(ClothingSize).length)
-              ],
-            shoeSize: Math.floor(Math.random() * (50 - 37 + 1)) + 37,
-            height: Math.floor(Math.random() * (200 - 150 + 1)) + 150,
-            weight: Math.floor(Math.random() * (150 - 55 + 1)) + 55,
-          })
-          .returning();
-
         const [userProfile] = await tx
           .insert(profiles)
           .values({
@@ -293,11 +286,6 @@ const generateUsers = async (
             nationality: "Foo",
             parentName: "Test",
             birthDate: new Date(1990, 1, 1).toISOString(),
-            sizeId: size?.id,
-            addressId:
-              addressIds[Math.floor(Math.random() * addressIds.length)],
-            workStatusId:
-              workStatusIds[Math.floor(Math.random() * workStatusIds.length)],
           })
           .returning({ insertedId: profiles.id });
 
@@ -314,6 +302,32 @@ const generateUsers = async (
           await tx
             .insert(profilesLanguages)
             .values(getRandomLanguages(userProfile.insertedId, languageIds));
+
+          await tx.insert(profilesAddresses).values({
+            profileId: userProfile.insertedId,
+            addressId:
+              addressIds[Math.floor(Math.random() * addressIds.length)]!,
+          });
+
+          await tx
+            .insert(sizes)
+            .values({
+              clothingSize:
+                Object.values(ClothingSize)[
+                  Math.floor(Math.random() * Object.values(ClothingSize).length)
+                ],
+              shoeSize: Math.floor(Math.random() * (50 - 37 + 1)) + 37,
+              height: Math.floor(Math.random() * (200 - 150 + 1)) + 150,
+              weight: Math.floor(Math.random() * (150 - 55 + 1)) + 55,
+              profileId: userProfile.insertedId,
+            })
+            .returning();
+
+          await insertWorkStatus(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            tx as unknown as PgTransaction<any>,
+            userProfile.insertedId,
+          );
         }
       });
     }
@@ -331,7 +345,6 @@ const main = async () => {
 
   const cityIds = await generateCountriesWithCities();
   const addressIds = await generateAddresses(cityIds);
-  const workStatusIds = await generateWorkStatuses();
   const languageIds = await generateLanguages();
 
   const adminExists = await db.query.users.findFirst({
@@ -361,9 +374,6 @@ const main = async () => {
           nationality: "Foo",
           parentName: "Test",
           birthDate: new Date(1990, 1, 1).toISOString(),
-          addressId: addressIds[Math.floor(Math.random() * addressIds.length)],
-          workStatusId:
-            workStatusIds[Math.floor(Math.random() * workStatusIds.length)],
         })
         .returning();
 
@@ -381,11 +391,22 @@ const main = async () => {
         await tx
           .insert(profilesLanguages)
           .values(getRandomLanguages(adminProfile.id, languageIds));
+
+        await tx.insert(profilesAddresses).values({
+          profileId: adminProfile.id,
+          addressId: addressIds[Math.floor(Math.random() * addressIds.length)]!,
+        });
+
+        await insertWorkStatus(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          tx as unknown as PgTransaction<any>,
+          adminProfile.id,
+        );
       }
     });
   }
 
-  await generateUsers(addressIds, workStatusIds, languageIds, _licences);
+  await generateUsers(addressIds, languageIds, _licences);
 };
 
 main()

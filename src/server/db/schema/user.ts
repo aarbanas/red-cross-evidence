@@ -15,6 +15,13 @@ import {
 import { relations } from "drizzle-orm";
 import { licenses } from "~/server/db/schema/licence";
 
+export enum AddressType {
+  PERMANENT_RESIDENCE = "permanent_residence",
+  TEMPORARY_RESIDENCE = "temporary_residence",
+  WORK = "work",
+  OTHER = "other",
+}
+
 export enum EducationLevel {
   PRIMARY = "primary", // Osnovno obrazovanje (OŠ)
   SECONDARY = "secondary", // Srednja stručna sprema
@@ -60,6 +67,11 @@ export enum LanguageLevel {
   C1 = "C1",
   C2 = "C2",
 }
+
+export const addressEnum = pgEnum(
+  "addresstype",
+  Object.values(AddressType) as [string, ...string[]],
+);
 
 export const sexEnum = pgEnum(
   "sexenum",
@@ -127,27 +139,20 @@ export const profiles = pgTable("profile", {
   userId: uuid("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
-  sizeId: uuid("size_id").references(() => sizes.id, { onDelete: "cascade" }),
-  addressId: uuid("address_id").references(() => addresses.id), // TODO manually take care of deletion
-  workStatusId: uuid("work_status_id").references(() => workStatuses.id, {
-    onDelete: "cascade",
-  }),
 });
 
 export const profilesRelations = relations(profiles, ({ one, many }) => ({
-  size: one(sizes, {
-    relationName: "profiles_sizes",
-    references: [sizes.id],
-    fields: [profiles.sizeId],
+  user: one(users, {
+    relationName: "profiles_users",
+    fields: [profiles.userId],
+    references: [users.id],
   }),
-  workStatus: one(workStatuses, {
-    relationName: "profiles_work_statuses",
-    references: [workStatuses.id],
-    fields: [profiles.workStatusId],
-  }),
-  addresses: many(addresses),
+  profileAddresses: many(profilesAddresses),
   profileSkills: many(profileSkills),
   profilesLanguages: many(profilesLanguages),
+  profilesLicences: many(profilesLicences),
+  sizes: many(sizes),
+  workStatuses: many(workStatuses),
 }));
 
 export const sizes = pgTable("profile_size", {
@@ -156,31 +161,72 @@ export const sizes = pgTable("profile_size", {
   clothingSize: clothingSizeEnum("clothing_size"),
   height: real("height"),
   weight: real("weight"),
+  profileId: uuid("profile_id").references(() => profiles.id, {
+    onDelete: "cascade",
+  }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at"),
 });
+
+export const sizesRelations = relations(sizes, ({ one }) => ({
+  profile: one(profiles, {
+    relationName: "sizes_profiles",
+    references: [profiles.id],
+    fields: [sizes.profileId],
+  }),
+}));
 
 export const addresses = pgTable("address", {
   id: uuid("id").defaultRandom().primaryKey(),
   street: varchar("street", { length: 255 }).notNull(),
   streetNumber: varchar("street_number", { length: 10 }).notNull(),
+  type: addressEnum("type").notNull(),
+  isPrimary: boolean("is_primary").default(false), // For now upon creation we will manually set it to primary
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at"),
   cityId: uuid("city_id").references(() => cities.id, { onDelete: "cascade" }),
 });
 
-export const addressesRelations = relations(addresses, ({ one }) => ({
+export const addressesRelations = relations(addresses, ({ one, many }) => ({
   city: one(cities, {
     relationName: "addresses_cities",
     references: [cities.id],
     fields: [addresses.cityId],
   }),
-  profile: one(profiles, {
-    relationName: "addresses_profiles",
-    references: [profiles.id],
-    fields: [addresses.id],
-  }),
+  profilesAddresses: many(profilesAddresses),
 }));
+
+export const profilesAddresses = pgTable(
+  "profile_address",
+  {
+    profileId: uuid("profile_id")
+      .notNull()
+      .references(() => profiles.id, { onDelete: "cascade" }),
+    addressId: uuid("address_id")
+      .notNull()
+      .references(() => addresses.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.profileId, table.addressId] }),
+  }),
+);
+
+export const profilesAddressesRelations = relations(
+  profilesAddresses,
+  ({ one }) => ({
+    profile: one(profiles, {
+      relationName: "profiles_addresses_profiles",
+      fields: [profilesAddresses.profileId],
+      references: [profiles.id],
+    }),
+    address: one(addresses, {
+      relationName: "profiles_addresses_languages",
+      fields: [profilesAddresses.addressId],
+      references: [addresses.id],
+    }),
+  }),
+);
 
 export const cities = pgTable("city", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -219,9 +265,20 @@ export const workStatuses = pgTable("work_status", {
   profession: varchar("profession", { length: 255 }),
   institution: varchar("institution", { length: 255 }),
   educationLevel: educationLevelEnum("education_level"),
+  profileId: uuid("profile_id").references(() => profiles.id, {
+    onDelete: "cascade",
+  }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at"),
 });
+
+export const workStatusesRelations = relations(workStatuses, ({ one }) => ({
+  profile: one(profiles, {
+    relationName: "work_statuses_profiles",
+    references: [profiles.id],
+    fields: [workStatuses.profileId],
+  }),
+}));
 
 export const languages = pgTable(
   "language",
@@ -293,6 +350,22 @@ export const profilesLicences = pgTable(
       }),
     };
   },
+);
+
+export const profilesLicencesRelations = relations(
+  profilesLicences,
+  ({ one }) => ({
+    profile: one(profiles, {
+      relationName: "profiles_licences_profiles",
+      fields: [profilesLicences.profileId],
+      references: [profiles.id],
+    }),
+    licence: one(licenses, {
+      relationName: "profiles_licences_licences",
+      fields: [profilesLicences.licenceId],
+      references: [licenses.id],
+    }),
+  }),
 );
 
 export const profileSkills = pgTable("profile_skill", {
