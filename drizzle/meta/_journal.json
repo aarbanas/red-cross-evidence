@@ -36,6 +36,13 @@
       "when": 1726816797150,
       "tag": "0004_strong_hellion",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1726929449044,
+      "tag": "0005_bizarre_nightshade",
+      "breakpoints": true
     }
   ]
 }

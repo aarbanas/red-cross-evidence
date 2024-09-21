@@ -24,7 +24,7 @@ import {
   users,
   workStatuses,
 } from "../db/schema";
-import { PgTransaction } from "drizzle-orm/pg-core";
+import { type PgTransaction } from "drizzle-orm/pg-core";
 
 const SALT_OR_ROUNDS = 10;
 const names = ["John", "Jane", "Alice", "Bob", "Charlie", "Diana"];
@@ -130,7 +130,6 @@ const generateAddresses = async (cityIds: string[]): Promise<string[]> => {
         street: _address.street,
         streetNumber: _address.streetNumber,
         cityId: cityIds[i % cityIds.length],
-        isPrimary: true,
         type: AddressType.PERMANENT_RESIDENCE,
       })),
     )
@@ -189,11 +188,9 @@ const generateLanguages = async (): Promise<string[]> => {
     columns: { id: true },
   });
   if (existingLanguages.length) return existingLanguages.map(({ id }) => id);
-  const items: { name: string; level: LanguageLevel }[] = [];
+  const items: { name: string }[] = [];
   for (const lang of _languages) {
-    for (const level of Object.values(LanguageLevel)) {
-      items.push({ name: lang, level });
-    }
+    items.push({ name: lang });
   }
 
   const res = await db.insert(languages).values(items).returning();
@@ -223,16 +220,19 @@ const generateProfileSkills = (
 const getRandomLanguages = (
   userId: string,
   languageIds: string[],
-): { profileId: string; languageId: string }[] => {
+): { profileId: string; languageId: string; level: LanguageLevel }[] => {
   const shuffled = languageIds.sort(() => 0.5 - Math.random());
-  const selected = shuffled.slice(
-    0,
-    Math.floor(Math.random() * shuffled.length),
-  );
+  const randomSelected = Math.floor(Math.random() * shuffled.length);
+  const selected = shuffled.slice(0, randomSelected === 0 ? 1 : randomSelected);
+  const randomLevel =
+    Object.values(LanguageLevel)[
+      Math.floor(Math.random() * Object.values(LanguageLevel).length)
+    ]!;
 
   return selected.map((languageId) => ({
     profileId: userId,
     languageId,
+    level: randomLevel,
   }));
 };
 
@@ -307,6 +307,7 @@ const generateUsers = async (
             profileId: userProfile.insertedId,
             addressId:
               addressIds[Math.floor(Math.random() * addressIds.length)]!,
+            isPrimary: true,
           });
 
           await tx
@@ -395,6 +396,7 @@ const main = async () => {
         await tx.insert(profilesAddresses).values({
           profileId: adminProfile.id,
           addressId: addressIds[Math.floor(Math.random() * addressIds.length)]!,
+          isPrimary: true,
         });
 
         await insertWorkStatus(

@@ -181,7 +181,6 @@ export const addresses = pgTable("address", {
   street: varchar("street", { length: 255 }).notNull(),
   streetNumber: varchar("street_number", { length: 10 }).notNull(),
   type: addressEnum("type").notNull(),
-  isPrimary: boolean("is_primary").default(false), // For now upon creation we will manually set it to primary
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at"),
   cityId: uuid("city_id").references(() => cities.id, { onDelete: "cascade" }),
@@ -205,6 +204,7 @@ export const profilesAddresses = pgTable(
     addressId: uuid("address_id")
       .notNull()
       .references(() => addresses.id, { onDelete: "cascade" }),
+    isPrimary: boolean("is_primary").default(false), // For now upon creation we will manually set it to primary
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
@@ -280,21 +280,12 @@ export const workStatusesRelations = relations(workStatuses, ({ one }) => ({
   }),
 }));
 
-export const languages = pgTable(
-  "language",
-  {
-    id: uuid("id").defaultRandom().primaryKey(),
-    name: varchar("name", { length: 255 }).notNull(),
-    level: languageLevelEnum("level").notNull(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at"),
-  },
-  (table) => {
-    return {
-      idx_name: uniqueIndex("idx_name").on(table.name, table.level),
-    };
-  },
-);
+export const languages = pgTable("language", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at"),
+});
 
 export const languagesRelations = relations(languages, ({ many }) => ({
   profilesLanguages: many(profilesLanguages),
@@ -309,6 +300,7 @@ export const profilesLanguages = pgTable(
     languageId: uuid("language_id")
       .notNull()
       .references(() => languages.id, { onDelete: "cascade" }),
+    level: languageLevelEnum("level").notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => ({
