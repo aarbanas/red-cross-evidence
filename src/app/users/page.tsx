@@ -21,19 +21,6 @@ import SearchInput from "~/components/atoms/SearchInput";
 import { useDebounce } from "@uidotdev/usehooks";
 import Link from "next/link";
 
-interface UserProfile {
-  firstName: string;
-  lastName: string;
-}
-
-export interface FindUserReturnDTO {
-  id: string;
-  email: string;
-  active: boolean | null;
-  profile: UserProfile | null;
-  createdAt?: Date;
-}
-
 const Users = () => {
   const [page, setPage] = useState<number>(0);
   const [totalPageNumber, setTotalPageNumber] = useState<number>(1);
@@ -134,7 +121,7 @@ const Users = () => {
                 <PaginationPages
                   totalPageNumber={totalPageNumber}
                   currentPage={page + 1}
-                  onChangePage={(pageNumber) => setPage(pageNumber - 1)}
+                  onChangePage={(pageNumber) => setPage(pageNumber)}
                   onPreviousPage={() => {
                     if (page === 0) return;
                     setPage(page - 1);
