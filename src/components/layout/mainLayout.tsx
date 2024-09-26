@@ -1,5 +1,11 @@
 import React, { type ReactNode } from "react";
-import { BookMarked, Building, CornerDownLeft, Users } from "lucide-react";
+import {
+  BookMarked,
+  Building,
+  CornerDownLeft,
+  Users,
+  IdCard,
+} from "lucide-react";
 import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -55,6 +61,13 @@ const Navigation = () => {
       >
         <BookMarked />
         Educations
+      </Link>
+      <Link
+        className="flex items-center gap-3 rounded-lg px-3 py-2 transition"
+        href="/licenses"
+      >
+        <IdCard />
+        Licenses
       </Link>
 
       <Link
