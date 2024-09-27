@@ -135,7 +135,6 @@ const licenseRepository = {
         const [totalCount] = await tx
           .select({ count: count() })
           .from(licenses)
-          //.leftJoin(profiles, eq(users.id, profiles.userId))
           .where(where);
 
         const returnData = await tx
@@ -144,15 +143,8 @@ const licenseRepository = {
             type: licenses.type,
             name: licenses.name,
             description: licenses.description,
-            /*
-            profile: {
-              id: profiles.id,
-              firstName: profiles.firstName,
-              lastName: profiles.lastName,
-            },*/
           })
           .from(licenses)
-          //.leftJoin(profiles, eq(users.id, profiles.userId))
           .where(where)
           .orderBy(...orderBy)
           .limit(limit ?? 10)
@@ -171,24 +163,16 @@ const licenseRepository = {
     };
   },
   findById: async (id: string) => {
-    return (
-      db
-        .select({
-          id: licenses.id,
-          type: licenses.type,
-          name: licenses.name,
-          description: licenses.description,
-          /*profile: {
-          id: profiles.id,
-          firstName: profiles.firstName,
-          lastName: profiles.lastName,
-        },*/
-        })
-        .from(licenses)
-        .where(eq(licenses.id, id))
-        //.leftJoin(profiles, eq(users.id, profiles.userId))
-        .execute()
-    );
+    return db
+      .select({
+        id: licenses.id,
+        type: licenses.type,
+        name: licenses.name,
+        description: licenses.description,
+      })
+      .from(licenses)
+      .where(eq(licenses.id, id))
+      .execute();
   },
 };
 export default licenseRepository;

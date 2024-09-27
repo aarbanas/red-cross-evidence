@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 import SearchInput from "~/components/atoms/SearchInput";
 import { useDebounce } from "@uidotdev/usehooks";
+import { Pencil } from "lucide-react";
 
 const Licenses = () => {
   const [page, setPage] = useState<number>(0);
@@ -66,6 +67,7 @@ const Licenses = () => {
                     <TableHead className="md:table-cell">Tip</TableHead>
                     <TableHead className="md:table-cell">Ime</TableHead>
                     <TableHead className="md:table-cell">Opis</TableHead>
+                    <TableHead className="md:table-cell">Uredi</TableHead>
                   </TableRow>
                 </TableHeader>
 
@@ -80,6 +82,9 @@ const Licenses = () => {
                       </TableCell>
                       <TableCell className="md:table-cell">
                         {license.description}
+                      </TableCell>
+                      <TableCell className="cursor-pointer md:table-cell">
+                        <Pencil />
                       </TableCell>
                     </TableRow>
                   ))}
