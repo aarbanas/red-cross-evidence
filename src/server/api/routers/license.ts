@@ -1,5 +1,6 @@
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { paginationQuerySchema } from "~/server/api/schema";
 import licenseService from "~/server/services/license/license.service";
 
 export const licenseRouter = createTRPCRouter({
@@ -11,14 +12,7 @@ export const licenseRouter = createTRPCRouter({
       return result;
     }),
   find: protectedProcedure
-    .input(
-      z.object({
-        page: z.coerce.number(),
-        limit: z.coerce.number().min(1).max(50),
-        sort: z.string().or(z.array(z.string())).optional(),
-        filter: z.record(z.string(), z.string()).optional(),
-      }),
-    )
+    .input(paginationQuerySchema)
     .query(async ({ input }) => {
       return licenseService.find(input);
     }),
