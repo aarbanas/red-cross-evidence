@@ -19,6 +19,8 @@ import { useState, useEffect } from "react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 import SearchInput from "~/components/atoms/SearchInput";
 import { useDebounce } from "@uidotdev/usehooks";
+import { Button } from "~/components/atoms/Button";
+import Link from "next/link";
 
 const Users = () => {
   const [page, setPage] = useState<number>(0);
@@ -29,8 +31,8 @@ const Users = () => {
   const debouncedSearchTerm = useDebounce(filter, 500);
 
   const { data, isLoading, error } = api.user.find.useQuery({
-    page: page.toString(),
-    limit: "10",
+    page: page,
+    limit: 10,
     sort: ["email:asc"],
     filter: debouncedSearchTerm,
   });
@@ -49,17 +51,24 @@ const Users = () => {
   return (
     <MainLayout headerChildren={<div>Pretraživanje i odabir volontera</div>}>
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-        <div className="flex gap-5">
-          <SearchInput
-            title={"Ime"}
-            onSearch={onSearch}
-            searchKey={"firstname"}
-          />
-          <SearchInput
-            title={"Prezime"}
-            onSearch={onSearch}
-            searchKey={"lastname"}
-          />
+        <div className="flex items-center">
+          <div className="mr-auto flex gap-5">
+            <SearchInput
+              title={"Ime"}
+              onSearch={onSearch}
+              searchKey={"firstname"}
+            />
+            <SearchInput
+              title={"Prezime"}
+              onSearch={onSearch}
+              searchKey={"lastname"}
+            />
+          </div>
+          <div className="ml-auto">
+            <Link href="/users/new">
+              <Button>Kreiraj novoga volontera</Button>
+            </Link>
+          </div>
         </div>
 
         {isLoading && <LoadingSpinner />}

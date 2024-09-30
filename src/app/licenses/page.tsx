@@ -29,8 +29,8 @@ const Licenses = () => {
   const debouncedSearchTerm = useDebounce(filter, 500);
 
   const { data, isLoading, error } = api.license.find.useQuery({
-    page: page.toString(),
-    limit: "10",
+    page: page,
+    limit: 10,
     sort: ["name:asc"],
     filter: debouncedSearchTerm,
   });
