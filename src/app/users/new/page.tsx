@@ -1,7 +1,8 @@
 import { type NextPage } from "next";
+import { CreateUserForm } from "./_components";
 
 const NewUserPage: NextPage = () => {
-  return <h1>New User Page</h1>;
+  return <CreateUserForm />;
 };
 
 export default NewUserPage;
