@@ -1,7 +1,9 @@
 "use client";
 
 import { type FC } from "react";
+
 import { LicenseSelectorForm } from "~/app/users/_components/profile/LicenseSelectorForm";
+import { OtherSkillsForm } from "~/app/users/_components/profile/OtherSkillsForm";
 import { ProfileForm } from "~/app/users/_components/profile/ProfileForm";
 
 const CreateUserForm: FC = () => {
@@ -14,6 +16,7 @@ const CreateUserForm: FC = () => {
     <div className="mx-auto w-1/2">
       <ProfileForm onSubmit={submit} />
       <LicenseSelectorForm onSubmit={submit} />
+      <OtherSkillsForm onSubmit={submit} />
     </div>
   );
 };

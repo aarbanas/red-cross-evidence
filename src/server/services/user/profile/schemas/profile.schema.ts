@@ -19,4 +19,14 @@ export const ProfileSchema = z.object({
   nationality: z.string().nullish(),
 });
 
+export const AddOtherSkillsSchema = z.object({
+  otherSkills: z.array(
+    z.object({
+      name: z.string(),
+      description: z.string(),
+    }),
+  ),
+});
+
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
+export type AddOtherSkillsType = z.infer<typeof AddOtherSkillsSchema>;
