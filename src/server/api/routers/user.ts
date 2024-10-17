@@ -9,7 +9,7 @@ export const userRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const result = await userService.getById(input.id);
 
-      return result;
+      return result[0];
     }),
   find: protectedProcedure
     .input(paginationQuerySchema)

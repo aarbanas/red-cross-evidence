@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import MainLayout from "~/components/layout/mainLayout";
 import { api } from "~/trpc/react";
 import {
@@ -15,10 +16,10 @@ import {
   PaginationContent,
   PaginationPages,
 } from "~/components/organisms/Pagination";
-import { useState, useEffect } from "react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 import SearchInput from "~/components/atoms/SearchInput";
 import { useDebounce } from "@uidotdev/usehooks";
+import Link from "next/link";
 
 const Users = () => {
   const [page, setPage] = useState<number>(0);
@@ -102,7 +103,13 @@ const Users = () => {
                         )}
                       </TableCell>
                       <TableCell className="cursor-pointer md:table-cell">
-                        <Pencil />
+                        <Link
+                          href={{
+                            pathname: `/users/${user.id}`,
+                          }}
+                        >
+                          <Pencil />
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))}
