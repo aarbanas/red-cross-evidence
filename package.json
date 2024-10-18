@@ -49,7 +49,6 @@
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.3.0",
-    "xlsx": "^0.18.5",
     "zod": "^3.23.3"
   },
   "devDependencies": {
@@ -80,7 +79,8 @@
     "ts-jest": "^29.2.3",
     "ts-node": "^10.9.2",
     "tsx": "^4.15.1",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "xlsx": "^0.18.5"
   },
   "ct3aMetadata": {
     "initVersion": "7.34.0"
