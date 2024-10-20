@@ -206,3 +206,71 @@ export const generateUsers = async (
     }
   }
 };
+
+export async function generateAdmin(
+  email: string,
+  adminPassword: string,
+  _licences: {
+    id: string;
+    name: string;
+    description: string | null;
+    type: string;
+  }[],
+  languageIds: string[],
+  addressIds: string[],
+) {
+  await db.transaction(async (tx) => {
+    const [admin] = await tx
+      .insert(users)
+      .values({
+        email,
+        password: adminPassword,
+        active: true,
+      })
+      .returning();
+
+    if (!admin) throw new Error("Admin user could not be created");
+
+    const [adminProfile] = await tx
+      .insert(profiles)
+      .values({
+        userId: admin?.id,
+        firstName: "Admin",
+        lastName: "Admin",
+        oib: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
+        sex: Sex.MALE,
+        nationality: "Foo",
+        parentName: "Test",
+        birthDate: new Date(1990, 1, 1).toISOString(),
+      })
+      .returning();
+
+    if (adminProfile && _licences.length) {
+      await tx.insert(profilesLicences).values({
+        profileId: adminProfile.id,
+        licenceId:
+          _licences[Math.floor(Math.random() * _licences.length)]?.id ??
+          _licences[0]!.id,
+      });
+
+      const _profileSkills = generateProfileSkills(adminProfile.id);
+      await tx.insert(profileSkills).values(_profileSkills);
+
+      await tx
+        .insert(profilesLanguages)
+        .values(getRandomLanguages(adminProfile.id, languageIds));
+
+      await tx.insert(profilesAddresses).values({
+        profileId: adminProfile.id,
+        addressId: addressIds[Math.floor(Math.random() * addressIds.length)]!,
+        isPrimary: true,
+      });
+
+      await insertWorkStatus(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        tx as unknown as PgTransaction<any>,
+        adminProfile.id,
+      );
+    }
+  });
+}
