@@ -43,6 +43,13 @@
       "when": 1726929449044,
       "tag": "0005_bizarre_nightshade",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1729108318689,
+      "tag": "0006_green_lester",
+      "breakpoints": true
     }
   ]
 }
