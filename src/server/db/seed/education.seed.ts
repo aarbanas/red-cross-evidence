@@ -14,6 +14,7 @@ interface Education {
   topics?: string;
   type: EducationType;
 }
+
 const headerMapping: Record<string, keyof Education> = {
   Title: "title",
   Description: "description",
@@ -24,11 +25,13 @@ const headerMapping: Record<string, keyof Education> = {
   "Trajanje obnove": "renewal_duration",
   Teme: "topics",
 };
+
 const sheetNameMapping: Record<string, EducationType> = {
   "za-volontere": EducationType.VOLUNTEERS,
   "za-javnost": EducationType.PUBLIC,
   "za-djelatnike": EducationType.EMPLOYEE,
 };
+
 const readExcelFile = (filePath: string): Education[] => {
   const fileBuffer = readFileSync(filePath);
   const workbook = XLSX.read(fileBuffer, { type: "buffer" });
@@ -63,9 +66,23 @@ const readExcelFile = (filePath: string): Education[] => {
 
   return educations;
 };
+
 export const populateEducations = async () => {
   const filePath = "scripts/educations_parser/edukacije.xlsx";
   const _educations = readExcelFile(filePath);
 
   return db.insert(educations).values(_educations).returning();
 };
+
+export const getEducations = async () => {
+  let _educations = await db.query.educations.findMany();
+  if (!_educations.length) {
+    _educations = await populateEducations();
+  }
+};
+getEducations()
+  .then((educations) => educations)
+  .catch((err) => {
+    console.log(err);
+    process.exit(1);
+  });

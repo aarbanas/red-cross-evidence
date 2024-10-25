@@ -10,3 +10,18 @@ export const populateLicenses = async () => {
 
   return db.insert(licenses).values(_licenses).returning();
 };
+
+export const getLicenses = async () => {
+  let _licences = await db.query.licenses.findMany();
+  if (!_licences.length) {
+    _licences = await populateLicenses();
+  }
+  return _licences;
+};
+
+getLicenses()
+  .then((licenses) => licenses)
+  .catch((err) => {
+    console.log(err);
+    process.exit(1);
+  });

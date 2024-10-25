@@ -1,12 +1,18 @@
+import { env } from "~/env";
 import { type PgTransaction } from "drizzle-orm/pg-core";
 
 import { eq } from "drizzle-orm";
 import { hash } from "bcrypt";
 import { db } from "..";
 import {
+  addresses,
+  AddressType,
+  cities,
   ClothingSize,
+  countries,
   EducationLevel,
   LanguageLevel,
+  languages,
   profiles,
   profilesAddresses,
   profileSkills,
@@ -17,8 +23,13 @@ import {
   users,
   workStatuses,
 } from "../schema";
+import { getLicenses } from "./license.seed";
+
+export const SALT_OR_ROUNDS = 10;
+
 const names = ["John", "Jane", "Alice", "Bob", "Charlie", "Diana"];
 const surnames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia"];
+
 export const getRandomLanguages = (
   userId: string,
   languageIds: string[],
@@ -37,6 +48,7 @@ export const getRandomLanguages = (
     level: randomLevel,
   }));
 };
+
 export const insertWorkStatus = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tx: PgTransaction<any>,
@@ -71,6 +83,7 @@ export const insertWorkStatus = async (
     .values(_workStatuses[Math.floor(Math.random() * _workStatuses.length)]!)
     .returning();
 };
+
 export const generateProfileSkills = (
   profileId: string,
 ): { name: string; description: string; profileId: string }[] => {
@@ -90,6 +103,7 @@ export const generateProfileSkills = (
   }
   return items;
 };
+
 const getRandomLoremIpsum = (length: number): string => {
   const loremIpsum =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -107,7 +121,7 @@ const getRandomLoremIpsum = (length: number): string => {
   // Truncate to the exact desired length if necessary
   return result.substring(0, length);
 };
-export const SALT_OR_ROUNDS = 10;
+
 export const generateUsers = async (
   addressIds: string[],
   languageIds: string[],
@@ -205,6 +219,7 @@ export const generateUsers = async (
       });
     }
   }
+  return await db.query.users.findMany();
 };
 
 export async function generateAdmin(
@@ -273,4 +288,162 @@ export async function generateAdmin(
       );
     }
   });
+  return await db.query.users.findMany({
+    where: eq(users.email, email),
+  });
 }
+const generateCountriesWithCities = async (): Promise<string[]> => {
+  const _cities = [
+    { name: "Rijeka", zip: "51000" },
+    { name: "Zagreb", zip: "10000" },
+    { name: "Split", zip: "21000" },
+    { name: "Osijek", zip: "31000" },
+    { name: "Dubrovnik", zip: "20000" },
+    { name: "Ljubljana", zip: "1000" },
+  ];
+  const _countries = ["Croatia", "Slovenia"];
+
+  const existingCities = await db.query.cities.findMany({
+    columns: { id: true },
+  });
+  if (existingCities.length) return existingCities.map(({ id }) => id);
+
+  const existingCountries = await db.query.countries.findMany();
+  let insertedCountries: { name: string; insertedId: string }[];
+  if (!existingCountries.length) {
+    insertedCountries = await db
+      .insert(countries)
+      .values(
+        _countries.map((_country) => ({
+          name: _country,
+        })),
+      )
+      .returning({ insertedId: countries.id, name: countries.name });
+  } else {
+    insertedCountries = existingCountries.map((country) => ({
+      name: country.name,
+      insertedId: country.id,
+    }));
+  }
+
+  const insertedCities = await db
+    .insert(cities)
+    .values(
+      _cities.map((_city) => ({
+        name: _city.name,
+        postalCode: _city.zip,
+        countryId:
+          _city.name === "Ljubljana"
+            ? insertedCountries.find((c) => c.name === "Slovenia")?.insertedId
+            : insertedCountries.find((c) => c.name === "Croatia")?.insertedId,
+      })),
+    )
+    .returning({ insertedId: cities.id });
+
+  return insertedCities.map(({ insertedId }) => insertedId);
+};
+
+const generateAddresses = async (cityIds: string[]): Promise<string[]> => {
+  const existingAddresses = await db.query.addresses.findMany({
+    columns: { id: true },
+  });
+  if (existingAddresses.length) return existingAddresses.map(({ id }) => id);
+
+  const streetNames = ["Foo", "Bar", "Baz", "Qux", "Quux", "Corge"];
+
+  const _addresses: { street: string; streetNumber: string }[] = streetNames
+    .concat(streetNames)
+    .concat(streetNames)
+    .concat(streetNames)
+    .map((street, index) => ({ street, streetNumber: (index + 1).toString() }));
+
+  const insertedAddresses = await db
+    .insert(addresses)
+    .values(
+      _addresses.map((_address, i) => ({
+        street: _address.street,
+        streetNumber: _address.streetNumber,
+        cityId: cityIds[i % cityIds.length],
+        type: AddressType.PERMANENT_RESIDENCE,
+      })),
+    )
+    .returning({ insertedId: addresses.id });
+
+  return insertedAddresses.map((address) => address.insertedId);
+};
+
+const generateLanguages = async (): Promise<string[]> => {
+  const _languages = [
+    "Croatian",
+    "English",
+    "German",
+    "Italian",
+    "Spanish",
+    "French",
+    "Russian",
+  ];
+
+  const existingLanguages = await db.query.languages.findMany({
+    columns: { id: true },
+  });
+  if (existingLanguages.length) return existingLanguages.map(({ id }) => id);
+  const items: { name: string }[] = [];
+  for (const lang of _languages) {
+    items.push({ name: lang });
+  }
+
+  const res = await db.insert(languages).values(items).returning();
+  return res.map(({ id }) => id);
+};
+
+export const getUsers = async () => {
+  const cityIds = await generateCountriesWithCities();
+  const addressIds = await generateAddresses(cityIds);
+  const languageIds = await generateLanguages();
+  const _licences = await getLicenses();
+  let _users = await db.query.users.findMany();
+  if (!_users.length) {
+    _users = await generateUsers(addressIds, languageIds, _licences);
+  }
+
+  return _users;
+};
+const email = "admin@dck-pgz.hr";
+const adminPassword = await hash(env.ADMIN_PASSWORD, SALT_OR_ROUNDS);
+
+export const getAdmins = async () => {
+  const adminExists = await db.query.users.findFirst({
+    where: eq(users.email, email),
+  });
+  let _admins = await db.query.users.findMany({
+    where: eq(users.email, email),
+  });
+  if (!adminExists) {
+    const _licences = await getLicenses();
+    const cityIds = await generateCountriesWithCities();
+    const addressIds = await generateAddresses(cityIds);
+    const languageIds = await generateLanguages();
+    _admins = await generateAdmin(
+      email,
+      adminPassword,
+      _licences,
+      languageIds,
+      addressIds,
+    );
+  }
+  return _admins;
+};
+
+getUsers()
+  .then((users) => users)
+  .catch((err) => {
+    console.log(err);
+    process.exit(1);
+  });
+
+getAdmins()
+  .then((admins) => admins)
+  .catch((err) => {
+    console.log(err);
+    process.exit(1);
+  });
