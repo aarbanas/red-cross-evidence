@@ -3,23 +3,27 @@ import { licenses } from "~/server/db/schema";
 import { FindLicenseQuery } from "./types";
 import { TRPCError } from "@trpc/server";
 import { and, asc, count, desc, eq, ilike, type SQL } from "drizzle-orm";
+
 enum SortableKeys {
   ID = "id",
   TYPE = "type",
   NAME = "name",
   DESCRIPTION = "description",
 }
+
 enum FilterableKeys {
   TYPE = "type",
   NAME = "name",
   DESCRIPTION = "description",
 }
-type FindLicenseReturnDTO = {
+
+export type FindLicenseReturnDTO = {
   id: string;
   type: string;
   name: string;
   description: string | null;
 };
+
 const mapKeyToColumn = (key: SortableKeys | FilterableKeys) => {
   switch (key) {
     case SortableKeys.ID:
@@ -34,6 +38,7 @@ const mapKeyToColumn = (key: SortableKeys | FilterableKeys) => {
       return licenses.id;
   }
 };
+
 const generateSortFunction = (
   key?: SortableKeys | string,
   value?: string,
@@ -58,6 +63,7 @@ const generateSortFunction = (
   // If there is no 'value' or key is not a member of SortableKeys
   return asc(licenses.name);
 };
+
 const prepareOrderBy = (sort?: string | string[]): SQL[] => {
   if (!sort) {
     return [asc(licenses.type)];
@@ -80,6 +86,7 @@ const prepareOrderBy = (sort?: string | string[]): SQL[] => {
 
   return sorts;
 };
+
 const mapFilterableKeyToConditional = (
   key: FilterableKeys,
   value: string,
@@ -92,6 +99,7 @@ const mapFilterableKeyToConditional = (
 
   return undefined;
 };
+
 const prepareWhere = (
   filter: Record<string, string> | undefined,
 ): SQL | undefined => {
@@ -119,6 +127,7 @@ const prepareWhere = (
 
   return and(...conditionals);
 };
+
 const licenseRepository = {
   find: async (data: FindLicenseQuery) => {
     const { page, limit, sort, filter } = data;
@@ -175,4 +184,5 @@ const licenseRepository = {
       .execute();
   },
 };
+
 export default licenseRepository;

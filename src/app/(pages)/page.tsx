@@ -1,5 +1,5 @@
 import { getServerAuthSession } from "~/server/auth";
-import Users from "~/app/users/page";
+import Users from "~/app/(pages)/users/page";
 
 const Home = async () => {
   const session = await getServerAuthSession();

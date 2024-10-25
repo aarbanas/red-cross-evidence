@@ -15,7 +15,7 @@ import {
   Pagination,
   PaginationContent,
   PaginationPages,
-} from "~/components/organisms/Pagination";
+} from "~/components/organisms/pagination/Pagination";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 import SearchInput from "~/components/atoms/SearchInput";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -30,8 +30,8 @@ const Users = () => {
   const debouncedSearchTerm = useDebounce(filter, 500);
 
   const { data, isLoading, error } = api.user.find.useQuery({
-    page: page.toString(),
-    limit: "10",
+    page: page,
+    limit: 10,
     sort: ["email:asc"],
     filter: debouncedSearchTerm,
   });

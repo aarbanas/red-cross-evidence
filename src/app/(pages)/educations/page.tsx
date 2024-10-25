@@ -18,7 +18,7 @@ import {
   Pagination,
   PaginationContent,
   PaginationPages,
-} from "~/components/organisms/Pagination";
+} from "~/components/organisms/pagination/Pagination";
 
 // TODO can be removed when trpc is implemented
 type Education = {

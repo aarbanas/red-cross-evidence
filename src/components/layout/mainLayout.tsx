@@ -30,7 +30,9 @@ const MainLayout: React.FC<Readonly<Props>> = ({
 
         <div className="flex flex-col">
           <Header>{headerChildren}</Header>
-          {children}
+          <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+            {children}
+          </main>
         </div>
       </div>
       <ToastContainer />
