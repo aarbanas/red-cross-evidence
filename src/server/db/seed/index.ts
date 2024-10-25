@@ -1,10 +1,10 @@
 import { getEducations } from "./education.seed";
 import { getLicenses } from "./license.seed";
-import { getAdmins, getUsers } from "./user.seed";
+import { getAdmin, getUsers } from "./user.seed";
 
 void (async () => {
   await getLicenses();
   await getUsers();
-  await getAdmins();
+  await getAdmin();
   await getEducations();
 })();

@@ -25,12 +25,12 @@ import {
 } from "../schema";
 import { getLicenses } from "./license.seed";
 
-export const SALT_OR_ROUNDS = 10;
+const SALT_OR_ROUNDS = 10;
 
 const names = ["John", "Jane", "Alice", "Bob", "Charlie", "Diana"];
 const surnames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia"];
 
-export const getRandomLanguages = (
+const getRandomLanguages = (
   userId: string,
   languageIds: string[],
 ): { profileId: string; languageId: string; level: LanguageLevel }[] => {
@@ -49,7 +49,7 @@ export const getRandomLanguages = (
   }));
 };
 
-export const insertWorkStatus = async (
+const insertWorkStatus = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tx: PgTransaction<any>,
   profileId: string,
@@ -84,7 +84,7 @@ export const insertWorkStatus = async (
     .returning();
 };
 
-export const generateProfileSkills = (
+const generateProfileSkills = (
   profileId: string,
 ): { name: string; description: string; profileId: string }[] => {
   const skills = [
@@ -94,6 +94,7 @@ export const generateProfileSkills = (
     "Telekomunikacije",
   ];
   const items: { name: string; description: string; profileId: string }[] = [];
+
   for (const skill of skills) {
     items.push({
       name: skill,
@@ -101,6 +102,7 @@ export const generateProfileSkills = (
       profileId,
     });
   }
+
   return items;
 };
 
@@ -122,7 +124,7 @@ const getRandomLoremIpsum = (length: number): string => {
   return result.substring(0, length);
 };
 
-export const generateUsers = async (
+const generateUsers = async (
   addressIds: string[],
   languageIds: string[],
   _licences: {
@@ -219,10 +221,11 @@ export const generateUsers = async (
       });
     }
   }
-  return await db.query.users.findMany();
+
+  return db.query.users.findMany();
 };
 
-export async function generateAdmin(
+async function generateAdmin(
   email: string,
   adminPassword: string,
   _licences: {
@@ -288,10 +291,12 @@ export async function generateAdmin(
       );
     }
   });
-  return await db.query.users.findMany({
+
+  return db.query.users.findMany({
     where: eq(users.email, email),
   });
 }
+
 const generateCountriesWithCities = async (): Promise<string[]> => {
   const _cities = [
     { name: "Rijeka", zip: "51000" },
@@ -411,27 +416,31 @@ export const getUsers = async () => {
 const email = "admin@dck-pgz.hr";
 const adminPassword = await hash(env.ADMIN_PASSWORD, SALT_OR_ROUNDS);
 
-export const getAdmins = async () => {
+export const getAdmin = async () => {
   const adminExists = await db.query.users.findFirst({
     where: eq(users.email, email),
   });
-  let _admins = await db.query.users.findMany({
-    where: eq(users.email, email),
-  });
+  let _admin;
+
   if (!adminExists) {
     const _licences = await getLicenses();
     const cityIds = await generateCountriesWithCities();
     const addressIds = await generateAddresses(cityIds);
     const languageIds = await generateLanguages();
-    _admins = await generateAdmin(
+    _admin = await generateAdmin(
       email,
       adminPassword,
       _licences,
       languageIds,
       addressIds,
     );
+  } else {
+    _admin = await db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
   }
-  return _admins;
+
+  return _admin;
 };
 
 getUsers()
@@ -441,7 +450,7 @@ getUsers()
     process.exit(1);
   });
 
-getAdmins()
+getAdmin()
   .then((admins) => admins)
   .catch((err) => {
     console.log(err);

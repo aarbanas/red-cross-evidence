@@ -67,7 +67,7 @@ const readExcelFile = (filePath: string): Education[] => {
   return educations;
 };
 
-export const populateEducations = async () => {
+const populateEducations = async () => {
   const filePath = "scripts/educations_parser/edukacije.xlsx";
   const _educations = readExcelFile(filePath);
 
@@ -79,7 +79,10 @@ export const getEducations = async () => {
   if (!_educations.length) {
     _educations = await populateEducations();
   }
+
+  return _educations;
 };
+
 getEducations()
   .then((educations) => educations)
   .catch((err) => {
