@@ -7,4 +7,6 @@ void (async () => {
   await getUsers();
   await getAdmin();
   await getEducations();
+
+  process.exit(0);
 })();
