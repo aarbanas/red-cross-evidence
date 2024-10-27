@@ -1,16 +1,11 @@
 import React, { type ReactNode } from "react";
-import {
-  BookMarked,
-  Building,
-  CornerDownLeft,
-  Users,
-  IdCard,
-} from "lucide-react";
+import { BookMarked, Users, IdCard } from "lucide-react";
 import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NewNavbar from "~/components/organisms/navbar/navbar";
 import Header from "~/components/organisms/Header";
+import { usePathname } from "next/navigation";
 
 type Props = {
   children: ReactNode;
@@ -41,43 +36,32 @@ const MainLayout: React.FC<Readonly<Props>> = ({
 };
 
 const Navigation = () => {
+  const currentPath = usePathname();
+
   return (
     <nav className="grid items-start text-sm font-medium lg:px-4">
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900`}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-red-100 ${currentPath === "/" ? "text-red-600" : ""}`}
         href="/"
       >
         <Users />
-        Lista volontera
-      </Link>
-      <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900`}
-        href="/admin/organisations"
-      >
-        <Building />
-        Organisation list
-      </Link>
-      <Link
-        className="flex items-center gap-3 rounded-lg px-3 py-2 transition"
-        href="/educations"
-      >
-        <BookMarked />
-        Educations
-      </Link>
-      <Link
-        className="flex items-center gap-3 rounded-lg px-3 py-2 transition"
-        href="/licenses"
-      >
-        <IdCard />
-        Licenses
+        Volonteri
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900`}
-        href="/dashboard"
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath === "/educations" ? "text-red-600" : ""}`}
+        href="/educations"
       >
-        <CornerDownLeft />
-        Return to Dashboard
+        <BookMarked />
+        Edukacije
+      </Link>
+
+      <Link
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath === "/licenses" ? "text-red-600" : ""}`}
+        href="/licenses"
+      >
+        <IdCard />
+        Licence
       </Link>
     </nav>
   );
