@@ -1,31 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import SearchInput from "~/components/atoms/SearchInput";
-import { useDebounce } from "@uidotdev/usehooks";
+import useSearch from "~/hooks/useSearch";
 
 type Props = {
   onSearch: (filter: Record<string, string> | undefined) => void;
 };
 
-const LicencesSearch: React.FC<Props> = ({ onSearch }) => {
-  const [filter, setFilter] = useState<Record<string, string> | undefined>(
-    undefined,
-  );
-  const debouncedSearchTerm = useDebounce(filter, 500);
-
-  useEffect(() => {
-    onSearch(debouncedSearchTerm);
-  }, [debouncedSearchTerm, onSearch]);
-
-  const handleSearch = (key: string, value: string) => {
-    setFilter((prevFilter) => ({ ...prevFilter, [key]: value }));
-  };
+const UsersSearch: React.FC<Props> = ({ onSearch }) => {
+  const { handleSearch } = useSearch(onSearch);
 
   return (
     <div className="flex gap-5">
-      <SearchInput title={"Tip"} onSearch={handleSearch} searchKey={"type"} />
-      <SearchInput title={"Ime"} onSearch={handleSearch} searchKey={"name"} />
+      <SearchInput
+        title={"Ime"}
+        onSearch={handleSearch}
+        searchKey={"firstname"}
+      />
+      <SearchInput
+        title={"Prezime"}
+        onSearch={handleSearch}
+        searchKey={"lastname"}
+      />
     </div>
   );
 };
 
-export default LicencesSearch;
+export default UsersSearch;

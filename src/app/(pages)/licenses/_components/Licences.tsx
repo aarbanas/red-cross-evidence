@@ -1,5 +1,5 @@
 "use client";
-import LicencesTable from "~/app/(pages)/licenses/components/LicencesTable";
+import LicencesTable from "~/app/(pages)/licenses/_components/LicencesTable";
 import { usePagination } from "~/components/organisms/pagination/PaginationContext";
 import { api } from "~/trpc/react";
 import React, { useEffect, useState } from "react";

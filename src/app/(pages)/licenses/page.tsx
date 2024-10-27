@@ -1,9 +1,9 @@
 "use client";
 import MainLayout from "~/components/layout/mainLayout";
 import { PaginationProvider } from "~/components/organisms/pagination/PaginationContext";
-import LicencesSearch from "~/app/(pages)/licenses/components/LicencesSearch";
+import LicencesSearch from "~/app/(pages)/licenses/_components/LicencesSearch";
 import { useState } from "react";
-import Licences from "~/app/(pages)/licenses/components/Licences";
+import Licences from "~/app/(pages)/licenses/_components/Licences";
 
 const LicencePage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(

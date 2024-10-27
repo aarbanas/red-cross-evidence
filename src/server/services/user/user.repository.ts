@@ -4,7 +4,7 @@ import { and, asc, count, desc, eq, ilike, type SQL } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { type FindUserQuery } from "~/server/services/user/types";
 
-type FindUserReturnDTO = {
+export type FindUserReturnDTO = {
   id: string;
   email: string;
   active: boolean | null;

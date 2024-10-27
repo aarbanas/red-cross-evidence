@@ -25,7 +25,7 @@ export default function UserDetailPage() {
     id: id as string,
   });
 
-  const form = useForm<FindUserReturnDTO>({
+  const form = useForm({
     defaultValues: {
       email: data?.email ?? "",
       active: data?.active ?? false,
