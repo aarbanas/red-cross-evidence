@@ -1,3 +1,4 @@
+import { fileURLToPath } from "url";
 import { DrivingLicense, License, licenses } from "../schema";
 import { db } from "../index";
 
@@ -19,9 +20,16 @@ export const getLicenses = async () => {
   return _licences;
 };
 
-getLicenses()
-  .then((licenses) => licenses)
-  .catch((err) => {
-    console.log(err);
-    process.exit(1);
-  });
+const __filename = fileURLToPath(import.meta.url);
+
+if (process.argv[1] === __filename) {
+  getLicenses()
+    .then((licenses) => {
+      console.log("Done seeding licenses.");
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.log(err);
+      process.exit(1);
+    });
+}

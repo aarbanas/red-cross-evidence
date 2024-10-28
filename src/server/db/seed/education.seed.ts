@@ -1,3 +1,4 @@
+import { fileURLToPath } from "url";
 import { db } from "../index";
 import { educations, EducationType } from "../schema/education";
 import * as XLSX from "xlsx";
@@ -83,9 +84,16 @@ export const getEducations = async () => {
   return _educations;
 };
 
-getEducations()
-  .then((educations) => educations)
-  .catch((err) => {
-    console.log(err);
-    process.exit(1);
-  });
+const __filename = fileURLToPath(import.meta.url);
+
+if (process.argv[1] === __filename) {
+  getEducations()
+    .then((educations) => {
+      console.log("Done seeding educations.");
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.log(err);
+      process.exit(1);
+    });
+}

@@ -1,3 +1,4 @@
+import { fileURLToPath } from "url";
 import { env } from "~/env";
 import { type PgTransaction } from "drizzle-orm/pg-core";
 
@@ -406,6 +407,7 @@ export const getUsers = async () => {
   const addressIds = await generateAddresses(cityIds);
   const languageIds = await generateLanguages();
   const _licences = await getLicenses();
+  console.log("Done seeding licenses.");
   let _users = await db.query.users.findMany();
   if (!_users.length) {
     _users = await generateUsers(addressIds, languageIds, _licences);
@@ -443,16 +445,23 @@ export const getAdmin = async () => {
   return _admin;
 };
 
-getUsers()
-  .then((users) => users)
-  .catch((err) => {
-    console.log(err);
-    process.exit(1);
-  });
+const __filename = fileURLToPath(import.meta.url);
 
-getAdmin()
-  .then((admins) => admins)
-  .catch((err) => {
-    console.log(err);
-    process.exit(1);
-  });
+if (process.argv[1] === __filename) {
+  await getUsers()
+    .then((users) => console.log("Done seeding users."))
+    .catch((err) => {
+      console.log(err);
+      process.exit(1);
+    });
+
+  await getAdmin()
+    .then((admins) => {
+      console.log("Done seeding admin.");
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.log(err);
+      process.exit(1);
+    });
+}
