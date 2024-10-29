@@ -16,10 +16,10 @@ export default function UserDetailPage() {
   return (
     <MainLayout
       headerChildren={
-        <h1 className="text-xl font-bold">
+        <div>
           Uređivanje volontera {data?.profile?.firstName}{" "}
           {data?.profile?.lastName}
-        </h1>
+        </div>
       }
     >
       <div>
@@ -27,6 +27,7 @@ export default function UserDetailPage() {
         {error && <div>Greška</div>}
         {data && (
           <UserForm
+            id={id as string}
             formData={{
               email: data?.email ?? "",
               active: data?.active ?? false,

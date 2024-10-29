@@ -5,18 +5,19 @@ type FormSwitchProps = {
   id: string;
   label: string;
   active: boolean;
-  setActive: () => void;
+  setActive(checked: boolean): void;
 };
 
 // eslint-disable-next-line react/display-name
 const FormSwitch: React.FC<FormSwitchProps> = ({
   id,
   label,
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   setActive,
   active,
 }) => {
   return (
-    <div>
+    <div className="flex items-center gap-3">
       <label htmlFor={id}>{label}</label>
       <Switch.Root
         className="bg-blackA6 shadow-blackA4 relative h-[25px] w-[42px] cursor-pointer rounded-full shadow-[0_2px_10px] outline-none focus:shadow-[0_0_0_2px] focus:shadow-black data-[state=checked]:bg-black"

@@ -1,4 +1,3 @@
-"use client";
 import LicencesTable from "~/app/(pages)/licenses/_components/LicencesTable";
 import { usePagination } from "~/components/organisms/pagination/PaginationContext";
 import { api } from "~/trpc/react";

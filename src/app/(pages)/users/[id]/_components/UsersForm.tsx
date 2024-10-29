@@ -3,7 +3,7 @@ import FormInput from "~/components/organisms/form/formInput/FormInput";
 import FormSwitch from "~/components/organisms/form/formSwitch/FormSwitch";
 import { Button } from "~/components/atoms/Button";
 import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
-import React from "react";
+import React, { useState } from "react";
 
 type UserUpdateFormData = {
   email: string;
@@ -13,12 +13,16 @@ type UserUpdateFormData = {
 };
 
 type Props = {
+  id: string;
   formData: UserUpdateFormData;
 };
 
-const UserForm: React.FC<Props> = ({ formData }) => {
+const UserForm: React.FC<Props> = ({ id, formData }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [active, setActive] = useState(formData.active);
+
   const form = useForm<UserUpdateFormData>({
-    defaultValues: {
+    values: {
       email: formData.email,
       active: formData.active,
       firstname: formData.firstname,
@@ -27,9 +31,10 @@ const UserForm: React.FC<Props> = ({ formData }) => {
   });
 
   // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Implementation for form submission goes here
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    form.setValue("active", active);
+    setIsSubmitting(false);
   };
 
   return (
@@ -61,13 +66,15 @@ const UserForm: React.FC<Props> = ({ formData }) => {
       <FormSwitch
         id="active"
         label="Aktivan"
-        active={formData.active}
-        setActive={() => {
-          console.log("Switched");
-        }}
+        active={active}
+        setActive={setActive}
       />
 
-      <Button className="bg-black !text-base text-white" type="submit">
+      <Button
+        className="bg-black !text-base text-white"
+        type="submit"
+        showLoading={isSubmitting}
+      >
         <span>Spremi promjene</span>
       </Button>
     </FormComponent>

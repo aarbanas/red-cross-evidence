@@ -1,4 +1,3 @@
-"use client";
 import { usePagination } from "~/components/organisms/pagination/PaginationContext";
 import { api } from "~/trpc/react";
 import React, { useEffect, useState } from "react";

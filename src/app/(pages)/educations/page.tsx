@@ -29,6 +29,8 @@ type Education = {
   active: boolean;
 };
 
+// TODO needs to be refactored in the same way as users and licences are
+
 const Educations = () => {
   const [page, setPage] = useState<number>(0);
   const [totalPageNumber, setTotalPageNumber] = useState<number>(1);
@@ -37,7 +39,6 @@ const Educations = () => {
   );
   const debouncedSearchTerm = useDebounce(filter, 500);
 
-  //TODO needs to be replaced with trpc
   const [data, setData] = useState<Education[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

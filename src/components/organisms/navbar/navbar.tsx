@@ -58,7 +58,7 @@ const NavbarNavigation: React.FC<NavbarNavigationProps> = ({
         className={`mt-auto flex cursor-pointer items-center gap-3 rounded-lg px-6 py-2 transition-all hover:text-gray-950`}
         onClick={onLogoutClick}
       >
-        <LogOut /> Logout
+        <LogOut /> Odjava
       </div>
     </div>
   );
