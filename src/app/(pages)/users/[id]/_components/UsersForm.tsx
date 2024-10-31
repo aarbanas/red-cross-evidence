@@ -18,7 +18,6 @@ type Props = {
 };
 
 const UserForm: React.FC<Props> = ({ id, formData }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [active, setActive] = useState(formData.active);
 
   const form = useForm<UserUpdateFormData>({
@@ -29,12 +28,11 @@ const UserForm: React.FC<Props> = ({ id, formData }) => {
       lastname: formData.lastname,
     },
   });
+  const { isSubmitting } = form.formState;
 
   // Handle form submission
   const handleSubmit = async () => {
-    setIsSubmitting(true);
     form.setValue("active", active);
-    setIsSubmitting(false);
   };
 
   return (

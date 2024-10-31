@@ -12,6 +12,12 @@ type Props = {
   headerChildren: ReactNode;
 };
 
+enum AppRoutes {
+  HOME = "/",
+  EDUCATIONS = "/educations",
+  LICENSES = "/licenses",
+}
+
 const MainLayout: React.FC<Readonly<Props>> = ({
   children,
   headerChildren,
@@ -37,28 +43,31 @@ const MainLayout: React.FC<Readonly<Props>> = ({
 
 const Navigation = () => {
   const currentPath = usePathname();
+  if (!Object.values(AppRoutes).includes(currentPath as AppRoutes)) {
+    return null;
+  }
 
   return (
     <nav className="grid items-start text-sm font-medium lg:px-4">
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-red-100 ${currentPath === "/" ? "text-red-600" : ""}`}
-        href="/"
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-red-100 ${(currentPath as AppRoutes) === AppRoutes.HOME ? "text-red-600" : ""}`}
+        href={AppRoutes.HOME}
       >
         <Users />
         Volonteri
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath === "/educations" ? "text-red-600" : ""}`}
-        href="/educations"
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${(currentPath as AppRoutes) === AppRoutes.EDUCATIONS ? "text-red-600" : ""}`}
+        href={AppRoutes.EDUCATIONS}
       >
         <BookMarked />
         Edukacije
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath === "/licenses" ? "text-red-600" : ""}`}
-        href="/licenses"
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${(currentPath as AppRoutes) === AppRoutes.LICENSES ? "text-red-600" : ""}`}
+        href={AppRoutes.LICENSES}
       >
         <IdCard />
         Licence

@@ -9,13 +9,14 @@ import {
 import { Pencil } from "lucide-react";
 import { type FindLicenseReturnDTO } from "~/server/services/license/license.repository";
 import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
+import { type FC } from "react";
 
 type Props = {
   data?: FindLicenseReturnDTO[];
   totalPageNumber: number;
 };
 
-const LicencesTable: React.FC<Props> = ({ data, totalPageNumber }) => {
+const LicencesTable: FC<Props> = ({ data, totalPageNumber }) => {
   if (!data?.length) {
     return <div>Nema rezultata</div>;
   }

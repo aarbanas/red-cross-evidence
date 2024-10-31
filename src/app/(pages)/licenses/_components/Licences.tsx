@@ -7,6 +7,7 @@ import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner
 type Props = {
   filter: Record<string, string> | undefined;
 };
+
 const Licences: React.FC<Props> = ({ filter }) => {
   const [totalPageNumber, setTotalPageNumber] = useState<number>(1);
   const { page } = usePagination();

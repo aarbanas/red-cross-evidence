@@ -1,4 +1,4 @@
-import React from "react";
+import { type FC } from "react";
 import SearchInput from "~/components/atoms/SearchInput";
 import useSearch from "~/hooks/useSearch";
 
@@ -6,7 +6,7 @@ type Props = {
   onSearch: (filter: Record<string, string> | undefined) => void;
 };
 
-const LicencesSearch: React.FC<Props> = ({ onSearch }) => {
+const LicencesSearch: FC<Props> = ({ onSearch }) => {
   const { handleSearch } = useSearch(onSearch);
 
   return (

@@ -6,7 +6,7 @@ import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner
 import UserForm from "~/app/(pages)/users/[id]/_components/UsersForm";
 
 export default function UserDetailPage() {
-  const { id } = useParams(); // Get the user ID from the URL
+  const { id } = useParams();
 
   // Fetch user data by ID
   const { data, isLoading, error } = api.user.findById.useQuery({
