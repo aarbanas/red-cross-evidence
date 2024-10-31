@@ -1,21 +1,22 @@
 import React, { type ReactNode } from "react";
-import {
-  BookMarked,
-  Building,
-  CornerDownLeft,
-  Users,
-  IdCard,
-} from "lucide-react";
+import { BookMarked, Users, IdCard } from "lucide-react";
 import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NewNavbar from "~/components/organisms/navbar/navbar";
 import Header from "~/components/organisms/Header";
+import { usePathname } from "next/navigation";
 
 type Props = {
   children: ReactNode;
   headerChildren: ReactNode;
 };
+
+enum AppRoutes {
+  HOME = "/",
+  EDUCATIONS = "/educations",
+  LICENSES = "/licenses",
+}
 
 const MainLayout: React.FC<Readonly<Props>> = ({
   children,
@@ -30,7 +31,9 @@ const MainLayout: React.FC<Readonly<Props>> = ({
 
         <div className="flex flex-col">
           <Header>{headerChildren}</Header>
-          {children}
+          <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+            {children}
+          </main>
         </div>
       </div>
       <ToastContainer />
@@ -39,43 +42,35 @@ const MainLayout: React.FC<Readonly<Props>> = ({
 };
 
 const Navigation = () => {
+  const currentPath = usePathname() as AppRoutes;
+  if (!Object.values(AppRoutes).includes(currentPath)) {
+    return null;
+  }
+
   return (
     <nav className="grid items-start text-sm font-medium lg:px-4">
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900`}
-        href="/"
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-red-100 ${currentPath === AppRoutes.HOME ? "text-red-600" : ""}`}
+        href={AppRoutes.HOME}
       >
         <Users />
-        Lista volontera
-      </Link>
-      <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900`}
-        href="/admin/organisations"
-      >
-        <Building />
-        Organisation list
-      </Link>
-      <Link
-        className="flex items-center gap-3 rounded-lg px-3 py-2 transition"
-        href="/educations"
-      >
-        <BookMarked />
-        Educations
-      </Link>
-      <Link
-        className="flex items-center gap-3 rounded-lg px-3 py-2 transition"
-        href="/licenses"
-      >
-        <IdCard />
-        Licenses
+        Volonteri
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-gray-900`}
-        href="/dashboard"
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath === AppRoutes.EDUCATIONS ? "text-red-600" : ""}`}
+        href={AppRoutes.EDUCATIONS}
       >
-        <CornerDownLeft />
-        Return to Dashboard
+        <BookMarked />
+        Edukacije
+      </Link>
+
+      <Link
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath === AppRoutes.LICENSES ? "text-red-600" : ""}`}
+        href={AppRoutes.LICENSES}
+      >
+        <IdCard />
+        Licence
       </Link>
     </nav>
   );
