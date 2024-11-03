@@ -1,5 +1,11 @@
 import { db } from "~/server/db";
-import { profiles, users } from "~/server/db/schema";
+import {
+  addresses,
+  cities,
+  profiles,
+  profilesAddresses,
+  users,
+} from "~/server/db/schema";
 import { and, asc, count, desc, eq, ilike, type SQL } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { type FindUserQuery } from "~/server/services/user/types";
@@ -58,6 +64,8 @@ const mapKeyToColumn = (key: SortableKeys | FilterableKeys) => {
       return users.email;
     case SortableKeys.ACTIVE:
       return users.active;
+    case SortableKeys.CITY:
+      return cities.name;
     default:
       return users.id;
   }
@@ -156,6 +164,12 @@ const userRepository = {
           .select({ count: count() })
           .from(users)
           .leftJoin(profiles, eq(users.id, profiles.userId))
+          .leftJoin(
+            profilesAddresses,
+            eq(profiles.id, profilesAddresses.profileId),
+          )
+          .leftJoin(addresses, eq(profilesAddresses.addressId, addresses.id))
+          .leftJoin(cities, eq(addresses.cityId, cities.id))
           .where(where);
 
         const returnData = await tx
@@ -172,6 +186,12 @@ const userRepository = {
           })
           .from(users)
           .leftJoin(profiles, eq(users.id, profiles.userId))
+          .leftJoin(
+            profilesAddresses,
+            eq(profiles.id, profilesAddresses.profileId),
+          )
+          .leftJoin(addresses, eq(profilesAddresses.addressId, addresses.id)) // Corrected join condition
+          .leftJoin(cities, eq(addresses.cityId, cities.id))
           .where(where)
           .orderBy(...orderBy)
           .limit(limit ?? 10)
