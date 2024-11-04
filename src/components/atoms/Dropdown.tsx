@@ -20,9 +20,7 @@ const Dropdown: React.FC<Props> = ({ cityNames, searchKey, onSearch }) => {
           onSearch(searchKey, e.target.value);
         }}
       >
-        <option value="" disabled>
-          {/* Odaberite grad */}
-        </option>
+        <option value="" />
         {cityNames.map((city, index) => (
           <option key={index} value={city}>
             {city}

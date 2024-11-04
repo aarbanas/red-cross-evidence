@@ -46,7 +46,10 @@ const mapFilterableKeyToConditional = (
   if (key === FilterableKeys.FIRSTNAME || key === FilterableKeys.LASTNAME)
     return ilike(mapKeyToColumn(key as FilterableKeys), `${value}%`);
 
-  if (key === FilterableKeys.EMAIL || key === FilterableKeys.CITY)
+  if (
+    key === FilterableKeys.EMAIL ||
+    (key === FilterableKeys.CITY && value != "")
+  )
     return eq(mapKeyToColumn(key as FilterableKeys), value);
 
   return undefined;
@@ -166,7 +169,10 @@ const userRepository = {
           .leftJoin(profiles, eq(users.id, profiles.userId))
           .leftJoin(
             profilesAddresses,
-            eq(profiles.id, profilesAddresses.profileId),
+            and(
+              eq(profiles.id, profilesAddresses.profileId),
+              eq(profilesAddresses.isPrimary, true),
+            ),
           )
           .leftJoin(addresses, eq(profilesAddresses.addressId, addresses.id))
           .leftJoin(cities, eq(addresses.cityId, cities.id))
@@ -188,7 +194,10 @@ const userRepository = {
           .leftJoin(profiles, eq(users.id, profiles.userId))
           .leftJoin(
             profilesAddresses,
-            eq(profiles.id, profilesAddresses.profileId),
+            and(
+              eq(profiles.id, profilesAddresses.profileId),
+              eq(profilesAddresses.isPrimary, true),
+            ),
           )
           .leftJoin(addresses, eq(profilesAddresses.addressId, addresses.id)) // Corrected join condition
           .leftJoin(cities, eq(addresses.cityId, cities.id))
