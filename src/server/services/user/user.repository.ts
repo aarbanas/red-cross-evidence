@@ -20,6 +20,7 @@ export type FindUserReturnDTO = {
     firstName: string;
     lastName: string;
   } | null;
+  city: string | null;
 };
 
 enum SortableKeys {
@@ -189,6 +190,7 @@ const userRepository = {
               firstName: profiles.firstName,
               lastName: profiles.lastName,
             },
+            city: cities.name,
           })
           .from(users)
           .leftJoin(profiles, eq(users.id, profiles.userId))
