@@ -2,7 +2,7 @@
 import MainLayout from "~/components/layout/mainLayout";
 import { PaginationProvider } from "~/components/organisms/pagination/PaginationContext";
 import LicencesSearch from "~/app/(pages)/licenses/_components/LicencesSearch";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Licences from "~/app/(pages)/licenses/_components/Licences";
 
 const LicencePage = () => {
@@ -10,9 +10,12 @@ const LicencePage = () => {
     undefined,
   );
 
-  const handleSearch = (newFilter: Record<string, string> | undefined) => {
-    setFilter(newFilter);
-  };
+  const handleSearch = useCallback(
+    (newFilter: Record<string, string> | undefined) => {
+      setFilter(newFilter);
+    },
+    [],
+  );
 
   return (
     <MainLayout headerChildren={<div>Licence</div>}>

@@ -2,17 +2,14 @@ import React from "react";
 import Dropdown from "~/components/atoms/Dropdown";
 import SearchInput from "~/components/atoms/SearchInput";
 import useSearch from "~/hooks/useSearch";
-import { api } from "~/trpc/react";
 
 type Props = {
   onSearch: (filter: Record<string, string> | undefined) => void;
+  cityNames: string[] | undefined;
 };
 
-const UsersSearch: React.FC<Props> = ({ onSearch }) => {
+const UsersSearch: React.FC<Props> = ({ onSearch, cityNames }) => {
   const { handleSearch } = useSearch(onSearch);
-
-  const { data, isLoading, error } = api.city.findUniqueCityNames.useQuery();
-  const cityNames: string[] = data ? data.map((city) => city.name) : [];
 
   return (
     <div className="flex gap-5">
@@ -26,11 +23,13 @@ const UsersSearch: React.FC<Props> = ({ onSearch }) => {
         onSearch={handleSearch}
         searchKey={"lastname"}
       />
-      <Dropdown
-        cityNames={cityNames}
-        onSearch={handleSearch}
-        searchKey={"city"}
-      />
+      {cityNames?.length && (
+        <Dropdown
+          values={cityNames}
+          onSearch={(key, value) => handleSearch(key, value, 0)}
+          searchKey={"city"}
+        />
+      )}
     </div>
   );
 };

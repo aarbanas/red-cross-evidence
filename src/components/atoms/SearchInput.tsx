@@ -4,7 +4,7 @@ import { Input } from "~/components/atoms/Input";
 type Props = {
   title: string;
   searchKey: string;
-  onSearch(key: string, value: string): void;
+  onSearch: (key: string, value: string) => void;
 };
 
 const SearchInput: React.FC<Props> = ({ title, searchKey, onSearch }) => {

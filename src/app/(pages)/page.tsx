@@ -1,5 +1,5 @@
 import { getServerAuthSession } from "~/server/auth";
-import Users from "~/app/(pages)/users/page";
+import UsersPage from "~/app/(pages)/users/page";
 
 const Home = async () => {
   const session = await getServerAuthSession();
@@ -7,7 +7,7 @@ const Home = async () => {
 
   return (
     <>
-      <Users />
+      <UsersPage />
     </>
   );
 };
