@@ -1,42 +1,70 @@
-import React, { type FC, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { type FC, useEffect, useState } from "react";
 import { cn } from "~/components/utils";
 
-interface TabsProps {
-  tabs?: {
-    label: string;
-    content: React.ReactNode;
-  }[];
-}
+type Props = {
+  tabs: TabProp[];
+};
 
-const Tabs: FC<TabsProps> = ({ tabs = [] }: TabsProps) => {
-  const [activeTab, setActiveTab] = useState(0);
+export type TabProp = {
+  label: string;
+  queryParam: string;
+  content: React.ReactNode;
+};
+
+const Tabs: FC<Props> = ({ tabs }: Props) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<string>(tabs[0]!.queryParam);
+
+  useEffect(() => {
+    const current = new URLSearchParams(Array.from(searchParams.entries())); // -> has to use this form
+
+    if (activeTab === undefined) {
+      current.delete("selected");
+    } else {
+      current.set("selected", activeTab.toString());
+    }
+
+    // cast to string
+    const search = current.toString();
+    const query = search ? `?${search}` : "";
+
+    router.push(`${pathname}${query}`);
+  }, [activeTab, pathname, router, searchParams]);
 
   if (!tabs || tabs.length === 0) {
     return <div className="text-center text-gray-500">No tabs provided</div>;
   }
 
   return (
-    <div className="w-full max-w-3xl">
+    <div className="w-full">
       <div className="flex gap-10 border-b border-gray-200">
         {tabs.map((tab, index) => (
           <button
             key={index}
-            onClick={() => setActiveTab(index)}
+            onClick={() => setActiveTab(tab.queryParam)}
             className={cn(
-              "px-4 py-2 text-sm font-medium",
+              "cursor-pointer py-2 text-sm font-medium",
               "focus:rounded focus:outline-none focus:ring-1 focus:ring-red-600",
-              activeTab === index
-                ? "border-red text-red-600"
-                : "text-black hover:bg-red-100",
+              activeTab === tab.queryParam
+                ? "border-red px-1 text-red-600"
+                : "hover:bg-red-100",
             )}
-            aria-selected={activeTab === index}
+            aria-selected={activeTab === tab.queryParam}
             role="tab"
           >
             {tab.label}
           </button>
         ))}
       </div>
-      <div className="mt-4">{tabs[activeTab]?.content}</div>
+      <div className="mt-4">
+        {
+          tabs[tabs.findIndex(({ queryParam }) => queryParam === activeTab)]
+            ?.content
+        }
+      </div>
     </div>
   );
 };
