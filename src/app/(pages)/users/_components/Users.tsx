@@ -16,7 +16,7 @@ const Users: React.FC<Props> = ({ filter }) => {
   const { data, isLoading, error } = api.user.find.useQuery({
     page,
     limit: 10,
-    sort: ["name:asc"],
+    sort: ["createdAt:asc"],
     filter: memoizedFilter,
   });
 
