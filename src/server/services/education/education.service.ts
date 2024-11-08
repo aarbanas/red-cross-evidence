@@ -8,6 +8,9 @@ const educationService = {
   find: async (data: FindQueryDTO) => {
     return educationRepository.find(data);
   },
+  getUniqueTypes: async () => {
+    return educationRepository.findUniqueTypes();
+  },
 };
 
 export default educationService;

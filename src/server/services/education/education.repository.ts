@@ -1,6 +1,6 @@
 import { educations } from "~/server/db/schema";
 import { db } from "~/server/db";
-import { count, eq, ilike, type SQL } from "drizzle-orm";
+import { asc, count, eq, ilike, type SQL } from "drizzle-orm";
 import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
 
@@ -115,6 +115,13 @@ const educationRepository = {
       })
       .from(educations)
       .where(eq(educations.id, id))
+      .execute();
+  },
+  findUniqueTypes: async () => {
+    return db
+      .selectDistinct({ type: educations.type })
+      .from(educations)
+      .orderBy(asc(educations.type))
       .execute();
   },
 };
