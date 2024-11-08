@@ -1,6 +1,6 @@
 import { fileURLToPath } from "url";
 import { db } from "../index";
-import { educations, EducationType } from "../schema/education";
+import { educations, EducationType } from "~/server/db/schema";
 import * as XLSX from "xlsx";
 import { readFileSync } from "fs";
 
@@ -10,8 +10,8 @@ interface Education {
   precondition?: string;
   duration?: string;
   lecturers?: string;
-  course_duration?: string;
-  renewal_duration?: string;
+  courseDuration?: string;
+  renewalDuration?: string;
   topics?: string;
   type: EducationType;
 }
@@ -22,8 +22,8 @@ const headerMapping: Record<string, keyof Education> = {
   Preduvjet: "precondition",
   Trajanje: "duration",
   Predavači: "lecturers",
-  "Trajanje tečaja": "course_duration",
-  "Trajanje obnove": "renewal_duration",
+  "Trajanje tečaja": "courseDuration",
+  "Trajanje obnove": "renewalDuration",
   Teme: "topics",
 };
 
@@ -77,9 +77,9 @@ const populateEducations = async () => {
 
 export const getEducations = async () => {
   let _educations = await db.query.educations.findMany();
-  if (!_educations.length) {
-    _educations = await populateEducations();
-  }
+  // if (!_educations.length) {
+  _educations = await populateEducations();
+  // }
 
   return _educations;
 };
