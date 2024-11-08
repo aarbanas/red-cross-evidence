@@ -6,9 +6,9 @@ import {
   profilesAddresses,
   users,
 } from "~/server/db/schema";
-import { and, asc, count, desc, eq, ilike, type SQL } from "drizzle-orm";
-import { TRPCError } from "@trpc/server";
-import { type FindUserQuery } from "~/server/services/user/types";
+import { and, count, eq, ilike, type SQL } from "drizzle-orm";
+import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
+import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
 
 export type FindUserReturnDTO = {
   id: string;
@@ -41,23 +41,24 @@ enum FilterableKeys {
 }
 
 const mapFilterableKeyToConditional = (
-  key: FilterableKeys,
+  key: string,
   value: string,
 ): SQL | undefined => {
-  if (key === FilterableKeys.FIRSTNAME || key === FilterableKeys.LASTNAME)
+  const _key = key as FilterableKeys;
+  if (_key === FilterableKeys.FIRSTNAME || _key === FilterableKeys.LASTNAME)
     return ilike(mapKeyToColumn(key as FilterableKeys), `${value}%`);
 
   if (
-    key === FilterableKeys.EMAIL ||
-    (key === FilterableKeys.CITY && value != "")
+    _key === FilterableKeys.EMAIL ||
+    (_key === FilterableKeys.CITY && value != "")
   )
-    return eq(mapKeyToColumn(key as FilterableKeys), value);
+    return eq(mapKeyToColumn(_key), value);
 
   return undefined;
 };
 
-const mapKeyToColumn = (key: SortableKeys | FilterableKeys) => {
-  switch (key) {
+const mapKeyToColumn = (key: string | undefined) => {
+  switch (key as SortableKeys) {
     case SortableKeys.ID:
       return users.id;
     case SortableKeys.FIRSTNAME:
@@ -75,95 +76,23 @@ const mapKeyToColumn = (key: SortableKeys | FilterableKeys) => {
   }
 };
 
-const generateSortFunction = (
-  key?: SortableKeys | string,
-  value?: string,
-): SQL => {
-  if (
-    value &&
-    Object.keys(SortableKeys).findIndex((sortableKey) => sortableKey === key) >
-      -1
-  ) {
-    if (!["asc", "desc"].includes(value)) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Invalid sort direction",
-      });
-    }
-
-    return value === "asc"
-      ? asc(mapKeyToColumn(key as SortableKeys))
-      : desc(mapKeyToColumn(key as SortableKeys));
-  }
-
-  // If there is no 'value' or key is not a member of SortableKeys
-  return asc(users.createdAt);
-};
-
-const prepareOrderBy = (sort?: string | string[]): SQL[] => {
-  if (!sort) {
-    return [asc(users.createdAt)];
-  }
-
-  if (typeof sort === "string") {
-    const [key, value] = sort.split(":");
-
-    return [generateSortFunction(key, value)];
-  }
-
-  const sorts = [];
-  for (const _sort of sort) {
-    const [key, value] = _sort.split(":");
-    const sortValue = generateSortFunction(key, value);
-    if (sortValue) {
-      sorts.push(sortValue);
-    }
-  }
-
-  return sorts;
-};
-
-const prepareWhere = (
-  filter: Record<string, string> | undefined,
-): SQL | undefined => {
-  if (!filter) return undefined;
-
-  if (Object.keys(filter).length === 1) {
-    const [key, value] = Object.entries(filter)[0] ?? ["", ""];
-    if (!Object.values(FilterableKeys).includes(key as FilterableKeys)) {
-      return undefined;
-    }
-
-    return mapFilterableKeyToConditional(key as FilterableKeys, value);
-  }
-
-  const conditionals = [];
-  for (const [key, value] of Object.entries(filter)) {
-    if (!Object.values(FilterableKeys).includes(key as FilterableKeys)) {
-      continue;
-    }
-
-    conditionals.push(
-      mapFilterableKeyToConditional(key as FilterableKeys, value),
-    );
-  }
-
-  return and(...conditionals);
-};
-
 const userRepository = {
-  find: async (data: FindUserQuery) => {
+  find: async (data: FindQueryDTO) => {
     const { page, limit, sort, filter } = data;
-    const orderBy = prepareOrderBy(sort);
-    const where = prepareWhere(filter);
+    const orderBy = prepareOrderBy(
+      mapKeyToColumn,
+      SortableKeys,
+      users.createdAt,
+      sort,
+    );
+    const where = prepareWhere(
+      filter,
+      FilterableKeys,
+      mapFilterableKeyToConditional,
+    );
 
     const { totalCount, returnData } = await db.transaction(
-      async (
-        tx,
-      ): Promise<{
-        totalCount: number;
-        returnData: FindUserReturnDTO[];
-      }> => {
+      async (tx): Promise<FindReturnDTO<FindUserReturnDTO>> => {
         const [totalCount] = await tx
           .select({ count: count() })
           .from(users)

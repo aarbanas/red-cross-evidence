@@ -1,11 +1,11 @@
 import licenseRepository from "~/server/services/license/license.repository";
-import { type FindUserQuery } from "~/server/services/user/types";
+import type { FindQueryDTO } from "~/server/db/utility/types";
 
 const licenseService = {
   getById: async (id: string) => {
     return licenseRepository.findById(id);
   },
-  find: async (data: FindUserQuery) => {
+  find: async (data: FindQueryDTO) => {
     return licenseRepository.find(data);
   },
 };

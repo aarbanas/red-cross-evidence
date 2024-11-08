@@ -1,8 +1,8 @@
 import { db } from "~/server/db";
 import { licenses } from "~/server/db/schema";
-import { FindLicenseQuery } from "./types";
-import { TRPCError } from "@trpc/server";
-import { and, asc, count, desc, eq, ilike, type SQL } from "drizzle-orm";
+import { count, eq, ilike, type SQL } from "drizzle-orm";
+import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
+import { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
 
 enum SortableKeys {
   ID = "id",
@@ -24,8 +24,8 @@ export type FindLicenseReturnDTO = {
   description: string | null;
 };
 
-const mapKeyToColumn = (key: SortableKeys | FilterableKeys) => {
-  switch (key) {
+const mapKeyToColumn = (key: string | undefined) => {
+  switch (key as SortableKeys) {
     case SortableKeys.ID:
       return licenses.id;
     case SortableKeys.TYPE:
@@ -39,108 +39,37 @@ const mapKeyToColumn = (key: SortableKeys | FilterableKeys) => {
   }
 };
 
-const generateSortFunction = (
-  key?: SortableKeys | string,
-  value?: string,
-): SQL => {
-  if (
-    value &&
-    Object.keys(SortableKeys).findIndex((sortableKey) => sortableKey === key) >
-      -1
-  ) {
-    if (!["asc", "desc"].includes(value)) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Invalid sort direction",
-      });
-    }
-
-    return value === "asc"
-      ? asc(mapKeyToColumn(key as SortableKeys))
-      : desc(mapKeyToColumn(key as SortableKeys));
-  }
-
-  // If there is no 'value' or key is not a member of SortableKeys
-  return asc(licenses.name);
-};
-
-const prepareOrderBy = (sort?: string | string[]): SQL[] => {
-  if (!sort) {
-    return [asc(licenses.type)];
-  }
-
-  if (typeof sort === "string") {
-    const [key, value] = sort.split(":");
-
-    return [generateSortFunction(key, value)];
-  }
-
-  const sorts = [];
-  for (const _sort of sort) {
-    const [key, value] = _sort.split(":");
-    const sortValue = generateSortFunction(key, value);
-    if (sortValue) {
-      sorts.push(sortValue);
-    }
-  }
-
-  return sorts;
-};
-
 const mapFilterableKeyToConditional = (
-  key: FilterableKeys,
+  key: string,
   value: string,
 ): SQL | undefined => {
-  if (key === FilterableKeys.DESCRIPTION || key)
-    return ilike(mapKeyToColumn(key), `${value}%`);
+  const _key = key as FilterableKeys;
+  if (_key === FilterableKeys.DESCRIPTION || _key)
+    return ilike(mapKeyToColumn(_key), `${value}%`);
 
-  if (key === FilterableKeys.TYPE || key === FilterableKeys.NAME)
-    return eq(mapKeyToColumn(key as FilterableKeys), value);
+  if (_key === FilterableKeys.TYPE || _key === FilterableKeys.NAME)
+    return eq(mapKeyToColumn(_key), value);
 
   return undefined;
 };
 
-const prepareWhere = (
-  filter: Record<string, string> | undefined,
-): SQL | undefined => {
-  if (!filter) return undefined;
-
-  if (Object.keys(filter).length === 1) {
-    const [key, value] = Object.entries(filter)[0] ?? ["", ""];
-    if (!Object.values(FilterableKeys).includes(key as FilterableKeys)) {
-      return undefined;
-    }
-
-    return mapFilterableKeyToConditional(key as FilterableKeys, value);
-  }
-
-  const conditionals = [];
-  for (const [key, value] of Object.entries(filter)) {
-    if (!Object.values(FilterableKeys).includes(key as FilterableKeys)) {
-      continue;
-    }
-
-    conditionals.push(
-      mapFilterableKeyToConditional(key as FilterableKeys, value),
-    );
-  }
-
-  return and(...conditionals);
-};
-
 const licenseRepository = {
-  find: async (data: FindLicenseQuery) => {
+  find: async (data: FindQueryDTO) => {
     const { page, limit, sort, filter } = data;
-    const orderBy = prepareOrderBy(sort);
-    const where = prepareWhere(filter);
+    const orderBy = prepareOrderBy(
+      mapKeyToColumn,
+      SortableKeys,
+      licenses.name,
+      sort,
+    );
+    const where = prepareWhere(
+      filter,
+      FilterableKeys,
+      mapFilterableKeyToConditional,
+    );
 
     const { totalCount, returnData } = await db.transaction(
-      async (
-        tx,
-      ): Promise<{
-        totalCount: number;
-        returnData: FindLicenseReturnDTO[];
-      }> => {
+      async (tx): Promise<FindReturnDTO<FindLicenseReturnDTO>> => {
         const [totalCount] = await tx
           .select({ count: count() })
           .from(licenses)
