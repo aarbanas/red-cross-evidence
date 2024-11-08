@@ -1,19 +1,22 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { paginationQuerySchema } from "~/server/api/schema";
-import licenseService from "~/server/services/license/license.service";
+import educationService from "~/server/services/education/education.service";
 
-export const licenseRouter = createTRPCRouter({
+export const educationRouter = createTRPCRouter({
   findById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
-      const result = await licenseService.getById(input.id);
+      const result = await educationService.getById(input.id);
 
       return result;
     }),
   find: protectedProcedure
     .input(paginationQuerySchema)
     .query(async ({ input }) => {
-      return licenseService.find(input);
+      return educationService.find(input);
     }),
+  getUniqueTypes: protectedProcedure.query(async () => {
+    return educationService.getUniqueTypes();
+  }),
 });
