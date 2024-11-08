@@ -1,6 +1,6 @@
 import React from "react";
 
-const Tab2: React.FC = () => {
+const EducationsEvidenceTab: React.FC = () => {
   return (
     <div>
       <h2>Tab 2 content</h2>
@@ -9,4 +9,4 @@ const Tab2: React.FC = () => {
   );
 };
 
-export default Tab2;
+export default EducationsEvidenceTab;

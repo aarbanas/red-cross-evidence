@@ -1,12 +1,13 @@
-import { type FC } from "react";
+import React, { type FC } from "react";
 import SearchInput from "~/components/atoms/SearchInput";
 import useSearch from "~/hooks/useSearch";
 
 type Props = {
+  types: string[] | undefined;
   onSearch: (filter: Record<string, string> | undefined) => void;
 };
 
-const LicencesSearch: FC<Props> = ({ onSearch }) => {
+const EducationsListSearch: FC<Props> = ({ types, onSearch }) => {
   const { handleSearch } = useSearch(onSearch);
 
   return (
@@ -17,4 +18,4 @@ const LicencesSearch: FC<Props> = ({ onSearch }) => {
   );
 };
 
-export default LicencesSearch;
+export default EducationsListSearch;
