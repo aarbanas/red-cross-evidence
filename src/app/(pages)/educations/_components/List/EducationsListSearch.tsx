@@ -9,6 +9,7 @@ type Props = {
 
 const EducationsListSearch: FC<Props> = ({ types, onSearch }) => {
   const { handleSearch } = useSearch(onSearch);
+  console.log("types", types);
 
   return (
     <div className="flex gap-5">

@@ -11,7 +11,7 @@ import PaginationComponent from "~/components/organisms/pagination/PaginationCom
 import { type FC } from "react";
 import type { FindEducationReturnDTO } from "~/server/services/education/education.repository";
 import { translateEducationType } from "~/app/(pages)/educations/utils";
-import { EducationType } from "~/server/db/schema";
+import { type EducationType } from "~/server/db/schema";
 
 type Props = {
   data?: FindEducationReturnDTO[];

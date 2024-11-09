@@ -13,7 +13,7 @@ enum SortableKeys {
 
 enum FilterableKeys {
   TYPE = "type",
-  NAME = "name",
+  TITLE = "title",
   DESCRIPTION = "description",
 }
 
@@ -44,10 +44,10 @@ const mapFilterableKeyToConditional = (
   value: string,
 ): SQL | undefined => {
   const _key = key as FilterableKeys;
-  if (_key === FilterableKeys.DESCRIPTION || _key)
+  if (_key === FilterableKeys.DESCRIPTION || _key === FilterableKeys.TITLE)
     return ilike(mapKeyToColumn(_key), `${value}%`);
 
-  if (_key === FilterableKeys.TYPE || _key === FilterableKeys.NAME)
+  if (_key === FilterableKeys.TYPE && value)
     return eq(mapKeyToColumn(_key), value);
 
   return undefined;

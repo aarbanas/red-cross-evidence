@@ -21,6 +21,5 @@ export const educations = pgTable("education", {
   courseDuration: varchar("course_duration", { length: 255 }),
   renewalDuration: varchar("renewal_duration", { length: 255 }),
   topics: varchar("topics", { length: 255 }),
-
   type: educationTypeEnum("type").notNull(),
 });

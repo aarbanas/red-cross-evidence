@@ -44,7 +44,7 @@ const mapFilterableKeyToConditional = (
   value: string,
 ): SQL | undefined => {
   const _key = key as FilterableKeys;
-  if (_key === FilterableKeys.DESCRIPTION || _key)
+  if (_key === FilterableKeys.DESCRIPTION)
     return ilike(mapKeyToColumn(_key), `${value}%`);
 
   if (_key === FilterableKeys.TYPE || _key === FilterableKeys.NAME)

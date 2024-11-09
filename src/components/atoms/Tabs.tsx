@@ -46,8 +46,8 @@ const Tabs: FC<Props> = ({ tabs }: Props) => {
             key={index}
             onClick={() => setActiveTab(tab.queryParam)}
             className={cn(
-              "cursor-pointer py-2 text-sm font-medium",
-              "focus:rounded focus:outline-none focus:ring-1 focus:ring-red-600",
+              "cursor-pointer rounded-lg py-2 text-sm font-medium",
+              "focus:outline-none focus:ring-1 focus:ring-red-600",
               activeTab === tab.queryParam
                 ? "border-red px-1 text-red-600"
                 : "hover:bg-red-100",

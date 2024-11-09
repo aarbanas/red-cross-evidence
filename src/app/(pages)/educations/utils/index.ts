@@ -10,3 +10,14 @@ export const translateEducationType = (type: EducationType) => {
       return "Djelatnici";
   }
 };
+
+export const mapTranslatedEducationType = (type: string) => {
+  switch (type) {
+    case "Volonteri":
+      return EducationType.VOLUNTEERS;
+    case "Javnost":
+      return EducationType.PUBLIC;
+    case "Djelatnici":
+      return EducationType.EMPLOYEE;
+  }
+};
