@@ -14,7 +14,11 @@ const EducationsListSearch: FC<Props> = ({ types, onSearch }) => {
   return (
     <div className="flex gap-5">
       <SearchInput title={"Tip"} onSearch={handleSearch} searchKey={"type"} />
-      <SearchInput title={"Ime"} onSearch={handleSearch} searchKey={"name"} />
+      <SearchInput
+        title={"Naziv"}
+        onSearch={handleSearch}
+        searchKey={"title"}
+      />
     </div>
   );
 };
