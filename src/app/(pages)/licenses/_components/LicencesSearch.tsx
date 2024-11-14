@@ -3,7 +3,7 @@ import SearchInput from "~/components/atoms/SearchInput";
 import useSearch from "~/hooks/useSearch";
 
 type Props = {
-  onSearch: (filter: Record<string, string> | undefined) => void;
+  onSearch: (filter?: Record<string, string>) => void;
 };
 
 const LicencesSearch: FC<Props> = ({ onSearch }) => {

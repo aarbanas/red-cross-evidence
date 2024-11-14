@@ -7,7 +7,7 @@ type UseSearchReturn = {
 };
 
 const useSearch = (
-  onSearch: (filter: Record<string, string> | undefined) => void,
+  onSearch: (filter?: Record<string, string>) => void,
   defaultDebounceTime = 500,
 ): UseSearchReturn => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
