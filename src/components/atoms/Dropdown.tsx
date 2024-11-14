@@ -1,29 +1,34 @@
 import React, { useState } from "react";
 
-type Props = {
-  cityNames: string[];
-  searchKey: string;
-  onSearch(key: string, value: string): void;
+export type DropdownOption = {
+  key: string;
+  value: string;
 };
 
-const Dropdown: React.FC<Props> = ({ cityNames, searchKey, onSearch }) => {
-  const [selectedCity, setSelectedCity] = useState("");
+type Props = {
+  options: DropdownOption[];
+  searchKey: string;
+  onSearch: (key: string, value: string) => void;
+};
+
+const Dropdown: React.FC<Props> = ({ options, searchKey, onSearch }) => {
+  const [selectedValue, setSelectedValue] = useState("");
 
   return (
     <div className="flex gap-2">
       Grad:
       <select
         className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:outline-none"
-        value={selectedCity}
+        value={selectedValue}
         onChange={(e) => {
-          setSelectedCity(e.target.value);
+          setSelectedValue(e.target.value);
           onSearch(searchKey, e.target.value);
         }}
       >
         <option value="" />
-        {cityNames.map((city, index) => (
-          <option key={index} value={city}>
-            {city}
+        {options.map((option, index) => (
+          <option key={index} value={option.key}>
+            {option.value}
           </option>
         ))}
       </select>

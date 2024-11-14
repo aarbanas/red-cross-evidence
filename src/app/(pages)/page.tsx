@@ -1,15 +1,11 @@
 import { getServerAuthSession } from "~/server/auth";
-import Users from "~/app/(pages)/users/page";
+import UsersPage from "~/app/(pages)/users/page";
 
 const Home = async () => {
   const session = await getServerAuthSession();
   if (!session?.user) return null;
 
-  return (
-    <>
-      <Users />
-    </>
-  );
+  return <UsersPage />;
 };
 
 export default Home;

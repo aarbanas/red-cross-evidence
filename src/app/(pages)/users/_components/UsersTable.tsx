@@ -29,7 +29,7 @@ const UsersTable: React.FC<Props> = ({ data, totalPageNumber }) => {
             <TableRow>
               <TableHead className="md:table-cell">Ime</TableHead>
               <TableHead className="md:table-cell">Prezime</TableHead>
-              <TableHead className="md:table-cell">Email</TableHead>
+              <TableHead className="md:table-cell">Grad</TableHead>
               <TableHead className="md:table-cell">Status</TableHead>
               <TableHead className="md:table-cell">Uredi profil</TableHead>
             </TableRow>
@@ -44,7 +44,7 @@ const UsersTable: React.FC<Props> = ({ data, totalPageNumber }) => {
                 <TableCell className="md:table-cell">
                   {user.profile?.lastName}
                 </TableCell>
-                <TableCell className="md:table-cell">{user.email}</TableCell>
+                <TableCell className="md:table-cell">{user.city}</TableCell>
                 <TableCell className="md:table-cell">
                   {user.active ? (
                     <CheckCircle2 color="rgb(22 163 74)" />
