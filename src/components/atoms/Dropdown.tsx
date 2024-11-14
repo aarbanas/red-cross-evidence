@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 
+export type DropdownOption = {
+  key: string;
+  value: string;
+};
+
 type Props = {
-  values: string[];
+  options: DropdownOption[];
   searchKey: string;
   onSearch: (key: string, value: string) => void;
 };
 
-const Dropdown: React.FC<Props> = ({ values, searchKey, onSearch }) => {
+const Dropdown: React.FC<Props> = ({ options, searchKey, onSearch }) => {
   const [selectedValue, setSelectedValue] = useState("");
 
   return (
@@ -21,9 +26,9 @@ const Dropdown: React.FC<Props> = ({ values, searchKey, onSearch }) => {
         }}
       >
         <option value="" />
-        {values.map((value, index) => (
-          <option key={index} value={value}>
-            {value}
+        {options.map((option, index) => (
+          <option key={index} value={option.key}>
+            {option.value}
           </option>
         ))}
       </select>

@@ -1,14 +1,14 @@
 import React from "react";
-import Dropdown from "~/components/atoms/Dropdown";
+import Dropdown, { type DropdownOption } from "~/components/atoms/Dropdown";
 import SearchInput from "~/components/atoms/SearchInput";
 import useSearch from "~/hooks/useSearch";
 
 type Props = {
   onSearch: (filter: Record<string, string> | undefined) => void;
-  cityNames: string[] | undefined;
+  cities: DropdownOption[] | undefined;
 };
 
-const UsersSearch: React.FC<Props> = ({ onSearch, cityNames }) => {
+const UsersSearch: React.FC<Props> = ({ onSearch, cities }) => {
   const { handleSearch } = useSearch(onSearch);
 
   return (
@@ -23,9 +23,9 @@ const UsersSearch: React.FC<Props> = ({ onSearch, cityNames }) => {
         onSearch={handleSearch}
         searchKey={"lastname"}
       />
-      {cityNames?.length && (
+      {cities?.length && (
         <Dropdown
-          values={cityNames}
+          options={cities}
           onSearch={(key, value) => handleSearch(key, value, 0)}
           searchKey={"city"}
         />

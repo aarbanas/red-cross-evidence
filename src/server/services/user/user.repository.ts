@@ -69,7 +69,7 @@ const mapKeyToColumn = (key: SortableKeys | FilterableKeys) => {
     case SortableKeys.ACTIVE:
       return users.active;
     case SortableKeys.CITY:
-      return cities.name;
+      return cities.id;
     default:
       return users.id;
   }

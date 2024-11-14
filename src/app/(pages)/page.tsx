@@ -5,11 +5,7 @@ const Home = async () => {
   const session = await getServerAuthSession();
   if (!session?.user) return null;
 
-  return (
-    <>
-      <UsersPage />
-    </>
-  );
+  return <UsersPage />;
 };
 
 export default Home;

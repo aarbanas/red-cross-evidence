@@ -1,7 +1,9 @@
-import cityRepository from "~/server/services/city/city.repository";
+import cityRepository, {
+  type FindCityNameReturnDTO,
+} from "~/server/services/city/city.repository";
 
 const cityService = {
-  findUniqueCityNames: async () => {
+  findUniqueCityNames: async (): Promise<FindCityNameReturnDTO[]> => {
     return cityRepository.findUniqueCityNames();
   },
 };

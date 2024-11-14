@@ -5,13 +5,21 @@ import UsersSearch from "~/app/(pages)/users/_components/UsersSearch";
 import { PaginationProvider } from "~/components/organisms/pagination/PaginationContext";
 import Users from "~/app/(pages)/users/_components/Users";
 import { api } from "~/trpc/react";
+import { type DropdownOption } from "~/components/atoms/Dropdown";
 
 const UsersPage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
     undefined,
   );
   const { data } = api.city.findUniqueCityNames.useQuery();
-  const cityNames = useMemo(() => data?.map((city) => city.name), [data]);
+  const cities: DropdownOption[] | undefined = useMemo(
+    () =>
+      data?.map((city) => ({
+        value: city.name,
+        key: city.id,
+      })),
+    [data],
+  );
 
   const handleSearch = useCallback(
     (newFilter: Record<string, string> | undefined) => {
@@ -22,7 +30,7 @@ const UsersPage = () => {
 
   return (
     <MainLayout headerChildren={<div>Volonteri</div>}>
-      <UsersSearch onSearch={handleSearch} cityNames={cityNames} />
+      <UsersSearch onSearch={handleSearch} cities={cities} />
 
       <PaginationProvider>
         <Users filter={filter} />
