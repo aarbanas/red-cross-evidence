@@ -21,12 +21,8 @@ const useSearch = (
   }, [debouncedSearchTerm, onSearch]);
 
   const handleSearch = useCallback(
-    (key: string, value: string, debounceTime?: number) => {
-      if (debounceTime !== undefined) {
-        setDebounceTime(debounceTime);
-      } else {
-        setDebounceTime(defaultDebounceTime);
-      }
+    (key: string, value: string, debounceTime = defaultDebounceTime) => {
+      setDebounceTime(debounceTime);
 
       setFilter((prevFilter) => ({ ...prevFilter, [key]: value }));
     },
