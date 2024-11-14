@@ -10,12 +10,9 @@ const LicencePage = () => {
     undefined,
   );
 
-  const handleSearch = useCallback(
-    (newFilter: Record<string, string> | undefined) => {
-      setFilter(newFilter);
-    },
-    [],
-  );
+  const handleSearch = useCallback((newFilter?: Record<string, string>) => {
+    setFilter(newFilter);
+  }, []);
 
   return (
     <MainLayout headerChildren={<div>Licence</div>}>

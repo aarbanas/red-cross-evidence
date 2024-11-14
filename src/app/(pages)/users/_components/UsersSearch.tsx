@@ -4,8 +4,8 @@ import SearchInput from "~/components/atoms/SearchInput";
 import useSearch from "~/hooks/useSearch";
 
 type Props = {
-  onSearch: (filter: Record<string, string> | undefined) => void;
-  cities: DropdownOption[] | undefined;
+  onSearch: (filter?: Record<string, string>) => void;
+  cities?: DropdownOption[];
 };
 
 const UsersSearch: React.FC<Props> = ({ onSearch, cities }) => {
