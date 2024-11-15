@@ -7,16 +7,17 @@ export type DropdownOption = {
 
 type Props = {
   options: DropdownOption[];
+  label: string;
   searchKey: string;
   onSearch: (key: string, value: string) => void;
 };
 
-const Dropdown: React.FC<Props> = ({ options, searchKey, onSearch }) => {
+const Dropdown: React.FC<Props> = ({ options, label, searchKey, onSearch }) => {
   const [selectedValue, setSelectedValue] = useState("");
 
   return (
     <div className="flex gap-2">
-      Grad:
+      {label}
       <select
         className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:outline-none"
         value={selectedValue}

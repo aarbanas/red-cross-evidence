@@ -7,6 +7,7 @@ import TabLayout from "~/components/layout/tabLayout";
 import { api } from "~/trpc/react";
 import { translateEducationType } from "~/app/(pages)/educations/utils";
 import { type EducationType } from "~/server/db/schema";
+import type { DropdownOption } from "~/components/atoms/Dropdown";
 
 const EducationsListTab = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
@@ -14,9 +15,12 @@ const EducationsListTab = () => {
   );
 
   const { data } = api.education.getUniqueTypes.useQuery();
-  const types = useMemo(
+  const types: DropdownOption[] | undefined = useMemo(
     () =>
-      data?.map(({ type }) => translateEducationType(type as EducationType)),
+      data?.map(({ type }) => ({
+        value: translateEducationType(type as EducationType),
+        key: type,
+      })),
     [data],
   );
 
