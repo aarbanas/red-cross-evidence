@@ -5,16 +5,13 @@ import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
 
 enum SortableKeys {
-  ID = "id",
   TYPE = "type",
   TITLE = "title",
-  DESCRIPTION = "description",
 }
 
 enum FilterableKeys {
   TYPE = "type",
   TITLE = "title",
-  DESCRIPTION = "description",
 }
 
 export type FindEducationReturnDTO = {
@@ -26,14 +23,10 @@ export type FindEducationReturnDTO = {
 
 const mapKeyToColumn = (key: string | undefined) => {
   switch (key as SortableKeys) {
-    case SortableKeys.ID:
-      return educations.id;
     case SortableKeys.TYPE:
       return educations.type;
     case SortableKeys.TITLE:
       return educations.title;
-    case SortableKeys.DESCRIPTION:
-      return educations.description;
     default:
       return educations.id;
   }
@@ -44,8 +37,8 @@ const mapFilterableKeyToConditional = (
   value: string,
 ): SQL | undefined => {
   const _key = key as FilterableKeys;
-  if (_key === FilterableKeys.DESCRIPTION || _key === FilterableKeys.TITLE)
-    return ilike(mapKeyToColumn(_key), `${value}%`);
+  if (_key === FilterableKeys.TITLE)
+    return ilike(mapKeyToColumn(_key), `%${value}%`);
 
   if (_key === FilterableKeys.TYPE && value)
     return eq(mapKeyToColumn(_key), value);

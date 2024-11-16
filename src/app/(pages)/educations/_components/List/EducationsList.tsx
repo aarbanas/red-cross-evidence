@@ -1,29 +1,28 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useMemo } from "react";
 import { usePagination } from "~/components/organisms/pagination/PaginationContext";
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 import EducationsListTable from "~/app/(pages)/educations/_components/List/EducationsListTable";
+import useTotalPageNumber from "~/hooks/useTotalPageNumber";
+import useResetPageOnFilterChange from "~/hooks/useResetPageOnFilterChange";
 
 type Props = {
   filter: Record<string, string> | undefined;
 };
 
 const EducationsList: FC<Props> = ({ filter }) => {
-  const [totalPageNumber, setTotalPageNumber] = useState<number>(1);
-  const { page } = usePagination();
+  const { page, setPage } = usePagination();
+  const memoizedFilter = useMemo(() => filter, [filter]);
+  useResetPageOnFilterChange(setPage, memoizedFilter);
 
   const { data, isLoading, error } = api.education.find.useQuery({
     page,
     limit: 10,
     sort: ["name:asc"],
-    filter,
+    filter: memoizedFilter,
   });
 
-  useEffect(() => {
-    if (data?.meta) {
-      setTotalPageNumber(Math.ceil(data.meta.count / data.meta.limit));
-    }
-  }, [data]);
+  const { totalPageNumber } = useTotalPageNumber(data);
 
   return (
     <>
