@@ -112,6 +112,15 @@ const licenseRepository = {
       .where(eq(licenses.id, id))
       .execute();
   },
+  findUniqueTypes: async () => {
+    return db
+      .selectDistinct({
+        type: licenses.type,
+      })
+      .from(licenses)
+      .orderBy(licenses.type)
+      .execute();
+  },
 };
 
 export default licenseRepository;

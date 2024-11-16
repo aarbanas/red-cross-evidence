@@ -47,10 +47,6 @@ export enum ClothingSize {
   XXL = "XXL",
 }
 
-export enum License {
-  DRIVING = "driving",
-}
-
 export enum WorkStatus {
   EMPLOYED = "EMPLOYED",
   UNEMPLOYED = "UNEMPLOYED",

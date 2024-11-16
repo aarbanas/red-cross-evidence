@@ -8,6 +8,9 @@ const licenseService = {
   find: async (data: FindQueryDTO) => {
     return licenseRepository.find(data);
   },
+  findUniqueTypes: async () => {
+    return licenseRepository.findUniqueTypes();
+  },
 };
 
 export default licenseService;

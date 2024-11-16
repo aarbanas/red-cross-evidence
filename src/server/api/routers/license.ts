@@ -7,13 +7,14 @@ export const licenseRouter = createTRPCRouter({
   findById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
-      const result = await licenseService.getById(input.id);
-
-      return result;
+      return licenseService.getById(input.id);
     }),
   find: protectedProcedure
     .input(paginationQuerySchema)
     .query(async ({ input }) => {
       return licenseService.find(input);
     }),
+  findUniqueTypes: protectedProcedure.query(async () => {
+    return licenseService.findUniqueTypes();
+  }),
 });
