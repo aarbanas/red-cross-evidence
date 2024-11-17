@@ -1,4 +1,4 @@
-import React, { type FC } from "react";
+import { type FC } from "react";
 import SearchInput from "~/components/atoms/SearchInput";
 import useSearch from "~/hooks/useSearch";
 import Dropdown, { type DropdownOption } from "~/components/atoms/Dropdown";

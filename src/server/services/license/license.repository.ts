@@ -2,7 +2,7 @@ import { db } from "~/server/db";
 import { licenses } from "~/server/db/schema";
 import { count, eq, ilike, type SQL } from "drizzle-orm";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
-import { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
+import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
 
 enum SortableKeys {
   ID = "id",
@@ -24,7 +24,7 @@ export type FindLicenseReturnDTO = {
   description: string | null;
 };
 
-const mapKeyToColumn = (key: string | undefined) => {
+const mapKeyToColumn = (key?: string) => {
   switch (key as SortableKeys) {
     case SortableKeys.ID:
       return licenses.id;
@@ -43,12 +43,14 @@ const mapFilterableKeyToConditional = (
   key: string,
   value: string,
 ): SQL | undefined => {
-  const _key = key as FilterableKeys;
-  if (_key === FilterableKeys.DESCRIPTION)
-    return ilike(mapKeyToColumn(_key), `${value}%`);
+  if (key === FilterableKeys.DESCRIPTION.valueOf())
+    return ilike(mapKeyToColumn(key), `${value}%`);
 
-  if (_key === FilterableKeys.TYPE || _key === FilterableKeys.NAME)
-    return eq(mapKeyToColumn(_key), value);
+  if (
+    key === FilterableKeys.TYPE.valueOf() ||
+    key === FilterableKeys.NAME.valueOf()
+  )
+    return eq(mapKeyToColumn(key), value);
 
   return undefined;
 };

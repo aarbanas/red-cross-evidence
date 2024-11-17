@@ -1,4 +1,4 @@
-import React, { type FC, type PropsWithChildren } from "react";
+import type { FC, PropsWithChildren } from "react";
 
 const TabLayout: FC<Readonly<PropsWithChildren>> = ({ children }) => {
   return (

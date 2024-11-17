@@ -44,21 +44,23 @@ const mapFilterableKeyToConditional = (
   key: string,
   value: string,
 ): SQL | undefined => {
-  const _key = key as FilterableKeys;
-  if (_key === FilterableKeys.FIRSTNAME || _key === FilterableKeys.LASTNAME)
+  if (
+    key === FilterableKeys.FIRSTNAME.valueOf() ||
+    key === FilterableKeys.LASTNAME.valueOf()
+  )
     return ilike(mapKeyToColumn(key as FilterableKeys), `${value}%`);
 
   if (
-    _key === FilterableKeys.EMAIL ||
-    (_key === FilterableKeys.CITY && value != "")
+    key === FilterableKeys.EMAIL.valueOf() ||
+    (key === FilterableKeys.CITY.valueOf() && value != "")
   )
-    return eq(mapKeyToColumn(_key), value);
+    return eq(mapKeyToColumn(key), value);
 
   return undefined;
 };
 
-const mapKeyToColumn = (key: string | undefined) => {
-  switch (key as SortableKeys) {
+const mapKeyToColumn = (key?: string) => {
+  switch (key) {
     case SortableKeys.ID:
       return users.id;
     case SortableKeys.FIRSTNAME:
