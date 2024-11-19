@@ -1,5 +1,11 @@
 "use client";
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  type ReactNode,
+  type FC,
+} from "react";
 
 type PaginationContextType = {
   page: number;
@@ -22,7 +28,7 @@ type PaginationProviderProps = {
   children: ReactNode;
 };
 
-export const PaginationProvider: React.FC<PaginationProviderProps> = ({
+export const PaginationProvider: FC<PaginationProviderProps> = ({
   children,
 }) => {
   const [page, setPage] = useState(0);

@@ -1,10 +1,10 @@
 import { fileURLToPath } from "url";
-import { DrivingLicense, License, licenses } from "../schema";
+import { DrivingLicense, licenses } from "../schema";
 import { db } from "../index";
 
 export const populateLicenses = async () => {
   const _licenses = Object.values(DrivingLicense).map((type) => ({
-    type: License.DRIVING,
+    type: "Vozačka dozvola",
     name: type,
     description: "",
   }));

@@ -1,41 +1,34 @@
+import { educations } from "~/server/db/schema";
 import { db } from "~/server/db";
-import { licenses } from "~/server/db/schema";
-import { count, eq, ilike, type SQL } from "drizzle-orm";
-import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
+import { asc, count, eq, ilike, type SQL } from "drizzle-orm";
 import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
+import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
 
 enum SortableKeys {
-  ID = "id",
   TYPE = "type",
-  NAME = "name",
-  DESCRIPTION = "description",
+  TITLE = "title",
 }
 
 enum FilterableKeys {
   TYPE = "type",
-  NAME = "name",
-  DESCRIPTION = "description",
+  TITLE = "title",
 }
 
-export type FindLicenseReturnDTO = {
+export type FindEducationReturnDTO = {
   id: string;
   type: string;
-  name: string;
+  title: string;
   description: string | null;
 };
 
-const mapKeyToColumn = (key?: string) => {
+const mapKeyToColumn = (key: string | undefined) => {
   switch (key as SortableKeys) {
-    case SortableKeys.ID:
-      return licenses.id;
     case SortableKeys.TYPE:
-      return licenses.type;
-    case SortableKeys.NAME:
-      return licenses.name;
-    case SortableKeys.DESCRIPTION:
-      return licenses.description;
+      return educations.type;
+    case SortableKeys.TITLE:
+      return educations.title;
     default:
-      return licenses.id;
+      return educations.id;
   }
 };
 
@@ -43,25 +36,22 @@ const mapFilterableKeyToConditional = (
   key: string,
   value: string,
 ): SQL | undefined => {
-  if (key === FilterableKeys.DESCRIPTION.valueOf())
-    return ilike(mapKeyToColumn(key), `${value}%`);
+  if (key === FilterableKeys.TITLE.valueOf())
+    return ilike(mapKeyToColumn(key), `%${value}%`);
 
-  if (
-    key === FilterableKeys.TYPE.valueOf() ||
-    key === FilterableKeys.NAME.valueOf()
-  )
+  if (key === FilterableKeys.TYPE.valueOf())
     return eq(mapKeyToColumn(key), value);
 
   return undefined;
 };
 
-const licenseRepository = {
+const educationRepository = {
   find: async (data: FindQueryDTO) => {
     const { page, limit, sort, filter } = data;
     const orderBy = prepareOrderBy(
       mapKeyToColumn,
       SortableKeys,
-      licenses.name,
+      educations.title,
       sort,
     );
     const where = prepareWhere(
@@ -71,20 +61,20 @@ const licenseRepository = {
     );
 
     const { totalCount, returnData } = await db.transaction(
-      async (tx): Promise<FindReturnDTO<FindLicenseReturnDTO>> => {
+      async (tx): Promise<FindReturnDTO<FindEducationReturnDTO>> => {
         const [totalCount] = await tx
           .select({ count: count() })
-          .from(licenses)
+          .from(educations)
           .where(where);
 
         const returnData = await tx
           .select({
-            id: licenses.id,
-            type: licenses.type,
-            name: licenses.name,
-            description: licenses.description,
+            id: educations.id,
+            type: educations.type,
+            title: educations.title,
+            description: educations.description,
           })
-          .from(licenses)
+          .from(educations)
           .where(where)
           .orderBy(...orderBy)
           .limit(limit ?? 10)
@@ -105,24 +95,27 @@ const licenseRepository = {
   findById: async (id: string) => {
     return db
       .select({
-        id: licenses.id,
-        type: licenses.type,
-        name: licenses.name,
-        description: licenses.description,
+        type: educations.type,
+        title: educations.title,
+        description: educations.description,
+        precondition: educations.precondition,
+        duration: educations.duration,
+        lecturers: educations.lecturers,
+        courseDuration: educations.courseDuration,
+        renewalDuration: educations.renewalDuration,
+        topics: educations.topics,
       })
-      .from(licenses)
-      .where(eq(licenses.id, id))
+      .from(educations)
+      .where(eq(educations.id, id))
       .execute();
   },
   findUniqueTypes: async () => {
     return db
-      .selectDistinct({
-        type: licenses.type,
-      })
-      .from(licenses)
-      .orderBy(licenses.type)
+      .selectDistinct({ type: educations.type })
+      .from(educations)
+      .orderBy(asc(educations.type))
       .execute();
   },
 };
 
-export default licenseRepository;
+export default educationRepository;

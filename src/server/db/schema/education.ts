@@ -18,9 +18,8 @@ export const educations = pgTable("education", {
   precondition: text("precondition"),
   duration: varchar("duration", { length: 255 }),
   lecturers: varchar("lecturers", { length: 255 }),
-  course_duration: varchar("course_duration", { length: 255 }),
-  renewal_duration: varchar("renewal_duration", { length: 255 }),
+  courseDuration: varchar("course_duration", { length: 255 }),
+  renewalDuration: varchar("renewal_duration", { length: 255 }),
   topics: varchar("topics", { length: 255 }),
-
   type: educationTypeEnum("type").notNull(),
 });

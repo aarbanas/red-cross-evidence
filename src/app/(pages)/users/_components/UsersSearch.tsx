@@ -26,6 +26,7 @@ const UsersSearch: React.FC<Props> = ({ onSearch, cities }) => {
       {cities?.length && (
         <Dropdown
           options={cities}
+          label={"Grad"}
           onSearch={(key, value) => handleSearch(key, value, 0)}
           searchKey={"city"}
         />

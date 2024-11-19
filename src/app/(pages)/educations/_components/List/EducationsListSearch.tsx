@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import React, { type FC } from "react";
 import SearchInput from "~/components/atoms/SearchInput";
 import useSearch from "~/hooks/useSearch";
 import Dropdown, { type DropdownOption } from "~/components/atoms/Dropdown";
@@ -8,7 +8,7 @@ type Props = {
   types?: DropdownOption[];
 };
 
-const LicencesSearch: FC<Props> = ({ onSearch, types }) => {
+const EducationsListSearch: FC<Props> = ({ types, onSearch }) => {
   const { handleSearch } = useSearch(onSearch);
 
   return (
@@ -21,9 +21,13 @@ const LicencesSearch: FC<Props> = ({ onSearch, types }) => {
           label={"Tip"}
         />
       )}
-      <SearchInput title={"Ime"} onSearch={handleSearch} searchKey={"name"} />
+      <SearchInput
+        title={"Naziv"}
+        onSearch={handleSearch}
+        searchKey={"title"}
+      />
     </div>
   );
 };
 
-export default LicencesSearch;
+export default EducationsListSearch;
