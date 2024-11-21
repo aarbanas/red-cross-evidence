@@ -9,7 +9,7 @@ export const educationRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const result = await educationService.getById(input.id);
 
-      return result;
+      return result[0];
     }),
   find: protectedProcedure
     .input(paginationQuerySchema)
@@ -24,5 +24,39 @@ export const educationRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       await educationService.deleteById(input.id);
       return { success: true };
+    }),
+  create: protectedProcedure
+    .input(
+      z.object({
+        type: z.string(),
+        title: z.string(),
+        description: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const result = await educationService.create(
+        input.type,
+        input.title,
+        input.description,
+      );
+      return result;
+    }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        type: z.string(),
+        title: z.string(),
+        description: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const result = await educationService.update(
+        input.id,
+        input.type,
+        input.title,
+        input.description,
+      );
+      return result;
     }),
 });

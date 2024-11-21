@@ -14,6 +14,17 @@ const educationService = {
   deleteById: async (id: string) => {
     return educationRepository.deleteById(id);
   },
+  create: async (type: string, title: string, description: string) => {
+    return educationRepository.create(type, title, description);
+  },
+  update: async (
+    id: string,
+    type: string,
+    title: string,
+    description: string,
+  ) => {
+    return educationRepository.update(id, type, title, description);
+  },
 };
 
 export default educationService;

@@ -119,6 +119,44 @@ const educationRepository = {
   deleteById: async (id: string) => {
     return db.delete(educations).where(eq(educations.id, id)).execute();
   },
+  create: async (type: string, title: string, description: string) => {
+    return db
+      .insert(educations)
+      .values({
+        type,
+        title,
+        description,
+      })
+      .returning({
+        id: educations.id,
+        type: educations.type,
+        title: educations.title,
+        description: educations.description,
+      })
+      .execute();
+  },
+  update: async (
+    id: string,
+    type: string,
+    title: string,
+    description: string,
+  ) => {
+    return db
+      .update(educations)
+      .set({
+        type,
+        title,
+        description,
+      })
+      .where(eq(educations.id, id))
+      .returning({
+        id: educations.id,
+        type: educations.type,
+        title: educations.title,
+        description: educations.description,
+      })
+      .execute();
+  },
 };
 
 export default educationRepository;
