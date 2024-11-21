@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "~/components/organisms/Table";
 import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
-import { useState, type FC } from "react";
+import { useState, useEffect, type FC } from "react";
 import type { FindEducationReturnDTO } from "~/server/services/education/education.repository";
 import { translateEducationType } from "~/app/(pages)/educations/utils";
 import { type EducationType } from "~/server/db/schema";
@@ -24,7 +24,14 @@ const EducationsListTable: FC<Props> = ({
   data: initialData,
   totalPageNumber,
 }) => {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState<FindEducationReturnDTO[]>([]);
+
+  useEffect(() => {
+    if (initialData) {
+      setData(initialData);
+    }
+  }, [initialData]);
+
   const deleteEducation = api.education.deleteById.useMutation();
 
   const handleDelete = async (id: string) => {
