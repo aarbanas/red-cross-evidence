@@ -19,4 +19,10 @@ export const educationRouter = createTRPCRouter({
   getUniqueTypes: protectedProcedure.query(async () => {
     return educationService.getUniqueTypes();
   }),
+  deleteById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      await educationService.deleteById(input.id);
+      return { success: true };
+    }),
 });

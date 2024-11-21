@@ -2,6 +2,7 @@ import React, { type FC } from "react";
 import SearchInput from "~/components/atoms/SearchInput";
 import useSearch from "~/hooks/useSearch";
 import Dropdown, { type DropdownOption } from "~/components/atoms/Dropdown";
+import { CirclePlus } from "lucide-react";
 
 type Props = {
   onSearch: (filter?: Record<string, string>) => void;
@@ -26,6 +27,7 @@ const EducationsListSearch: FC<Props> = ({ types, onSearch }) => {
         onSearch={handleSearch}
         searchKey={"title"}
       />
+      <CirclePlus color="green" />
     </div>
   );
 };

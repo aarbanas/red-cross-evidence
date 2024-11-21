@@ -116,6 +116,9 @@ const educationRepository = {
       .orderBy(asc(educations.type))
       .execute();
   },
+  deleteById: async (id: string) => {
+    return db.delete(educations).where(eq(educations.id, id)).execute();
+  },
 };
 
 export default educationRepository;

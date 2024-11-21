@@ -11,6 +11,9 @@ const educationService = {
   getUniqueTypes: async () => {
     return educationRepository.findUniqueTypes();
   },
+  deleteById: async (id: string) => {
+    return educationRepository.deleteById(id);
+  },
 };
 
 export default educationService;
