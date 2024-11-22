@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import FormInput from "~/components/organisms/form/formInput/FormInput";
+import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
 import { Button } from "~/components/atoms/Button";
 import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   translateEducationType,
   mapTranslatedEducationType,
@@ -11,7 +12,7 @@ import { EducationType } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 
-type EducationUpdateFormData = {
+type EducationFormData = {
   type: string;
   title: string;
   description: string;
@@ -19,17 +20,14 @@ type EducationUpdateFormData = {
 
 type Props = {
   id: string;
-  formData: EducationUpdateFormData;
+  formData: EducationFormData;
 };
 
 const EducationForm: React.FC<Props> = ({ id, formData }) => {
-  let translatedType = "";
-  if (formData.type !== "") {
-    translatedType = translateEducationType(formData.type as EducationType);
-  }
-  const form = useForm<EducationUpdateFormData>({
-    values: {
-      type: translatedType,
+  const [uniqueTypes, setUniqueTypes] = useState<string[]>([]);
+  const form = useForm<EducationFormData>({
+    defaultValues: {
+      type: formData.type,
       title: formData.title,
       description: formData.description,
     },
@@ -37,11 +35,19 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
   const router = useRouter();
 
   const { isSubmitting } = form.formState;
+  const createEducation = api.education.create.useMutation();
   const updateEducation = api.education.update.useMutation();
+  const getUniqueTypes = api.education.getUniqueTypes.useQuery();
+
+  useEffect(() => {
+    if (getUniqueTypes.data) {
+      setUniqueTypes(getUniqueTypes.data.map((type) => type.type));
+    }
+  }, [getUniqueTypes.data]);
+
   // Handle form submission
   const handleSubmit = async () => {
     try {
-      //returns undefined if unknown type
       const inputtedType = form.getValues("type");
       const inputtedTitle = form.getValues("title");
       const inputtedDescription = form.getValues("description");
@@ -53,19 +59,27 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
       console.log("Translated Type:", translatedType);
 
       try {
-        await updateEducation.mutateAsync({
-          id: id,
-          type: translatedType,
-          title: inputtedTitle,
-          description: inputtedDescription,
-        });
+        if (id === "create") {
+          await createEducation.mutateAsync({
+            type: translatedType,
+            title: inputtedTitle,
+            description: inputtedDescription,
+          });
+        } else {
+          await updateEducation.mutateAsync({
+            id: id,
+            type: translatedType,
+            title: inputtedTitle,
+            description: inputtedDescription,
+          });
+        }
         router.push("/educations?selected=popis");
       } catch (error) {
-        console.error("Failed to delete education:", error);
+        console.error(
+          `Failed to ${id === "create" ? "create" : "update"} education:`,
+          error,
+        );
       }
-
-      // Perform the form submission logic here
-      // For example, you can call an API to create or update the education
     } catch (error) {
       console.error("Failed to submit form:", error);
     }
@@ -73,13 +87,20 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
 
   return (
     <FormComponent form={form} onSubmit={handleSubmit}>
-      <FormInput
+      <FormSelect
         id="type"
         label="Tip*"
         {...form.register("type", {
-          required: "Ime je obavezno polje",
+          required: "Tip je obavezno polje",
         })}
-      />
+        placeholder="Odaberite tip"
+      >
+        {uniqueTypes.map((type) => (
+          <option key={type} value={type}>
+            {translateEducationType(type as EducationType)}
+          </option>
+        ))}
+      </FormSelect>
 
       <FormInput
         id="title"
@@ -102,7 +123,7 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
         type="submit"
         showLoading={isSubmitting}
       >
-        <span>Spremi promjene</span>
+        <span>{id === "create" ? "Kreiraj edukaciju" : "Spremi promjene"}</span>
       </Button>
     </FormComponent>
   );

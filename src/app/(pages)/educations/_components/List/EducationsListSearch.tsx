@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { type FC } from "react";
 import SearchInput from "~/components/atoms/SearchInput";
 import useSearch from "~/hooks/useSearch";
@@ -27,7 +28,13 @@ const EducationsListSearch: FC<Props> = ({ types, onSearch }) => {
         onSearch={handleSearch}
         searchKey={"title"}
       />
-      <CirclePlus color="green" />
+      <Link
+        href={{
+          pathname: `/educations/create`,
+        }}
+      >
+        <CirclePlus color="green" />
+      </Link>
     </div>
   );
 };

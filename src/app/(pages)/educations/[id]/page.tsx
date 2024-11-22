@@ -8,17 +8,26 @@ import EducationForm from "~/app/(pages)/educations/[id]/_components/EducationsF
 export default function EducationDetailPage() {
   const { id } = useParams();
 
-  // Fetch user data by ID
-  const { data, isLoading, error } = api.education.findById.useQuery({
-    id: id as string,
-  });
+  // Conditionally fetch data only if the id is not "create"
+  const { data, isLoading, error } =
+    id !== "create"
+      ? api.education.findById.useQuery({ id: id as string })
+      : { data: null, isLoading: false, error: null };
 
   return (
-    <MainLayout headerChildren={<div>Uređivanje edukacije {data?.title}</div>}>
+    <MainLayout
+      headerChildren={
+        <div>
+          {id === "create"
+            ? "Kreiranje nove edukacije"
+            : `Uređivanje edukacije ${data?.title}`}
+        </div>
+      }
+    >
       <div>
         {isLoading && <LoadingSpinner />}
         {error && <div>Greška</div>}
-        {data && (
+        {(id === "create" || data) && (
           <EducationForm
             id={id as string}
             formData={{
