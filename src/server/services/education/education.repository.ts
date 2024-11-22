@@ -39,7 +39,7 @@ const mapFilterableKeyToConditional = (
   if (key === FilterableKeys.TITLE.valueOf())
     return ilike(mapKeyToColumn(key), `%${value}%`);
 
-  if (key === FilterableKeys.TYPE.valueOf())
+  if (value != "" && key === FilterableKeys.TYPE.valueOf())
     return eq(mapKeyToColumn(key), value);
 
   return undefined;
