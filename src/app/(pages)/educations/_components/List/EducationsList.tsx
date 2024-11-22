@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import React, { type FC } from "react";
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 import EducationsListTable from "~/app/(pages)/educations/_components/List/EducationsListTable";
@@ -20,6 +20,10 @@ const EducationsList: FC<Props> = ({ filter }) => {
   });
 
   const { totalPageNumber } = useTotalPageNumber(data);
+
+  if (isLoading) return <LoadingSpinner />;
+
+  if (error) return <div>Greška</div>;
 
   return (
     <>

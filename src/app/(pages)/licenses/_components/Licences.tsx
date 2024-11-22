@@ -21,13 +21,11 @@ const Licences: React.FC<Props> = ({ filter }) => {
 
   const { totalPageNumber } = useTotalPageNumber(data);
 
-  return (
-    <>
-      {isLoading && <LoadingSpinner />}
-      {error && <div>Greška</div>}
-      <LicencesTable data={data?.data} totalPageNumber={totalPageNumber} />
-    </>
-  );
+  if (isLoading) return <LoadingSpinner />;
+
+  if (error) return <div>Greška</div>;
+
+  return <LicencesTable data={data?.data} totalPageNumber={totalPageNumber} />;
 };
 
 export default Licences;
