@@ -1,11 +1,13 @@
 import { getServerAuthSession } from "~/server/auth";
-import UsersPage from "~/app/(pages)/users/page";
+import { redirect } from "next/navigation";
 
 const Home = async () => {
   const session = await getServerAuthSession();
-  if (!session?.user) return null;
-
-  return <UsersPage />;
+  if (!session?.user) {
+    redirect("/login");
+  } else {
+    redirect("/users");
+  }
 };
 
 export default Home;

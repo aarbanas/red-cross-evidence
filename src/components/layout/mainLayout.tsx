@@ -13,7 +13,7 @@ type Props = {
 };
 
 enum AppRoutes {
-  HOME = "/",
+  HOME = "/users",
   EDUCATIONS = "/educations",
   LICENSES = "/licenses",
 }

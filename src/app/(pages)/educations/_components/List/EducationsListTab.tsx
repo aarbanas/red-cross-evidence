@@ -1,5 +1,4 @@
 "use client";
-import { PaginationProvider } from "~/components/organisms/pagination/PaginationContext";
 import { useMemo, useState } from "react";
 import EducationsListSearch from "~/app/(pages)/educations/_components/List/EducationsListSearch";
 import EducationsList from "~/app/(pages)/educations/_components/List/EducationsList";
@@ -46,9 +45,8 @@ const EducationsListTab = () => {
           </Link>
         </div>
       </div>
-      <PaginationProvider>
-        <EducationsList filter={filter} />
-      </PaginationProvider>
+
+      <EducationsList filter={filter} />
     </TabLayout>
   );
 };
