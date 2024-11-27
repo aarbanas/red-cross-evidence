@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import FormInput from "~/components/organisms/form/formInput/FormInput";
 import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
+import FormTextarea from "~/components/organisms/form/formTextArea/FormTextArea";
 import { Button } from "~/components/atoms/Button";
 import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
 import React, { useEffect, useState } from "react";
@@ -16,6 +17,12 @@ type EducationFormData = {
   type: string;
   title: string;
   description: string;
+  precondition: string;
+  duration: string;
+  lecturers: string;
+  courseDuration: string;
+  renewalDuration: string;
+  topics: string;
 };
 
 type Props = {
@@ -30,6 +37,12 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
       type: formData.type,
       title: formData.title,
       description: formData.description,
+      precondition: formData.precondition,
+      duration: formData.duration,
+      lecturers: formData.lecturers,
+      courseDuration: formData.courseDuration,
+      renewalDuration: formData.renewalDuration,
+      topics: formData.topics,
     },
   });
   const router = useRouter();
@@ -51,12 +64,17 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
       const inputtedType = form.getValues("type");
       const inputtedTitle = form.getValues("title");
       const inputtedDescription = form.getValues("description");
+      const inputtedPrecondition = form.getValues("precondition");
+      const inputtedDuration = form.getValues("duration");
+      const inputtedLecturers = form.getValues("lecturers");
+      const inputtedCourseDuration = form.getValues("courseDuration");
+      const inputtedRenewalDuration = form.getValues("renewalDuration");
+      const inputtedTopics = form.getValues("topics");
+
       let translatedType = mapTranslatedEducationType(inputtedType) as string;
       if (mapTranslatedEducationType(inputtedType) === undefined) {
         translatedType = inputtedType;
       }
-
-      console.log("Translated Type:", translatedType);
 
       try {
         if (id === "create") {
@@ -64,6 +82,12 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
             type: translatedType,
             title: inputtedTitle,
             description: inputtedDescription,
+            precondition: inputtedPrecondition,
+            duration: inputtedDuration,
+            lecturers: inputtedLecturers,
+            courseDuration: inputtedCourseDuration,
+            renewalDuration: inputtedRenewalDuration,
+            topics: inputtedTopics,
           });
         } else {
           await updateEducation.mutateAsync({
@@ -71,6 +95,12 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
             type: translatedType,
             title: inputtedTitle,
             description: inputtedDescription,
+            precondition: inputtedPrecondition,
+            duration: inputtedDuration,
+            lecturers: inputtedLecturers,
+            courseDuration: inputtedCourseDuration,
+            renewalDuration: inputtedRenewalDuration,
+            topics: inputtedTopics,
           });
         }
         router.push("/educations?selected=popis");
@@ -96,7 +126,7 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
         placeholder="Odaberite tip"
       >
         {uniqueTypes.map((type) => (
-          <option key={type} value={type}>
+          <option key={type} value={type} selected={type == formData.type}>
             {translateEducationType(type as EducationType)}
           </option>
         ))}
@@ -110,13 +140,57 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
         })}
       />
 
-      <FormInput
+      <FormTextarea
         id="description"
         label="Opis*"
         {...form.register("description", {
           required: "Opis je obavezno polje",
         })}
       />
+
+      {(id === "create" || formData.precondition) && (
+        <FormTextarea
+          id="precondition"
+          label="Preduvjet"
+          {...form.register("precondition")}
+        />
+      )}
+
+      {(id === "create" || formData.duration) && (
+        <FormInput
+          id="duration"
+          label="Trajanje"
+          {...form.register("duration")}
+        />
+      )}
+
+      {(id === "create" || formData.lecturers) && (
+        <FormInput
+          id="lecturers"
+          label="Predavači"
+          {...form.register("lecturers")}
+        />
+      )}
+
+      {(id === "create" || formData.courseDuration) && (
+        <FormInput
+          id="courseDuration"
+          label="Trajanje tečaja"
+          {...form.register("courseDuration")}
+        />
+      )}
+
+      {(id === "create" || formData.renewalDuration) && (
+        <FormInput
+          id="renewalDuration"
+          label="Trajanje obnove"
+          {...form.register("renewalDuration")}
+        />
+      )}
+
+      {(id === "create" || formData.topics) && (
+        <FormTextarea id="topics" label="Teme" {...form.register("topics")} />
+      )}
 
       <Button
         className="bg-black !text-base text-white"

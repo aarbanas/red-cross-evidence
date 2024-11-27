@@ -34,6 +34,12 @@ export default function EducationDetailPage() {
               type: data?.type ?? "",
               title: data?.title ?? "",
               description: data?.description ?? "",
+              precondition: data?.precondition ?? "",
+              duration: data?.duration ?? "",
+              lecturers: data?.lecturers ?? "",
+              courseDuration: data?.courseDuration ?? "",
+              renewalDuration: data?.renewalDuration ?? "",
+              topics: data?.topics ?? "",
             }}
           />
         )}

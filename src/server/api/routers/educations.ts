@@ -31,6 +31,12 @@ export const educationRouter = createTRPCRouter({
         type: z.string(),
         title: z.string(),
         description: z.string(),
+        precondition: z.string().optional(),
+        duration: z.string().optional(),
+        lecturers: z.string().optional(),
+        courseDuration: z.string().optional(),
+        renewalDuration: z.string().optional(),
+        topics: z.string().optional(),
       }),
     )
     .mutation(async ({ input }) => {
@@ -38,6 +44,12 @@ export const educationRouter = createTRPCRouter({
         input.type,
         input.title,
         input.description,
+        input.precondition ?? "",
+        input.duration ?? "",
+        input.lecturers ?? "",
+        input.courseDuration ?? "",
+        input.renewalDuration ?? "",
+        input.topics ?? "",
       );
       return result;
     }),
@@ -48,6 +60,12 @@ export const educationRouter = createTRPCRouter({
         type: z.string(),
         title: z.string(),
         description: z.string(),
+        precondition: z.string().optional(),
+        duration: z.string().optional(),
+        lecturers: z.string().optional(),
+        courseDuration: z.string().optional(),
+        renewalDuration: z.string().optional(),
+        topics: z.string().optional(),
       }),
     )
     .mutation(async ({ input }) => {
@@ -56,6 +74,12 @@ export const educationRouter = createTRPCRouter({
         input.type,
         input.title,
         input.description,
+        input.precondition ?? "",
+        input.duration ?? "",
+        input.lecturers ?? "",
+        input.courseDuration ?? "",
+        input.renewalDuration ?? "",
+        input.topics ?? "",
       );
       return result;
     }),

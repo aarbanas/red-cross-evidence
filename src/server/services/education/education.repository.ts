@@ -119,19 +119,41 @@ const educationRepository = {
   deleteById: async (id: string) => {
     return db.delete(educations).where(eq(educations.id, id)).execute();
   },
-  create: async (type: string, title: string, description: string) => {
+  create: async (
+    type: string,
+    title: string,
+    description: string,
+    precondition: string,
+    duration: string,
+    lecturers: string,
+    courseDuration: string,
+    renewalDuration: string,
+    topics: string,
+  ) => {
     return db
       .insert(educations)
       .values({
         type,
         title,
         description,
+        precondition,
+        duration,
+        lecturers,
+        courseDuration,
+        renewalDuration,
+        topics,
       })
       .returning({
         id: educations.id,
         type: educations.type,
         title: educations.title,
         description: educations.description,
+        precondition: educations.precondition,
+        duration: educations.duration,
+        lecturers: educations.lecturers,
+        courseDuration: educations.courseDuration,
+        renewalDuration: educations.renewalDuration,
+        topics: educations.topics,
       })
       .execute();
   },
@@ -140,6 +162,12 @@ const educationRepository = {
     type: string,
     title: string,
     description: string,
+    precondition: string,
+    duration: string,
+    lecturers: string,
+    courseDuration: string,
+    renewalDuration: string,
+    topics: string,
   ) => {
     return db
       .update(educations)
@@ -147,6 +175,12 @@ const educationRepository = {
         type,
         title,
         description,
+        precondition,
+        duration,
+        lecturers,
+        courseDuration,
+        renewalDuration,
+        topics,
       })
       .where(eq(educations.id, id))
       .returning({
@@ -154,6 +188,12 @@ const educationRepository = {
         type: educations.type,
         title: educations.title,
         description: educations.description,
+        precondition: educations.precondition,
+        duration: educations.duration,
+        lecturers: educations.lecturers,
+        courseDuration: educations.courseDuration,
+        renewalDuration: educations.renewalDuration,
+        topics: educations.topics,
       })
       .execute();
   },

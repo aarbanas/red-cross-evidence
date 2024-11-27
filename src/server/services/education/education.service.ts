@@ -14,16 +14,53 @@ const educationService = {
   deleteById: async (id: string) => {
     return educationRepository.deleteById(id);
   },
-  create: async (type: string, title: string, description: string) => {
-    return educationRepository.create(type, title, description);
+  create: async (
+    type: string,
+    title: string,
+    description: string,
+    precondition: string,
+    duration: string,
+    lecturers: string,
+    courseDuration: string,
+    renewalDuration: string,
+    topics: string,
+  ) => {
+    return educationRepository.create(
+      type,
+      title,
+      description,
+      precondition,
+      duration,
+      lecturers,
+      courseDuration,
+      renewalDuration,
+      topics,
+    );
   },
   update: async (
     id: string,
     type: string,
     title: string,
     description: string,
+    precondition: string,
+    duration: string,
+    lecturers: string,
+    courseDuration: string,
+    renewalDuration: string,
+    topics: string,
   ) => {
-    return educationRepository.update(id, type, title, description);
+    return educationRepository.update(
+      id,
+      type,
+      title,
+      description,
+      precondition,
+      duration,
+      lecturers,
+      courseDuration,
+      renewalDuration,
+      topics,
+    );
   },
 };
 
