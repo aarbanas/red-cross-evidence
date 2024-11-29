@@ -14,6 +14,7 @@ import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 
 export type EducationFormData = {
+  id?: string;
   type: string;
   title: string;
   description: string;
@@ -55,33 +56,31 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
   const handleSubmit = async () => {
     const data = form.getValues();
 
-    const translatedType = mapTranslatedEducationType(data.type) as string;
-
     try {
       if (id === "create") {
         await createEducation.mutateAsync({
-          type: translatedType,
+          type: data.type,
           title: data.title,
           description: data.description,
-          precondition: data.precondition,
-          duration: data.duration,
-          lecturers: data.lecturers,
-          courseDuration: data.courseDuration,
-          renewalDuration: data.renewalDuration,
-          topics: data.topics,
+          precondition: data.precondition ?? "",
+          duration: data.duration ?? "",
+          lecturers: data.lecturers ?? "",
+          courseDuration: data.courseDuration ?? "",
+          renewalDuration: data.renewalDuration ?? "",
+          topics: data.topics ?? "",
         });
       } else {
         await updateEducation.mutateAsync({
           id: id,
-          type: translatedType,
+          type: data.type,
           title: data.title,
           description: data.description,
-          precondition: data.precondition,
-          duration: data.duration,
-          lecturers: data.lecturers,
-          courseDuration: data.courseDuration,
-          renewalDuration: data.renewalDuration,
-          topics: data.topics,
+          precondition: data.precondition ?? "",
+          duration: data.duration ?? "",
+          lecturers: data.lecturers ?? "",
+          courseDuration: data.courseDuration ?? "",
+          renewalDuration: data.renewalDuration ?? "",
+          topics: data.topics ?? "",
         });
       }
       router.push("/educations?selected=popis");

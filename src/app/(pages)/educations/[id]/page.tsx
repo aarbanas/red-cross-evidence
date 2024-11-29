@@ -8,6 +8,9 @@ import EducationForm from "~/app/(pages)/educations/[id]/_components/EducationsF
 export default function EducationDetailPage() {
   const { id } = useParams();
 
+  // Fetch unique types
+  const { data: uniqueTypesData } = api.education.getUniqueTypes.useQuery();
+
   // Conditionally fetch data only if the id is not "create"
   const { data, isLoading, error } =
     id !== "create"
@@ -22,6 +25,8 @@ export default function EducationDetailPage() {
     return <div>Greška</div>;
   }
 
+  const uniqueTypes = uniqueTypesData ?? [];
+
   return (
     <MainLayout
       headerChildren={
@@ -33,21 +38,23 @@ export default function EducationDetailPage() {
       }
     >
       <div>
-        <EducationForm
-          id={id as string}
-          formData={{
-            type: data?.type ?? "",
-            title: data?.title ?? "",
-            description: data?.description ?? "",
-            precondition: data?.precondition ?? "",
-            duration: data?.duration ?? "",
-            lecturers: data?.lecturers ?? "",
-            courseDuration: data?.courseDuration ?? "",
-            renewalDuration: data?.renewalDuration ?? "",
-            topics: data?.topics ?? "",
-          }}
-          uniqueTypes={api.education.getUniqueTypes.useQuery().data!}
-        />
+        {(id === "create" || data) && (
+          <EducationForm
+            id={id as string}
+            formData={{
+              type: data?.type ?? "",
+              title: data?.title ?? "",
+              description: data?.description ?? "",
+              precondition: data?.precondition ?? "",
+              duration: data?.duration ?? "",
+              lecturers: data?.lecturers ?? "",
+              courseDuration: data?.courseDuration ?? "",
+              renewalDuration: data?.renewalDuration ?? "",
+              topics: data?.topics ?? "",
+            }}
+            uniqueTypes={uniqueTypes}
+          />
+        )}
       </div>
     </MainLayout>
   );

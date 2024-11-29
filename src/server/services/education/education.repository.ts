@@ -3,6 +3,7 @@ import { db } from "~/server/db";
 import { asc, count, eq, ilike, type SQL } from "drizzle-orm";
 import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
+import { EducationFormData } from "~/app/(pages)/educations/[id]/_components/EducationsForm";
 
 enum SortableKeys {
   TYPE = "type",
@@ -119,17 +120,19 @@ const educationRepository = {
   deleteById: async (id: string) => {
     return db.delete(educations).where(eq(educations.id, id)).execute();
   },
-  create: async (
-    type: string,
-    title: string,
-    description: string,
-    precondition: string,
-    duration: string,
-    lecturers: string,
-    courseDuration: string,
-    renewalDuration: string,
-    topics: string,
-  ) => {
+  create: async (data: EducationFormData) => {
+    const {
+      type,
+      title,
+      description,
+      precondition,
+      duration,
+      lecturers,
+      courseDuration,
+      renewalDuration,
+      topics,
+    } = data;
+
     return db
       .insert(educations)
       .values({
@@ -157,18 +160,20 @@ const educationRepository = {
       })
       .execute();
   },
-  update: async (
-    id: string,
-    type: string,
-    title: string,
-    description: string,
-    precondition: string,
-    duration: string,
-    lecturers: string,
-    courseDuration: string,
-    renewalDuration: string,
-    topics: string,
-  ) => {
+  update: async (data: EducationFormData) => {
+    const {
+      id,
+      type,
+      title,
+      description,
+      precondition,
+      duration,
+      lecturers,
+      courseDuration,
+      renewalDuration,
+      topics,
+    } = data;
+
     return db
       .update(educations)
       .set({
@@ -182,7 +187,7 @@ const educationRepository = {
         renewalDuration,
         topics,
       })
-      .where(eq(educations.id, id))
+      .where(eq(educations.id, id!))
       .returning({
         id: educations.id,
         type: educations.type,

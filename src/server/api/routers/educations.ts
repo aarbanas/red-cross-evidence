@@ -15,13 +15,14 @@ export const educationFormDataSchema = z.object({
   renewalDuration: z.string().optional(),
   topics: z.string().optional(),
 });
+
 export const educationRouter = createTRPCRouter({
   findById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
       const result = await educationService.getById(input.id);
 
-      return result[0];
+      return result;
     }),
   find: protectedProcedure
     .input(paginationQuerySchema)
@@ -40,34 +41,13 @@ export const educationRouter = createTRPCRouter({
   create: protectedProcedure
     .input(educationFormDataSchema)
     .mutation(async ({ input }) => {
-      const result = await educationService.create(
-        input.type,
-        input.title,
-        input.description,
-        input.precondition ?? "",
-        input.duration ?? "",
-        input.lecturers ?? "",
-        input.courseDuration ?? "",
-        input.renewalDuration ?? "",
-        input.topics ?? "",
-      );
+      const result = await educationService.create(input);
       return result;
     }),
   update: protectedProcedure
     .input(educationFormDataSchema)
     .mutation(async ({ input }) => {
-      const result = await educationService.update(
-        input.id!,
-        input.type,
-        input.title,
-        input.description,
-        input.precondition ?? "",
-        input.duration ?? "",
-        input.lecturers ?? "",
-        input.courseDuration ?? "",
-        input.renewalDuration ?? "",
-        input.topics ?? "",
-      );
+      const result = await educationService.update(input);
       return result;
     }),
 });

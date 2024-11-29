@@ -1,9 +1,10 @@
 import educationRepository from "~/server/services/education/education.repository";
 import type { FindQueryDTO } from "~/server/db/utility/types";
+import { EducationFormData } from "~/app/(pages)/educations/[id]/_components/EducationsForm";
 
 const educationService = {
   getById: async (id: string) => {
-    return educationRepository.findById(id);
+    return (await educationRepository.findById(id))[0];
   },
   find: async (data: FindQueryDTO) => {
     return educationRepository.find(data);
@@ -14,53 +15,11 @@ const educationService = {
   deleteById: async (id: string) => {
     return educationRepository.deleteById(id);
   },
-  create: async (
-    type: string,
-    title: string,
-    description: string,
-    precondition: string,
-    duration: string,
-    lecturers: string,
-    courseDuration: string,
-    renewalDuration: string,
-    topics: string,
-  ) => {
-    return educationRepository.create(
-      type,
-      title,
-      description,
-      precondition,
-      duration,
-      lecturers,
-      courseDuration,
-      renewalDuration,
-      topics,
-    );
+  create: async (data: EducationFormData) => {
+    return educationRepository.create(data);
   },
-  update: async (
-    id: string,
-    type: string,
-    title: string,
-    description: string,
-    precondition: string,
-    duration: string,
-    lecturers: string,
-    courseDuration: string,
-    renewalDuration: string,
-    topics: string,
-  ) => {
-    return educationRepository.update(
-      id,
-      type,
-      title,
-      description,
-      precondition,
-      duration,
-      lecturers,
-      courseDuration,
-      renewalDuration,
-      topics,
-    );
+  update: async (data: EducationFormData) => {
+    return educationRepository.update(data);
   },
 };
 
