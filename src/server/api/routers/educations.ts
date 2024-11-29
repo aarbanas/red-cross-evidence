@@ -3,6 +3,18 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { paginationQuerySchema } from "~/server/api/schema";
 import educationService from "~/server/services/education/education.service";
 
+export const educationFormDataSchema = z.object({
+  id: z.string().optional(),
+  type: z.string(),
+  title: z.string(),
+  description: z.string(),
+  precondition: z.string().optional(),
+  duration: z.string().optional(),
+  lecturers: z.string().optional(),
+  courseDuration: z.string().optional(),
+  renewalDuration: z.string().optional(),
+  topics: z.string().optional(),
+});
 export const educationRouter = createTRPCRouter({
   findById: protectedProcedure
     .input(z.object({ id: z.string() }))
@@ -26,19 +38,7 @@ export const educationRouter = createTRPCRouter({
       return { success: true };
     }),
   create: protectedProcedure
-    .input(
-      z.object({
-        type: z.string(),
-        title: z.string(),
-        description: z.string(),
-        precondition: z.string().optional(),
-        duration: z.string().optional(),
-        lecturers: z.string().optional(),
-        courseDuration: z.string().optional(),
-        renewalDuration: z.string().optional(),
-        topics: z.string().optional(),
-      }),
-    )
+    .input(educationFormDataSchema)
     .mutation(async ({ input }) => {
       const result = await educationService.create(
         input.type,
@@ -54,23 +54,10 @@ export const educationRouter = createTRPCRouter({
       return result;
     }),
   update: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        type: z.string(),
-        title: z.string(),
-        description: z.string(),
-        precondition: z.string().optional(),
-        duration: z.string().optional(),
-        lecturers: z.string().optional(),
-        courseDuration: z.string().optional(),
-        renewalDuration: z.string().optional(),
-        topics: z.string().optional(),
-      }),
-    )
+    .input(educationFormDataSchema)
     .mutation(async ({ input }) => {
       const result = await educationService.update(
-        input.id,
+        input.id!,
         input.type,
         input.title,
         input.description,

@@ -14,6 +14,8 @@ import { type EducationType } from "~/server/db/schema";
 import Link from "next/link";
 import { api } from "~/trpc/react";
 import { Trash2, Pencil } from "lucide-react";
+import Modal from "~/components/organisms/modal/Modal";
+import { Button } from "~/components/atoms/Button";
 
 type Props = {
   data?: FindEducationReturnDTO[];
@@ -25,6 +27,8 @@ const EducationsListTable: FC<Props> = ({
   totalPageNumber,
 }) => {
   const [data, setData] = useState<FindEducationReturnDTO[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialData) {
@@ -34,21 +38,26 @@ const EducationsListTable: FC<Props> = ({
 
   const deleteEducation = api.education.deleteById.useMutation();
 
-  const handleDelete = async (id: string) => {
-    const confirmed = window.confirm(
-      "Jeste li sigurni da želite obrisati ovu edukaciju?",
-    );
-    if (!confirmed) return;
+  const handleDelete = async () => {
+    if (!selectedId) return;
 
     try {
-      await deleteEducation.mutateAsync({ id });
-      // Update the state to reflect the deletion
-      setData((prevData) =>
-        prevData?.filter((education) => education.id !== id),
-      );
+      await deleteEducation.mutateAsync({ id: selectedId });
+
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Failed to delete education:", error);
     }
+  };
+
+  const openModal = (id: string) => {
+    setSelectedId(id);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedId(null);
   };
 
   if (!data?.length) {
@@ -88,7 +97,7 @@ const EducationsListTable: FC<Props> = ({
                   </Link>
                 </TableCell>
                 <TableCell className="cursor-pointer md:table-cell">
-                  <button onClick={() => handleDelete(license.id)}>
+                  <button onClick={() => openModal(license.id)}>
                     <Trash2 color="red" />
                   </button>
                 </TableCell>
@@ -98,6 +107,17 @@ const EducationsListTable: FC<Props> = ({
         </Table>
       </div>
       <PaginationComponent totalPageNumber={totalPageNumber} />
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <div>
+          <p>Jeste li sigurni da želite obrisati ovu edukaciju?</p>
+          <Button variant="destructive" onClick={handleDelete}>
+            Da
+          </Button>
+          <Button variant="secondary" onClick={closeModal}>
+            Ne
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 };

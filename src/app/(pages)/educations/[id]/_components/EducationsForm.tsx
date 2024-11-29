@@ -4,34 +4,34 @@ import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
 import FormTextarea from "~/components/organisms/form/formTextArea/FormTextArea";
 import { Button } from "~/components/atoms/Button";
 import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   translateEducationType,
   mapTranslatedEducationType,
 } from "~/app/(pages)/educations/utils";
-import { EducationType } from "~/server/db/schema";
+import { type EducationType } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 
-type EducationFormData = {
+export type EducationFormData = {
   type: string;
   title: string;
   description: string;
-  precondition: string;
-  duration: string;
-  lecturers: string;
-  courseDuration: string;
-  renewalDuration: string;
-  topics: string;
+  precondition?: string;
+  duration?: string;
+  lecturers?: string;
+  courseDuration?: string;
+  renewalDuration?: string;
+  topics?: string;
 };
 
 type Props = {
   id: string;
   formData: EducationFormData;
+  uniqueTypes: { type: string }[];
 };
 
-const EducationForm: React.FC<Props> = ({ id, formData }) => {
-  const [uniqueTypes, setUniqueTypes] = useState<string[]>([]);
+const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
   const form = useForm<EducationFormData>({
     defaultValues: {
       type: formData.type,
@@ -50,68 +50,46 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
   const { isSubmitting } = form.formState;
   const createEducation = api.education.create.useMutation();
   const updateEducation = api.education.update.useMutation();
-  const getUniqueTypes = api.education.getUniqueTypes.useQuery();
-
-  useEffect(() => {
-    if (getUniqueTypes.data) {
-      setUniqueTypes(getUniqueTypes.data.map((type) => type.type));
-    }
-  }, [getUniqueTypes.data]);
 
   // Handle form submission
   const handleSubmit = async () => {
+    const data = form.getValues();
+
+    const translatedType = mapTranslatedEducationType(data.type) as string;
+
     try {
-      const inputtedType = form.getValues("type");
-      const inputtedTitle = form.getValues("title");
-      const inputtedDescription = form.getValues("description");
-      const inputtedPrecondition = form.getValues("precondition");
-      const inputtedDuration = form.getValues("duration");
-      const inputtedLecturers = form.getValues("lecturers");
-      const inputtedCourseDuration = form.getValues("courseDuration");
-      const inputtedRenewalDuration = form.getValues("renewalDuration");
-      const inputtedTopics = form.getValues("topics");
-
-      let translatedType = mapTranslatedEducationType(inputtedType) as string;
-      if (mapTranslatedEducationType(inputtedType) === undefined) {
-        translatedType = inputtedType;
+      if (id === "create") {
+        await createEducation.mutateAsync({
+          type: translatedType,
+          title: data.title,
+          description: data.description,
+          precondition: data.precondition,
+          duration: data.duration,
+          lecturers: data.lecturers,
+          courseDuration: data.courseDuration,
+          renewalDuration: data.renewalDuration,
+          topics: data.topics,
+        });
+      } else {
+        await updateEducation.mutateAsync({
+          id: id,
+          type: translatedType,
+          title: data.title,
+          description: data.description,
+          precondition: data.precondition,
+          duration: data.duration,
+          lecturers: data.lecturers,
+          courseDuration: data.courseDuration,
+          renewalDuration: data.renewalDuration,
+          topics: data.topics,
+        });
       }
-
-      try {
-        if (id === "create") {
-          await createEducation.mutateAsync({
-            type: translatedType,
-            title: inputtedTitle,
-            description: inputtedDescription,
-            precondition: inputtedPrecondition,
-            duration: inputtedDuration,
-            lecturers: inputtedLecturers,
-            courseDuration: inputtedCourseDuration,
-            renewalDuration: inputtedRenewalDuration,
-            topics: inputtedTopics,
-          });
-        } else {
-          await updateEducation.mutateAsync({
-            id: id,
-            type: translatedType,
-            title: inputtedTitle,
-            description: inputtedDescription,
-            precondition: inputtedPrecondition,
-            duration: inputtedDuration,
-            lecturers: inputtedLecturers,
-            courseDuration: inputtedCourseDuration,
-            renewalDuration: inputtedRenewalDuration,
-            topics: inputtedTopics,
-          });
-        }
-        router.push("/educations?selected=popis");
-      } catch (error) {
-        console.error(
-          `Failed to ${id === "create" ? "create" : "update"} education:`,
-          error,
-        );
-      }
+      router.push("/educations?selected=popis");
     } catch (error) {
-      console.error("Failed to submit form:", error);
+      console.error(
+        `Failed to ${id === "create" ? "create" : "update"} education:`,
+        error,
+      );
     }
   };
 
@@ -126,8 +104,12 @@ const EducationForm: React.FC<Props> = ({ id, formData }) => {
         placeholder="Odaberite tip"
       >
         {uniqueTypes.map((type) => (
-          <option key={type} value={type} selected={type == formData.type}>
-            {translateEducationType(type as EducationType)}
+          <option
+            key={type.type}
+            value={type.type}
+            selected={type.type == formData.type}
+          >
+            {translateEducationType(type.type as EducationType)}
           </option>
         ))}
       </FormSelect>

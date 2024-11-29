@@ -12,7 +12,15 @@ export default function EducationDetailPage() {
   const { data, isLoading, error } =
     id !== "create"
       ? api.education.findById.useQuery({ id: id as string })
-      : { data: null, isLoading: false, error: null };
+      : {};
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <div>Greška</div>;
+  }
 
   return (
     <MainLayout
@@ -25,24 +33,21 @@ export default function EducationDetailPage() {
       }
     >
       <div>
-        {isLoading && <LoadingSpinner />}
-        {error && <div>Greška</div>}
-        {(id === "create" || data) && (
-          <EducationForm
-            id={id as string}
-            formData={{
-              type: data?.type ?? "",
-              title: data?.title ?? "",
-              description: data?.description ?? "",
-              precondition: data?.precondition ?? "",
-              duration: data?.duration ?? "",
-              lecturers: data?.lecturers ?? "",
-              courseDuration: data?.courseDuration ?? "",
-              renewalDuration: data?.renewalDuration ?? "",
-              topics: data?.topics ?? "",
-            }}
-          />
-        )}
+        <EducationForm
+          id={id as string}
+          formData={{
+            type: data?.type ?? "",
+            title: data?.title ?? "",
+            description: data?.description ?? "",
+            precondition: data?.precondition ?? "",
+            duration: data?.duration ?? "",
+            lecturers: data?.lecturers ?? "",
+            courseDuration: data?.courseDuration ?? "",
+            renewalDuration: data?.renewalDuration ?? "",
+            topics: data?.topics ?? "",
+          }}
+          uniqueTypes={api.education.getUniqueTypes.useQuery().data!}
+        />
       </div>
     </MainLayout>
   );
