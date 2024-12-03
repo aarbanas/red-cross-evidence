@@ -20,11 +20,13 @@ import { Button } from "~/components/atoms/Button";
 type Props = {
   data?: FindEducationReturnDTO[];
   totalPageNumber: number;
+  refetch: () => void;
 };
 
 const EducationsListTable: FC<Props> = ({
   data: initialData,
   totalPageNumber,
+  refetch,
 }) => {
   const [data, setData] = useState<FindEducationReturnDTO[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,6 +46,7 @@ const EducationsListTable: FC<Props> = ({
     try {
       await deleteEducation.mutateAsync({ id: selectedId });
 
+      refetch();
       setIsModalOpen(false);
     } catch (error) {
       console.error("Failed to delete education:", error);
