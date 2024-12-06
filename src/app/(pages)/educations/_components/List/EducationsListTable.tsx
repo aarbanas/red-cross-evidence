@@ -23,20 +23,9 @@ type Props = {
   refetch: () => void;
 };
 
-const EducationsListTable: FC<Props> = ({
-  data: initialData,
-  totalPageNumber,
-  refetch,
-}) => {
-  const [data, setData] = useState<FindEducationReturnDTO[]>([]);
+const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (initialData) {
-      setData(initialData);
-    }
-  }, [initialData]);
 
   const deleteEducation = api.education.deleteById.useMutation();
 
