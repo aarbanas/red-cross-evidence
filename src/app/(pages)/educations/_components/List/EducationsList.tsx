@@ -15,7 +15,7 @@ const EducationsList: FC<Props> = ({ filter }) => {
   const memoizedFilter = useMemo(() => filter, [filter]);
   useResetPageOnFilterChange(setPage, memoizedFilter);
 
-  const { data, isLoading, error } = api.education.find.useQuery({
+  const { data, isLoading, error, refetch } = api.education.find.useQuery({
     page,
     limit: 10,
     sort: ["name:asc"],
@@ -31,6 +31,7 @@ const EducationsList: FC<Props> = ({ filter }) => {
       <EducationsListTable
         data={data?.data}
         totalPageNumber={totalPageNumber}
+        refetch={refetch}
       />
     </>
   );

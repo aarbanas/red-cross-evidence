@@ -3,6 +3,7 @@ import { db } from "~/server/db";
 import { asc, count, eq, ilike, type SQL } from "drizzle-orm";
 import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
+import { EducationFormData } from "~/app/(pages)/educations/[id]/_components/EducationsForm";
 
 enum SortableKeys {
   TYPE = "type",
@@ -39,7 +40,7 @@ const mapFilterableKeyToConditional = (
   if (key === FilterableKeys.TITLE.valueOf())
     return ilike(mapKeyToColumn(key), `%${value}%`);
 
-  if (key === FilterableKeys.TYPE.valueOf())
+  if (value != "" && key === FilterableKeys.TYPE.valueOf())
     return eq(mapKeyToColumn(key), value);
 
   return undefined;
@@ -114,6 +115,91 @@ const educationRepository = {
       .selectDistinct({ type: educations.type })
       .from(educations)
       .orderBy(asc(educations.type))
+      .execute();
+  },
+  deleteById: async (id: string) => {
+    return db.delete(educations).where(eq(educations.id, id)).execute();
+  },
+  create: async (data: EducationFormData) => {
+    const {
+      type,
+      title,
+      description,
+      precondition,
+      duration,
+      lecturers,
+      courseDuration,
+      renewalDuration,
+      topics,
+    } = data;
+
+    return db
+      .insert(educations)
+      .values({
+        type,
+        title,
+        description,
+        precondition,
+        duration,
+        lecturers,
+        courseDuration,
+        renewalDuration,
+        topics,
+      })
+      .returning({
+        id: educations.id,
+        type: educations.type,
+        title: educations.title,
+        description: educations.description,
+        precondition: educations.precondition,
+        duration: educations.duration,
+        lecturers: educations.lecturers,
+        courseDuration: educations.courseDuration,
+        renewalDuration: educations.renewalDuration,
+        topics: educations.topics,
+      })
+      .execute();
+  },
+  update: async (data: EducationFormData) => {
+    const {
+      id,
+      type,
+      title,
+      description,
+      precondition,
+      duration,
+      lecturers,
+      courseDuration,
+      renewalDuration,
+      topics,
+    } = data;
+
+    return db
+      .update(educations)
+      .set({
+        type,
+        title,
+        description,
+        precondition,
+        duration,
+        lecturers,
+        courseDuration,
+        renewalDuration,
+        topics,
+      })
+      .where(eq(educations.id, id!))
+      .returning({
+        id: educations.id,
+        type: educations.type,
+        title: educations.title,
+        description: educations.description,
+        precondition: educations.precondition,
+        duration: educations.duration,
+        lecturers: educations.lecturers,
+        courseDuration: educations.courseDuration,
+        renewalDuration: educations.renewalDuration,
+        topics: educations.topics,
+      })
       .execute();
   },
 };

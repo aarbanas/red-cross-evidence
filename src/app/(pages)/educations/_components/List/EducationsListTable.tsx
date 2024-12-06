@@ -6,26 +6,59 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/organisms/Table";
-import { Pencil } from "lucide-react";
 import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
-import { type FC } from "react";
+import { useState, useEffect, type FC } from "react";
 import type { FindEducationReturnDTO } from "~/server/services/education/education.repository";
 import { translateEducationType } from "~/app/(pages)/educations/utils";
 import { type EducationType } from "~/server/db/schema";
+import Link from "next/link";
+import { api } from "~/trpc/react";
+import { Trash2, Pencil } from "lucide-react";
+import Modal from "~/components/organisms/modal/Modal";
+import { Button } from "~/components/atoms/Button";
 
 type Props = {
   data?: FindEducationReturnDTO[];
   totalPageNumber: number;
+  refetch: () => void;
 };
 
-const EducationsListTable: FC<Props> = ({ data, totalPageNumber }) => {
+const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const deleteEducation = api.education.deleteById.useMutation();
+
+  const handleDelete = async () => {
+    if (!selectedId) return;
+
+    try {
+      await deleteEducation.mutateAsync({ id: selectedId });
+
+      refetch();
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Failed to delete education:", error);
+    }
+  };
+
+  const openModal = (id: string) => {
+    setSelectedId(id);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedId(null);
+  };
+
   if (!data?.length) {
     return <div>Nema rezultata</div>;
   }
 
   return (
     <>
-      <div className="rounded-lg border shadow-sm">
+      <div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -33,9 +66,9 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber }) => {
               <TableHead className="md:table-cell">Naziv</TableHead>
               <TableHead className="md:table-cell">Opis</TableHead>
               <TableHead className="md:table-cell">Uredi</TableHead>
+              <TableHead className="md:table-cell">Izbriši</TableHead>
             </TableRow>
           </TableHeader>
-
           <TableBody>
             {data?.map((license) => (
               <TableRow key={license.id}>
@@ -47,7 +80,18 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber }) => {
                   {license.description}
                 </TableCell>
                 <TableCell className="cursor-pointer md:table-cell">
-                  <Pencil />
+                  <Link
+                    href={{
+                      pathname: `/educations/${license.id}`,
+                    }}
+                  >
+                    <Pencil />
+                  </Link>
+                </TableCell>
+                <TableCell className="cursor-pointer md:table-cell">
+                  <button onClick={() => openModal(license.id)}>
+                    <Trash2 color="red" />
+                  </button>
                 </TableCell>
               </TableRow>
             ))}
@@ -55,6 +99,17 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber }) => {
         </Table>
       </div>
       <PaginationComponent totalPageNumber={totalPageNumber} />
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <div>
+          <p>Jeste li sigurni da želite obrisati ovu edukaciju?</p>
+          <Button variant="destructive" onClick={handleDelete}>
+            Da
+          </Button>
+          <Button variant="secondary" onClick={closeModal}>
+            Ne
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 };

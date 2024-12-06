@@ -8,6 +8,8 @@ import { api } from "~/trpc/react";
 import { translateEducationType } from "~/app/(pages)/educations/utils";
 import { type EducationType } from "~/server/db/schema";
 import type { DropdownOption } from "~/components/atoms/Dropdown";
+import { CirclePlus } from "lucide-react";
+import Link from "next/link";
 
 const EducationsListTab = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
@@ -30,8 +32,20 @@ const EducationsListTab = () => {
 
   return (
     <TabLayout>
-      <EducationsListSearch onSearch={handleSearch} types={types} />
-
+      <div className="flex">
+        <EducationsListSearch onSearch={handleSearch} types={types} />
+        <div className="ml-auto rounded-md border px-2">
+          <Link
+            className="flex gap-2"
+            href={{
+              pathname: `/educations/create`,
+            }}
+          >
+            <CirclePlus />
+            Kreiraj novu edukaciju
+          </Link>
+        </div>
+      </div>
       <PaginationProvider>
         <EducationsList filter={filter} />
       </PaginationProvider>
