@@ -1,7 +1,5 @@
 "use client";
 import { useMemo, useState } from "react";
-import EducationsListSearch from "~/app/(pages)/educations/_components/List/EducationsListSearch";
-import EducationsList from "~/app/(pages)/educations/_components/List/EducationsList";
 import TabLayout from "~/components/layout/tabLayout";
 import { api } from "~/trpc/react";
 import { translateEducationType } from "~/app/(pages)/educations/utils";
@@ -9,6 +7,8 @@ import { type EducationType } from "~/server/db/schema";
 import type { DropdownOption } from "~/components/atoms/Dropdown";
 import { CirclePlus } from "lucide-react";
 import Link from "next/link";
+import EducationsListSearch from "./EducationsListSearch";
+import EducationsList from "./EducationsList";
 
 const EducationsListTab = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
@@ -37,7 +37,7 @@ const EducationsListTab = () => {
           <Link
             className="flex gap-2"
             href={{
-              pathname: `/educations/create`,
+              pathname: `/educations/list/create`,
             }}
           >
             <CirclePlus />

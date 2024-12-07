@@ -1,6 +1,6 @@
 import educationRepository from "~/server/services/education/education.repository";
 import type { FindQueryDTO } from "~/server/db/utility/types";
-import { EducationFormData } from "~/app/(pages)/educations/[id]/_components/EducationsForm";
+import { EducationFormData } from "~/app/(pages)/educations/list/[id]/_components/EducationsForm";
 
 const educationService = {
   getById: async (id: string) => {

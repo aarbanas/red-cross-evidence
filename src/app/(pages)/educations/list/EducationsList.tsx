@@ -1,9 +1,9 @@
 import React, { type FC } from "react";
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
-import EducationsListTable from "~/app/(pages)/educations/_components/List/EducationsListTable";
 import useTotalPageNumber from "~/hooks/useTotalPageNumber";
 import usePagination from "~/hooks/usePagination";
+import EducationsListTable from "./EducationsListTable";
 
 type Props = {
   filter: Record<string, string> | undefined;

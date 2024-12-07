@@ -3,7 +3,7 @@ import MainLayout from "~/components/layout/mainLayout";
 import { useParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
-import EducationForm from "~/app/(pages)/educations/[id]/_components/EducationsForm";
+import EducationForm from "~/app/(pages)/educations/list/[id]/_components/EducationsForm";
 
 export default function EducationDetailPage() {
   const { id } = useParams();
@@ -28,15 +28,12 @@ export default function EducationDetailPage() {
   const uniqueTypes = uniqueTypesData ?? [];
 
   return (
-    <MainLayout
-      headerChildren={
-        <div>
-          {id === "create"
-            ? "Kreiranje nove edukacije"
-            : `Uređivanje edukacije ${data?.title}`}
-        </div>
-      }
-    >
+    <>
+      <div>
+        {id === "create"
+          ? "Kreiranje nove edukacije"
+          : `Uređivanje edukacije ${data?.title}`}
+      </div>
       <div>
         {(id === "create" || data) && (
           <EducationForm
@@ -56,6 +53,6 @@ export default function EducationDetailPage() {
           />
         )}
       </div>
-    </MainLayout>
+    </>
   );
 }
