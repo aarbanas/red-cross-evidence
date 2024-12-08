@@ -32,8 +32,6 @@ const mapKeyToColumn = (key?: string) => {
       return licenses.type;
     case SortableKeys.NAME:
       return licenses.name;
-    case SortableKeys.DESCRIPTION:
-      return licenses.description;
     default:
       return licenses.id;
   }
@@ -43,13 +41,10 @@ const mapFilterableKeyToConditional = (
   key: string,
   value: string,
 ): SQL | undefined => {
-  if (key === FilterableKeys.DESCRIPTION.valueOf())
+  if (key === FilterableKeys.NAME.valueOf())
     return ilike(mapKeyToColumn(key), `${value}%`);
 
-  if (
-    key === FilterableKeys.TYPE.valueOf() ||
-    key === FilterableKeys.NAME.valueOf()
-  )
+  if (key === FilterableKeys.TYPE.valueOf() && value)
     return eq(mapKeyToColumn(key), value);
 
   return undefined;
