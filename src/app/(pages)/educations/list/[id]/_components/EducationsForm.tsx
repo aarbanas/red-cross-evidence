@@ -103,11 +103,7 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
         placeholder="Odaberite tip"
       >
         {uniqueTypes.map((type) => (
-          <option
-            key={type.type}
-            value={type.type}
-            selected={type.type == formData.type}
-          >
+          <option key={type.type} value={type.type}>
             {translateEducationType(type.type as EducationType)}
           </option>
         ))}

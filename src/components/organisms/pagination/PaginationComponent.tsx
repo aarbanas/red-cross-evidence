@@ -3,19 +3,15 @@ import {
   PaginationContent,
   PaginationPages,
 } from "~/components/organisms/pagination/Pagination";
-import { usePagination } from "~/components/organisms/pagination/PaginationContext";
 import type { FC } from "react";
+import usePagination from "~/hooks/usePagination";
 
 type Props = {
   totalPageNumber: number;
 };
 
 const PaginationComponent: FC<Props> = ({ totalPageNumber }) => {
-  const { page, setPage } = usePagination();
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
+  const { page, handlePageChange } = usePagination();
 
   return (
     <Pagination>
