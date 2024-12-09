@@ -13,7 +13,6 @@ type Props = {
 const PaginationComponent: FC<Props> = ({ totalPageNumber }) => {
   const { page, handlePageChange } = usePagination();
 
-  console.log("page", page);
   return (
     <Pagination>
       <PaginationContent>

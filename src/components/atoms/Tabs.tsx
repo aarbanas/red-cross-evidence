@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { type FC, useEffect, useState } from "react";
 import { cn } from "~/components/utils";
 
@@ -13,11 +13,15 @@ export type TabProp = {
 
 const Tabs: FC<Props> = ({ tabs }: Props) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [activeTab, setActiveTab] = useState<string>(tabs[0]!.link);
 
   useEffect(() => {
-    router.push(`/educations/${activeTab}`);
-  }, [activeTab, router]);
+    const activeTab = tabs.find((tab) => pathname.includes(tab.link));
+    if (activeTab) {
+      setActiveTab(activeTab.link);
+    }
+  }, [pathname]);
 
   if (!tabs || tabs.length === 0) {
     return <div className="text-center text-gray-500">No tabs provided</div>;
@@ -29,7 +33,10 @@ const Tabs: FC<Props> = ({ tabs }: Props) => {
         {tabs.map((tab, index) => (
           <button
             key={index}
-            onClick={() => setActiveTab(tab.link)}
+            onClick={() => {
+              setActiveTab(tab.link);
+              router.push(`/educations/${tab.link}`);
+            }}
             className={cn(
               "cursor-pointer rounded-lg py-2 text-sm font-medium",
               "focus:outline-none focus:ring-1 focus:ring-red-600",
