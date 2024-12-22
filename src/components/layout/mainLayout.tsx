@@ -13,7 +13,7 @@ type Props = {
 };
 
 enum AppRoutes {
-  HOME = "/",
+  HOME = "/users",
   EDUCATIONS = "/educations",
   LICENSES = "/licenses",
 }
@@ -43,9 +43,6 @@ const MainLayout: React.FC<Readonly<Props>> = ({
 
 const Navigation = () => {
   const currentPath = usePathname() as AppRoutes;
-  if (!Object.values(AppRoutes).includes(currentPath)) {
-    return null;
-  }
 
   return (
     <nav className="grid items-start text-sm font-medium lg:px-4">
@@ -58,8 +55,8 @@ const Navigation = () => {
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath === AppRoutes.EDUCATIONS ? "text-red-600" : ""}`}
-        href={AppRoutes.EDUCATIONS}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.EDUCATIONS) ? "text-red-600" : ""}`}
+        href={AppRoutes.EDUCATIONS + "/evidence"}
       >
         <BookMarked />
         Edukacije

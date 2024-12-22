@@ -3,7 +3,7 @@ import { db } from "~/server/db";
 import { asc, count, eq, ilike, type SQL } from "drizzle-orm";
 import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
-import { EducationFormData } from "~/app/(pages)/educations/[id]/_components/EducationsForm";
+import { EducationFormData } from "~/app/(pages)/educations/list/[id]/_components/EducationsForm";
 
 enum SortableKeys {
   TYPE = "type",
@@ -40,7 +40,7 @@ const mapFilterableKeyToConditional = (
   if (key === FilterableKeys.TITLE.valueOf())
     return ilike(mapKeyToColumn(key), `%${value}%`);
 
-  if (value != "" && key === FilterableKeys.TYPE.valueOf())
+  if (key === FilterableKeys.TYPE.valueOf() && value)
     return eq(mapKeyToColumn(key), value);
 
   return undefined;
