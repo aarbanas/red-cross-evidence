@@ -28,5 +28,11 @@ export const AddOtherSkillsSchema = z.object({
   ),
 });
 
+export const AddAddressSchema = z.object({
+  addressId: z.string(),
+  isPrimary: z.boolean(),
+});
+
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
 export type AddOtherSkillsType = z.infer<typeof AddOtherSkillsSchema>;
+export type AddAddressType = z.infer<typeof AddAddressSchema>;

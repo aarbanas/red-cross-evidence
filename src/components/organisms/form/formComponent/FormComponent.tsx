@@ -2,20 +2,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-base-to-string */
-import { type ComponentProps } from "react";
-import {
-  type FieldValues,
-  FormProvider,
-  type SubmitHandler,
-  type UseFormReturn,
-  useFormContext,
-} from "react-hook-form";
+import {type ComponentProps} from "react";
+import {type FieldValues, FormProvider, type SubmitHandler, useFormContext, type UseFormReturn,} from "react-hook-form";
 
 import styles from "./FormComponent.module.scss";
 
-interface FormProps<T extends FieldValues>
-  extends Omit<ComponentProps<"form">, "onSubmit"> {
-  form: UseFormReturn<T>;
+interface FormProps<
+  T extends FieldValues,
+  TContext = any,
+  TTransformedValues extends FieldValues | undefined = undefined,
+> extends Omit<ComponentProps<"form">, "onSubmit"> {
+  form: UseFormReturn<T, TContext, TTransformedValues>;
   onSubmit: SubmitHandler<T>;
 }
 
