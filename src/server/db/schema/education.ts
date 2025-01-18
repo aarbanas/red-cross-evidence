@@ -2,12 +2,14 @@ import {
   integer,
   pgEnum,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { profiles } from "~/server/db/schema/user";
 
 export enum EducationType {
   VOLUNTEERS = "Volunteers",
@@ -49,10 +51,46 @@ export const educationTerms = pgTable("education_term", {
     .references(() => educations.id, { onDelete: "cascade" }),
 });
 
-export const educationTermsRelations = relations(educationTerms, ({ one }) => ({
-  education: one(educations, {
-    relationName: "educations_educationTerms",
-    references: [educations.id],
-    fields: [educationTerms.educationId],
+export const educationTermsRelations = relations(
+  educationTerms,
+  ({ one, many }) => ({
+    education: one(educations, {
+      relationName: "educations_educationTerms",
+      references: [educations.id],
+      fields: [educationTerms.educationId],
+    }),
+    profileEducationTerms: many(profileEducationTerms),
   }),
-}));
+);
+
+export const profileEducationTerms = pgTable(
+  "profile_education_term",
+  {
+    profileId: uuid("profile_id")
+      .notNull()
+      .references(() => profiles.id, { onDelete: "cascade" }),
+    educationTermId: uuid("education_term_id")
+      .notNull()
+      .references(() => educationTerms.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.profileId, table.educationTermId] }),
+  }),
+);
+
+export const profileEducationTermsRelations = relations(
+  profileEducationTerms,
+  ({ one }) => ({
+    profile: one(profiles, {
+      relationName: "profiles_educationTerms",
+      fields: [profileEducationTerms.profileId],
+      references: [profiles.id],
+    }),
+    educationTerm: one(educationTerms, {
+      relationName: "educationTerms_profile",
+      fields: [profileEducationTerms.educationTermId],
+      references: [educationTerms.id],
+    }),
+  }),
+);

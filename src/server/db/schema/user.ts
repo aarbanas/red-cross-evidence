@@ -7,13 +7,13 @@ import {
   real,
   text,
   timestamp,
-  uniqueIndex,
   uuid,
   varchar,
   index,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { licenses } from "~/server/db/schema/licence";
+import { profileEducationTerms } from "~/server/db/schema/education";
 
 export enum AddressType {
   PERMANENT_RESIDENCE = "permanent_residence",
@@ -149,6 +149,7 @@ export const profilesRelations = relations(profiles, ({ one, many }) => ({
   profilesLicences: many(profilesLicences),
   sizes: many(sizes),
   workStatuses: many(workStatuses),
+  educationTerms: many(profileEducationTerms),
 }));
 
 export const sizes = pgTable("profile_size", {
