@@ -1,4 +1,6 @@
 {
+  "id": "c77e60b5-faf9-40c6-b692-d2926194363d",
+  "prevId": "713f1eea-27b2-4c96-b5dd-1fab45341be5",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -57,15 +59,16 @@
         "address_city_id_city_id_fk": {
           "name": "address_city_id_city_id_fk",
           "tableFrom": "address",
-          "columnsFrom": ["city_id"],
           "tableTo": "city",
+          "columnsFrom": ["city_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.city": {
       "name": "city",
@@ -115,15 +118,16 @@
         "city_country_id_country_id_fk": {
           "name": "city_country_id_country_id_fk",
           "tableFrom": "city",
-          "columnsFrom": ["country_id"],
           "tableTo": "country",
+          "columnsFrom": ["country_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.country": {
       "name": "country",
@@ -159,7 +163,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.language": {
       "name": "language",
@@ -195,7 +200,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.profile_skill": {
       "name": "profile_skill",
@@ -245,15 +251,16 @@
         "profile_skill_profile_id_profile_id_fk": {
           "name": "profile_skill_profile_id_profile_id_fk",
           "tableFrom": "profile_skill",
-          "columnsFrom": ["profile_id"],
           "tableTo": "profile",
+          "columnsFrom": ["profile_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.profile": {
       "name": "profile",
@@ -327,21 +334,22 @@
         "profile_user_id_user_id_fk": {
           "name": "profile_user_id_user_id_fk",
           "tableFrom": "profile",
-          "columnsFrom": ["user_id"],
           "tableTo": "user",
+          "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "profile_oib_unique": {
           "name": "profile_oib_unique",
-          "columns": ["oib"],
-          "nullsNotDistinct": false
+          "nullsNotDistinct": false,
+          "columns": ["oib"]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.profile_address": {
       "name": "profile_address",
@@ -379,20 +387,20 @@
         "profile_address_profile_id_profile_id_fk": {
           "name": "profile_address_profile_id_profile_id_fk",
           "tableFrom": "profile_address",
-          "columnsFrom": ["profile_id"],
           "tableTo": "profile",
+          "columnsFrom": ["profile_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "profile_address_address_id_address_id_fk": {
           "name": "profile_address_address_id_address_id_fk",
           "tableFrom": "profile_address",
-          "columnsFrom": ["address_id"],
           "tableTo": "address",
+          "columnsFrom": ["address_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -401,7 +409,8 @@
           "columns": ["profile_id", "address_id"]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.profile_language": {
       "name": "profile_language",
@@ -439,20 +448,20 @@
         "profile_language_profile_id_profile_id_fk": {
           "name": "profile_language_profile_id_profile_id_fk",
           "tableFrom": "profile_language",
-          "columnsFrom": ["profile_id"],
           "tableTo": "profile",
+          "columnsFrom": ["profile_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "profile_language_language_id_language_id_fk": {
           "name": "profile_language_language_id_language_id_fk",
           "tableFrom": "profile_language",
-          "columnsFrom": ["language_id"],
           "tableTo": "language",
+          "columnsFrom": ["language_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -461,7 +470,8 @@
           "columns": ["profile_id", "language_id"]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.profile_licence": {
       "name": "profile_licence",
@@ -492,20 +502,20 @@
         "profile_licence_profile_id_profile_id_fk": {
           "name": "profile_licence_profile_id_profile_id_fk",
           "tableFrom": "profile_licence",
-          "columnsFrom": ["profile_id"],
           "tableTo": "profile",
+          "columnsFrom": ["profile_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "profile_licence_licence_id_license_id_fk": {
           "name": "profile_licence_licence_id_license_id_fk",
           "tableFrom": "profile_licence",
-          "columnsFrom": ["licence_id"],
           "tableTo": "license",
+          "columnsFrom": ["licence_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -514,7 +524,8 @@
           "columns": ["profile_id", "licence_id"]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.profile_size": {
       "name": "profile_size",
@@ -577,15 +588,16 @@
         "profile_size_profile_id_profile_id_fk": {
           "name": "profile_size_profile_id_profile_id_fk",
           "tableFrom": "profile_size",
-          "columnsFrom": ["profile_id"],
           "tableTo": "profile",
+          "columnsFrom": ["profile_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.user": {
       "name": "user",
@@ -633,6 +645,7 @@
       },
       "indexes": {
         "idx_created_at_uuid": {
+          "name": "idx_created_at_uuid",
           "columns": [
             {
               "expression": "created_at",
@@ -647,16 +660,16 @@
               "nulls": "last"
             }
           ],
-          "with": {},
-          "name": "idx_created_at_uuid",
           "isUnique": false,
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.work_status": {
       "name": "work_status",
@@ -720,15 +733,16 @@
         "work_status_profile_id_profile_id_fk": {
           "name": "work_status_profile_id_profile_id_fk",
           "tableFrom": "work_status",
-          "columnsFrom": ["profile_id"],
           "tableTo": "profile",
+          "columnsFrom": ["profile_id"],
           "columnsTo": ["id"],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.license": {
       "name": "license",
@@ -763,7 +777,72 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.education_term": {
+      "name": "education_term",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "date_from": {
+          "name": "date_from",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_to": {
+          "name": "date_to",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "max_participants": {
+          "name": "max_participants",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lecturer": {
+          "name": "lecturer",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "education_id": {
+          "name": "education_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "education_term_education_id_education_id_fk": {
+          "name": "education_term_education_id_education_id_fk",
+          "tableFrom": "education_term",
+          "tableTo": "education",
+          "columnsFrom": ["education_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.education": {
       "name": "education",
@@ -835,7 +914,62 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.profile_education_term": {
+      "name": "profile_education_term",
+      "schema": "",
+      "columns": {
+        "profile_id": {
+          "name": "profile_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "education_term_id": {
+          "name": "education_term_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "profile_education_term_profile_id_profile_id_fk": {
+          "name": "profile_education_term_profile_id_profile_id_fk",
+          "tableFrom": "profile_education_term",
+          "tableTo": "profile",
+          "columnsFrom": ["profile_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "profile_education_term_education_term_id_education_term_id_fk": {
+          "name": "profile_education_term_education_term_id_education_term_id_fk",
+          "tableFrom": "profile_education_term",
+          "tableTo": "education_term",
+          "columnsFrom": ["education_term_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "profile_education_term_profile_id_education_term_id_pk": {
+          "name": "profile_education_term_profile_id_education_term_id_pk",
+          "columns": ["profile_id", "education_term_id"]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
   "enums": {
@@ -890,12 +1024,11 @@
     }
   },
   "schemas": {},
+  "sequences": {},
+  "views": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "id": "713f1eea-27b2-4c96-b5dd-1fab45341be5",
-  "prevId": "291c017a-7442-4bd6-903c-64d3d5126f22",
-  "sequences": {}
+    "tables": {}
+  }
 }
