@@ -56,7 +56,7 @@ const Navigation = () => {
 
       <Link
         className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.EDUCATIONS) ? "text-red-600" : ""}`}
-        href={AppRoutes.EDUCATIONS + "/evidence"}
+        href={AppRoutes.EDUCATIONS + "/term"}
       >
         <BookMarked />
         Edukacije

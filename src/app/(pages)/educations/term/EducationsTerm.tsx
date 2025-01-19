@@ -1,18 +1,18 @@
 import React, { type FC } from "react";
-import { api } from "~/trpc/react";
-import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
-import useTotalPageNumber from "~/hooks/useTotalPageNumber";
 import usePagination from "~/hooks/usePagination";
-import EducationsListTable from "./EducationsListTable";
+import { api } from "~/trpc/react";
+import useTotalPageNumber from "~/hooks/useTotalPageNumber";
+import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
+import EducationTermTable from "~/app/(pages)/educations/term/EducationTermTable";
 
 type Props = {
   filter: Record<string, string> | undefined;
 };
 
-const EducationsList: FC<Props> = ({ filter }) => {
+const EducationsTerm: FC<Props> = ({ filter }) => {
   const { page } = usePagination(filter);
 
-  const { data, isLoading, error, refetch } = api.education.list.find.useQuery({
+  const { data, isLoading, error, refetch } = api.education.term.find.useQuery({
     page,
     limit: 10,
     sort: ["name:asc"],
@@ -29,7 +29,7 @@ const EducationsList: FC<Props> = ({ filter }) => {
     <>
       {isLoading && <LoadingSpinner />}
       {error && <div>Greška</div>}
-      <EducationsListTable
+      <EducationTermTable
         data={data?.data}
         totalPageNumber={totalPageNumber}
         refetch={refetch}
@@ -38,4 +38,4 @@ const EducationsList: FC<Props> = ({ filter }) => {
   );
 };
 
-export default EducationsList;
+export default EducationsTerm;

@@ -1,7 +1,5 @@
 {
-  "id": "291c017a-7442-4bd6-903c-64d3d5126f22",
-  "prevId": "09f88566-9464-4917-976e-75b07bcd1b43",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.address": {
@@ -59,11 +57,11 @@
         "address_city_id_city_id_fk": {
           "name": "address_city_id_city_id_fk",
           "tableFrom": "address",
-          "tableTo": "city",
           "columnsFrom": ["city_id"],
+          "tableTo": "city",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -117,11 +115,11 @@
         "city_country_id_country_id_fk": {
           "name": "city_country_id_country_id_fk",
           "tableFrom": "city",
-          "tableTo": "country",
           "columnsFrom": ["country_id"],
+          "tableTo": "country",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -247,11 +245,11 @@
         "profile_skill_profile_id_profile_id_fk": {
           "name": "profile_skill_profile_id_profile_id_fk",
           "tableFrom": "profile_skill",
-          "tableTo": "profile",
           "columnsFrom": ["profile_id"],
+          "tableTo": "profile",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -329,19 +327,19 @@
         "profile_user_id_user_id_fk": {
           "name": "profile_user_id_user_id_fk",
           "tableFrom": "profile",
-          "tableTo": "user",
           "columnsFrom": ["user_id"],
+          "tableTo": "user",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "profile_oib_unique": {
           "name": "profile_oib_unique",
-          "nullsNotDistinct": false,
-          "columns": ["oib"]
+          "columns": ["oib"],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -381,20 +379,20 @@
         "profile_address_profile_id_profile_id_fk": {
           "name": "profile_address_profile_id_profile_id_fk",
           "tableFrom": "profile_address",
-          "tableTo": "profile",
           "columnsFrom": ["profile_id"],
+          "tableTo": "profile",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "profile_address_address_id_address_id_fk": {
           "name": "profile_address_address_id_address_id_fk",
           "tableFrom": "profile_address",
-          "tableTo": "address",
           "columnsFrom": ["address_id"],
+          "tableTo": "address",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -441,20 +439,20 @@
         "profile_language_profile_id_profile_id_fk": {
           "name": "profile_language_profile_id_profile_id_fk",
           "tableFrom": "profile_language",
-          "tableTo": "profile",
           "columnsFrom": ["profile_id"],
+          "tableTo": "profile",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "profile_language_language_id_language_id_fk": {
           "name": "profile_language_language_id_language_id_fk",
           "tableFrom": "profile_language",
-          "tableTo": "language",
           "columnsFrom": ["language_id"],
+          "tableTo": "language",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -494,20 +492,20 @@
         "profile_licence_profile_id_profile_id_fk": {
           "name": "profile_licence_profile_id_profile_id_fk",
           "tableFrom": "profile_licence",
-          "tableTo": "profile",
           "columnsFrom": ["profile_id"],
+          "tableTo": "profile",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "profile_licence_licence_id_license_id_fk": {
           "name": "profile_licence_licence_id_license_id_fk",
           "tableFrom": "profile_licence",
-          "tableTo": "license",
           "columnsFrom": ["licence_id"],
+          "tableTo": "license",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -579,11 +577,11 @@
         "profile_size_profile_id_profile_id_fk": {
           "name": "profile_size_profile_id_profile_id_fk",
           "tableFrom": "profile_size",
-          "tableTo": "profile",
           "columnsFrom": ["profile_id"],
+          "tableTo": "profile",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -635,9 +633,25 @@
       },
       "indexes": {
         "idx_created_at_uuid": {
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "with": {},
           "name": "idx_created_at_uuid",
-          "columns": ["created_at", "id"],
-          "isUnique": false
+          "isUnique": false,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {},
@@ -706,11 +720,11 @@
         "work_status_profile_id_profile_id_fk": {
           "name": "work_status_profile_id_profile_id_fk",
           "tableFrom": "work_status",
-          "tableTo": "profile",
           "columnsFrom": ["profile_id"],
+          "tableTo": "profile",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -800,8 +814,11 @@
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "291c017a-7442-4bd6-903c-64d3d5126f22",
+  "prevId": "09f88566-9464-4917-976e-75b07bcd1b43",
+  "sequences": {}
 }

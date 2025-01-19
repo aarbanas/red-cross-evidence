@@ -49,8 +49,8 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
   const router = useRouter();
 
   const { isSubmitting } = form.formState;
-  const createEducation = api.education.create.useMutation();
-  const updateEducation = api.education.update.useMutation();
+  const createEducation = api.education.list.create.useMutation();
+  const updateEducation = api.education.list.update.useMutation();
 
   // Handle form submission
   const handleSubmit = async () => {

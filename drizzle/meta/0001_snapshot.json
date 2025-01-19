@@ -1,7 +1,5 @@
 {
-  "id": "e2976dc3-d874-499a-95d9-5f84dfd96960",
-  "prevId": "fbfcc396-5271-4e21-9a04-c162a0229356",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.profile": {
@@ -75,11 +73,11 @@
         "profile_user_id_user_id_fk": {
           "name": "profile_user_id_user_id_fk",
           "tableFrom": "profile",
-          "tableTo": "user",
           "columnsFrom": ["user_id"],
+          "tableTo": "user",
           "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -125,9 +123,25 @@
       },
       "indexes": {
         "idx_created_at_uuid": {
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "with": {},
           "name": "idx_created_at_uuid",
-          "columns": ["created_at", "id"],
-          "isUnique": false
+          "isUnique": false,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {},
@@ -173,8 +187,11 @@
   "enums": {},
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "e2976dc3-d874-499a-95d9-5f84dfd96960",
+  "prevId": "fbfcc396-5271-4e21-9a04-c162a0229356",
+  "sequences": {}
 }

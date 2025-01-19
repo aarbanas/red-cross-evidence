@@ -6,17 +6,17 @@ import Tabs, { type TabProp } from "~/components/atoms/Tabs";
 const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
   const tabsData: TabProp[] = [
     {
-      label: "Evidencija provođenja edukacija",
-      link: "evidence",
+      label: "Termini",
+      link: "term",
     },
     {
-      label: "Popis edukacija",
+      label: "Popis",
       link: "list",
     },
   ];
 
   return (
-    <MainLayout headerChildren={<div>Educations</div>}>
+    <MainLayout headerChildren={<div>Edukacije</div>}>
       <div>
         <Tabs tabs={tabsData} />
         <main>{children}</main>

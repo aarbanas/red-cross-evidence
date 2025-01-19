@@ -50,6 +50,13 @@
       "when": 1729108318689,
       "tag": "0006_green_lester",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1737314638584,
+      "tag": "0007_spooky_wrecking_crew",
+      "breakpoints": true
     }
   ]
 }

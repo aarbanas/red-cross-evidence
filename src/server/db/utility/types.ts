@@ -9,3 +9,11 @@ export type FindReturnDTO<T> = {
   totalCount: number;
   returnData: T[];
 };
+
+export type FindReturn<T> = {
+  data: T[];
+  meta: {
+    count: number;
+    limit: number;
+  };
+};
