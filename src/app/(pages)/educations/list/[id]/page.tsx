@@ -1,5 +1,4 @@
 "use client";
-import MainLayout from "~/components/layout/mainLayout";
 import { useParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
@@ -10,12 +9,13 @@ export default function EducationDetailPage() {
   const { id } = useParams();
 
   // Fetch unique types
-  const { data: uniqueTypesData } = api.education.getUniqueTypes.useQuery();
+  const { data: uniqueTypesData } =
+    api.education.list.getUniqueTypes.useQuery();
 
   // Conditionally fetch data only if the id is not "create"
   const { data, isLoading, error } =
     id !== "create"
-      ? api.education.findById.useQuery({ id: id as string })
+      ? api.education.list.findById.useQuery({ id: id as string })
       : {};
 
   if (isLoading) {

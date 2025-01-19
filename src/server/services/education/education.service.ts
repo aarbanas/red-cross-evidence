@@ -1,25 +1,38 @@
 import educationRepository from "~/server/services/education/education.repository";
 import type { FindQueryDTO } from "~/server/db/utility/types";
-import { EducationFormData } from "~/app/(pages)/educations/list/[id]/_components/EducationsForm";
+import { type EducationFormData } from "~/app/(pages)/educations/list/[id]/_components/EducationsForm";
 
 const educationService = {
-  getById: async (id: string) => {
-    return (await educationRepository.findById(id))[0];
+  list: {
+    getById: async (id: string) => {
+      return (await educationRepository.list.findById(id))[0];
+    },
+    find: async (data: FindQueryDTO) => {
+      return educationRepository.list.find(data);
+    },
+    getUniqueTypes: async () => {
+      return educationRepository.list.findUniqueTypes();
+    },
+    deleteById: async (id: string) => {
+      return educationRepository.list.deleteById(id);
+    },
+    create: async (data: EducationFormData) => {
+      return educationRepository.list.create(data);
+    },
+    update: async (data: EducationFormData) => {
+      return educationRepository.list.update(data);
+    },
   },
-  find: async (data: FindQueryDTO) => {
-    return educationRepository.find(data);
-  },
-  getUniqueTypes: async () => {
-    return educationRepository.findUniqueTypes();
-  },
-  deleteById: async (id: string) => {
-    return educationRepository.deleteById(id);
-  },
-  create: async (data: EducationFormData) => {
-    return educationRepository.create(data);
-  },
-  update: async (data: EducationFormData) => {
-    return educationRepository.update(data);
+  term: {
+    getById: async (id: string) => {
+      return (await educationRepository.term.findById(id))[0];
+    },
+    find: async (data: FindQueryDTO) => {
+      return educationRepository.term.find(data);
+    },
+    deleteById: async (id: string) => {
+      return educationRepository.term.deleteById(id);
+    },
   },
 };
 

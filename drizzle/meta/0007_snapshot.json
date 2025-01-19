@@ -1,5 +1,5 @@
 {
-  "id": "c77e60b5-faf9-40c6-b692-d2926194363d",
+  "id": "1e882159-4b07-45db-a91e-f739ac7b14e0",
   "prevId": "713f1eea-27b2-4c96-b5dd-1fab45341be5",
   "version": "7",
   "dialect": "postgresql",
@@ -791,6 +791,12 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "date_from": {
           "name": "date_from",
           "type": "timestamp",
@@ -815,9 +821,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "lecturer": {
-          "name": "lecturer",
-          "type": "varchar(255)",
+        "lecturers": {
+          "name": "lecturers",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },

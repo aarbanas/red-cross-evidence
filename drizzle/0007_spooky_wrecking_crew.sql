@@ -1,10 +1,11 @@
 CREATE TABLE IF NOT EXISTS "education_term" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"title" varchar(255) NOT NULL,
 	"date_from" timestamp NOT NULL,
 	"date_to" timestamp NOT NULL,
 	"max_participants" integer NOT NULL,
 	"location" text NOT NULL,
-	"lecturer" varchar(255) NOT NULL,
+	"lecturers" text NOT NULL,
 	"education_id" uuid NOT NULL
 );
 --> statement-breakpoint

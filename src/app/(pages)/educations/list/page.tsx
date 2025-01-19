@@ -15,7 +15,7 @@ const EducationsListTab = () => {
     undefined,
   );
 
-  const { data } = api.education.getUniqueTypes.useQuery();
+  const { data } = api.education.list.getUniqueTypes.useQuery();
   const types: DropdownOption[] | undefined = useMemo(
     () =>
       data?.map(({ type }) => ({

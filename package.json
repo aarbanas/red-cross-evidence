@@ -10,6 +10,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed:educations": "dotenv npx tsx ./src/server/db/seed/education.seed.ts",
+    "db:seed:educationTerms": "dotenv npx tsx ./src/server/db/seed/educationTerm.seed.ts",
     "db:seed:licenses": "dotenv npx tsx ./src/server/db/seed/license.seed.ts",
     "db:seed:users": "dotenv npx tsx ./src/server/db/seed/user.seed.ts",
     "db:seed:all": "dotenv npx tsx ./src/server/db/seed/index.ts",

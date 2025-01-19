@@ -17,37 +17,59 @@ export const educationFormDataSchema = z.object({
 });
 
 export const educationRouter = createTRPCRouter({
-  findById: protectedProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ input }) => {
-      const result = await educationService.getById(input.id);
+  list: {
+    findById: protectedProcedure
+      .input(z.object({ id: z.string() }))
+      .query(async ({ input }) => {
+        const result = await educationService.list.getById(input.id);
 
-      return result;
+        return result;
+      }),
+    find: protectedProcedure
+      .input(paginationQuerySchema)
+      .query(async ({ input }) => {
+        return educationService.list.find(input);
+      }),
+    getUniqueTypes: protectedProcedure.query(async () => {
+      return educationService.list.getUniqueTypes();
     }),
-  find: protectedProcedure
-    .input(paginationQuerySchema)
-    .query(async ({ input }) => {
-      return educationService.find(input);
-    }),
-  getUniqueTypes: protectedProcedure.query(async () => {
-    return educationService.getUniqueTypes();
-  }),
-  deleteById: protectedProcedure
-    .input(z.object({ id: z.string() }))
-    .mutation(async ({ input }) => {
-      await educationService.deleteById(input.id);
-      return { success: true };
-    }),
-  create: protectedProcedure
-    .input(educationFormDataSchema)
-    .mutation(async ({ input }) => {
-      const result = await educationService.create(input);
-      return result;
-    }),
-  update: protectedProcedure
-    .input(educationFormDataSchema)
-    .mutation(async ({ input }) => {
-      const result = await educationService.update(input);
-      return result;
-    }),
+    deleteById: protectedProcedure
+      .input(z.object({ id: z.string() }))
+      .mutation(async ({ input }) => {
+        await educationService.list.deleteById(input.id);
+        return { success: true };
+      }),
+    create: protectedProcedure
+      .input(educationFormDataSchema)
+      .mutation(async ({ input }) => {
+        const result = await educationService.list.create(input);
+        return result;
+      }),
+    update: protectedProcedure
+      .input(educationFormDataSchema)
+      .mutation(async ({ input }) => {
+        const result = await educationService.list.update(input);
+        return result;
+      }),
+  },
+  term: {
+    findById: protectedProcedure
+      .input(z.object({ id: z.string() }))
+      .query(async ({ input }) => {
+        const result = await educationService.term.getById(input.id);
+
+        return result;
+      }),
+    find: protectedProcedure
+      .input(paginationQuerySchema)
+      .query(async ({ input }) => {
+        return educationService.term.find(input);
+      }),
+    deleteById: protectedProcedure
+      .input(z.object({ id: z.string() }))
+      .mutation(async ({ input }) => {
+        await educationService.term.deleteById(input.id);
+        return { success: true };
+      }),
+  },
 });

@@ -41,11 +41,12 @@ export const educationsRelations = relations(educations, ({ many }) => ({
 
 export const educationTerms = pgTable("education_term", {
   id: uuid("id").defaultRandom().primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
   dateFrom: timestamp("date_from").notNull(),
   dateTo: timestamp("date_to").notNull(),
   maxParticipants: integer("max_participants").notNull(),
   location: text("location").notNull(),
-  lecturers: varchar("lecturer", { length: 255 }).notNull(),
+  lecturers: text("lecturers").notNull(),
   educationId: uuid("education_id")
     .notNull()
     .references(() => educations.id, { onDelete: "cascade" }),
