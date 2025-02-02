@@ -449,14 +449,14 @@ const __filename = fileURLToPath(import.meta.url);
 
 if (process.argv[1] === __filename) {
   await getUsers()
-    .then((users) => console.log("Done seeding users."))
+    .then(() => console.log("Done seeding users."))
     .catch((err) => {
       console.log(err);
       process.exit(1);
     });
 
   await getAdmin()
-    .then((admins) => {
+    .then(() => {
       console.log("Done seeding admin.");
       process.exit(0);
     })

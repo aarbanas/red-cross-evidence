@@ -5,10 +5,7 @@ import FormTextarea from "~/components/organisms/form/formTextArea/FormTextArea"
 import { Button } from "~/components/atoms/Button";
 import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
 import React from "react";
-import {
-  translateEducationType,
-  mapTranslatedEducationType,
-} from "~/app/(pages)/educations/utils";
+import { translateEducationType } from "~/app/(pages)/educations/utils";
 import { type EducationType } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";

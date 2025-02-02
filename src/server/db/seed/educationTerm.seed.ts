@@ -56,7 +56,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 if (process.argv[1] === __filename) {
   getEducationTerms()
-    .then((educationTerms) => {
+    .then(() => {
       console.log("Done seeding education terms.");
       process.exit(0);
     })

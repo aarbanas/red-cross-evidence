@@ -51,6 +51,7 @@ const DateRangeFilter: FC<DateRangeFilterProps> = ({
     if (prevEndDate && !endDate) {
       onSearch("dateTo", "");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate, endDate]);
 
   return (
