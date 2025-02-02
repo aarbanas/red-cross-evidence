@@ -19,7 +19,7 @@ const EducationsEvidencePage = () => {
     <TabLayout>
       <div className="flex">
         <EducationsTermSearch onSearch={handleSearch} />
-        <div className="ml-auto rounded-md border px-2">
+        <div className="ml-auto mt-auto h-1/2 rounded-md border px-2">
           <Link
             className="flex gap-2"
             href={{

@@ -1,6 +1,6 @@
 import { educations, educationTerms } from "~/server/db/schema";
 import { db } from "~/server/db";
-import { asc, count, eq, ilike, type SQL } from "drizzle-orm";
+import { asc, count, eq, gte, ilike, lte, type SQL } from "drizzle-orm";
 import type {
   FindQueryDTO,
   FindReturn,
@@ -96,17 +96,21 @@ const termMapFilterableKeyToConditional = (
   key: string,
   value: string,
 ): SQL | undefined => {
-  if (key === TermFilterableKeys.TITLE.valueOf())
+  if (key === TermFilterableKeys.TITLE.valueOf()) {
     return ilike(termMapKeyToColumn(key), `%${value}%`);
+  }
 
-  if (key === TermFilterableKeys.EDUCATION_ID.valueOf() && value)
+  if (key === TermFilterableKeys.EDUCATION_ID.valueOf() && value) {
     return eq(termMapKeyToColumn(key), value);
+  }
 
-  if (
-    key === TermFilterableKeys.DATE_FROM.valueOf() ||
-    key === TermFilterableKeys.DATE_TO.valueOf()
-  )
-    return eq(termMapKeyToColumn(key), value);
+  if (key === TermFilterableKeys.DATE_FROM.valueOf() && value) {
+    return gte(termMapKeyToColumn(key), new Date(value));
+  }
+
+  if (key === TermFilterableKeys.DATE_TO.valueOf() && value) {
+    return lte(termMapKeyToColumn(key), new Date(value));
+  }
 
   return undefined;
 };
