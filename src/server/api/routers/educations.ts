@@ -3,7 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { paginationQuerySchema } from "~/server/api/schema";
 import educationService from "~/server/services/education/education.service";
 
-export const educationFormDataSchema = z.object({
+const educationFormDataSchema = z.object({
   id: z.string().optional(),
   type: z.string(),
   title: z.string(),
@@ -14,6 +14,17 @@ export const educationFormDataSchema = z.object({
   courseDuration: z.string().optional(),
   renewalDuration: z.string().optional(),
   topics: z.string().optional(),
+});
+
+const educationTermFormDataSchema = z.object({
+  id: z.string().optional(),
+  title: z.string(),
+  dateFrom: z.string(),
+  dateTo: z.string(),
+  maxParticipants: z.number(),
+  lecturers: z.string(),
+  location: z.string(),
+  educationId: z.string(),
 });
 
 export const educationRouter = createTRPCRouter({
@@ -70,6 +81,16 @@ export const educationRouter = createTRPCRouter({
       .mutation(async ({ input }) => {
         await educationService.term.deleteById(input.id);
         return { success: true };
+      }),
+    create: protectedProcedure
+      .input(educationTermFormDataSchema)
+      .mutation(async ({ input }) => {
+        return educationService.term.create(input);
+      }),
+    update: protectedProcedure
+      .input(educationTermFormDataSchema)
+      .mutation(async ({ input }) => {
+        return educationService.term.update(input);
       }),
   },
 });

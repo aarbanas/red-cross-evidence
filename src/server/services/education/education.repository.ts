@@ -8,6 +8,7 @@ import type {
 } from "~/server/db/utility/types";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
 import { type EducationFormData } from "~/app/(pages)/educations/list/[id]/_components/EducationsForm";
+import { type EducationTermFormData } from "~/app/(pages)/educations/term/_components/EducationsTermForm";
 
 enum ListSortableKeys {
   TYPE = "type",
@@ -340,15 +341,94 @@ const educationRepository = {
           maxParticipants: educationTerms.maxParticipants,
           location: educationTerms.location,
           lecturers: educationTerms.lecturers,
+          education: {
+            id: educations.id,
+            title: educations.title,
+          },
         })
         .from(educationTerms)
         .where(eq(educationTerms.id, id))
+        .leftJoin(educations, eq(educationTerms.educationId, educations.id))
         .execute();
     },
     deleteById: async (id: string) => {
       return db
         .delete(educationTerms)
         .where(eq(educationTerms.id, id))
+        .execute();
+    },
+    create: async (data: EducationTermFormData) => {
+      const {
+        title,
+        dateFrom,
+        dateTo,
+        maxParticipants,
+        location,
+        educationId,
+        lecturers,
+      } = data;
+
+      return db
+        .insert(educationTerms)
+        .values({
+          title,
+          educationId,
+          maxParticipants,
+          location,
+          lecturers,
+          dateFrom: new Date(dateFrom),
+          dateTo: new Date(dateTo),
+        })
+        .returning({
+          id: educationTerms.id,
+          title: educationTerms.title,
+          dateFrom: educationTerms.dateFrom,
+          dateTo: educationTerms.dateTo,
+          maxParticipants: educationTerms.maxParticipants,
+          location: educationTerms.location,
+          lecturers: educationTerms.lecturers,
+          educationId: educationTerms.educationId,
+        })
+        .execute();
+    },
+    update: async (data: EducationTermFormData) => {
+      const {
+        id,
+        title,
+        dateFrom,
+        dateTo,
+        maxParticipants,
+        location,
+        educationId,
+        lecturers,
+      } = data;
+
+      if (!id) {
+        throw new Error("Id is required for updating education term");
+      }
+
+      return db
+        .update(educationTerms)
+        .set({
+          title,
+          dateFrom: new Date(dateFrom),
+          dateTo: new Date(dateTo),
+          maxParticipants,
+          location,
+          lecturers,
+          educationId,
+        })
+        .where(eq(educationTerms.id, id))
+        .returning({
+          id: educationTerms.id,
+          title: educationTerms.title,
+          dateFrom: educationTerms.dateFrom,
+          dateTo: educationTerms.dateTo,
+          maxParticipants: educationTerms.maxParticipants,
+          location: educationTerms.location,
+          lecturers: educationTerms.lecturers,
+          educationId: educationTerms.educationId,
+        })
         .execute();
     },
   },

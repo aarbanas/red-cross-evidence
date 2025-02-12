@@ -1,6 +1,7 @@
 import educationRepository from "~/server/services/education/education.repository";
 import type { FindQueryDTO } from "~/server/db/utility/types";
 import { type EducationFormData } from "~/app/(pages)/educations/list/[id]/_components/EducationsForm";
+import { EducationTermFormData } from "~/app/(pages)/educations/term/_components/EducationsTermForm";
 
 const educationService = {
   list: {
@@ -32,6 +33,12 @@ const educationService = {
     },
     deleteById: async (id: string) => {
       return educationRepository.term.deleteById(id);
+    },
+    create: async (data: EducationTermFormData) => {
+      return educationRepository.term.create(data);
+    },
+    update: async (data: EducationTermFormData) => {
+      return educationRepository.term.update(data);
     },
   },
 };

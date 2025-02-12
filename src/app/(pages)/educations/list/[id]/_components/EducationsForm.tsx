@@ -52,33 +52,24 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
   // Handle form submission
   const handleSubmit = async () => {
     const data = form.getValues();
+    const formData: EducationFormData = {
+      type: data.type,
+      title: data.title,
+      description: data.description,
+      precondition: data.precondition,
+      duration: data.duration,
+      lecturers: data.lecturers,
+      courseDuration: data.courseDuration,
+      renewalDuration: data.renewalDuration,
+      topics: data.topics,
+      ...(id && { id }),
+    };
 
     try {
       if (id === "create") {
-        await createEducation.mutateAsync({
-          type: data.type,
-          title: data.title,
-          description: data.description,
-          precondition: data.precondition ?? "",
-          duration: data.duration ?? "",
-          lecturers: data.lecturers ?? "",
-          courseDuration: data.courseDuration ?? "",
-          renewalDuration: data.renewalDuration ?? "",
-          topics: data.topics ?? "",
-        });
+        await createEducation.mutateAsync(formData);
       } else {
-        await updateEducation.mutateAsync({
-          id: id,
-          type: data.type,
-          title: data.title,
-          description: data.description,
-          precondition: data.precondition ?? "",
-          duration: data.duration ?? "",
-          lecturers: data.lecturers ?? "",
-          courseDuration: data.courseDuration ?? "",
-          renewalDuration: data.renewalDuration ?? "",
-          topics: data.topics ?? "",
-        });
+        await updateEducation.mutateAsync(formData);
       }
       router.push("/educations/list");
     } catch (error) {
