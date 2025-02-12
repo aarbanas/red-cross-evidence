@@ -80,7 +80,7 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
           topics: data.topics ?? "",
         });
       }
-      router.push("/educations?selected=popis");
+      router.push("/educations/list");
     } catch (error) {
       console.error(
         `Failed to ${id === "create" ? "create" : "update"} education:`,
