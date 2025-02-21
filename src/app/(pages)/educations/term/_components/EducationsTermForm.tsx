@@ -1,5 +1,5 @@
 "use client";
-import React, { type FC } from "react";
+import React, { type FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
@@ -7,6 +7,9 @@ import FormInput from "~/components/organisms/form/formInput/FormInput";
 import FormTextarea from "~/components/organisms/form/formTextArea/FormTextArea";
 import { Button } from "~/components/atoms/Button";
 import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
+import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
+import { translateEducationType } from "~/app/(pages)/educations/utils";
+import { EducationType } from "~/server/db/schema";
 
 export type EducationTermFormData = {
   id?: string;
@@ -23,14 +26,16 @@ type Props = {
   action: "create" | "update";
   formData?: Partial<EducationTermFormData>;
   educationTermId?: string | string[];
+  educationTypes: { type: string }[];
 };
 
 const EducationsTermForm: FC<Props> = ({
   action,
   formData,
   educationTermId,
+  educationTypes,
 }) => {
-  const form = useForm<EducationTermFormData>({
+  const form = useForm<EducationTermFormData & { type: EducationType }>({
     defaultValues: {
       title: formData?.title ?? "",
       dateFrom: formData?.dateFrom ?? "",
@@ -44,9 +49,17 @@ const EducationsTermForm: FC<Props> = ({
 
   const router = useRouter();
 
+  const { watch, setValue } = form;
   const { isSubmitting } = form.formState;
+  const educationType = watch("type", EducationType.VOLUNTEERS);
   const createEducationTerm = api.education.term.create.useMutation();
   const updateEducationTerm = api.education.term.update.useMutation();
+  const { data: educations } =
+    api.education.list.getAllTitles.useQuery(educationType);
+
+  useEffect(() => {
+    setValue("educationId", "");
+  }, [educationType, setValue]);
 
   // Handle form submission
   const handleSubmit = async () => {
@@ -79,6 +92,38 @@ const EducationsTermForm: FC<Props> = ({
 
   return (
     <FormComponent form={form} onSubmit={handleSubmit}>
+      <FormSelect
+        id="type"
+        label="Tip*"
+        {...form.register("type", {
+          required: "Tip je obavezno polje",
+        })}
+        placeholder="Odaberite tip"
+      >
+        {educationTypes.map((type) => (
+          <option key={type.type} value={type.type}>
+            {translateEducationType(type.type as EducationType)}
+          </option>
+        ))}
+      </FormSelect>
+
+      {educations?.length && (
+        <FormSelect
+          id="education"
+          label="Edukacija*"
+          {...form.register("educationId", {
+            required: "Edukacija je obavezno polje",
+          })}
+          placeholder="Odaberite edukaciju"
+        >
+          {educations.map((education) => (
+            <option key={education.id} value={education.title}>
+              {education.title}
+            </option>
+          ))}
+        </FormSelect>
+      )}
+
       <FormInput
         id="title"
         label="Naziv*"

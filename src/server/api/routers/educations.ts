@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { paginationQuerySchema } from "~/server/api/schema";
 import educationService from "~/server/services/education/education.service";
+import { EducationType } from "~/server/db/schema";
 
 const educationFormDataSchema = z.object({
   id: z.string().optional(),
@@ -61,6 +62,11 @@ export const educationRouter = createTRPCRouter({
       .mutation(async ({ input }) => {
         const result = await educationService.list.update(input);
         return result;
+      }),
+    getAllTitles: protectedProcedure
+      .input(z.nativeEnum(EducationType))
+      .query(async ({ input }) => {
+        return educationService.list.getAllTitles(input);
       }),
   },
   term: {

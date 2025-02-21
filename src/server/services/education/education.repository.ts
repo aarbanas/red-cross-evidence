@@ -1,4 +1,4 @@
-import { educations, educationTerms } from "~/server/db/schema";
+import { educations, educationTerms, EducationType } from "~/server/db/schema";
 import { db } from "~/server/db";
 import { asc, count, eq, gte, ilike, lte, type SQL } from "drizzle-orm";
 import type {
@@ -273,6 +273,17 @@ const educationRepository = {
           renewalDuration: educations.renewalDuration,
           topics: educations.topics,
         })
+        .execute();
+    },
+    getAllTitles: async (type: EducationType) => {
+      return db
+        .select({
+          id: educations.id,
+          title: educations.title,
+        })
+        .from(educations)
+        .where(eq(educations.type, type))
+        .orderBy(asc(educations.title))
         .execute();
     },
   },
