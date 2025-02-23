@@ -77,9 +77,9 @@ const populateEducations = async () => {
 
 export const getEducations = async () => {
   let _educations = await db.query.educations.findMany();
-  // if (!_educations.length) {
-  _educations = await populateEducations();
-  // }
+  if (!_educations.length) {
+    _educations = await populateEducations();
+  }
 
   return _educations;
 };

@@ -4,12 +4,14 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import FormInput from "~/components/organisms/form/formInput/FormInput";
-import FormTextarea from "~/components/organisms/form/formTextArea/FormTextArea";
 import { Button } from "~/components/atoms/Button";
 import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
 import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
 import { translateEducationType } from "~/app/(pages)/educations/utils";
 import { EducationType } from "~/server/db/schema";
+import FormDatePicker from "~/components/organisms/form/formDatePicker/FormDatePicker";
+import FormTextArea from "~/components/organisms/form/formTextArea/FormTextArea";
+import moment from "moment";
 
 export type EducationTermFormData = {
   id?: string;
@@ -68,9 +70,9 @@ const EducationsTermForm: FC<Props> = ({
     try {
       const formData: EducationTermFormData = {
         title: data.title,
-        dateFrom: data.dateFrom,
-        dateTo: data.dateTo,
-        maxParticipants: data.maxParticipants,
+        dateFrom: moment(data.dateFrom).format("YYYY-MM-DD:HH:mm:ss"),
+        dateTo: moment(data.dateTo).format("YYYY-MM-DD:HH:mm:ss"),
+        maxParticipants: Number(data.maxParticipants),
         lecturers: data.lecturers,
         location: data.location,
         educationId: data.educationId,
@@ -117,7 +119,7 @@ const EducationsTermForm: FC<Props> = ({
           placeholder="Odaberite edukaciju"
         >
           {educations.map((education) => (
-            <option key={education.id} value={education.title}>
+            <option key={education.id} value={education.id}>
               {education.title}
             </option>
           ))}
@@ -132,11 +134,45 @@ const EducationsTermForm: FC<Props> = ({
         })}
       />
 
-      <FormTextarea
-        id="description"
-        label="Opis*"
+      <FormDatePicker
+        id="dateFrom"
+        label="Datum od*"
+        partOfDay="START"
         {...form.register("dateFrom", {
-          required: "Opis je obavezno polje",
+          required: "Datum od je obavezno polje",
+        })}
+      />
+
+      <FormDatePicker
+        id="dateTo"
+        label="Datum do*"
+        partOfDay="END"
+        {...form.register("dateTo", { required: "Datum do je obavezno polje" })}
+      />
+
+      <FormInput
+        id="maxParticipants"
+        label="Maksimalan broj sudionika*"
+        type="number"
+        {...form.register("maxParticipants", {
+          required: "Maksimalan broj sudionika je obavezno polje",
+        })}
+      />
+
+      <FormInput
+        id="location"
+        label="Lokacija*"
+        type="text"
+        {...form.register("location", {
+          required: "Lokacija je obavezno polje",
+        })}
+      />
+
+      <FormTextArea
+        id="lecturers"
+        label="Predavači*"
+        {...form.register("lecturers", {
+          required: "Predavači su obavezno polje",
         })}
       />
 
