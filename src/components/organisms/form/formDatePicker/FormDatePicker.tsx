@@ -15,11 +15,17 @@ interface FormDatePickerProps {
   name?: string;
   partOfDay?: "START" | "END";
   onChange?: (event: { target: { value: Date | null; name?: string } }) => void;
+  value?: string;
 }
 
 const FormDatePicker = forwardRef<DatePicker, FormDatePickerProps>(
-  ({ id, label, className, onChange, name, partOfDay, ...props }, ref) => {
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  (
+    { id, label, className, onChange, name, partOfDay, value, ...props },
+    ref,
+  ) => {
+    const [selectedDate, setSelectedDate] = useState<Date | null>(
+      value ? new Date(value) : null,
+    );
     const handleChange = (date: Date | null) => {
       onChange?.({
         target: {
@@ -47,6 +53,7 @@ const FormDatePicker = forwardRef<DatePicker, FormDatePickerProps>(
                 : moment(date).endOf("day").toDate();
             handleChange(formattedDate);
             setSelectedDate(formattedDate);
+            console.log(date);
           }}
           className={styles.datepicker}
           ref={ref}
