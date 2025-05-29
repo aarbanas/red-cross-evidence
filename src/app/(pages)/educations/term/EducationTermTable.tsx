@@ -1,3 +1,5 @@
+import { type FC, useState } from "react";
+import { type FindEducationTermReturnDTO } from "~/server/services/education/education.repository";
 import {
   Table,
   TableBody,
@@ -6,34 +8,41 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/organisms/Table";
-import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
-import { useState, type FC } from "react";
-import type { FindEducationListReturnDTO } from "~/server/services/education/education.repository";
-import { translateEducationType } from "~/app/(pages)/educations/utils";
-import { type EducationType } from "~/server/db/schema";
+import { Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { api } from "~/trpc/react";
-import { Trash2, Pencil } from "lucide-react";
-import Modal from "~/components/organisms/modal/Modal";
+import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
+import moment from "moment";
 import { Button } from "~/components/atoms/Button";
+import Modal from "~/components/organisms/modal/Modal";
+import { api } from "~/trpc/react";
 
 type Props = {
-  data?: FindEducationListReturnDTO[];
+  data?: FindEducationTermReturnDTO[];
   totalPageNumber: number;
   refetch: () => void;
 };
 
-const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
+const EducationTermTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const deleteEducation = api.education.list.deleteById.useMutation();
+  const deleteEducationTerm = api.education.term.deleteById.useMutation();
+
+  const openModal = (id: string) => {
+    setIsModalOpen(true);
+    setSelectedId(id);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedId(null);
+  };
 
   const handleDelete = async () => {
     if (!selectedId) return;
 
     try {
-      await deleteEducation.mutateAsync({ id: selectedId });
+      await deleteEducationTerm.mutateAsync({ id: selectedId });
 
       refetch();
       setIsModalOpen(false);
@@ -42,56 +51,53 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
     }
   };
 
-  const openModal = (id: string) => {
-    setSelectedId(id);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedId(null);
-  };
-
-  if (!data?.length) {
-    return <div>Nema rezultata</div>;
-  }
-
   return (
     <>
-      <div>
+      <div className="rounded-lg border shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="md:table-cell">Tip</TableHead>
               <TableHead className="md:table-cell">Naziv</TableHead>
-              <TableHead className="md:table-cell">Opis</TableHead>
+              <TableHead className="md:table-cell">Od</TableHead>
+              <TableHead className="md:table-cell">Do</TableHead>
+              <TableHead className="md:table-cell">Lokacija</TableHead>
+              <TableHead className="md:table-cell">Broj sudionika</TableHead>
               <TableHead className="md:table-cell">Uredi</TableHead>
               <TableHead className="md:table-cell">Izbriši</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
-            {data?.map((educationList) => (
-              <TableRow key={educationList.id}>
+            {data?.map((educationTerm) => (
+              <TableRow key={educationTerm.id}>
                 <TableCell className="md:table-cell">
-                  {translateEducationType(educationList.type as EducationType)}
+                  {educationTerm.title}
                 </TableCell>
                 <TableCell className="md:table-cell">
-                  {educationList.title}
+                  {moment(educationTerm.dateFrom).format("DD.MM.YYYY")}
                 </TableCell>
                 <TableCell className="md:table-cell">
-                  {educationList.description}
+                  {educationTerm.dateTo
+                    ? moment(educationTerm.dateTo).format("DD.MM.YYYY")
+                    : "-"}
+                </TableCell>
+                <TableCell className="md:table-cell">
+                  {educationTerm.location}
+                </TableCell>
+                <TableCell className="md:table-cell">
+                  {educationTerm.maxParticipants}
                 </TableCell>
                 <TableCell className="cursor-pointer md:table-cell">
                   <Link
                     href={{
-                      pathname: `/educations/list/${educationList.id}`,
+                      pathname: `/educations/term/${educationTerm.id}`,
                     }}
                   >
                     <Pencil />
                   </Link>
                 </TableCell>
                 <TableCell className="cursor-pointer md:table-cell">
-                  <button onClick={() => openModal(educationList.id)}>
+                  <button onClick={() => openModal(educationTerm.id)}>
                     <Trash2 color="red" />
                   </button>
                 </TableCell>
@@ -101,9 +107,10 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
         </Table>
       </div>
       <PaginationComponent totalPageNumber={totalPageNumber} />
+
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <div>
-          <p>Jeste li sigurni da želite obrisati ovu edukaciju?</p>
+          <p>Jeste li sigurni da želite obrisati ovaj termin edukacije?</p>
           <Button variant="destructive" onClick={handleDelete}>
             Da
           </Button>
@@ -116,4 +123,4 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
   );
 };
 
-export default EducationsListTable;
+export default EducationTermTable;

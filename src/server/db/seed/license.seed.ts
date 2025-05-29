@@ -24,7 +24,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 if (process.argv[1] === __filename) {
   getLicenses()
-    .then((licenses) => {
+    .then(() => {
       console.log("Done seeding licenses.");
       process.exit(0);
     })

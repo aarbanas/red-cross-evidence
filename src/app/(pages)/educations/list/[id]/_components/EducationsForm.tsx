@@ -5,10 +5,7 @@ import FormTextarea from "~/components/organisms/form/formTextArea/FormTextArea"
 import { Button } from "~/components/atoms/Button";
 import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
 import React from "react";
-import {
-  translateEducationType,
-  mapTranslatedEducationType,
-} from "~/app/(pages)/educations/utils";
+import { translateEducationType } from "~/app/(pages)/educations/utils";
 import { type EducationType } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
@@ -49,41 +46,32 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
   const router = useRouter();
 
   const { isSubmitting } = form.formState;
-  const createEducation = api.education.create.useMutation();
-  const updateEducation = api.education.update.useMutation();
+  const createEducation = api.education.list.create.useMutation();
+  const updateEducation = api.education.list.update.useMutation();
 
   // Handle form submission
   const handleSubmit = async () => {
     const data = form.getValues();
+    const formData: EducationFormData = {
+      type: data.type,
+      title: data.title,
+      description: data.description,
+      precondition: data.precondition,
+      duration: data.duration,
+      lecturers: data.lecturers,
+      courseDuration: data.courseDuration,
+      renewalDuration: data.renewalDuration,
+      topics: data.topics,
+      ...(id && { id }),
+    };
 
     try {
       if (id === "create") {
-        await createEducation.mutateAsync({
-          type: data.type,
-          title: data.title,
-          description: data.description,
-          precondition: data.precondition ?? "",
-          duration: data.duration ?? "",
-          lecturers: data.lecturers ?? "",
-          courseDuration: data.courseDuration ?? "",
-          renewalDuration: data.renewalDuration ?? "",
-          topics: data.topics ?? "",
-        });
+        await createEducation.mutateAsync(formData);
       } else {
-        await updateEducation.mutateAsync({
-          id: id,
-          type: data.type,
-          title: data.title,
-          description: data.description,
-          precondition: data.precondition ?? "",
-          duration: data.duration ?? "",
-          lecturers: data.lecturers ?? "",
-          courseDuration: data.courseDuration ?? "",
-          renewalDuration: data.renewalDuration ?? "",
-          topics: data.topics ?? "",
-        });
+        await updateEducation.mutateAsync(formData);
       }
-      router.push("/educations?selected=popis");
+      router.push("/educations/list");
     } catch (error) {
       console.error(
         `Failed to ${id === "create" ? "create" : "update"} education:`,

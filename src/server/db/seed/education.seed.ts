@@ -77,9 +77,9 @@ const populateEducations = async () => {
 
 export const getEducations = async () => {
   let _educations = await db.query.educations.findMany();
-  // if (!_educations.length) {
-  _educations = await populateEducations();
-  // }
+  if (!_educations.length) {
+    _educations = await populateEducations();
+  }
 
   return _educations;
 };
@@ -88,7 +88,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 if (process.argv[1] === __filename) {
   getEducations()
-    .then((educations) => {
+    .then(() => {
       console.log("Done seeding educations.");
       process.exit(0);
     })

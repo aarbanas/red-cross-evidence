@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const usePagination = (filter?: Record<string, string>) => {
@@ -26,6 +26,7 @@ const usePagination = (filter?: Record<string, string>) => {
     if (filter !== undefined) {
       handlePageChange(0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   return { page, handlePageChange };

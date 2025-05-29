@@ -18,6 +18,7 @@ const EducationsListSearch: FC<Props> = ({ types, onSearch }) => {
           options={types}
           onSearch={handleSearch}
           searchKey={"type"}
+          defaultValue={"Volunteers"}
           label={"Tip"}
         />
       )}

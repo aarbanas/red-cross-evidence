@@ -1,8 +1,8 @@
 "use client";
 
-import React, { ReactElement, useState } from "react";
+import React, { type ReactElement, useState } from "react";
 import { Button } from "~/components/atoms/Button";
-import { useForm, FieldValues } from "react-hook-form";
+import { useForm, type FieldValues } from "react-hook-form";
 import FormComponent from "../form/formComponent/FormComponent";
 
 export interface FormStep {

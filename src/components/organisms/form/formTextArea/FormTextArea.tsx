@@ -1,6 +1,6 @@
 import styles from "./FormTextArea.module.scss";
 import { FieldError } from "~/components/organisms/form/formComponent/FormComponent";
-import { forwardRef, ComponentProps } from "react";
+import { forwardRef, type ComponentProps } from "react";
 
 interface FormTextAreaProps extends ComponentProps<"textarea"> {
   id: string;

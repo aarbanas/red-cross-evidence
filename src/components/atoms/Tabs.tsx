@@ -21,6 +21,7 @@ const Tabs: FC<Props> = ({ tabs }: Props) => {
     if (activeTab) {
       setActiveTab(activeTab.link);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   if (!tabs || tabs.length === 0) {
