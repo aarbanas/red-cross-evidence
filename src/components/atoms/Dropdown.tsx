@@ -24,6 +24,7 @@ const Dropdown: React.FC<Props> = ({
 
   useEffect(() => {
     onSearch(searchKey, selectedValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedValue]);
 
   return (

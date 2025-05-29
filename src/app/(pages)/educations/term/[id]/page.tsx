@@ -13,6 +13,12 @@ const UpdateEducationTermPage = () => {
     id: id as string,
   });
 
+  const { data: educationTpes } = api.education.list.getUniqueTypes.useQuery();
+
+  if (!educationTpes?.length) {
+    return <div>No unique types found</div>;
+  }
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -25,13 +31,11 @@ const UpdateEducationTermPage = () => {
     return <div>Podaci nisu pronađeni</div>;
   }
 
-  console.log(data);
-
   return (
     <TabLayout>
       <div>
         <EducationsTermForm
-          action={"create"}
+          action={"update"}
           educationTermId={id}
           formData={{
             title: data.title,
@@ -42,6 +46,7 @@ const UpdateEducationTermPage = () => {
             location: data.location,
             educationId: data.education?.id,
           }}
+          educationTypes={educationTpes}
         />
       </div>
     </TabLayout>

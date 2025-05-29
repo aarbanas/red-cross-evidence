@@ -1,8 +1,8 @@
 import educationRepository from "~/server/services/education/education.repository";
 import type { FindQueryDTO } from "~/server/db/utility/types";
 import { type EducationFormData } from "~/app/(pages)/educations/list/[id]/_components/EducationsForm";
-import { EducationTermFormData } from "~/app/(pages)/educations/term/_components/EducationsTermForm";
-import { EducationType } from "~/server/db/schema";
+import { type EducationTermFormData } from "~/app/(pages)/educations/term/_components/EducationsTermForm";
+import { type EducationType } from "~/server/db/schema";
 
 const educationService = {
   list: {
@@ -24,7 +24,7 @@ const educationService = {
     update: async (data: EducationFormData) => {
       return educationRepository.list.update(data);
     },
-    getAllTitles: async (type: EducationType) => {
+    getAllTitles: async (type?: EducationType) => {
       return educationRepository.list.getAllTitles(type);
     },
   },

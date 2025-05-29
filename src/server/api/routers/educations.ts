@@ -64,7 +64,7 @@ export const educationRouter = createTRPCRouter({
         return result;
       }),
     getAllTitles: protectedProcedure
-      .input(z.nativeEnum(EducationType))
+      .input(z.nativeEnum(EducationType).optional())
       .query(async ({ input }) => {
         return educationService.list.getAllTitles(input);
       }),

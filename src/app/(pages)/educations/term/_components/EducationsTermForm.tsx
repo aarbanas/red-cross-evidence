@@ -56,12 +56,24 @@ const EducationsTermForm: FC<Props> = ({
   const educationType = watch("type", EducationType.VOLUNTEERS);
   const createEducationTerm = api.education.term.create.useMutation();
   const updateEducationTerm = api.education.term.update.useMutation();
-  const { data: educations } =
-    api.education.list.getAllTitles.useQuery(educationType);
+  const { data: educations } = api.education.list.getAllTitles.useQuery(
+    action === "create" ? educationType : undefined,
+  );
 
   useEffect(() => {
-    setValue("educationId", "");
-  }, [educationType, setValue]);
+    if (action === "update") {
+      const education = educations?.find(
+        (education) => education.id === formData?.educationId,
+      );
+
+      setValue(
+        "type",
+        (education?.type as EducationType) ?? EducationType.VOLUNTEERS,
+      );
+      console.log(form.getValues());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [educations]);
 
   // Handle form submission
   const handleSubmit = async () => {
@@ -80,7 +92,7 @@ const EducationsTermForm: FC<Props> = ({
       };
       if (action === "create") {
         await createEducationTerm.mutateAsync(formData);
-      } else {
+      } else if (action === "update") {
         await updateEducationTerm.mutateAsync(formData);
       }
       router.push("/educations/term");
@@ -100,6 +112,7 @@ const EducationsTermForm: FC<Props> = ({
         {...form.register("type", {
           required: "Tip je obavezno polje",
         })}
+        disabled={action === "update"}
         placeholder="Odaberite tip"
       >
         {educationTypes.map((type) => (
@@ -111,8 +124,9 @@ const EducationsTermForm: FC<Props> = ({
 
       {educations?.length && (
         <FormSelect
-          id="education"
+          id="educationId"
           label="Edukacija*"
+          disabled={action === "update"}
           {...form.register("educationId", {
             required: "Edukacija je obavezno polje",
           })}
@@ -138,6 +152,7 @@ const EducationsTermForm: FC<Props> = ({
         id="dateFrom"
         label="Datum od*"
         partOfDay="START"
+        value={formData?.dateFrom}
         {...form.register("dateFrom", {
           required: "Datum od je obavezno polje",
         })}
@@ -147,6 +162,7 @@ const EducationsTermForm: FC<Props> = ({
         id="dateTo"
         label="Datum do*"
         partOfDay="END"
+        value={formData?.dateTo}
         {...form.register("dateTo", { required: "Datum do je obavezno polje" })}
       />
 
