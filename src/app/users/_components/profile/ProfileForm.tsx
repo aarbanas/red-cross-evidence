@@ -14,17 +14,18 @@ import {
 
 interface ProfileFormProps {
   initialValues?: Partial<ProfileSchemaType>;
-  onSubmit: (
-    values: Partial<ProfileSchemaType> | ProfileSchemaType,
-  ) => void | Promise<void>;
+  onSubmit: (values: ProfileSchemaType) => void | Promise<void>;
 }
 
 export const ProfileForm: FC<ProfileFormProps> = ({
   initialValues,
   onSubmit,
 }) => {
-  const form = useForm({
-    values: initialValues,
+  const form = useForm<ProfileSchemaType>({
+    defaultValues: {
+      sex: "none" as Sex,
+      ...initialValues,
+    },
     resolver: zodResolver(ProfileSchema),
   });
   const { register } = form;

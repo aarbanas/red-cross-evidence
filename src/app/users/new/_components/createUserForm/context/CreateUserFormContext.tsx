@@ -1,14 +1,15 @@
 import React, {
   createContext,
-  useContext,
-  useState,
   type Dispatch,
   type SetStateAction,
+  useContext,
+  useState,
 } from "react";
+import { type CreateUserType } from "~/server/api/schema/createUser.schema";
 
 interface CreateUserFormValuesType {
-  formValues: Record<string, never>;
-  updateFormValues: (x: Record<string, never>) => void;
+  formValues: CreateUserType | null;
+  updateFormValues: (x: Partial<CreateUserType>) => void;
   currentStep: number;
   setCurrentStep: Dispatch<SetStateAction<number>>;
 }
@@ -22,11 +23,15 @@ const CreateUserFormContext = createContext<CreateUserFormValuesType | null>(
 );
 
 export const CreateUserFormProvider = ({ children }: Props) => {
-  const [formValues, setFormValues] = useState({});
+  const [formValues, setFormValues] = useState<CreateUserType | undefined>(
+    undefined,
+  );
   const [currentStep, setCurrentStep] = useState(1);
 
-  const updateFormValues = (data: Record<string, never>) => {
-    setFormValues((prevData) => ({ ...prevData, data }));
+  const updateFormValues = (data: Partial<CreateUserType>) => {
+    setFormValues((prevState) => {
+      return { ...(prevState ?? {}), ...data };
+    });
   };
 
   const values = {
