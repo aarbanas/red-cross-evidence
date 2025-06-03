@@ -70,10 +70,8 @@ const EducationsTermForm: FC<Props> = ({
         "type",
         (education?.type as EducationType) ?? EducationType.VOLUNTEERS,
       );
-      console.log(form.getValues());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [educations]);
+  }, [action, educations, formData?.educationId, setValue]);
 
   // Handle form submission
   const handleSubmit = async () => {

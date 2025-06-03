@@ -14,15 +14,10 @@ export type TabProp = {
 const Tabs: FC<Props> = ({ tabs }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [activeTab, setActiveTab] = useState<string>(tabs[0]!.link);
-
-  useEffect(() => {
+  const [activeTab, setActiveTab] = useState<string>(() => {
     const activeTab = tabs.find((tab) => pathname.includes(tab.link));
-    if (activeTab) {
-      setActiveTab(activeTab.link);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+    return activeTab ? activeTab.link : tabs[0]!.link;
+  });
 
   if (!tabs || tabs.length === 0) {
     return <div className="text-center text-gray-500">No tabs provided</div>;

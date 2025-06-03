@@ -63,7 +63,7 @@ const Navigation = () => {
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath === AppRoutes.LICENSES ? "text-red-600" : ""}`}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.LICENSES) ? "text-red-600" : ""}`}
         href={AppRoutes.LICENSES}
       >
         <IdCard />
