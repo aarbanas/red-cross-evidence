@@ -109,12 +109,12 @@ const termMapFilterableKeyToConditional = (
     return eq(termMapKeyToColumn(key), value);
   }
 
-  if (key === TermFilterableKeys.DATE_FROM.valueOf() && value) {
+  if (
+    (key === TermFilterableKeys.DATE_FROM.valueOf() ||
+      key === TermFilterableKeys.DATE_TO.valueOf()) &&
+    value
+  ) {
     return gte(termMapKeyToColumn(key), new Date(value));
-  }
-
-  if (key === TermFilterableKeys.DATE_TO.valueOf() && value) {
-    return lte(termMapKeyToColumn(key), new Date(value));
   }
 
   return undefined;
