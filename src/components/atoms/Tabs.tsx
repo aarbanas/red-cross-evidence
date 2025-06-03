@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from "next/navigation";
-import React, { type FC, useEffect, useState } from "react";
+import React, { type FC, useState } from "react";
 import { cn } from "~/components/utils";
 
 type Props = {

@@ -4,7 +4,7 @@ import {
   type EducationType,
 } from "~/server/db/schema";
 import { db } from "~/server/db";
-import { asc, count, eq, gte, ilike, lte, type SQL } from "drizzle-orm";
+import { asc, count, eq, gte, ilike, type SQL } from "drizzle-orm";
 import type {
   FindQueryDTO,
   FindReturn,
