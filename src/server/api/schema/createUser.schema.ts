@@ -1,11 +1,7 @@
 import { z } from "zod";
 
-import {
-  EducationLevel,
-  LanguageLevel,
-  Sex,
-  WorkStatus,
-} from "~/server/db/schema";
+import { ProfileSchema } from "~/server/services/user/profile/schemas";
+import { EducationLevel, LanguageLevel, WorkStatus } from "~/server/db/schema";
 
 const addressSchema = z.object({
   id: z.string(),
@@ -30,20 +26,7 @@ const otherSkillSchema = z.object({
 const createUserSchema = z.object({
   email: z.string().email({ message: "Should be a valid email address" }),
 
-  profile: z.object({
-    firstName: z
-      .string()
-      .min(2, { message: "Should be at least two characters long" }),
-    lastName: z
-      .string()
-      .min(2, { message: "Should be at least two characters long" }),
-    sex: z.nativeEnum(Sex),
-    oib: z.string(),
-    parentName: z.string().optional(),
-    birthDate: z.date().optional(),
-    birthPlace: z.string().optional(),
-    nationality: z.string().optional(),
-  }),
+  profile: ProfileSchema,
 
   address: addressSchema,
   workStatus: workStatusSchema,

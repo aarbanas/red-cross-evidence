@@ -1,5 +1,3 @@
-"use client";
-
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "~/components/atoms/Button";
