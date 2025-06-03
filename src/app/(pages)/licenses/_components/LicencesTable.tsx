@@ -28,7 +28,7 @@ const LicencesTable: FC<Props> = ({ data, totalPageNumber }) => {
           <TableHeader>
             <TableRow>
               <TableHead className="md:table-cell">Tip</TableHead>
-              <TableHead className="md:table-cell">Ime</TableHead>
+              <TableHead className="md:table-cell">Naziv</TableHead>
               <TableHead className="md:table-cell">Opis</TableHead>
               <TableHead className="md:table-cell">Uredi</TableHead>
             </TableRow>
