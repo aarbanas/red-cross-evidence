@@ -3,7 +3,7 @@ import type { FindQueryDTO } from "~/server/db/utility/types";
 
 const licenseService = {
   getById: async (id: string) => {
-    return licenseRepository.findById(id);
+    return (await licenseRepository.findById(id))[0];
   },
   find: async (data: FindQueryDTO) => {
     return licenseRepository.find(data);
