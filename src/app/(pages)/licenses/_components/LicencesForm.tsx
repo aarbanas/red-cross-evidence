@@ -4,6 +4,7 @@ import FormComponent from "~/components/organisms/form/formComponent/FormCompone
 import FormInput from "~/components/organisms/form/formInput/FormInput";
 import { Button } from "~/components/atoms/Button";
 import FormTextArea from "~/components/organisms/form/formTextArea/FormTextArea";
+import { api } from "~/trpc/react";
 
 export type LicencesFormData = {
   id?: string;
@@ -15,9 +16,10 @@ export type LicencesFormData = {
 type Props = {
   action: "create" | "update";
   formData?: LicencesFormData;
+  licenceId?: string | string[];
 };
 
-const LicencesForm: React.FC<Props> = ({ action, formData }) => {
+const LicencesForm: React.FC<Props> = ({ action, formData, licenceId }) => {
   const form = useForm<LicencesFormData>({
     defaultValues: {
       id: formData?.id ?? "",
@@ -27,8 +29,25 @@ const LicencesForm: React.FC<Props> = ({ action, formData }) => {
     },
   });
   const { isSubmitting } = form.formState;
-  const handleSubmit = async (data: LicencesFormData) => {
-    console.log(data);
+  const createLicence = api.license.create.useMutation();
+
+  const handleSubmit = async () => {
+    const data = form.getValues();
+
+    try {
+      const formData: LicencesFormData = {
+        type: data.type,
+        name: data.name,
+        description: data.description,
+        ...(licenceId && { id: licenceId as string }),
+      };
+
+      if (action === "create") {
+        await createLicence.mutateAsync(formData);
+      } else {
+        // Handle update logic here if needed
+      }
+    } catch (error) {}
   };
 
   return (
