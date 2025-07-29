@@ -20,6 +20,14 @@ const licenseService = {
 
     return licenseRepository.create(values);
   },
+  update: async (data: LicencesFormData) => {
+    const values: LicencesFormData = {
+      ...data,
+      name: prettifyLicenseName(data.name),
+    };
+
+    return licenseRepository.update(values);
+  },
 };
 
 const prettifyLicenseName = (name: string) => {

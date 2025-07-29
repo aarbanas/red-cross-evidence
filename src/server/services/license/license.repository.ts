@@ -132,6 +132,24 @@ const licenseRepository = {
       })
       .execute();
   },
+  update: async (data: LicencesFormData) => {
+    const { id, type, name, description } = data;
+    if (!id) {
+      throw new Error("Id is required for updating license");
+    }
+
+    return db
+      .update(licenses)
+      .set({ type, name, description })
+      .where(eq(licenses.id, id))
+      .returning({
+        id: licenses.id,
+        type: licenses.type,
+        name: licenses.name,
+        description: licenses.description,
+      })
+      .execute();
+  },
 };
 
 export default licenseRepository;

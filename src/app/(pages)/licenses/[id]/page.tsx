@@ -32,6 +32,7 @@ const UpdateLicensePage = () => {
           id: data.id,
           name: data.name,
           type: data.type,
+          description: data.description ?? "",
         }}
       />
     </MainLayout>

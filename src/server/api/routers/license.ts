@@ -29,4 +29,9 @@ export const licenseRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       return licenseService.create(input);
     }),
+  update: protectedProcedure
+    .input(licenseFormDataSchema)
+    .mutation(async ({ input }) => {
+      return licenseService.update(input);
+    }),
 });
