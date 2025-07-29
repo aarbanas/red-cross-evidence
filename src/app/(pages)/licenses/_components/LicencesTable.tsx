@@ -10,6 +10,7 @@ import { Pencil } from "lucide-react";
 import { type FindLicenseReturnDTO } from "~/server/services/license/license.repository";
 import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
 import { type FC } from "react";
+import Link from "next/link";
 
 type Props = {
   data?: FindLicenseReturnDTO[];
@@ -28,7 +29,7 @@ const LicencesTable: FC<Props> = ({ data, totalPageNumber }) => {
           <TableHeader>
             <TableRow>
               <TableHead className="md:table-cell">Tip</TableHead>
-              <TableHead className="md:table-cell">Ime</TableHead>
+              <TableHead className="md:table-cell">Naziv</TableHead>
               <TableHead className="md:table-cell">Opis</TableHead>
               <TableHead className="md:table-cell">Uredi</TableHead>
             </TableRow>
@@ -43,7 +44,12 @@ const LicencesTable: FC<Props> = ({ data, totalPageNumber }) => {
                   {license.description}
                 </TableCell>
                 <TableCell className="cursor-pointer md:table-cell">
-                  <Pencil />
+                  <Link
+                    href={`/licenses/${license.id}`}
+                    className="flex items-center justify-center"
+                  >
+                    <Pencil />
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

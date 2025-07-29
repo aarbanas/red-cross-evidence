@@ -5,6 +5,8 @@ import { useCallback, useMemo, useState } from "react";
 import Licences from "~/app/(pages)/licenses/_components/Licences";
 import { api } from "~/trpc/react";
 import type { DropdownOption } from "~/components/atoms/Dropdown";
+import Link from "next/link";
+import { CirclePlus } from "lucide-react";
 
 const LicencePage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
@@ -27,7 +29,21 @@ const LicencePage = () => {
 
   return (
     <MainLayout headerChildren={<div>Licence</div>}>
-      <LicencesSearch onSearch={handleSearch} types={types} />
+      <div className="flex">
+        <LicencesSearch onSearch={handleSearch} types={types} />
+
+        <div className="ml-auto rounded-md border px-2">
+          <Link
+            className="flex gap-2"
+            href={{
+              pathname: `/licenses/create`,
+            }}
+          >
+            <CirclePlus />
+            Kreiraj novu licencu
+          </Link>
+        </div>
+      </div>
 
       <Licences filter={filter} />
     </MainLayout>

@@ -3,6 +3,7 @@ import { licenses } from "~/server/db/schema";
 import { count, eq, ilike, type SQL } from "drizzle-orm";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
 import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
+import { type LicencesFormData } from "~/app/(pages)/licenses/_components/LicencesForm";
 
 enum SortableKeys {
   ID = "id",
@@ -116,6 +117,37 @@ const licenseRepository = {
       })
       .from(licenses)
       .orderBy(licenses.type)
+      .execute();
+  },
+  create: async (data: LicencesFormData) => {
+    const { type, name, description } = data;
+    return db
+      .insert(licenses)
+      .values({ type, name, description })
+      .returning({
+        id: licenses.id,
+        type: licenses.type,
+        name: licenses.name,
+        description: licenses.description,
+      })
+      .execute();
+  },
+  update: async (data: LicencesFormData) => {
+    const { id, type, name, description } = data;
+    if (!id) {
+      throw new Error("Id is required for updating license");
+    }
+
+    return db
+      .update(licenses)
+      .set({ type, name, description })
+      .where(eq(licenses.id, id))
+      .returning({
+        id: licenses.id,
+        type: licenses.type,
+        name: licenses.name,
+        description: licenses.description,
+      })
       .execute();
   },
 };

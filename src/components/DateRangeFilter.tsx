@@ -51,8 +51,7 @@ const DateRangeFilter: FC<DateRangeFilterProps> = ({
     if (prevEndDate && !endDate) {
       onSearch("dateTo", "");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDate, endDate]);
+  }, [startDate, endDate, prevStartDate, prevEndDate, onSearch]);
 
   return (
     <div className="flex gap-5">

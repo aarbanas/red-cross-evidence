@@ -4,7 +4,7 @@ import {
   type EducationType,
 } from "~/server/db/schema";
 import { db } from "~/server/db";
-import { asc, count, eq, gte, ilike, lte, type SQL } from "drizzle-orm";
+import { asc, count, eq, gte, ilike, type SQL } from "drizzle-orm";
 import type {
   FindQueryDTO,
   FindReturn,
@@ -109,12 +109,12 @@ const termMapFilterableKeyToConditional = (
     return eq(termMapKeyToColumn(key), value);
   }
 
-  if (key === TermFilterableKeys.DATE_FROM.valueOf() && value) {
+  if (
+    (key === TermFilterableKeys.DATE_FROM.valueOf() ||
+      key === TermFilterableKeys.DATE_TO.valueOf()) &&
+    value
+  ) {
     return gte(termMapKeyToColumn(key), new Date(value));
-  }
-
-  if (key === TermFilterableKeys.DATE_TO.valueOf() && value) {
-    return lte(termMapKeyToColumn(key), new Date(value));
   }
 
   return undefined;
