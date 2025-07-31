@@ -46,14 +46,13 @@ export const LanguagesForm: FC<LanguagesFormProps> = ({
               placeholder="Odaberite jezik"
               {...register(`selectedLanguages.${index}.id`)}
             >
-              {items
-                .map((item) => {
-                  return (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  );
-                })}
+              {items.map((item) => {
+                return (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                );
+              })}
             </FormSelect>
 
             <FormSelect

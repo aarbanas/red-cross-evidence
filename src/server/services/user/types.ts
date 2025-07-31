@@ -1,4 +1,4 @@
-import {type profiles} from "~/server/db/schema";
+import { type profiles } from "~/server/db/schema";
 
 export type FindUserQuery = {
   page?: number;
