@@ -52,6 +52,7 @@ export enum WorkStatus {
   UNEMPLOYED = "UNEMPLOYED",
   SELF_EMPLOYED = "SELF_EMPLOYED",
   STUDENT = "STUDENT",
+  PUPIL = "PUPIL",
   RETIRED = "RETIRED",
 }
 
@@ -132,6 +133,7 @@ export const profiles = pgTable("profile", {
   birthPlace: varchar("birth_place", { length: 255 }),
   parentName: varchar("parent_name", { length: 255 }),
   nationality: varchar("nationality", { length: 255 }),
+  phone: varchar("phone", { length: 20 }),
   userId: uuid("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),

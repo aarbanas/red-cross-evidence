@@ -42,6 +42,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
+# editors
+.idea
+
 # dbml
 schema.dbml
 erd.svg

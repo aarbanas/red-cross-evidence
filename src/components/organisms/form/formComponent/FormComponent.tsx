@@ -7,15 +7,18 @@ import {
   type FieldValues,
   FormProvider,
   type SubmitHandler,
-  type UseFormReturn,
   useFormContext,
+  type UseFormReturn,
 } from "react-hook-form";
 
 import styles from "./FormComponent.module.scss";
 
-interface FormProps<T extends FieldValues>
-  extends Omit<ComponentProps<"form">, "onSubmit"> {
-  form: UseFormReturn<T>;
+interface FormProps<
+  T extends FieldValues,
+  TContext = never,
+  TTransformedValues extends FieldValues | undefined = undefined,
+> extends Omit<ComponentProps<"form">, "onSubmit"> {
+  form: UseFormReturn<T, TContext, TTransformedValues>;
   onSubmit: SubmitHandler<T>;
 }
 

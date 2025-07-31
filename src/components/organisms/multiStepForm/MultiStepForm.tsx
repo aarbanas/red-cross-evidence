@@ -57,10 +57,10 @@ function generateForm<T extends FieldValues>(
     const progressPercentage = ((currentStep + 1) / numSteps) * 100;
 
     return (
-      <div className="mx-auto flex w-1/3 flex-col items-center rounded-lg border bg-white p-4">
+      <div className="mx-auto flex w-full flex-col items-center rounded-lg border bg-white p-4">
         <div className="mb-4 h-2.5 w-full rounded-full bg-gray-200">
           <div
-            className="h-2.5 rounded-full bg-gray-900/90 duration-500"
+            className="h-2.5 rounded-full bg-red-700 duration-500"
             style={{ width: `${progressPercentage}%` }}
           ></div>
         </div>
@@ -79,9 +79,9 @@ function generateForm<T extends FieldValues>(
         </nav>
 
         {/* form contents */}
-        <div className="flex items-center justify-center">
+        <div className="flex w-full items-center justify-center">
           <FormComponent form={methods} onSubmit={handleFormSubmit}>
-            <div className="w-96 space-y-10 pb-6">
+            <div className="w-full space-y-10 pb-6">
               {forms[currentStep]!.form}
             </div>
 
