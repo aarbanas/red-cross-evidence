@@ -57,6 +57,13 @@
       "when": 1737314638584,
       "tag": "0007_spooky_wrecking_crew",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1754337101419,
+      "tag": "0008_breezy_sunspot",
+      "breakpoints": true
     }
   ]
 }

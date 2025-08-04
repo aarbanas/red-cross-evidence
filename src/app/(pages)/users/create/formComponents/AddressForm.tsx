@@ -3,6 +3,7 @@ import FormInput from "~/components/organisms/form/formInput/FormInput";
 import { AddressType } from "~/server/db/schema";
 import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
 import { translateAddressType } from "~/app/(pages)/users/create/utils";
+import { FC } from "react";
 
 export type AddressFormProps = {
   type: AddressType;
@@ -13,7 +14,16 @@ export type AddressFormProps = {
   country: string;
 };
 
-const AddressForm = () => {
+type Props = {
+  countries: {
+    id: string;
+    name: string;
+    createdAt: Date;
+    updatedAt: Date | null;
+  }[];
+};
+
+const AddressForm: FC<Props> = ({ countries }) => {
   const { register } = useFormContext();
 
   return (
@@ -68,13 +78,21 @@ const AddressForm = () => {
         />
       </div>
 
-      <FormInput
+      <FormSelect
         id="country"
         label="Država*"
         {...register("country", {
-          required: "Država je obavezno polje",
+          required: "Država je obavezno polj",
         })}
-      />
+      >
+        {countries.map(({ id, name }) => {
+          return (
+            <option key={id} value={name}>
+              {name}
+            </option>
+          );
+        })}
+      </FormSelect>
     </>
   );
 };

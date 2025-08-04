@@ -14,6 +14,9 @@ import WorkStatusForm, {
 import SizeForm, {
   type SizeFormProps,
 } from "~/app/(pages)/users/create/formComponents/SizeForm";
+import { api } from "~/trpc/react";
+import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
+import React from "react";
 
 type Inputs = ProfileFormProps &
   AddressFormProps &
@@ -21,6 +24,12 @@ type Inputs = ProfileFormProps &
   SizeFormProps;
 
 const CreateUserForm = () => {
+  const { data, isLoading, error } = api.country.getAllCountries.useQuery();
+
+  if (isLoading) return <LoadingSpinner />;
+
+  if (error ?? !data?.length) return <div>Greška</div>;
+
   const formSteps: FormStep[] = [
     {
       name: "Osnovni podaci",
@@ -28,7 +37,7 @@ const CreateUserForm = () => {
     },
     {
       name: "Adresa",
-      form: <AddressForm />,
+      form: <AddressForm countries={data} />,
     },
     {
       name: "Radni status",
