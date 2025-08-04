@@ -3,7 +3,7 @@ import FormInput from "~/components/organisms/form/formInput/FormInput";
 import { AddressType } from "~/server/db/schema";
 import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
 import { translateAddressType } from "~/app/(pages)/users/create/utils";
-import { FC } from "react";
+import { type FC } from "react";
 
 export type AddressFormProps = {
   type: AddressType;
