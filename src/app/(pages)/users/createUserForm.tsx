@@ -53,7 +53,7 @@ const CreateUserForm = () => {
     alert(JSON.stringify(data));
   };
 
-  return generateForm<Inputs>(formSteps, onSubmit);
+  return generateForm<Inputs>(formSteps, onSubmit, true);
 };
 
 export default CreateUserForm;

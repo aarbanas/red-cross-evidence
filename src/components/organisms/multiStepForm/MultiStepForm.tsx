@@ -1,8 +1,8 @@
 "use client";
 
-import React, { type ReactElement, useState } from "react";
+import React, { type ReactElement, useState, useEffect } from "react";
 import { Button } from "~/components/atoms/Button";
-import { useForm, type FieldValues } from "react-hook-form";
+import { useForm, type FieldValues, type DefaultValues } from "react-hook-form";
 import FormComponent from "../form/formComponent/FormComponent";
 
 export interface FormStep {
@@ -13,13 +13,19 @@ export interface FormStep {
 function generateForm<T extends FieldValues>(
   forms: FormStep[],
   onSubmit: (data: T) => void,
+  saveToLocalStorage = false,
 ): ReactElement {
   interface FormProps {
     forms: FormStep[];
     onSubmit: (data: T) => void;
+    saveToLocalStorage: boolean;
   }
 
-  const MultiStepForm: React.FC<FormProps> = ({ forms, onSubmit }) => {
+  const MultiStepForm: React.FC<FormProps> = ({
+    forms,
+    onSubmit,
+    saveToLocalStorage,
+  }) => {
     const [currentStep, setCurrentStep] = useState(0);
     let isLastStep = false;
     let newStep = currentStep;
@@ -28,8 +34,23 @@ function generateForm<T extends FieldValues>(
       //shouldUseNativeValidation: true,
       // reValidateMode: "onSubmit",
       mode: "all",
+      defaultValues: saveToLocalStorage
+        ? (JSON.parse(
+            localStorage.getItem("multiStepFormData") ?? "{}",
+          ) as DefaultValues<T>)
+        : undefined,
     });
-    console.log(newStep);
+    const watchedValues = methods.watch();
+
+    useEffect(() => {
+      if (saveToLocalStorage) {
+        localStorage.setItem(
+          "multiStepFormData",
+          JSON.stringify(watchedValues),
+        );
+      }
+    }, [saveToLocalStorage, watchedValues]);
+
     const numSteps = forms.length;
 
     const nextStep = () => {
@@ -50,7 +71,13 @@ function generateForm<T extends FieldValues>(
     const handleFormSubmit = (data: T) => {
       //nextStep();
       //console.log(typeof data);
-      if (isLastStep) onSubmit(data);
+      if (isLastStep) {
+        onSubmit(data);
+        // Clear localStorage after successful submission
+        if (saveToLocalStorage) {
+          localStorage.removeItem("multiStepFormData");
+        }
+      }
       // Add submission logic here
     };
 
@@ -89,12 +116,12 @@ function generateForm<T extends FieldValues>(
             <div className="flex items-center justify-center space-x-4">
               {currentStep > 0 && (
                 <Button onClick={prevStep} variant="outline">
-                  Back
+                  Nazad
                 </Button>
               )}
 
               <Button type="submit" onClick={nextStep} variant="default">
-                {currentStep < numSteps - 1 ? "Continue" : "Submit"}
+                {currentStep < numSteps - 1 ? "Naprijed" : "Spremi"}
               </Button>
             </div>
           </FormComponent>
@@ -103,6 +130,12 @@ function generateForm<T extends FieldValues>(
     );
   };
 
-  return <MultiStepForm forms={forms} onSubmit={onSubmit} />;
+  return (
+    <MultiStepForm
+      forms={forms}
+      onSubmit={onSubmit}
+      saveToLocalStorage={saveToLocalStorage}
+    />
+  );
 }
 export default generateForm;

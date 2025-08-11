@@ -15,7 +15,7 @@ import styles from "./FormComponent.module.scss";
 
 interface FormProps<
   T extends FieldValues,
-  TContext = never,
+  TContext = unknown,
   TTransformedValues extends FieldValues | undefined = undefined,
 > extends Omit<ComponentProps<"form">, "onSubmit"> {
   form: UseFormReturn<T, TContext, TTransformedValues>;
