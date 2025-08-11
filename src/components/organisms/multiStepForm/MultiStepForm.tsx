@@ -28,7 +28,6 @@ function generateForm<T extends FieldValues>(
   }) => {
     const [currentStep, setCurrentStep] = useState(0);
     let isLastStep = false;
-    let newStep = currentStep;
 
     const methods = useForm<T>({
       //shouldUseNativeValidation: true,
@@ -55,15 +54,12 @@ function generateForm<T extends FieldValues>(
 
     const nextStep = () => {
       if (currentStep < numSteps - 1) {
-        newStep += 1;
-
         setCurrentStep(currentStep + 1);
       } else isLastStep = true;
     };
 
     const prevStep = () => {
       if (currentStep > 0) {
-        newStep -= 1;
         setCurrentStep(currentStep - 1);
       }
     };
