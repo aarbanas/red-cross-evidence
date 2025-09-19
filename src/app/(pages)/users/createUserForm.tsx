@@ -17,6 +17,7 @@ import SizeForm, {
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 import React from "react";
+import SkillsForm from "~/app/(pages)/users/create/formComponents/SkillsForm";
 
 type Inputs = ProfileFormProps &
   AddressFormProps &
@@ -25,10 +26,21 @@ type Inputs = ProfileFormProps &
 
 const CreateUserForm = () => {
   const { data, isLoading, error } = api.country.getAllCountries.useQuery();
+  const {
+    data: languageData,
+    isLoading: isLanguageLoading,
+    error: languageError,
+  } = api.skill.languages.getAll.useQuery();
+  const {
+    data: licenceData,
+    isLoading: isLicenceLoading,
+    error: licenceError,
+  } = api.license.findAll.useQuery();
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading || isLanguageLoading || isLicenceLoading)
+    return <LoadingSpinner />;
 
-  if (error ?? !data?.length) return <div>Greška</div>;
+  if (error ?? languageError ?? licenceError) return <div>Greška</div>;
 
   const formSteps: FormStep[] = [
     {
@@ -37,15 +49,19 @@ const CreateUserForm = () => {
     },
     {
       name: "Adresa",
-      form: <AddressForm countries={data} />,
+      form: <AddressForm countries={data!} />,
     },
     {
       name: "Radni status",
       form: <WorkStatusForm />,
     },
     {
-      name: "Roba i mjere",
+      name: "Garderoba i mjere",
       form: <SizeForm />,
+    },
+    {
+      name: "Vještine",
+      form: <SkillsForm languages={languageData!} licences={licenceData!} />,
     },
   ];
   const onSubmit = (data: Inputs) => {

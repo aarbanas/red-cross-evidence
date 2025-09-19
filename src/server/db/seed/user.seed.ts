@@ -575,14 +575,20 @@ const generateAddresses = async (cityIds: string[]): Promise<string[]> => {
 };
 
 const generateLanguages = async (): Promise<string[]> => {
-  const _languages = [
-    "Croatian",
-    "English",
-    "German",
-    "Italian",
-    "Spanish",
-    "French",
-    "Russian",
+  const _languages: string[] = [
+    "Engleski",
+    "Talijanski",
+    "Njemački",
+    "Španjolski",
+    "Francuski",
+    "Ruski",
+    "Portugalski",
+    "Slovenski",
+    "Albanski",
+    "Makedonski",
+    "Mandarinski kineski",
+    "Hindustani (hindi + urdu)",
+    "Arapski",
   ];
 
   const existingLanguages = await db.query.languages.findMany({

@@ -82,7 +82,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
         id="country"
         label="Država*"
         {...register("country", {
-          required: "Država je obavezno polj",
+          required: "Država je obavezno polje",
         })}
       >
         {countries.map(({ id, name }) => {
