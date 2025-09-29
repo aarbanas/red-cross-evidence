@@ -27,14 +27,14 @@ export const ProfileForm = () => {
         <FormInput
           id="firstName"
           label="Ime*"
-          {...register("firstName", {
+          {...register("profile.firstName", {
             required: "Ime je obavezno polje",
           })}
         />
         <FormInput
           id="lastName"
           label="Prezime*"
-          {...register("lastName", {
+          {...register("profile.lastName", {
             required: "Prezime je obavezno polje",
           })}
         />
@@ -45,7 +45,7 @@ export const ProfileForm = () => {
           id="oib"
           label="OIB*"
           type="number"
-          {...register("oib", {
+          {...register("profile.oib", {
             required: "OIB je obavezno polje",
             minLength: {
               value: 11,
@@ -61,7 +61,7 @@ export const ProfileForm = () => {
           id="sex"
           label="Spol*"
           placeholder="Odaberite spol"
-          {...register("sex", {
+          {...register("profile.sex", {
             required: "Spol je obavezno polje",
           })}
         >
@@ -77,13 +77,13 @@ export const ProfileForm = () => {
         <FormInput
           id="parentName"
           label="Ime roditelja"
-          {...register("parentName")}
+          {...register("profile.parentName")}
         />
 
         <FormInput
           id="nationality"
           label="Nacionalnost"
-          {...register("nationality")}
+          {...register("profile.nationality")}
         />
       </div>
 
@@ -92,13 +92,13 @@ export const ProfileForm = () => {
           id="birthDate"
           type="date"
           label="Datum rođenja"
-          {...register("birthDate")}
+          {...register("profile.birthDate")}
         />
 
         <FormInput
           id="birthPlace"
           label="Mjesto rođenja"
-          {...register("birthPlace")}
+          {...register("profile.birthPlace")}
         />
       </div>
 
@@ -106,11 +106,15 @@ export const ProfileForm = () => {
         <FormInput
           id="email"
           label="Email*"
-          {...register("email", {
+          {...register("profile.email", {
             required: "Email je obavezno polje",
           })}
         />
-        <FormInput id="phone" label="Broj telefona" {...register("phone")} />
+        <FormInput
+          id="phone"
+          label="Broj telefona"
+          {...register("profile.phone")}
+        />
       </div>
     </>
   );

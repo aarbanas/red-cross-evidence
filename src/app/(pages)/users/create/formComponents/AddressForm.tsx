@@ -31,7 +31,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
       <FormSelect
         id="type"
         label="Vrsta*"
-        {...register("type", {
+        {...register("address.type", {
           required: "Tip adrese je obavezno polje",
         })}
       >
@@ -48,14 +48,14 @@ const AddressForm: FC<Props> = ({ countries }) => {
         <FormInput
           id="street"
           label="Ulica*"
-          {...register("street", {
+          {...register("address.street", {
             required: "Ulica je obavezno polje",
           })}
         />
         <FormInput
           id="streetNumber"
           label="Kućni broj*"
-          {...register("streetNumber", {
+          {...register("address.streetNumber", {
             required: "Kućni broj je obavezno polje",
           })}
         />
@@ -65,14 +65,14 @@ const AddressForm: FC<Props> = ({ countries }) => {
         <FormInput
           id="city"
           label="Grad*"
-          {...register("city", {
+          {...register("address.city", {
             required: "Grad je obavezno polje",
           })}
         />
         <FormInput
           id="postalCode"
           label="Poštanski broj*"
-          {...register("postalCode", {
+          {...register("address.postalCode", {
             required: "Poštanski broj je obavezno polje",
           })}
         />
@@ -81,7 +81,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
       <FormSelect
         id="country"
         label="Država*"
-        {...register("country", {
+        {...register("address.country", {
           required: "Država je obavezno polje",
         })}
       >

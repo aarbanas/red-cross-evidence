@@ -18,7 +18,9 @@ const SizeForm = () => {
       <FormSelect
         id="clothingSize"
         label="Veličina odjeće*"
-        {...register("clothingSize")}
+        {...register("size.clothingSize", {
+          required: "Velilina odjeće je obavezno polje",
+        })}
       >
         {Object.entries(ClothingSize).map(([key, value]) => {
           return (
@@ -33,14 +35,16 @@ const SizeForm = () => {
         id="shoeSize"
         label="Veličina obuće*"
         type="number"
-        {...register("shoeSize")}
+        {...register("size.shoeSize", {
+          required: "Velilina obuće je obavezno polje",
+        })}
       />
 
       <FormInput
         id="height"
         label="Visina (cm)"
         type="number"
-        {...register("height", {
+        {...register("size.height", {
           valueAsNumber: true,
           min: {
             value: 50,
@@ -57,7 +61,7 @@ const SizeForm = () => {
         id="weight"
         label="Težina (kg)"
         type="number"
-        {...register("weight", {
+        {...register("size.weight", {
           valueAsNumber: true,
           min: {
             value: 1,

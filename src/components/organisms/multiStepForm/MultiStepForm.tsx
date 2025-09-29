@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { type ReactElement, useState, useEffect } from "react";
 import { Button } from "~/components/atoms/Button";
 import { useForm, type FieldValues, type DefaultValues } from "react-hook-form";
 import FormComponent from "../form/formComponent/FormComponent";
+import { type ZodObject } from "zod";
 
 export interface FormStep {
   name: string;
@@ -13,19 +15,27 @@ export interface FormStep {
 function generateForm<T extends FieldValues>(
   forms: FormStep[],
   onSubmit: (data: T) => void,
+  schema: ZodObject<any>,
   saveToLocalStorage = false,
 ): ReactElement {
   interface FormProps {
     forms: FormStep[];
+    schema: ZodObject<any>;
     onSubmit: (data: T) => void;
     saveToLocalStorage: boolean;
   }
 
   const MultiStepForm: React.FC<FormProps> = ({
     forms,
+    schema,
     onSubmit,
     saveToLocalStorage,
   }) => {
+    const schemaKeys: string[] = schema.keyof()._def.values;
+    const numberOfFields = schemaKeys.length;
+    if (numberOfFields !== forms.length)
+      console.error("Amount of steps and fields in schema do not match");
+
     const [currentStep, setCurrentStep] = useState(0);
     let isLastStep = false;
 
@@ -64,17 +74,27 @@ function generateForm<T extends FieldValues>(
       }
     };
 
-    const handleFormSubmit = (data: T) => {
-      //nextStep();
-      //console.log(typeof data);
+    const handleFormSubmit = async (data: T) => {
       if (isLastStep) {
-        onSubmit(data);
-        // Clear localStorage after successful submission
+        const parse = schema.safeParse(methods.getValues());
+        if (!parse.success) {
+          // Find the first error and navigate to its step
+          const firstErrorPath = parse.error.issues[0]?.path[0];
+          if (firstErrorPath) {
+            const errorStepIndex = schemaKeys.indexOf(firstErrorPath as string);
+            if (errorStepIndex !== -1) {
+              setCurrentStep(errorStepIndex);
+            }
+          }
+          return;
+        }
+
         if (saveToLocalStorage) {
           localStorage.removeItem("multiStepFormData");
         }
+
+        onSubmit(data);
       }
-      // Add submission logic here
     };
 
     const progressPercentage = ((currentStep + 1) / numSteps) * 100;
@@ -116,7 +136,12 @@ function generateForm<T extends FieldValues>(
                 </Button>
               )}
 
-              <Button type="submit" onClick={nextStep} variant="default">
+              <Button
+                type="submit"
+                onClick={nextStep}
+                variant="default"
+                disabled={!methods.formState.isValid}
+              >
                 {currentStep < numSteps - 1 ? "Naprijed" : "Spremi"}
               </Button>
             </div>
@@ -130,6 +155,7 @@ function generateForm<T extends FieldValues>(
     <MultiStepForm
       forms={forms}
       onSubmit={onSubmit}
+      schema={schema}
       saveToLocalStorage={saveToLocalStorage}
     />
   );

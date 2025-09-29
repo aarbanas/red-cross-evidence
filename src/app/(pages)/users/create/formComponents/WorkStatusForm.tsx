@@ -19,7 +19,11 @@ const WorkStatusForm = () => {
 
   return (
     <>
-      <FormSelect id="status" label="Status*" {...register("status")}>
+      <FormSelect
+        id="status"
+        label="Status*"
+        {...register("workStatus.status")}
+      >
         {Object.entries(WorkStatus).map(([key, value]) => {
           return (
             <option key={key} value={value}>
@@ -32,7 +36,7 @@ const WorkStatusForm = () => {
       <FormSelect
         id="educationLevel"
         label="Stupanj obrazovanja*"
-        {...register("educationLevel")}
+        {...register("workStatus.educationLevel")}
       >
         {Object.entries(EducationLevel).map(([key, value]) => {
           return (
@@ -46,10 +50,14 @@ const WorkStatusForm = () => {
       <FormInput
         id="profession"
         label="Zanimanje"
-        {...register("profession")}
+        {...register("workStatus.profession")}
       />
 
-      <FormInput id="institution" label="Zvanje" {...register("institution")} />
+      <FormInput
+        id="institution"
+        label="Zvanje"
+        {...register("workStatus.institution")}
+      />
     </>
   );
 };
