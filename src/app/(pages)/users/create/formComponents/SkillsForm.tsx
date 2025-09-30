@@ -6,7 +6,6 @@ import { LanguageLevel } from "~/server/db/schema";
 import { Button } from "~/components/atoms/Button";
 import { useRouter } from "next/navigation";
 import FormInput from "~/components/organisms/form/formInput/FormInput";
-import styles from "~/components/organisms/form/formSelect/FormSelect.module.scss";
 
 type Props = {
   languages: {

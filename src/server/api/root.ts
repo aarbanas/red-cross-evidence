@@ -20,7 +20,6 @@ export const appRouter = createTRPCRouter({
   education: educationRouter,
   country: countryRouter,
   skill: skillRouter,
-  // address: addressRouter,
 });
 
 // export type definition of API
