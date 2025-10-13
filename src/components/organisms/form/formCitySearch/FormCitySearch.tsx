@@ -2,18 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { api } from "~/trpc/react";
 import { useDebounce } from "@uidotdev/usehooks";
+import { type SearchCityReturnDTO } from "~/server/services/city/city.repository";
 
 type Props = {
   id: string;
   label: string;
   cityFieldName: string;
   postalCodeFieldName: string;
-};
-
-type CityOption = {
-  id: string;
-  name: string;
-  postalCode: string | null;
+  countryId: string;
 };
 
 const FormCitySearch: React.FC<Props> = ({
@@ -21,19 +17,22 @@ const FormCitySearch: React.FC<Props> = ({
   label,
   cityFieldName,
   postalCodeFieldName,
+  countryId,
 }) => {
   const { setValue, watch } = useFormContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCity, setSelectedCity] = useState<CityOption | null>(null);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const cityValue = watch(cityFieldName) as string;
+  const cityValue = watch(cityFieldName) as
+    | SearchCityReturnDTO
+    | string
+    | undefined;
 
   // Search cities when debounced search term changes
   const { data: cities, isLoading } = api.city.searchCities.useQuery(
-    { searchTerm: debouncedSearchTerm },
+    { searchTerm: debouncedSearchTerm, countryId },
     {
       enabled: debouncedSearchTerm.length > 0,
       staleTime: 5 * 60 * 1000, // 5 minutes
@@ -44,22 +43,37 @@ const FormCitySearch: React.FC<Props> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    setValue(cityFieldName, value);
 
-    if (value !== selectedCity?.name) {
-      setSelectedCity(null);
+    // Check if current value matches a found city
+    const matchingCity = cities?.find((city) => city.name === value);
+
+    if (matchingCity) {
+      // City found in DB - store SearchCityReturnDTO
+      setValue(cityFieldName, matchingCity);
+      setValue(postalCodeFieldName, matchingCity.postalCode ?? "");
+    } else {
+      // City not found - store as string for new city creation
+      // setSelectedCity(null);
+      setValue(cityFieldName, value);
       setValue(postalCodeFieldName, "");
     }
 
     setIsOpen(value.length > 0);
   };
 
-  // Handle city selection
-  const handleCitySelect = (city: CityOption) => {
-    setSelectedCity(city);
+  // Handle city selection from dropdown
+  const handleCitySelect = (city: SearchCityReturnDTO) => {
+    // setSelectedCity(city);
     setSearchTerm(city.name);
-    setValue(cityFieldName, city.name);
+    setValue(cityFieldName, city); // Store full SearchCityReturnDTO
     setValue(postalCodeFieldName, city.postalCode ?? "");
+    setIsOpen(false);
+  };
+
+  // Handle creating new city
+  const handleCreateNewCity = () => {
+    setValue(cityFieldName, searchTerm); // Store as string
+    setValue(postalCodeFieldName, "");
     setIsOpen(false);
   };
 
@@ -80,9 +94,21 @@ const FormCitySearch: React.FC<Props> = ({
 
   // Update search term when form value changes externally
   useEffect(() => {
-    const currentCityValue = String(cityValue || "");
-    if (currentCityValue !== searchTerm) {
-      setSearchTerm(currentCityValue);
+    const currentCityValue = cityValue;
+    let displayValue = "";
+
+    if (typeof currentCityValue === "string") {
+      displayValue = currentCityValue;
+    } else if (
+      currentCityValue &&
+      typeof currentCityValue === "object" &&
+      "name" in currentCityValue
+    ) {
+      displayValue = currentCityValue.name;
+    }
+
+    if (displayValue !== searchTerm) {
+      setSearchTerm(displayValue);
     }
   }, [cityValue, searchTerm]);
 
@@ -104,18 +130,33 @@ const FormCitySearch: React.FC<Props> = ({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-300 bg-white shadow-lg">
+        <div className="absolute top-full z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-300 bg-white shadow-lg">
           {isLoading && (
             <div className="px-3 py-2 text-sm text-gray-500">
               Pretražujem gradove...
             </div>
           )}
 
-          {!isLoading && cities && cities.length === 0 && (
-            <div className="px-3 py-2 text-sm text-gray-500">
-              Nema rezultata za &quot;{debouncedSearchTerm}&quot;
-            </div>
-          )}
+          {!isLoading &&
+            cities &&
+            cities.length === 0 &&
+            debouncedSearchTerm.length > 0 && (
+              <div className="space-y-2">
+                <div className="px-3 py-2 text-sm text-gray-500">
+                  Nema rezultata za &quot;{debouncedSearchTerm}&quot;
+                </div>
+                <div
+                  className="cursor-pointer border-t border-gray-200 bg-blue-50 px-3 py-2 hover:bg-blue-100"
+                  onClick={handleCreateNewCity}
+                >
+                  <div className="flex items-center">
+                    <span className="text-sm font-medium text-blue-700">
+                      + Stvori novi grad: &quot;{searchTerm}&quot;
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
 
           {!isLoading && cities && cities.length > 0 && (
             <>
@@ -135,6 +176,23 @@ const FormCitySearch: React.FC<Props> = ({
                   </div>
                 </div>
               ))}
+              {debouncedSearchTerm.length > 0 &&
+                !cities.some(
+                  (city) =>
+                    city.name.toLowerCase() ===
+                    debouncedSearchTerm.toLowerCase(),
+                ) && (
+                  <div
+                    className="cursor-pointer border-t border-gray-200 bg-blue-50 px-3 py-2 hover:bg-blue-100"
+                    onClick={handleCreateNewCity}
+                  >
+                    <div className="flex items-center">
+                      <span className="text-sm font-medium text-blue-700">
+                        + Stvori novi grad: &quot;{searchTerm}&quot;
+                      </span>
+                    </div>
+                  </div>
+                )}
             </>
           )}
         </div>

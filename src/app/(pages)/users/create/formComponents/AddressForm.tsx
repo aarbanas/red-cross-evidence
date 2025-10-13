@@ -25,7 +25,9 @@ type Props = {
 };
 
 const AddressForm: FC<Props> = ({ countries }) => {
-  const { register } = useFormContext();
+  const { register, watch } = useFormContext();
+
+  const selectedCountry = watch("address.country") as string;
 
   return (
     <>
@@ -45,6 +47,44 @@ const AddressForm: FC<Props> = ({ countries }) => {
         })}
       </FormSelect>
 
+      <FormSelect
+        id="country"
+        label="Država*"
+        {...register("address.country", {
+          required: "Država je obavezno polje",
+        })}
+      >
+        {countries.map(({ id, name }) => {
+          return (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          );
+        })}
+      </FormSelect>
+
+      <div className="flex gap-10">
+        <div className="flex-1">
+          <FormCitySearch
+            id="city"
+            label="Grad*"
+            cityFieldName="address.city"
+            postalCodeFieldName="address.postalCode"
+            countryId={selectedCountry}
+          />
+        </div>
+        <div className="flex-1">
+          <FormInput
+            id="postalCode"
+            label="Poštanski broj*"
+            {...register("address.postalCode", {
+              required: "Poštanski broj je obavezno polje",
+            })}
+            placeholder="Unesite poštanski broj"
+          />
+        </div>
+      </div>
+
       <div className="flex gap-10">
         <FormInput
           id="street"
@@ -61,43 +101,6 @@ const AddressForm: FC<Props> = ({ countries }) => {
           })}
         />
       </div>
-
-      <div className="flex gap-10">
-        <div className="flex-1">
-          <FormCitySearch
-            id="city"
-            label="Grad*"
-            cityFieldName="address.city"
-            postalCodeFieldName="address.postalCode"
-          />
-        </div>
-        <div className="flex-1">
-          <FormInput
-            id="postalCode"
-            label="Poštanski broj*"
-            {...register("address.postalCode", {
-              required: "Poštanski broj je obavezno polje",
-            })}
-            placeholder="Unesite poštanski broj"
-          />
-        </div>
-      </div>
-
-      <FormSelect
-        id="country"
-        label="Država*"
-        {...register("address.country", {
-          required: "Država je obavezno polje",
-        })}
-      >
-        {countries.map(({ id, name }) => {
-          return (
-            <option key={id} value={name}>
-              {name}
-            </option>
-          );
-        })}
-      </FormSelect>
     </>
   );
 };

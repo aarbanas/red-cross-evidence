@@ -7,8 +7,11 @@ const cityService = {
   findUniqueCityNames: async (): Promise<FindCityNameReturnDTO[]> => {
     return cityRepository.findUniqueCityNames();
   },
-  searchCities: async (searchTerm: string): Promise<SearchCityReturnDTO[]> => {
-    return cityRepository.searchCities(searchTerm);
+  searchCities: async (
+    searchTerm: string,
+    countryId: string,
+  ): Promise<SearchCityReturnDTO[]> => {
+    return cityRepository.searchCities(searchTerm, countryId);
   },
 };
 

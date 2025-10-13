@@ -7,8 +7,11 @@ export const cityRouter = createTRPCRouter({
     return cityService.findUniqueCityNames();
   }),
   searchCities: protectedProcedure
-    .input(z.object({ searchTerm: z.string().min(1) }))
+    .input(
+      z.object({ searchTerm: z.string().min(1), countryId: z.string().min(1) }),
+    )
     .query(async ({ input }) => {
-      return cityService.searchCities(input.searchTerm);
+      const { searchTerm, countryId } = input;
+      return cityService.searchCities(searchTerm, countryId);
     }),
 });

@@ -1,6 +1,6 @@
 import { db } from "~/server/db";
 import { cities } from "~/server/db/schema";
-import { asc, ilike } from "drizzle-orm";
+import { asc, ilike, eq, and } from "drizzle-orm";
 
 export type FindCityNameReturnDTO = {
   name: string;
@@ -21,7 +21,7 @@ const cityRepository = {
       .orderBy(asc(cities.name))
       .execute();
   },
-  searchCities: async (searchTerm: string, limit = 10) => {
+  searchCities: async (searchTerm: string, countryId: string, limit = 10) => {
     return db
       .select({
         id: cities.id,
@@ -29,7 +29,12 @@ const cityRepository = {
         postalCode: cities.postalCode,
       })
       .from(cities)
-      .where(ilike(cities.name, `%${searchTerm}%`))
+      .where(
+        and(
+          ilike(cities.name, `%${searchTerm}%`),
+          eq(cities.countryId, countryId),
+        ),
+      )
       .orderBy(asc(cities.name))
       .limit(limit)
       .execute();
