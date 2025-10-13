@@ -2,6 +2,7 @@ import { useFormContext } from "react-hook-form";
 import FormInput from "~/components/organisms/form/formInput/FormInput";
 import { AddressType } from "~/server/db/schema";
 import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
+import FormCitySearch from "~/components/organisms/form/formCitySearch/FormCitySearch";
 import { translateAddressType } from "~/app/(pages)/users/create/utils";
 import { type FC } from "react";
 
@@ -62,20 +63,24 @@ const AddressForm: FC<Props> = ({ countries }) => {
       </div>
 
       <div className="flex gap-10">
-        <FormInput
-          id="city"
-          label="Grad*"
-          {...register("address.city", {
-            required: "Grad je obavezno polje",
-          })}
-        />
-        <FormInput
-          id="postalCode"
-          label="Poštanski broj*"
-          {...register("address.postalCode", {
-            required: "Poštanski broj je obavezno polje",
-          })}
-        />
+        <div className="flex-1">
+          <FormCitySearch
+            id="city"
+            label="Grad*"
+            cityFieldName="address.city"
+            postalCodeFieldName="address.postalCode"
+          />
+        </div>
+        <div className="flex-1">
+          <FormInput
+            id="postalCode"
+            label="Poštanski broj*"
+            {...register("address.postalCode", {
+              required: "Poštanski broj je obavezno polje",
+            })}
+            placeholder="Unesite poštanski broj"
+          />
+        </div>
       </div>
 
       <FormSelect
