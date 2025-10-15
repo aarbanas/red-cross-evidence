@@ -3,8 +3,10 @@ import FormInput from "~/components/organisms/form/formInput/FormInput";
 import { AddressType } from "~/server/db/schema";
 import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
 import FormCitySearch from "~/components/organisms/form/formCitySearch/FormCitySearch";
+import FormStreetSearch from "~/components/organisms/form/formStreetSearch/FormStreetSearch";
 import { translateAddressType } from "~/app/(pages)/users/create/utils";
 import { type FC } from "react";
+import { type SearchCityReturnDTO } from "~/server/services/city/city.repository";
 
 export type AddressFormProps = {
   type: AddressType;
@@ -28,6 +30,16 @@ const AddressForm: FC<Props> = ({ countries }) => {
   const { register, watch } = useFormContext();
 
   const selectedCountry = watch("address.country") as string;
+  const selectedCity = watch("address.city") as
+    | SearchCityReturnDTO
+    | string
+    | undefined;
+
+  // Extract cityId for street search - only available if city is a SearchCityReturnDTO object
+  const cityId =
+    typeof selectedCity === "object" && selectedCity?.id
+      ? selectedCity.id
+      : undefined;
 
   return (
     <>
@@ -86,20 +98,25 @@ const AddressForm: FC<Props> = ({ countries }) => {
       </div>
 
       <div className="flex gap-10">
-        <FormInput
-          id="street"
-          label="Ulica*"
-          {...register("address.street", {
-            required: "Ulica je obavezno polje",
-          })}
-        />
-        <FormInput
-          id="streetNumber"
-          label="Kućni broj*"
-          {...register("address.streetNumber", {
-            required: "Kućni broj je obavezno polje",
-          })}
-        />
+        <div className="flex-1">
+          <FormStreetSearch
+            id="street"
+            label="Ulica*"
+            streetFieldName="address.street"
+            streetNumberFieldName="address.streetNumber"
+            cityId={cityId}
+          />
+        </div>
+        <div className="flex-1">
+          <FormInput
+            id="streetNumber"
+            label="Kućni broj*"
+            {...register("address.streetNumber", {
+              required: "Kućni broj je obavezno polje",
+            })}
+            placeholder="Unesite kućni broj"
+          />
+        </div>
       </div>
     </>
   );

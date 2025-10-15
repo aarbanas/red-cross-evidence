@@ -1,9 +1,19 @@
 import addressRepository from "~/server/services/address/address.repository";
-import { type FindAddressQuery } from "~/server/services/address/types";
+import {
+  type FindAddressQuery,
+  type SearchAddressQuery,
+  type SearchAddressReturnDTO,
+} from "~/server/services/address/types";
 
 const addressService = {
   search: async (query: FindAddressQuery) => {
     return addressRepository.find(query);
+  },
+
+  searchAddresses: async (
+    query: SearchAddressQuery,
+  ): Promise<SearchAddressReturnDTO[]> => {
+    return addressRepository.searchAddresses(query);
   },
 };
 
