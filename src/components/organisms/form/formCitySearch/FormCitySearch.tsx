@@ -70,13 +70,6 @@ const FormCitySearch: React.FC<Props> = ({
     setIsOpen(false);
   };
 
-  // Handle creating new city
-  const handleCreateNewCity = () => {
-    setValue(cityFieldName, searchTerm); // Store as string
-    setValue(postalCodeFieldName, "");
-    setIsOpen(false);
-  };
-
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -145,16 +138,6 @@ const FormCitySearch: React.FC<Props> = ({
                 <div className="px-3 py-2 text-sm text-gray-500">
                   Nema rezultata za &quot;{debouncedSearchTerm}&quot;
                 </div>
-                <div
-                  className="cursor-pointer border-t border-gray-200 bg-blue-50 px-3 py-2 hover:bg-blue-100"
-                  onClick={handleCreateNewCity}
-                >
-                  <div className="flex items-center">
-                    <span className="text-sm font-medium text-blue-700">
-                      + Stvori novi grad: &quot;{searchTerm}&quot;
-                    </span>
-                  </div>
-                </div>
               </div>
             )}
 
@@ -176,23 +159,6 @@ const FormCitySearch: React.FC<Props> = ({
                   </div>
                 </div>
               ))}
-              {debouncedSearchTerm.length > 0 &&
-                !cities.some(
-                  (city) =>
-                    city.name.toLowerCase() ===
-                    debouncedSearchTerm.toLowerCase(),
-                ) && (
-                  <div
-                    className="cursor-pointer border-t border-gray-200 bg-blue-50 px-3 py-2 hover:bg-blue-100"
-                    onClick={handleCreateNewCity}
-                  >
-                    <div className="flex items-center">
-                      <span className="text-sm font-medium text-blue-700">
-                        + Stvori novi grad: &quot;{searchTerm}&quot;
-                      </span>
-                    </div>
-                  </div>
-                )}
             </>
           )}
         </div>

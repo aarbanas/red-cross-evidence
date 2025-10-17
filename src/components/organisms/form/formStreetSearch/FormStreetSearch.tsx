@@ -27,32 +27,16 @@ const FormStreetSearch: React.FC<Props> = ({
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const streetValue = watch(streetFieldName) as
-    | SearchAddressReturnDTO
-    | string
-    | undefined;
+  // Always expect string values now
+  const streetValue = watch(streetFieldName) as string | undefined;
+  const streetNumberValue = watch(streetNumberFieldName) as string | undefined;
 
   // Initialize searchTerm from existing form values on mount
   useEffect(() => {
     if (!isInitialized) {
-      let displayValue = "";
-
       if (streetValue) {
-        if (typeof streetValue === "string") {
-          displayValue = streetValue;
-        } else if (
-          streetValue &&
-          typeof streetValue === "object" &&
-          "street" in streetValue
-        ) {
-          displayValue = streetValue.street;
-        }
-
-        if (displayValue) {
-          setSearchTerm(displayValue);
-        }
+        setSearchTerm(streetValue);
       }
-
       setIsInitialized(true);
     }
   }, [streetValue, isInitialized]);
@@ -74,25 +58,20 @@ const FormStreetSearch: React.FC<Props> = ({
     // Always open dropdown when typing (if cityId is available)
     setIsOpen(value.length > 0 && !!cityId);
 
-    // Just store the typed value as string - let the API search handle matching
+    // Always store the typed value as string
     setValue(streetFieldName, value);
 
-    // Clear street number when typing new content
-    setValue(streetNumberFieldName, "");
+    // Clear street number when typing new content (unless it's the current street number)
+    if (!streetNumberValue || streetNumberValue.trim() === "") {
+      setValue(streetNumberFieldName, "");
+    }
   };
 
   // Handle address selection from dropdown
   const handleAddressSelect = (address: SearchAddressReturnDTO) => {
     setSearchTerm(address.street);
-    setValue(streetFieldName, address); // Store full SearchAddressReturnDTO
+    setValue(streetFieldName, address.street); // Store only the street name as string
     setValue(streetNumberFieldName, address.streetNumber ?? "");
-    setIsOpen(false);
-  };
-
-  // Handle creating new address
-  const handleCreateNewAddress = () => {
-    setValue(streetFieldName, searchTerm); // Store as string
-    setValue(streetNumberFieldName, "");
     setIsOpen(false);
   };
 
@@ -115,57 +94,21 @@ const FormStreetSearch: React.FC<Props> = ({
   useEffect(() => {
     if (!isInitialized) return;
 
-    const currentStreetValue = streetValue;
-    let displayValue = "";
-
-    if (typeof currentStreetValue === "string") {
-      displayValue = currentStreetValue;
-    } else if (
-      currentStreetValue &&
-      typeof currentStreetValue === "object" &&
-      "street" in currentStreetValue
-    ) {
-      displayValue = currentStreetValue.street;
-    }
-
-    if (displayValue !== searchTerm) {
-      setSearchTerm(displayValue);
+    if (streetValue && streetValue !== searchTerm) {
+      setSearchTerm(streetValue);
     }
   }, [streetValue, searchTerm, isInitialized]);
 
-  // Clear search when cityId changes, but preserve values if cityId is restored to the same value
+  // Clear search when cityId changes
   useEffect(() => {
-    if (isInitialized && cityId) {
-      // Only clear if we don't have existing values that match the current cityId
-      const currentStreetValue = streetValue;
-      if (
-        currentStreetValue &&
-        typeof currentStreetValue === "object" &&
-        "cityId" in currentStreetValue
-      ) {
-        // If the existing street value doesn't match the current cityId, clear it
-        if (currentStreetValue.cityId !== cityId) {
-          setSearchTerm("");
-          setValue(streetFieldName, "");
-          setValue(streetNumberFieldName, "");
-        }
-      }
-      setIsOpen(false);
-    } else if (isInitialized && !cityId) {
+    if (isInitialized && !cityId) {
       // Clear when no city is selected
       setSearchTerm("");
       setValue(streetFieldName, "");
       setValue(streetNumberFieldName, "");
       setIsOpen(false);
     }
-  }, [
-    cityId,
-    setValue,
-    streetFieldName,
-    streetNumberFieldName,
-    isInitialized,
-    streetValue,
-  ]);
+  }, [cityId, setValue, streetFieldName, streetNumberFieldName, isInitialized]);
 
   return (
     <div className="relative flex w-full flex-col gap-2" ref={dropdownRef}>
@@ -178,7 +121,7 @@ const FormStreetSearch: React.FC<Props> = ({
         type="text"
         value={searchTerm}
         onChange={handleInputChange}
-        onFocus={() => searchTerm.length > 0 && setIsOpen(true)}
+        onFocus={() => searchTerm.length > 0 && !!cityId && setIsOpen(true)}
         placeholder={"Počnite tipkati naziv ulice..."}
         className="w-full rounded-md border-none bg-gray-100 px-3 py-4 shadow-lg focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 disabled:cursor-not-allowed disabled:opacity-50"
       />
@@ -199,16 +142,6 @@ const FormStreetSearch: React.FC<Props> = ({
               <div className="space-y-2">
                 <div className="px-3 py-2 text-sm text-gray-500">
                   Nema rezultata za &quot;{debouncedSearchTerm}&quot;
-                </div>
-                <div
-                  className="cursor-pointer border-t border-gray-200 bg-blue-50 px-3 py-2 hover:bg-blue-100"
-                  onClick={handleCreateNewAddress}
-                >
-                  <div className="flex items-center">
-                    <span className="text-sm font-medium text-blue-700">
-                      + Stvori novu ulicu: &quot;{searchTerm}&quot;
-                    </span>
-                  </div>
                 </div>
               </div>
             )}
@@ -233,23 +166,6 @@ const FormStreetSearch: React.FC<Props> = ({
                   </div>
                 </div>
               ))}
-              {debouncedSearchTerm.length > 0 &&
-                !addresses.some(
-                  (address) =>
-                    address.street.toLowerCase() ===
-                    debouncedSearchTerm.toLowerCase(),
-                ) && (
-                  <div
-                    className="cursor-pointer border-t border-gray-200 bg-blue-50 px-3 py-2 hover:bg-blue-100"
-                    onClick={handleCreateNewAddress}
-                  >
-                    <div className="flex items-center">
-                      <span className="text-sm font-medium text-blue-700">
-                        + Stvori novu ulicu: &quot;{searchTerm}&quot;
-                      </span>
-                    </div>
-                  </div>
-                )}
             </>
           )}
         </div>
