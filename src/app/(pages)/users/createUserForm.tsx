@@ -45,7 +45,14 @@ const schema = z.object({
     type: z.string().min(1, "Tip je obavezan"),
     street: z.string().min(1, "Ulica je obavezna"),
     streetNumber: z.string().min(1, "Kucni broj je obavezan"),
-    city: z.string().min(1, "Grad je obavezan"),
+    city: z.union([
+      z.string().min(1, "Grad je obavezan"),
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        postalCode: z.string().nullable(),
+      }),
+    ]),
     postalCode: z.string().min(1, "Poštanski broj je obavezan"),
     country: z.string().min(1, "Država je obavezna"),
   }),

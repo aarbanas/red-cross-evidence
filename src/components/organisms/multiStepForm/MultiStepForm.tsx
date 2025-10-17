@@ -74,8 +74,6 @@ function generateForm<T extends FieldValues>(
       }
     };
 
-    console.log(methods.getValues());
-
     const handleFormSubmit = async (data: T) => {
       if (isLastStep) {
         const parse = schema.safeParse(methods.getValues());
