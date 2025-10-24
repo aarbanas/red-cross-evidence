@@ -11,7 +11,7 @@ import {
 import { and, count, eq, ilike, type SQL } from "drizzle-orm";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
 import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
-import { CreateUserDTO } from "~/server/services/user/types";
+import { type CreateUserDTO } from "~/server/services/user/types";
 
 export type FindUserReturnDTO = {
   id: string;
