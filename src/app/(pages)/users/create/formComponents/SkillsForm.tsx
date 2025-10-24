@@ -249,7 +249,7 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
               </div>
               <Button
                 type="button"
-                onClick={() => remove(index)}
+                onClick={() => otherSkillsRemove(index)}
                 variant="outline"
                 className="bg-red-50 text-red-700 hover:bg-red-100"
               >

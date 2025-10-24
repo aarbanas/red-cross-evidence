@@ -4,11 +4,14 @@ import {
   cities,
   profiles,
   profilesAddresses,
+  sizes,
   users,
+  workStatuses,
 } from "~/server/db/schema";
 import { and, count, eq, ilike, type SQL } from "drizzle-orm";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
 import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
+import { CreateUserDTO } from "~/server/services/user/types";
 
 export type FindUserReturnDTO = {
   id: string;
@@ -167,6 +170,69 @@ const userRepository = {
       .where(eq(users.id, id))
       .leftJoin(profiles, eq(users.id, profiles.userId))
       .execute();
+  },
+  create: async (data: CreateUserDTO, password: string) => {
+    // *** Addresses (multiple, one primary)
+    // Insert city if not Id is provided -> return city id
+    // Insert address (pass user id and city id) for each address -> return address ids
+    // Insert profile addresses (profile id + address ids, mark primary)
+
+    // *** Skills (multiple)
+    // Insert profile languages (profile id + language ids + level)
+    // Insert profile licences (profile id + licence ids)
+    // Insert profile other skills (profile id + skill name + description)
+
+    return db.transaction(async (tx) => {
+      // Insert user
+      const [newUser] = await tx
+        .insert(users)
+        .values({
+          email: data.profile.email,
+          password,
+        })
+        .returning({ id: users.id });
+      if (!newUser) {
+        throw new Error("Failed to create user");
+      }
+
+      // Insert profile (pass user id)
+      const [newProfile] = await tx
+        .insert(profiles)
+        .values({
+          firstName: data.profile.firstName,
+          lastName: data.profile.lastName,
+          oib: data.profile.oib,
+          sex: data.profile.sex,
+          birthDate: data.profile.birthDate,
+          birthPlace: data.profile.birthPlace,
+          parentName: data.profile.parentName,
+          nationality: data.profile.nationality,
+          phone: data.profile.phone,
+          userId: newUser.id,
+        })
+        .returning({ id: profiles.id });
+      if (!newProfile) {
+        throw new Error("Failed to create profile");
+      }
+
+      // Insert size (pass profile id)
+      await tx.insert(sizes).values({
+        shoeSize: Number(data.size.shoeSize),
+        clothingSize: data.size.clothingSize,
+        height: data.size.height,
+        weight: data.size.weight,
+        profileId: newProfile.id,
+      });
+
+      // Insert work status (pass profile id)
+      await tx.insert(workStatuses).values({
+        status: data.workStatus.status,
+        profession: data.workStatus.profession,
+        institution: data.workStatus.institution,
+        educationLevel: data.workStatus.educationLevel,
+        profileId: newProfile.id,
+      });
+    });
   },
 };
 
