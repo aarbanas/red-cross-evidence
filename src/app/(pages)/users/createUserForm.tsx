@@ -41,21 +41,29 @@ const schema = z.object({
     birthPlace: z.string().optional(),
     phone: z.string().optional(),
   }),
-  address: z.object({
-    type: z.string().min(1, "Tip je obavezan"),
-    street: z.string().min(1, "Ulica je obavezna"),
-    streetNumber: z.string().min(1, "Kucni broj je obavezan"),
-    city: z.union([
-      z.string().min(1, "Grad je obavezan"),
+  addresses: z
+    .array(
       z.object({
-        id: z.string(),
-        name: z.string(),
-        postalCode: z.string().nullable(),
+        type: z.string().min(1, "Tip je obavezan"),
+        street: z.string().min(1, "Ulica je obavezna"),
+        streetNumber: z.string().min(1, "Kućni broj je obavezan"),
+        city: z.union([
+          z.string().min(1, "Grad je obavezan"),
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            postalCode: z.string().nullable(),
+          }),
+        ]),
+        postalCode: z.string().min(1, "Poštanski broj je obavezan"),
+        country: z.string().min(1, "Država je obavezna"),
+        isPrimary: z.boolean(),
       }),
-    ]),
-    postalCode: z.string().min(1, "Poštanski broj je obavezan"),
-    country: z.string().min(1, "Država je obavezna"),
-  }),
+    )
+    .min(1, "Barem jedna adresa je obavezna")
+    .refine((addresses) => addresses.some((addr) => addr.isPrimary), {
+      message: "Jedna adresa mora biti označena kao primarna",
+    }),
   workStatus: z.object({
     status: z.string().min(1, "Status je obavezan"),
     educationLevel: z.string().optional(),

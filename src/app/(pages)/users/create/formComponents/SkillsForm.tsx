@@ -51,6 +51,7 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
   const [selectedLicenceId, setSelectedLicenceId] = useState<string>("");
 
   const handleAddLicence = () => {
+    console.log(selectedLicenceId);
     if (
       selectedLicenceId &&
       !licenceFields.some((l) => l.id === selectedLicenceId)
@@ -67,17 +68,57 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
     }
   };
 
+  const addNewLanguage = () => {
+    append({ id: "none", level: LanguageLevel.A1 });
+  };
+
+  const addNewOtherSkill = () => {
+    otherSkillsAppend({ name: "", description: "" });
+  };
+
   return (
     <>
-      {!fields.length && (
-        <label className="font-light text-gray-500">Strani Jezik</label>
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-medium">Strani jezik</h3>
+        <Button
+          type="button"
+          onClick={addNewLanguage}
+          variant="outline"
+          className="bg-blue-50 text-blue-700 hover:bg-blue-100"
+        >
+          + Dodaj strani jezik
+        </Button>
+      </div>
+
+      {fields.length === 0 && (
+        <div className="py-8 text-center text-gray-500">
+          Nema dodanih stranih jezika. Kliknite &#34;Dodaj&#34; za dodavanje
+          prvog stranog jezika.
+        </div>
       )}
       {fields.map((field, index) => {
         return (
-          <div className="flex items-center gap-5" key={field.id}>
+          <div
+            className="relative space-y-4 rounded-lg border p-6"
+            key={field.id}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <h4 className="font-medium">Strani jezik {index + 1}</h4>
+              </div>
+              <Button
+                type="button"
+                onClick={() => remove(index)}
+                variant="outline"
+                className="ml-auto bg-red-50 text-red-700 hover:bg-red-100"
+              >
+                Ukloni
+              </Button>
+            </div>
+
             <FormSelect
               id={`language-${index}`}
-              label="Strani Jezik"
+              label=""
               placeholder="Odaberite jezik"
               {...register(`skills.selectedLanguages.${index}.id`)}
             >
@@ -108,53 +149,38 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
         );
       })}
 
-      <div className="flex gap-5">
-        {fields.length < languages.length && (
-          <Button
-            type="button"
-            variant={"default"}
-            onClick={() =>
-              append(
-                { id: "none", level: LanguageLevel.A1 },
-                { shouldFocus: true },
-              )
-            }
-          >
-            Dodaj
-          </Button>
-        )}
-        {fields.length >= 1 && (
-          <Button
-            type="button"
-            variant={"default"}
-            onClick={() => remove(fields.length - 1)}
-          >
-            Ukloni
-          </Button>
-        )}
-      </div>
-
       <hr className="my-5 border-t border-gray-300" />
 
       <div>
+        <h3 className="text-lg font-medium">Licence</h3>
         <div className="mt-2 flex items-end gap-3">
           <FormSelect
             id="licence-select"
-            label="Licenca"
+            label=""
             placeholder="Odaberite licencu"
             value={selectedLicenceId}
             onChange={(e) => setSelectedLicenceId(e.target.value)}
           >
-            {licences
-              .filter((l) => !licenceFields.some((field) => field.id === l.id))
-              .map((licence) => (
-                <option key={licence.id} value={licence.id}>
-                  {licence.type} - {licence.name}
-                </option>
-              ))}
+            <option value="">Odaberi licencu iz izbornika</option>
+            <>
+              {licences
+                .filter(
+                  (l) => !licenceFields.some((field) => field.id === l.id),
+                )
+                .map((licence) => (
+                  <option key={licence.id} value={licence.id}>
+                    {licence.type} - {licence.name}
+                  </option>
+                ))}
+            </>
           </FormSelect>
-          <Button type="button" variant="default" onClick={handleAddLicence}>
-            Dodaj
+          <Button
+            type="button"
+            onClick={handleAddLicence}
+            variant="outline"
+            className="bg-blue-50 text-blue-700 hover:bg-blue-100"
+          >
+            + Dodaj licencu
           </Button>
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -181,7 +207,8 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
 
       <Button
         type="button"
-        variant="default"
+        variant="outline"
+        className="bg-blue-50 text-blue-700 hover:bg-blue-100"
         onClick={() => {
           router.push("/licenses/create");
         }}
@@ -191,57 +218,61 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
 
       <hr className="my-5 border-t border-gray-300" />
 
-      <div>
-        {otherSkillsFields.length === 0 ? (
-          <p>
-            Želite li dodati specijalne vještine to možete učiniti u idućoj
-            sekciji
-          </p>
-        ) : (
-          otherSkillsFields.map((field, index) => {
-            return (
-              <div className="mt-2 flex flex-col gap-5" key={field.id}>
-                <FormInput
-                  id={`name-${index}`}
-                  label="Naziv"
-                  placeholder="Unesite naziv"
-                  {...register(`skills.otherSkills.${index}.name`)}
-                ></FormInput>
-
-                <FormInput
-                  id={`description-${index}`}
-                  label="Opis"
-                  placeholder="Opis"
-                  {...register(`skills.otherSkills.${index}.description`)}
-                ></FormInput>
-
-                <Button
-                  type="button"
-                  variant={"default"}
-                  onClick={() => otherSkillsRemove(index)}
-                >
-                  Ukloni
-                </Button>
-              </div>
-            );
-          })
-        )}
-
-        <div className="mt-5 flex">
-          <Button
-            type="button"
-            variant={"default"}
-            onClick={() =>
-              otherSkillsAppend(
-                { name: "", description: "" },
-                { shouldFocus: true },
-              )
-            }
-          >
-            Dodaj novu vještinu
-          </Button>
-        </div>
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-medium">Dodatne vještine</h3>
+        <Button
+          type="button"
+          onClick={addNewOtherSkill}
+          variant="outline"
+          className="bg-blue-50 text-blue-700 hover:bg-blue-100"
+        >
+          + Dodaj vještinu
+        </Button>
       </div>
+
+      {otherSkillsFields.length === 0 && (
+        <div className="py-8 text-center text-gray-500">
+          Želite li dodati specijalne vještine to možete učiniti u idućoj
+          sekciji
+        </div>
+      )}
+
+      {otherSkillsFields.map((field, index) => {
+        return (
+          <div
+            className="relative space-y-4 rounded-lg border p-6"
+            key={field.id}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <h4 className="font-medium">Dodatna vještina {index + 1}</h4>
+              </div>
+              <Button
+                type="button"
+                onClick={() => remove(index)}
+                variant="outline"
+                className="bg-red-50 text-red-700 hover:bg-red-100"
+              >
+                Ukloni
+              </Button>
+            </div>
+
+            <FormInput
+              id={`name-${index}`}
+              label="Naziv"
+              placeholder="Unesite naziv"
+              {...register(`skills.otherSkills.${index}.name`)}
+            ></FormInput>
+
+            <FormInput
+              id={`description-${index}`}
+              label="Opis"
+              placeholder="Opis"
+              {...register(`skills.otherSkills.${index}.description`)}
+            ></FormInput>
+          </div>
+        );
+      })}
     </>
   );
 };
