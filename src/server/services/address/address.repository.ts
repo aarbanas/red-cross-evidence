@@ -36,12 +36,30 @@ const addressRepository = {
       .limit(limit)
       .execute();
   },
-  create: async (data: CreateAddressDTO) => {
-    return db
+  getOrCreate: async (data: CreateAddressDTO) => {
+    const existingAddressId = await db
+      .select({ id: addresses.id })
+      .from(addresses)
+      .where(
+        and(
+          eq(addresses.cityId, data.cityId),
+          eq(addresses.street, data.street),
+          eq(addresses.streetNumber, data.streetNumber),
+          eq(addresses.type, data.type),
+        ),
+      )
+      .limit(1)
+      .execute();
+    if (existingAddressId.length > 0) {
+      return existingAddressId[0];
+    }
+
+    const newAddress = await db
       .insert(addresses)
       .values(data)
       .returning({ id: addresses.id })
       .execute();
+    return newAddress[0];
   },
 };
 

@@ -58,18 +58,18 @@ const prepareAddresses = async (
       cityId = address.city.id;
     }
 
-    const newAddress = await addressRepository.create({
+    const newAddress = await addressRepository.getOrCreate({
       cityId,
       street: address.street,
       streetNumber: address.streetNumber,
       type: address.type as AddressType,
     });
-    if (!newAddress[0]?.id) {
+    if (!newAddress?.id) {
       throw new Error("Failed to create new address");
     }
 
     addressIds.push({
-      addressId: newAddress[0].id,
+      addressId: newAddress.id,
       isPrimary: address.isPrimary,
     });
   }
