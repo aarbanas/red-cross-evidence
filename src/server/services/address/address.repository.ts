@@ -2,10 +2,10 @@ import { and, asc, eq, ilike } from "drizzle-orm";
 import { addresses, cities } from "~/server/db/schema";
 
 import { db } from "~/server/db";
-import {
+import type {
   CreateAddressDTO,
-  type FindAddressQuery,
-  type SearchAddressQuery,
+  FindAddressQuery,
+  SearchAddressQuery,
 } from "~/server/services/address/types";
 
 const addressRepository = {

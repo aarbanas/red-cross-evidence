@@ -1,6 +1,6 @@
 import userRepository from "~/server/services/user/user.repository";
 import type { FindQueryDTO } from "~/server/db/utility/types";
-import {
+import type {
   CreateUserAddressesDTO,
   CreateUserAddressIdsDTO,
   CreateUserDTO,
