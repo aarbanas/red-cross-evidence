@@ -1,3 +1,5 @@
+import { type AddressType } from "~/server/db/schema";
+
 export type FindAddressQuery = {
   street: string;
 };
@@ -12,4 +14,11 @@ export type SearchAddressReturnDTO = {
   street: string;
   streetNumber: string | null;
   cityId: string | null;
+};
+
+export type CreateAddressDTO = {
+  street: string;
+  streetNumber: string;
+  type: AddressType;
+  cityId: string;
 };

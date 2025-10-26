@@ -4,6 +4,9 @@ import {
   cities,
   profiles,
   profilesAddresses,
+  profileSkills,
+  profilesLanguages,
+  profilesLicences,
   sizes,
   users,
   workStatuses,
@@ -11,7 +14,10 @@ import {
 import { and, count, eq, ilike, type SQL } from "drizzle-orm";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
 import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
-import { type CreateUserDTO } from "~/server/services/user/types";
+import {
+  CreateUserAddressIdsDTO,
+  type CreateUserDTO,
+} from "~/server/services/user/types";
 
 export type FindUserReturnDTO = {
   id: string;
@@ -171,17 +177,11 @@ const userRepository = {
       .leftJoin(profiles, eq(users.id, profiles.userId))
       .execute();
   },
-  create: async (data: CreateUserDTO, password: string) => {
-    // *** Addresses (multiple, one primary)
-    // Insert city if not Id is provided -> return city id
-    // Insert address (pass user id and city id) for each address -> return address ids
-    // Insert profile addresses (profile id + address ids, mark primary)
-
-    // *** Skills (multiple)
-    // Insert profile languages (profile id + language ids + level)
-    // Insert profile licences (profile id + licence ids)
-    // Insert profile other skills (profile id + skill name + description)
-
+  create: async (
+    data: CreateUserDTO,
+    password: string,
+    addressIdCreationData: CreateUserAddressIdsDTO[],
+  ) => {
     return db.transaction(async (tx) => {
       // Insert user
       const [newUser] = await tx
@@ -232,6 +232,46 @@ const userRepository = {
         educationLevel: data.workStatus.educationLevel,
         profileId: newProfile.id,
       });
+
+      // Insert profile addresses (profile id + address ids, mark primary)
+      await tx.insert(profilesAddresses).values(
+        addressIdCreationData.map((addrData) => ({
+          profileId: newProfile.id,
+          addressId: addrData.addressId,
+          isPrimary: addrData.isPrimary,
+        })),
+      );
+
+      // Insert profile languages (profile id + language ids + level)
+      if (data.skills.selectedLanguages?.length) {
+        await tx.insert(profilesLanguages).values(
+          data.skills.selectedLanguages.map((language) => ({
+            profileId: newProfile.id,
+            languageId: language.id,
+            level: language.level,
+          })),
+        );
+      }
+
+      // Insert profile licences (profile id + licence ids)
+      if (data.skills.selectedLicences?.length) {
+        await tx.insert(profilesLicences).values(
+          data.skills.selectedLicences.map((licence) => ({
+            profileId: newProfile.id,
+            licenceId: licence.id,
+          })),
+        );
+      }
+
+      if (data.skills.otherSkills?.length) {
+        await tx.insert(profileSkills).values(
+          data.skills.otherSkills.map((skill) => ({
+            profileId: newProfile.id,
+            name: skill.name,
+            description: skill.description,
+          })),
+        );
+      }
     });
   },
 };

@@ -1,6 +1,7 @@
 import { db } from "~/server/db";
 import { cities } from "~/server/db/schema";
 import { asc, ilike, eq, and } from "drizzle-orm";
+import { type CreateCityDTO } from "~/server/services/city/types";
 
 export type FindCityNameReturnDTO = {
   name: string;
@@ -37,6 +38,13 @@ const cityRepository = {
       )
       .orderBy(asc(cities.name))
       .limit(limit)
+      .execute();
+  },
+  create: async (data: CreateCityDTO) => {
+    return db
+      .insert(cities)
+      .values(data)
+      .returning({ id: cities.id, name: cities.name })
       .execute();
   },
 };

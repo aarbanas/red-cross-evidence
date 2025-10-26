@@ -3,6 +3,7 @@ import { addresses, cities } from "~/server/db/schema";
 
 import { db } from "~/server/db";
 import {
+  CreateAddressDTO,
   type FindAddressQuery,
   type SearchAddressQuery,
 } from "~/server/services/address/types";
@@ -15,7 +16,6 @@ const addressRepository = {
       .innerJoin(cities, eq(addresses.cityId, cities.id))
       .where(ilike(addresses.street, query.street));
   },
-
   searchAddresses: async (query: SearchAddressQuery, limit = 10) => {
     const { searchTerm, cityId } = query;
     return db
@@ -34,6 +34,13 @@ const addressRepository = {
       )
       .orderBy(asc(addresses.street))
       .limit(limit)
+      .execute();
+  },
+  create: async (data: CreateAddressDTO) => {
+    return db
+      .insert(addresses)
+      .values(data)
+      .returning({ id: addresses.id })
       .execute();
   },
 };
