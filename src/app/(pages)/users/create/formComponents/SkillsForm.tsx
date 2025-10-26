@@ -22,6 +22,24 @@ type Props = {
   }[];
 };
 
+export type SkillsFormData = {
+  skills: {
+    selectedLanguages: {
+      id: string;
+      level: LanguageLevel;
+    }[];
+    selectedLicences: {
+      id: string;
+      type: string;
+      name: string;
+    }[];
+    otherSkills: {
+      name: string;
+      description: string;
+    }[];
+  };
+};
+
 const SkillsForm: FC<Props> = ({ languages, licences }) => {
   const router = useRouter();
 

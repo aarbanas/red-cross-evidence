@@ -16,14 +16,19 @@ import SizeForm, {
 } from "~/app/(pages)/users/create/formComponents/SizeForm";
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
-import React from "react";
-import SkillsForm from "~/app/(pages)/users/create/formComponents/SkillsForm";
+import React, { useState } from "react";
+import SkillsForm, {
+  type SkillsFormData,
+} from "~/app/(pages)/users/create/formComponents/SkillsForm";
 import { createUserSchema } from "~/server/api/schema";
+import UserCreationProgress from "~/components/UserCreationProgress";
+import { useRouter } from "next/navigation";
 
 type Inputs = ProfileFormProps &
   AddressFormProps &
   WorkStatusFormProps &
-  SizeFormProps;
+  SizeFormProps &
+  SkillsFormData;
 
 const CreateUserForm = () => {
   const { data, isLoading, error } = api.country.getAllCountries.useQuery();
@@ -67,7 +72,7 @@ const CreateUserForm = () => {
   ];
   const onSubmit = (data: Inputs) => {
     // Handle form submission logic here
-    alert(JSON.stringify(data));
+    void api.user.create.useMutation().mutateAsync(data);
   };
 
   return generateForm<Inputs>(formSteps, onSubmit, createUserSchema, true);

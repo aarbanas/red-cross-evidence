@@ -6,16 +6,18 @@ import { Sex } from "~/server/db/schema";
 import { translateSex } from "~/app/(pages)/users/create/utils";
 
 export type ProfileFormProps = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  oib: string;
-  sex: string;
-  parentName: string;
-  nationality: string;
-  birthDate: string;
-  birthPlace: string;
+  profile: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    oib: string;
+    sex: string;
+    parentName: string;
+    nationality: string;
+    birthDate: string;
+    birthPlace: string;
+  };
 };
 
 export const ProfileForm = () => {

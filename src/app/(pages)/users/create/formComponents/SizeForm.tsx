@@ -4,10 +4,12 @@ import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
 import FormInput from "~/components/organisms/form/formInput/FormInput";
 
 export type SizeFormProps = {
-  clothingSize: ClothingSize;
-  shoeSize: number;
-  height: number;
-  weight: number;
+  size: {
+    clothingSize: ClothingSize;
+    shoeSize: string;
+    height: number;
+    weight: number;
+  };
 };
 
 const SizeForm = () => {
@@ -18,7 +20,7 @@ const SizeForm = () => {
       <FormSelect
         id="clothingSize"
         label="Veličina odjeće*"
-        {...register("size.clothingSize", {
+        {...register("ç.clothingSize", {
           required: "Velilina odjeće je obavezno polje",
         })}
       >

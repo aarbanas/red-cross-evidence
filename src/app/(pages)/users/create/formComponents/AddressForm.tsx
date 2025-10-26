@@ -10,13 +10,15 @@ import { type SearchCityReturnDTO } from "~/server/services/city/city.repository
 import { Button } from "~/components/atoms/Button";
 
 export type AddressFormProps = {
-  type: AddressType;
-  street: string;
-  streetNumber: string;
-  city: string;
-  postalCode: string;
-  country: string;
-  isPrimary: boolean;
+  addresses: {
+    type: AddressType;
+    street: string;
+    streetNumber: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    isPrimary: boolean;
+  }[];
 };
 
 type Props = {

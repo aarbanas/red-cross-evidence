@@ -8,10 +8,12 @@ import {
 } from "~/app/(pages)/users/create/utils";
 
 export type WorkStatusFormProps = {
-  status: WorkStatus;
-  educationLevel: EducationLevel;
-  profession?: string;
-  institution?: string;
+  workStatus: {
+    status: WorkStatus;
+    educationLevel: EducationLevel;
+    profession?: string;
+    institution?: string;
+  };
 };
 
 const WorkStatusForm = () => {
