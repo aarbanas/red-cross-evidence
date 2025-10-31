@@ -16,13 +16,11 @@ import SizeForm, {
 } from "~/app/(pages)/users/create/formComponents/SizeForm";
 import { api } from "~/trpc/react";
 import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
-import React, { useState } from "react";
+import React from "react";
 import SkillsForm, {
   type SkillsFormData,
 } from "~/app/(pages)/users/create/formComponents/SkillsForm";
 import { createUserSchema } from "~/server/api/schema";
-import UserCreationProgress from "~/components/UserCreationProgress";
-import { useRouter } from "next/navigation";
 
 type Inputs = ProfileFormProps &
   AddressFormProps &
