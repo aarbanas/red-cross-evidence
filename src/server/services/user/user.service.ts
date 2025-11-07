@@ -44,16 +44,16 @@ const prepareAddresses = async (
   for (const address of data) {
     let cityId: string | null = null;
     if (typeof address.city === "string") {
-      const newCity = await cityRepository.create({
+      const newCity = await cityRepository.getOrCreate({
         name: address.city,
         postalCode: address.postalCode,
         countryId: address.country,
       });
-      if (!newCity[0]?.id) {
+      if (!newCity?.id) {
         throw new Error("Failed to create new city");
       }
 
-      cityId = newCity[0].id;
+      cityId = newCity.id;
     } else {
       cityId = address.city.id;
     }

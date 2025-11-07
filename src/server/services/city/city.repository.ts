@@ -40,12 +40,33 @@ const cityRepository = {
       .limit(limit)
       .execute();
   },
-  create: async (data: CreateCityDTO) => {
-    return db
+  getOrCreate: async (data: CreateCityDTO) => {
+    const existingCity = await db
+      .select({
+        id: cities.id,
+        name: cities.name,
+      })
+      .from(cities)
+      .where(
+        and(
+          eq(cities.name, data.name),
+          eq(cities.postalCode, data.postalCode),
+          eq(cities.countryId, data.countryId),
+        ),
+      )
+      .execute();
+
+    if (existingCity.length > 0) {
+      return existingCity[0];
+    }
+
+    const newCity = await db
       .insert(cities)
       .values(data)
       .returning({ id: cities.id, name: cities.name })
       .execute();
+
+    return newCity[0];
   },
 };
 

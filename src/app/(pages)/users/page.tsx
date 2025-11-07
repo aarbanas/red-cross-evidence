@@ -1,5 +1,5 @@
 "use client";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import MainLayout from "~/components/layout/mainLayout";
 import { api } from "~/trpc/react";
 import { type DropdownOption } from "~/components/atoms/Dropdown";
@@ -7,11 +7,27 @@ import UsersSearch from "~/app/(pages)/users/_components/UsersSearch";
 import Users from "~/app/(pages)/users/_components/Users";
 import Link from "next/link";
 import { CirclePlus } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 const UsersPage = () => {
+  const searchParams = useSearchParams();
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
     undefined,
   );
+
+  useEffect(() => {
+    if (searchParams.get("success") === "true") {
+      toast("Volonter uspješno kreiran", {
+        type: "success",
+      });
+
+      //remove the success param from the url
+      const url = new URL(window.location.href);
+      url.searchParams.delete("success");
+      window.history.replaceState({}, document.title, url.toString());
+    }
+  }, [searchParams]);
 
   const { data } = api.city.findUniqueCityNames.useQuery();
 

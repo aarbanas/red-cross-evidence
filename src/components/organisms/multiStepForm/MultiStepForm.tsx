@@ -6,6 +6,7 @@ import { Button } from "~/components/atoms/Button";
 import { useForm, type FieldValues, type DefaultValues } from "react-hook-form";
 import FormComponent from "../form/formComponent/FormComponent";
 import { type ZodObject } from "zod";
+import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
 
 export interface FormStep {
   name: string;
@@ -14,14 +15,14 @@ export interface FormStep {
 
 function generateForm<T extends FieldValues>(
   forms: FormStep[],
-  onSubmit: (data: T) => void,
+  onSubmit: (data: T) => void | Promise<void>,
   schema: ZodObject<any>,
   saveToLocalStorage = false,
 ): ReactElement {
   interface FormProps {
     forms: FormStep[];
     schema: ZodObject<any>;
-    onSubmit: (data: T) => void;
+    onSubmit: (data: T) => void | Promise<void>;
     saveToLocalStorage: boolean;
   }
 
@@ -37,6 +38,7 @@ function generateForm<T extends FieldValues>(
       console.error("Amount of steps and fields in schema do not match");
 
     const [currentStep, setCurrentStep] = useState(0);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     let isLastStep = false;
 
     const methods = useForm<T>({
@@ -90,17 +92,27 @@ function generateForm<T extends FieldValues>(
         }
 
         if (saveToLocalStorage) {
-          localStorage.removeItem("multiStepFormData");
+          // localStorage.removeItem("multiStepFormData");
         }
 
-        onSubmit(data);
+        setIsSubmitting(true);
+        try {
+          await onSubmit(data);
+        } finally {
+          setIsSubmitting(false);
+        }
       }
     };
 
     const progressPercentage = ((currentStep + 1) / numSteps) * 100;
 
     return (
-      <div className="mx-auto flex w-full flex-col items-center rounded-lg border bg-white p-4">
+      <div className="relative mx-auto flex w-full flex-col items-center rounded-lg border bg-white p-4">
+        {isSubmitting && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center rounded-lg bg-white bg-opacity-50">
+            <LoadingSpinner />
+          </div>
+        )}
         <div className="mb-4 h-2.5 w-full rounded-full bg-gray-200">
           <div
             className="h-2.5 rounded-full bg-red-700 duration-500"
@@ -115,6 +127,7 @@ function generateForm<T extends FieldValues>(
               key={index}
               variant={`${currentStep === index ? "default" : "ghost"}`}
               onClick={() => setCurrentStep(index)}
+              disabled={isSubmitting}
             >
               {index + 1}. {formStep.name}
             </Button>
@@ -131,7 +144,11 @@ function generateForm<T extends FieldValues>(
             {/* form navigaiton and submission */}
             <div className="flex items-center justify-center space-x-4">
               {currentStep > 0 && (
-                <Button onClick={prevStep} variant="outline">
+                <Button
+                  onClick={prevStep}
+                  variant="outline"
+                  disabled={isSubmitting}
+                >
                   Nazad
                 </Button>
               )}
@@ -140,7 +157,7 @@ function generateForm<T extends FieldValues>(
                 type="submit"
                 onClick={nextStep}
                 variant="default"
-                disabled={!methods.formState.isValid}
+                disabled={!methods.formState.isValid || isSubmitting}
               >
                 {currentStep < numSteps - 1 ? "Naprijed" : "Spremi"}
               </Button>

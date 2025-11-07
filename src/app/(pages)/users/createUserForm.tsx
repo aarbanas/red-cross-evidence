@@ -21,6 +21,8 @@ import SkillsForm, {
   type SkillsFormData,
 } from "~/app/(pages)/users/create/formComponents/SkillsForm";
 import { createUserSchema } from "~/server/api/schema";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 type Inputs = ProfileFormProps &
   AddressFormProps &
@@ -29,6 +31,7 @@ type Inputs = ProfileFormProps &
   SkillsFormData;
 
 const CreateUserForm = () => {
+  const router = useRouter();
   const { data, isLoading, error } = api.country.getAllCountries.useQuery();
   const {
     data: languageData,
@@ -68,9 +71,18 @@ const CreateUserForm = () => {
       form: <SkillsForm languages={languageData!} licences={licenceData!} />,
     },
   ];
-  const onSubmit = (data: Inputs) => {
-    // Handle form submission logic here
-    void api.user.create.useMutation().mutateAsync(data);
+
+  const onSubmit = async (data: Inputs) => {
+    try {
+      await api.user.create.useMutation().mutateAsync(data);
+      router.push("/users?success=true");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast(error.message, {
+          type: "error",
+        });
+      }
+    }
   };
 
   return generateForm<Inputs>(formSteps, onSubmit, createUserSchema, true);
