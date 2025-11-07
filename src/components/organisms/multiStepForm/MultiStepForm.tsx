@@ -42,8 +42,6 @@ function generateForm<T extends FieldValues>(
     let isLastStep = false;
 
     const methods = useForm<T>({
-      //shouldUseNativeValidation: true,
-      // reValidateMode: "onSubmit",
       mode: "all",
       defaultValues: saveToLocalStorage
         ? (JSON.parse(
@@ -92,7 +90,7 @@ function generateForm<T extends FieldValues>(
         }
 
         if (saveToLocalStorage) {
-          // localStorage.removeItem("multiStepFormData");
+          localStorage.removeItem("multiStepFormData");
         }
 
         setIsSubmitting(true);
@@ -141,7 +139,7 @@ function generateForm<T extends FieldValues>(
               {forms[currentStep]!.form}
             </div>
 
-            {/* form navigaiton and submission */}
+            {/* form navigation and submission */}
             <div className="flex items-center justify-center space-x-4">
               {currentStep > 0 && (
                 <Button
