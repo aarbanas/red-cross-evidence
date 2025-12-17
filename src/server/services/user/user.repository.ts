@@ -188,6 +188,7 @@ const userRepository = {
         .insert(users)
         .values({
           email: data.profile.email,
+          active: true,
           password,
         })
         .returning({ id: users.id });

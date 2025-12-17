@@ -43,6 +43,7 @@ const CreateUserForm = () => {
     isLoading: isLicenceLoading,
     error: licenceError,
   } = api.license.findAll.useQuery();
+  const createUserMutation = api.user.create.useMutation();
 
   if (isLoading || isLanguageLoading || isLicenceLoading)
     return <LoadingSpinner />;
@@ -74,7 +75,7 @@ const CreateUserForm = () => {
 
   const onSubmit = async (data: Inputs) => {
     try {
-      await api.user.create.useMutation().mutateAsync(data);
+      await createUserMutation.mutateAsync(data);
       router.push("/users?success=true");
     } catch (error) {
       if (error instanceof Error) {
