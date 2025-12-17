@@ -29,7 +29,7 @@ const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
         </label>
         <select id={id} ref={ref} className={styles.select} {...props}>
           <option value={value} disabled>
-            {props.placeholder!}
+            {props.placeholder ?? "Select a value"}
           </option>
           {children}
         </select>

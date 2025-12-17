@@ -28,6 +28,9 @@ const licenseService = {
 
     return licenseRepository.update(values);
   },
+  findAll: async () => {
+    return licenseRepository.findAll();
+  },
 };
 
 const prettifyLicenseName = (name: string) => {

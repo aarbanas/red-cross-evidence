@@ -150,6 +150,18 @@ const licenseRepository = {
       })
       .execute();
   },
+  findAll: async () => {
+    return db
+      .select({
+        id: licenses.id,
+        type: licenses.type,
+        name: licenses.name,
+        description: licenses.description,
+      })
+      .from(licenses)
+      .orderBy(licenses.name)
+      .execute();
+  },
 };
 
 export default licenseRepository;

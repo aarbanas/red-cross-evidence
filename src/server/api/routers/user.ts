@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { paginationQuerySchema } from "~/server/api/schema";
+import { createUserSchema, paginationQuerySchema } from "~/server/api/schema";
 import userService from "~/server/services/user/user.service";
 
 export const userRouter = createTRPCRouter({
@@ -15,5 +15,10 @@ export const userRouter = createTRPCRouter({
     .input(paginationQuerySchema)
     .query(async ({ input }) => {
       return userService.find(input);
+    }),
+  create: protectedProcedure
+    .input(createUserSchema)
+    .mutation(async ({ input }) => {
+      return userService.create(input);
     }),
 });

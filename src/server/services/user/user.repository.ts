@@ -4,11 +4,20 @@ import {
   cities,
   profiles,
   profilesAddresses,
+  profileSkills,
+  profilesLanguages,
+  profilesLicences,
+  sizes,
   users,
+  workStatuses,
 } from "~/server/db/schema";
 import { and, count, eq, ilike, type SQL } from "drizzle-orm";
 import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
 import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
+import type {
+  CreateUserAddressIdsDTO,
+  CreateUserDTO,
+} from "~/server/services/user/types";
 
 export type FindUserReturnDTO = {
   id: string;
@@ -167,6 +176,104 @@ const userRepository = {
       .where(eq(users.id, id))
       .leftJoin(profiles, eq(users.id, profiles.userId))
       .execute();
+  },
+  create: async (
+    data: CreateUserDTO,
+    password: string,
+    addressIdCreationData: CreateUserAddressIdsDTO[],
+  ) => {
+    return db.transaction(async (tx) => {
+      // Insert user
+      const [newUser] = await tx
+        .insert(users)
+        .values({
+          email: data.profile.email,
+          active: true,
+          password,
+        })
+        .returning({ id: users.id });
+      if (!newUser) {
+        throw new Error("Failed to create user");
+      }
+
+      // Insert profile (pass user id)
+      const [newProfile] = await tx
+        .insert(profiles)
+        .values({
+          firstName: data.profile.firstName,
+          lastName: data.profile.lastName,
+          oib: data.profile.oib,
+          sex: data.profile.sex,
+          birthDate: data.profile.birthDate,
+          birthPlace: data.profile.birthPlace,
+          parentName: data.profile.parentName,
+          nationality: data.profile.nationality,
+          phone: data.profile.phone,
+          userId: newUser.id,
+        })
+        .returning({ id: profiles.id });
+      if (!newProfile) {
+        throw new Error("Failed to create profile");
+      }
+
+      // Insert size (pass profile id)
+      await tx.insert(sizes).values({
+        shoeSize: Number(data.size.shoeSize),
+        clothingSize: data.size.clothingSize,
+        height: data.size.height,
+        weight: data.size.weight,
+        profileId: newProfile.id,
+      });
+
+      // Insert work status (pass profile id)
+      await tx.insert(workStatuses).values({
+        status: data.workStatus.status,
+        profession: data.workStatus.profession,
+        institution: data.workStatus.institution,
+        educationLevel: data.workStatus.educationLevel,
+        profileId: newProfile.id,
+      });
+
+      // Insert profile addresses (profile id + address ids, mark primary)
+      await tx.insert(profilesAddresses).values(
+        addressIdCreationData.map((addrData) => ({
+          profileId: newProfile.id,
+          addressId: addrData.addressId,
+          isPrimary: addrData.isPrimary,
+        })),
+      );
+
+      // Insert profile languages (profile id + language ids + level)
+      if (data.skills.selectedLanguages?.length) {
+        await tx.insert(profilesLanguages).values(
+          data.skills.selectedLanguages.map((language) => ({
+            profileId: newProfile.id,
+            languageId: language.id,
+            level: language.level,
+          })),
+        );
+      }
+
+      // Insert profile licences (profile id + licence ids)
+      if (data.skills.selectedLicences?.length) {
+        await tx.insert(profilesLicences).values(
+          data.skills.selectedLicences.map((licence) => ({
+            profileId: newProfile.id,
+            licenceId: licence.id,
+          })),
+        );
+      }
+
+      if (data.skills.otherSkills?.length) {
+        await tx.insert(profileSkills).values(
+          data.skills.otherSkills.map((skill) => ({
+            profileId: newProfile.id,
+            name: skill.name,
+            description: skill.description,
+          })),
+        );
+      }
+    });
   },
 };
 

@@ -34,4 +34,7 @@ export const licenseRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       return licenseService.update(input);
     }),
+  findAll: protectedProcedure.query(async () => {
+    return licenseService.findAll();
+  }),
 });
