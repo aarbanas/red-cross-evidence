@@ -38,7 +38,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
     name: "addresses",
   });
 
-  const watchedAddresses = (watch("addresses") || []) as AddressFormProps[];
+  const watchedAddresses = (watch("addresses") ?? []) as AddressFormProps[];
 
   // Handle primary address selection - only one can be primary
   const handlePrimaryChange = (selectedIndex: number) => {
@@ -96,7 +96,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
             ? selectedCity.id
             : undefined;
 
-        const isPrimary = (watch(`addresses.${index}.isPrimary`) ||
+        const isPrimary = (watch(`addresses.${index}.isPrimary`) ??
           false) as boolean;
 
         return (

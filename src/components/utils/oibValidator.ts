@@ -1,7 +1,7 @@
 const isOibValid = (input: string): boolean => {
   const oib = input.toString();
 
-  if (oib.match(/\d{11}/) === null) {
+  if (/\d{11}/.exec(oib) === null) {
     return false;
   }
 

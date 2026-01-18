@@ -4,7 +4,7 @@ import React, {
   forwardRef,
 } from "react";
 
-import styles from "./FormSelect.module.scss";
+import styles from "./FormSelect.module.css";
 import { FieldError } from "~/components/organisms/form/formComponent/FormComponent";
 
 const DEFAULT_VALUE = "none";

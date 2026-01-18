@@ -123,7 +123,7 @@ const FormStreetSearch: React.FC<Props> = ({
         onChange={handleInputChange}
         onFocus={() => searchTerm.length > 0 && !!cityId && setIsOpen(true)}
         placeholder={"Počnite tipkati naziv ulice..."}
-        className="w-full rounded-md border-none bg-gray-100 px-3 py-4 shadow-lg focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40 disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-md border-none bg-gray-100 px-3 py-4 shadow-lg focus:border-red-400 focus:ring focus:ring-red-300/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       />
 
       {/* Dropdown */}
@@ -136,8 +136,7 @@ const FormStreetSearch: React.FC<Props> = ({
           )}
 
           {!isLoading &&
-            addresses &&
-            addresses.length === 0 &&
+            addresses?.length === 0 &&
             debouncedSearchTerm.length > 0 && (
               <div className="space-y-2">
                 <div className="px-3 py-2 text-sm text-gray-500">

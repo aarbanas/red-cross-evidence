@@ -1,16 +1,17 @@
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import {
-  getServerSession,
-  type DefaultSession,
-  type NextAuthOptions,
-} from "next-auth";
-import { type Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { type DefaultSession, type NextAuthConfig } from "next-auth";
+import type { Adapter } from "next-auth/adapters";
 import { db } from "~/server/db";
 
 import { eq } from "drizzle-orm";
 import { compare } from "bcrypt";
-import { users } from "~/server/db/schema";
+import {
+  users,
+  accounts,
+  sessions,
+  verificationTokens,
+} from "~/server/db/schema";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -38,20 +39,10 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
-export const authOptions: NextAuthOptions = {
+export const authConfig = {
   session: {
     strategy: "jwt",
   },
-  callbacks: {
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.sub,
-      },
-    }),
-  },
-  adapter: DrizzleAdapter(db) as Adapter,
   providers: [
     CredentialsProvider({
       credentials: {
@@ -61,18 +52,26 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, _req) {
         if (!credentials?.email || !credentials?.password) return null;
 
+        const email = credentials.email as string;
+        const password = credentials.password as string;
+
         const [user] = await db
           .select()
           .from(users)
-          .where(eq(users.email, credentials.email))
+          .where(eq(users.email, email))
           .limit(1);
 
         if (!user?.active || !user?.password) return null;
 
-        const isValid = await compare(credentials.password, user.password);
+        const isValid = await compare(password, user.password);
         if (!isValid) return null;
 
-        return user;
+        // Return user object with required fields for NextAuth
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.email, // Use email as name if no name field exists
+        };
       },
     }),
     /**
@@ -85,11 +84,26 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
-};
-
-/**
- * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
- *
- * @see https://next-auth.js.org/configuration/nextjs
- */
-export const getServerAuthSession = () => getServerSession(authOptions);
+  adapter: DrizzleAdapter(db, {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+    usersTable: users as any,
+    accountsTable: accounts,
+    sessionsTable: sessions,
+    verificationTokensTable: verificationTokens,
+  }) as Adapter,
+  callbacks: {
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.sub = user.id;
+      }
+      return token;
+    },
+    session: ({ session, token }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: token.sub!,
+      },
+    }),
+  },
+} satisfies NextAuthConfig;

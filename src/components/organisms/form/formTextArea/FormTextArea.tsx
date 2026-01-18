@@ -1,4 +1,4 @@
-import styles from "./FormTextArea.module.scss";
+import styles from "./FormTextArea.module.css";
 import { FieldError } from "~/components/organisms/form/formComponent/FormComponent";
 import { forwardRef, type ComponentProps } from "react";
 
