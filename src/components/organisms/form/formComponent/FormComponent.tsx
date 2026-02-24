@@ -11,7 +11,7 @@ import {
   type UseFormReturn,
 } from "react-hook-form";
 
-import styles from "./FormComponent.module.scss";
+import styles from "./FormComponent.module.css";
 
 interface FormProps<
   T extends FieldValues,

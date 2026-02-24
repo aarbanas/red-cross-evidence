@@ -1,10 +1,10 @@
-import { getServerAuthSession } from "~/server/auth";
 import { redirect } from "next/navigation";
+import { auth } from "~/server/auth/index";
 
 const Home = async () => {
-  const session = await getServerAuthSession();
+  const session = await auth();
   if (!session?.user) {
-    redirect("/login");
+    redirect("/api/auth/signin");
   } else {
     redirect("/users");
   }

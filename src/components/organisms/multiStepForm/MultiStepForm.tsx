@@ -107,7 +107,7 @@ function generateForm<T extends FieldValues>(
     return (
       <div className="relative mx-auto flex w-full flex-col items-center rounded-lg border bg-white p-4">
         {isSubmitting && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center rounded-lg bg-white bg-opacity-50">
+          <div className="bg-opacity-50 absolute inset-0 z-50 flex items-center justify-center rounded-lg bg-white">
             <LoadingSpinner />
           </div>
         )}
@@ -125,6 +125,7 @@ function generateForm<T extends FieldValues>(
               key={index}
               variant={`${currentStep === index ? "default" : "ghost"}`}
               onClick={() => setCurrentStep(index)}
+              className="cursor-pointer"
               disabled={isSubmitting}
             >
               {index + 1}. {formStep.name}

@@ -118,7 +118,7 @@ const FormCitySearch: React.FC<Props> = ({
         onChange={handleInputChange}
         onFocus={() => searchTerm.length > 0 && setIsOpen(true)}
         placeholder="Počnite tipkati naziv grada..."
-        className="w-full rounded-md border-none bg-gray-100 px-3 py-4 shadow-lg focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 focus:ring-opacity-40"
+        className="w-full rounded-md border-none bg-gray-100 px-3 py-4 shadow-lg focus:border-red-400 focus:ring focus:ring-red-300/40 focus:outline-none"
       />
 
       {/* Dropdown */}
@@ -131,8 +131,7 @@ const FormCitySearch: React.FC<Props> = ({
           )}
 
           {!isLoading &&
-            cities &&
-            cities.length === 0 &&
+            cities?.length === 0 &&
             debouncedSearchTerm.length > 0 && (
               <div className="space-y-2">
                 <div className="px-3 py-2 text-sm text-gray-500">

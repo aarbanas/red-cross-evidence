@@ -26,7 +26,7 @@ const userService = {
       // prepare addresses with IDs
       const addressIds = await prepareAddresses(data.addresses);
       return userRepository.create(data, hashedPassword, addressIds);
-    } catch (e) {}
+    } catch (_) {}
   },
 };
 

@@ -35,7 +35,7 @@ const Tabs: FC<Props> = ({ tabs }: Props) => {
             }}
             className={cn(
               "cursor-pointer rounded-lg py-2 text-sm font-medium",
-              "focus:outline-none focus:ring-1 focus:ring-red-600",
+              "focus:ring-1 focus:ring-red-600 focus:outline-none",
               activeTab === tab.link
                 ? "border-red px-1 text-red-600"
                 : "hover:bg-red-100",
