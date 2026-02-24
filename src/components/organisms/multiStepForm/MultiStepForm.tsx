@@ -125,6 +125,7 @@ function generateForm<T extends FieldValues>(
               key={index}
               variant={`${currentStep === index ? "default" : "ghost"}`}
               onClick={() => setCurrentStep(index)}
+              className="cursor-pointer"
               disabled={isSubmitting}
             >
               {index + 1}. {formStep.name}
