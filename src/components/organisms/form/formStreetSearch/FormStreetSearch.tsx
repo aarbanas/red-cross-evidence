@@ -37,6 +37,7 @@ const FormStreetSearch: React.FC<Props> = ({
       if (streetValue) {
         setSearchTerm(streetValue);
       }
+
       setIsInitialized(true);
     }
   }, [streetValue, isInitialized]);

@@ -17,6 +17,7 @@ const getQueryClient = () => {
     // Server: always make a new query client
     return createQueryClient();
   }
+
   // Browser: use singleton pattern to keep the same query client
   return (clientQueryClientSingleton ??= createQueryClient());
 };
@@ -71,7 +72,13 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
 }
 
 function getBaseUrl() {
-  if (typeof window !== "undefined") return window.location.origin;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  if (typeof window !== "undefined") {
+    return window.location.origin;
+  }
+
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
   return `http://localhost:${process.env.PORT ?? 3000}`;
 }

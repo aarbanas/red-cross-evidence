@@ -72,6 +72,7 @@ const PaginationPages: React.FC<PaginationProps> = ({
     </>
   );
 };
+
 PaginationPages.displayName = "PaginationPages";
 
 const PaginationItem = React.forwardRef<

@@ -67,6 +67,7 @@ const DateRangeFilter: FC<DateRangeFilterProps> = ({
               setStartDate(moment(date).startOf("day").toDate());
               return;
             }
+
             setStartDate(null);
           }}
           selectsStart
@@ -88,6 +89,7 @@ const DateRangeFilter: FC<DateRangeFilterProps> = ({
               setEndDate(null);
               return;
             }
+
             setEndDate(moment(date).startOf("day").toDate());
           }}
           selectsEnd

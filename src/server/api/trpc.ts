@@ -11,7 +11,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { auth } from "~/server/auth/index";
+import { auth } from "~/server/auth";
 import { db } from "~/server/db";
 import { env } from "~/env"; // Import the environment variables
 
@@ -111,6 +111,7 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   if (!ctx.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
+
   if (rateLimiter) {
     const { success } = await rateLimiter.limit(ctx.session.user.id);
     if (!success) {

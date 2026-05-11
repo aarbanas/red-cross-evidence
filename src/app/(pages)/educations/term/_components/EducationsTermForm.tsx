@@ -93,6 +93,7 @@ const EducationsTermForm: FC<Props> = ({
       } else if (action === "update") {
         await updateEducationTerm.mutateAsync(formData);
       }
+
       router.push("/educations/term");
     } catch (error) {
       console.error(

@@ -96,6 +96,7 @@ export const authConfig = {
       if (user) {
         token.sub = user.id;
       }
+
       return token;
     },
     session: ({ session, token }) => ({

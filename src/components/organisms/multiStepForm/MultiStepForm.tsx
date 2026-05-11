@@ -86,6 +86,7 @@ function generateForm<T extends FieldValues>(
               setCurrentStep(errorStepIndex);
             }
           }
+
           return;
         }
 
@@ -176,4 +177,5 @@ function generateForm<T extends FieldValues>(
     />
   );
 }
+
 export default generateForm;

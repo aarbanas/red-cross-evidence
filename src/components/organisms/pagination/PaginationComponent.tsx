@@ -21,11 +21,17 @@ const PaginationComponent: FC<Props> = ({ totalPageNumber }) => {
           currentPage={page + 1}
           onChangePage={(pageNumber) => handlePageChange(pageNumber)}
           onPreviousPage={() => {
-            if (page === 0) return;
+            if (page === 0) {
+              return;
+            }
+
             handlePageChange(page - 1);
           }}
           onNextPage={() => {
-            if (page === totalPageNumber - 1) return;
+            if (page === totalPageNumber - 1) {
+              return;
+            }
+
             handlePageChange(page + 1);
           }}
         />

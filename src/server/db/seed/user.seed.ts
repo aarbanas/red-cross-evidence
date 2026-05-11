@@ -594,7 +594,10 @@ const generateLanguages = async (): Promise<string[]> => {
   const existingLanguages = await db.query.languages.findMany({
     columns: { id: true },
   });
-  if (existingLanguages.length) return existingLanguages.map(({ id }) => id);
+  if (existingLanguages.length) {
+    return existingLanguages.map(({ id }) => id);
+  }
+
   const items: { name: string }[] = [];
   for (const lang of _languages) {
     items.push({ name: lang });
@@ -617,6 +620,7 @@ export const getUsers = async () => {
 
   return _users;
 };
+
 const email = "admin@dck-pgz.hr";
 const adminPassword = await hash(env.ADMIN_PASSWORD, SALT_OR_ROUNDS);
 

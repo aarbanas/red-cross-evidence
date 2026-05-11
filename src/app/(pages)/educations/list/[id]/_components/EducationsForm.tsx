@@ -71,6 +71,7 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
       } else {
         await updateEducation.mutateAsync(formData);
       }
+
       router.push("/educations/list");
     } catch (error) {
       console.error(

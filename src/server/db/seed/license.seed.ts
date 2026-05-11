@@ -17,6 +17,7 @@ export const getLicenses = async () => {
   if (!_licences.length) {
     _licences = await populateLicenses();
   }
+
   return _licences;
 };
 
