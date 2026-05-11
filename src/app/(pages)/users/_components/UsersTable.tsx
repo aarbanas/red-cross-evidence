@@ -1,3 +1,6 @@
+import { CheckCircle2, Pencil, XCircle } from 'lucide-react';
+import Link from 'next/link';
+import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
 import {
   Table,
   TableBody,
@@ -5,11 +8,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/organisms/Table";
-import { CheckCircle2, Pencil, XCircle } from "lucide-react";
-import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
-import Link from "next/link";
-import { type FindUserReturnDTO } from "~/server/services/user/user.repository";
+} from '~/components/organisms/Table';
+import type { FindUserReturnDTO } from '~/server/services/user/user.repository';
 
 type Props = {
   data?: FindUserReturnDTO[];

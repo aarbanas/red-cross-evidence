@@ -1,18 +1,13 @@
-import React, {
-  type ComponentProps,
-  type ReactElement,
-  forwardRef,
-} from "react";
+import { type ComponentProps, forwardRef, type ReactNode } from 'react';
+import { FieldError } from '~/components/organisms/form/formComponent/FormComponent';
+import styles from './FormSelect.module.css';
 
-import styles from "./FormSelect.module.css";
-import { FieldError } from "~/components/organisms/form/formComponent/FormComponent";
+const DEFAULT_VALUE = 'none';
 
-const DEFAULT_VALUE = "none";
-
-interface FormSelectProps extends ComponentProps<"select"> {
+interface FormSelectProps extends ComponentProps<'select'> {
   id: string;
   label: string;
-  children?: ReactElement<HTMLOptionElement>[];
+  children?: ReactNode;
   labelClassName?: string;
   placeholder?: string;
 }
@@ -29,7 +24,7 @@ const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
         </label>
         <select id={id} ref={ref} className={styles.select} {...props}>
           <option value={value} disabled>
-            {props.placeholder ?? "Select a value"}
+            {props.placeholder ?? 'Select a value'}
           </option>
           {children}
         </select>
@@ -39,6 +34,6 @@ const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
   },
 );
 
-FormSelect.displayName = "FormSelect";
+FormSelect.displayName = 'FormSelect';
 
 export default FormSelect;

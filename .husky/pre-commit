@@ -1,2 +1,1 @@
-yarn lint
-yarn prettier:check
+npx @biomejs/biome check --staged --no-errors-on-unmatched --files-ignore-unknown=true

@@ -1,7 +1,7 @@
-import { useFormContext } from "react-hook-form";
-import { ClothingSize } from "~/server/db/schema";
-import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
-import FormInput from "~/components/organisms/form/formInput/FormInput";
+import { useFormContext } from 'react-hook-form';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import { ClothingSize } from '~/server/db/schema';
 
 export type SizeFormProps = {
   size: {
@@ -20,8 +20,8 @@ const SizeForm = () => {
       <FormSelect
         id="clothingSize"
         label="Veličina odjeće*"
-        {...register("ç.clothingSize", {
-          required: "Velilina odjeće je obavezno polje",
+        {...register('ç.clothingSize', {
+          required: 'Velilina odjeće je obavezno polje',
         })}
       >
         {Object.entries(ClothingSize).map(([key, value]) => {
@@ -37,8 +37,8 @@ const SizeForm = () => {
         id="shoeSize"
         label="Veličina obuće*"
         type="number"
-        {...register("size.shoeSize", {
-          required: "Velilina obuće je obavezno polje",
+        {...register('size.shoeSize', {
+          required: 'Velilina obuće je obavezno polje',
         })}
       />
 
@@ -46,15 +46,15 @@ const SizeForm = () => {
         id="height"
         label="Visina (cm)"
         type="number"
-        {...register("size.height", {
+        {...register('size.height', {
           valueAsNumber: true,
           min: {
             value: 50,
-            message: "Visina mora biti veća od 50 cm",
+            message: 'Visina mora biti veća od 50 cm',
           },
           max: {
             value: 250,
-            message: "Visina ne smije biti veća od 250 cm",
+            message: 'Visina ne smije biti veća od 250 cm',
           },
         })}
       />
@@ -63,15 +63,15 @@ const SizeForm = () => {
         id="weight"
         label="Težina (kg)"
         type="number"
-        {...register("size.weight", {
+        {...register('size.weight', {
           valueAsNumber: true,
           min: {
             value: 1,
-            message: "Težina mora biti veća od 0 kg",
+            message: 'Težina mora biti veća od 0 kg',
           },
           max: {
             value: 500,
-            message: "Težina ne smije biti veća od 500 kg",
+            message: 'Težina ne smije biti veća od 500 kg',
           },
         })}
       />

@@ -1,17 +1,16 @@
-import React, { type ComponentProps, forwardRef } from "react";
+import { type ComponentProps, forwardRef } from 'react';
+import { FieldError } from '~/components/organisms/form/formComponent/FormComponent';
+import styles from './FormInput.module.css';
 
-import styles from "./FormInput.module.css";
-import { FieldError } from "~/components/organisms/form/formComponent/FormComponent";
-
-interface FormInputProps extends ComponentProps<"input"> {
+interface FormInputProps extends ComponentProps<'input'> {
   id: string;
   label: string;
   className?: string;
 }
 
 const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
-  ({ id, label, type = "text", className, ...props }, ref) => {
-    if (type === "checkbox") {
+  ({ id, label, type = 'text', className, ...props }, ref) => {
+    if (type === 'checkbox') {
       return (
         <div className={styles.checkboxContainer}>
           <label htmlFor={id} className={styles.checkboxLabel}>
@@ -46,6 +45,6 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
   },
 );
 
-FormInput.displayName = "FormInput";
+FormInput.displayName = 'FormInput';
 
 export default FormInput;

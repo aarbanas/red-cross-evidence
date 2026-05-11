@@ -1,7 +1,7 @@
-import { type FC } from "react";
-import SearchInput from "~/components/atoms/SearchInput";
-import useSearch from "~/hooks/useSearch";
-import Dropdown, { type DropdownOption } from "~/components/atoms/Dropdown";
+import type { FC } from 'react';
+import Dropdown, { type DropdownOption } from '~/components/atoms/Dropdown';
+import SearchInput from '~/components/atoms/SearchInput';
+import useSearch from '~/hooks/useSearch';
 
 type Props = {
   onSearch: (filter?: Record<string, string>) => void;
@@ -17,11 +17,11 @@ const LicencesSearch: FC<Props> = ({ onSearch, types }) => {
         <Dropdown
           options={types}
           onSearch={handleSearch}
-          searchKey={"type"}
-          label={"Tip"}
+          searchKey={'type'}
+          label={'Tip'}
         />
       )}
-      <SearchInput title={"Ime"} onSearch={handleSearch} searchKey={"name"} />
+      <SearchInput title={'Ime'} onSearch={handleSearch} searchKey={'name'} />
     </div>
   );
 };

@@ -1,23 +1,23 @@
-import { db } from "~/server/db";
+import { and, count, eq, ilike, type SQL } from 'drizzle-orm';
+import { db } from '~/server/db';
 import {
   addresses,
   cities,
+  profileSkills,
   profiles,
   profilesAddresses,
-  profileSkills,
   profilesLanguages,
   profilesLicences,
   sizes,
   users,
   workStatuses,
-} from "~/server/db/schema";
-import { and, count, eq, ilike, type SQL } from "drizzle-orm";
-import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
-import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
+} from '~/server/db/schema';
+import { prepareOrderBy, prepareWhere } from '~/server/db/utility';
+import type { FindQueryDTO, FindReturnDTO } from '~/server/db/utility/types';
 import type {
   CreateUserAddressIdsDTO,
   CreateUserDTO,
-} from "~/server/services/user/types";
+} from '~/server/services/user/types';
 
 export type FindUserReturnDTO = {
   id: string;
@@ -33,20 +33,20 @@ export type FindUserReturnDTO = {
 };
 
 enum SortableKeys {
-  ID = "id",
-  FIRSTNAME = "firstname",
-  LASTNAME = "lastname",
-  EMAIL = "email",
-  CITY = "city",
-  COUNTRY = "country",
-  ACTIVE = "active",
+  ID = 'id',
+  FIRSTNAME = 'firstname',
+  LASTNAME = 'lastname',
+  EMAIL = 'email',
+  CITY = 'city',
+  COUNTRY = 'country',
+  ACTIVE = 'active',
 }
 
 enum FilterableKeys {
-  FIRSTNAME = "firstname",
-  LASTNAME = "lastname",
-  EMAIL = "email",
-  CITY = "city",
+  FIRSTNAME = 'firstname',
+  LASTNAME = 'lastname',
+  EMAIL = 'email',
+  CITY = 'city',
 }
 
 const mapFilterableKeyToConditional = (
@@ -61,7 +61,7 @@ const mapFilterableKeyToConditional = (
 
   if (
     key === FilterableKeys.EMAIL.valueOf() ||
-    (key === FilterableKeys.CITY.valueOf() && value != "")
+    (key === FilterableKeys.CITY.valueOf() && value !== '')
   )
     return eq(mapKeyToColumn(key), value);
 
@@ -193,7 +193,7 @@ const userRepository = {
         })
         .returning({ id: users.id });
       if (!newUser) {
-        throw new Error("Failed to create user");
+        throw new Error('Failed to create user');
       }
 
       // Insert profile (pass user id)
@@ -213,7 +213,7 @@ const userRepository = {
         })
         .returning({ id: profiles.id });
       if (!newProfile) {
-        throw new Error("Failed to create profile");
+        throw new Error('Failed to create profile');
       }
 
       // Insert size (pass profile id)

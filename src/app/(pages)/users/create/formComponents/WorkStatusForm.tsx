@@ -1,11 +1,11 @@
-import { useFormContext } from "react-hook-form";
-import FormInput from "~/components/organisms/form/formInput/FormInput";
-import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
-import { EducationLevel, WorkStatus } from "~/server/db/schema";
+import { useFormContext } from 'react-hook-form';
 import {
   translateEducationLevel,
   translateWorkStatus,
-} from "~/app/(pages)/users/create/utils";
+} from '~/app/(pages)/users/create/utils';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import { EducationLevel, WorkStatus } from '~/server/db/schema';
 
 export type WorkStatusFormProps = {
   workStatus: {
@@ -24,7 +24,7 @@ const WorkStatusForm = () => {
       <FormSelect
         id="status"
         label="Status*"
-        {...register("workStatus.status")}
+        {...register('workStatus.status')}
       >
         {Object.entries(WorkStatus).map(([key, value]) => {
           return (
@@ -38,7 +38,7 @@ const WorkStatusForm = () => {
       <FormSelect
         id="educationLevel"
         label="Stupanj obrazovanja*"
-        {...register("workStatus.educationLevel")}
+        {...register('workStatus.educationLevel')}
       >
         {Object.entries(EducationLevel).map(([key, value]) => {
           return (
@@ -52,13 +52,13 @@ const WorkStatusForm = () => {
       <FormInput
         id="profession"
         label="Zanimanje"
-        {...register("workStatus.profession")}
+        {...register('workStatus.profession')}
       />
 
       <FormInput
         id="institution"
         label="Zvanje"
-        {...register("workStatus.institution")}
+        {...register('workStatus.institution')}
       />
     </>
   );

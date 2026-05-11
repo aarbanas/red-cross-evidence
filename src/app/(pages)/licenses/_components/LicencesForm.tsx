@@ -1,12 +1,12 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
-import FormInput from "~/components/organisms/form/formInput/FormInput";
-import { Button } from "~/components/atoms/Button";
-import FormTextArea from "~/components/organisms/form/formTextArea/FormTextArea";
-import { api } from "~/trpc/react";
-import { useRouter, useParams } from "next/navigation";
-import { toast } from "react-toastify";
+import { useParams, useRouter } from 'next/navigation';
+import type React from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { Button } from '~/components/atoms/Button';
+import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormTextArea from '~/components/organisms/form/formTextArea/FormTextArea';
+import { api } from '~/trpc/react';
 
 export type LicencesFormData = {
   id?: string;
@@ -16,17 +16,17 @@ export type LicencesFormData = {
 };
 
 type Props = {
-  action: "create" | "update";
+  action: 'create' | 'update';
   formData?: LicencesFormData;
 };
 
 const LicencesForm: React.FC<Props> = ({ action, formData }) => {
   const form = useForm<LicencesFormData>({
     defaultValues: {
-      id: formData?.id ?? "",
-      name: formData?.name ?? "",
-      type: formData?.type ?? "",
-      description: formData?.description ?? "",
+      id: formData?.id ?? '',
+      name: formData?.name ?? '',
+      type: formData?.type ?? '',
+      description: formData?.description ?? '',
     },
   });
   const router = useRouter();
@@ -46,16 +46,16 @@ const LicencesForm: React.FC<Props> = ({ action, formData }) => {
         ...(params.id && { id: params.id }),
       };
 
-      if (action === "create") {
+      if (action === 'create') {
         await createLicence.mutateAsync(formData);
       } else {
         await updateLicence.mutateAsync(formData);
       }
 
-      router.push("/licenses");
+      router.push('/licenses');
     } catch (error) {
       if (error instanceof Error) {
-        toast(error.message, { type: "error" });
+        toast(error.message, { type: 'error' });
       }
 
       return;
@@ -67,23 +67,23 @@ const LicencesForm: React.FC<Props> = ({ action, formData }) => {
       <FormInput
         id="type"
         label="Tip*"
-        {...form.register("type", {
-          required: "Tip je obavezno polje",
+        {...form.register('type', {
+          required: 'Tip je obavezno polje',
         })}
       />
 
       <FormInput
         id="title"
         label="Naziv*"
-        {...form.register("name", {
-          required: "Naziv je obavezno polje",
+        {...form.register('name', {
+          required: 'Naziv je obavezno polje',
         })}
       />
 
       <FormTextArea
         id="description"
         label="Opis"
-        {...form.register("description")}
+        {...form.register('description')}
       />
 
       <Button
@@ -92,7 +92,7 @@ const LicencesForm: React.FC<Props> = ({ action, formData }) => {
         showLoading={isSubmitting}
       >
         <span>
-          {action === "create" ? "Kreiraj novu licencu" : "Spremi promjene"}
+          {action === 'create' ? 'Kreiraj novu licencu' : 'Spremi promjene'}
         </span>
       </Button>
     </FormComponent>

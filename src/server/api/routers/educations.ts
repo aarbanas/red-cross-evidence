@@ -1,8 +1,8 @@
-import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { paginationQuerySchema } from "~/server/api/schema";
-import educationService from "~/server/services/education/education.service";
-import { EducationType } from "~/server/db/schema";
+import { z } from 'zod';
+import { paginationQuerySchema } from '~/server/api/schema';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
+import { EducationType } from '~/server/db/schema';
+import educationService from '~/server/services/education/education.service';
 
 const educationFormDataSchema = z.object({
   id: z.string().optional(),

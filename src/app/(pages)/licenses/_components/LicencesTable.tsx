@@ -1,3 +1,7 @@
+import { Pencil } from 'lucide-react';
+import Link from 'next/link';
+import type { FC } from 'react';
+import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
 import {
   Table,
   TableBody,
@@ -5,12 +9,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/organisms/Table";
-import { Pencil } from "lucide-react";
-import { type FindLicenseReturnDTO } from "~/server/services/license/license.repository";
-import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
-import { type FC } from "react";
-import Link from "next/link";
+} from '~/components/organisms/Table';
+import type { FindLicenseReturnDTO } from '~/server/services/license/license.repository';
 
 type Props = {
   data?: FindLicenseReturnDTO[];

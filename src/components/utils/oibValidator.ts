@@ -8,7 +8,7 @@ const isOibValid = (input: string): boolean => {
   let calculated = 10;
 
   for (const digit of oib.substring(0, 10)) {
-    calculated += parseInt(digit);
+    calculated += parseInt(digit, 10);
 
     calculated %= 10;
 
@@ -27,7 +27,7 @@ const isOibValid = (input: string): boolean => {
     check = 0;
   }
 
-  return check === parseInt(oib[10]!);
+  return check === parseInt(oib[10]!, 10);
 };
 
 export default isOibValid;

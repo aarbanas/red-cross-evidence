@@ -1,7 +1,7 @@
 import cityRepository, {
   type FindCityNameReturnDTO,
   type SearchCityReturnDTO,
-} from "~/server/services/city/city.repository";
+} from '~/server/services/city/city.repository';
 
 const cityService = {
   findUniqueCityNames: async (): Promise<FindCityNameReturnDTO[]> => {

@@ -1,14 +1,14 @@
-"use client";
-import { useMemo, useState } from "react";
-import TabLayout from "~/components/layout/tabLayout";
-import { api } from "~/trpc/react";
-import { translateEducationType } from "~/app/(pages)/educations/utils";
-import { type EducationType } from "~/server/db/schema";
-import type { DropdownOption } from "~/components/atoms/Dropdown";
-import { CirclePlus } from "lucide-react";
-import Link from "next/link";
-import EducationsListSearch from "./EducationsListSearch";
-import EducationsList from "./EducationsList";
+'use client';
+import { CirclePlus } from 'lucide-react';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
+import { translateEducationType } from '~/app/(pages)/educations/utils';
+import type { DropdownOption } from '~/components/atoms/Dropdown';
+import TabLayout from '~/components/layout/tabLayout';
+import type { EducationType } from '~/server/db/schema';
+import { api } from '~/trpc/react';
+import EducationsList from './EducationsList';
+import EducationsListSearch from './EducationsListSearch';
 
 const EducationsListTab = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(

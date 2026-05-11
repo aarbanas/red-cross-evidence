@@ -1,14 +1,14 @@
-import { type FC } from "react";
-import styles from "./LoadingSpinner.module.css";
+import type { FC } from 'react';
+import styles from './LoadingSpinner.module.css';
 
 type LoadingSpinnerProps = {
   size?: number;
-  color?: "#ffffff" | "#de3333";
+  color?: '#ffffff' | '#de3333';
 };
 
 const LoadingSpinner: FC<LoadingSpinnerProps> = ({
   size = 32,
-  color = "#de3333",
+  color = '#de3333',
 }) => {
   return (
     <div className={styles.container}>
@@ -16,15 +16,18 @@ const LoadingSpinner: FC<LoadingSpinnerProps> = ({
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         style={{
-          margin: "auto",
-          display: "block",
-          shapeRendering: "auto",
+          margin: 'auto',
+          display: 'block',
+          shapeRendering: 'auto',
         }}
         width={size}
         height={size}
         viewBox="0 0 100 100"
         preserveAspectRatio="xMidYMid"
+        aria-label="Loading"
+        role="img"
       >
+        <title>Loading</title>
         <g>
           <path
             d="M50 15A35 35 0 1 0 74.74873734152916 25.251262658470843"

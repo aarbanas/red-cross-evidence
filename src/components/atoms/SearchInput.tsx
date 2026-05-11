@@ -1,6 +1,6 @@
-import React from "react";
-import { Input } from "~/components/atoms/Input";
-import { cn } from "../utils";
+import type React from 'react';
+import { Input } from '~/components/atoms/Input';
+import { cn } from '../utils';
 
 type Props = {
   title: string;
@@ -16,7 +16,7 @@ const SearchInput: React.FC<Props> = ({
   onSearch,
 }) => {
   return (
-    <div className={cn("flex gap-2", column && "flex-col")}>
+    <div className={cn('flex gap-2', column && 'flex-col')}>
       {title && <span>{title}:</span>}
       <Input
         className="h-6"

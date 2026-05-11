@@ -1,17 +1,17 @@
-"use client";
-import React, { type FC, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { api } from "~/trpc/react";
-import FormInput from "~/components/organisms/form/formInput/FormInput";
-import { Button } from "~/components/atoms/Button";
-import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
-import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
-import { translateEducationType } from "~/app/(pages)/educations/utils";
-import { EducationType } from "~/server/db/schema";
-import FormDatePicker from "~/components/organisms/form/formDatePicker/FormDatePicker";
-import FormTextArea from "~/components/organisms/form/formTextArea/FormTextArea";
-import moment from "moment";
+'use client';
+import moment from 'moment';
+import { useRouter } from 'next/navigation';
+import { type FC, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { translateEducationType } from '~/app/(pages)/educations/utils';
+import { Button } from '~/components/atoms/Button';
+import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
+import FormDatePicker from '~/components/organisms/form/formDatePicker/FormDatePicker';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import FormTextArea from '~/components/organisms/form/formTextArea/FormTextArea';
+import { EducationType } from '~/server/db/schema';
+import { api } from '~/trpc/react';
 
 export type EducationTermFormData = {
   id?: string;
@@ -25,7 +25,7 @@ export type EducationTermFormData = {
 };
 
 type Props = {
-  action: "create" | "update";
+  action: 'create' | 'update';
   formData?: Partial<EducationTermFormData>;
   educationTermId?: string | string[];
   educationTypes: { type: string }[];
@@ -39,13 +39,13 @@ const EducationsTermForm: FC<Props> = ({
 }) => {
   const form = useForm<EducationTermFormData & { type: EducationType }>({
     defaultValues: {
-      title: formData?.title ?? "",
-      dateFrom: formData?.dateFrom ?? "",
-      dateTo: formData?.dateTo ?? "",
+      title: formData?.title ?? '',
+      dateFrom: formData?.dateFrom ?? '',
+      dateTo: formData?.dateTo ?? '',
       maxParticipants: formData?.maxParticipants ?? undefined,
-      lecturers: formData?.lecturers ?? "",
-      location: formData?.location ?? "",
-      educationId: formData?.educationId ?? "",
+      lecturers: formData?.lecturers ?? '',
+      location: formData?.location ?? '',
+      educationId: formData?.educationId ?? '',
     },
   });
 
@@ -53,21 +53,21 @@ const EducationsTermForm: FC<Props> = ({
 
   const { watch, setValue } = form;
   const { isSubmitting } = form.formState;
-  const educationType = watch("type", EducationType.VOLUNTEERS);
+  const educationType = watch('type', EducationType.VOLUNTEERS);
   const createEducationTerm = api.education.term.create.useMutation();
   const updateEducationTerm = api.education.term.update.useMutation();
   const { data: educations } = api.education.list.getAllTitles.useQuery(
-    action === "create" ? educationType : undefined,
+    action === 'create' ? educationType : undefined,
   );
 
   useEffect(() => {
-    if (action === "update") {
+    if (action === 'update') {
       const education = educations?.find(
         (education) => education.id === formData?.educationId,
       );
 
       setValue(
-        "type",
+        'type',
         (education?.type as EducationType) ?? EducationType.VOLUNTEERS,
       );
     }
@@ -80,23 +80,24 @@ const EducationsTermForm: FC<Props> = ({
     try {
       const formData: EducationTermFormData = {
         title: data.title,
-        dateFrom: moment(data.dateFrom).format("YYYY-MM-DD:HH:mm:ss"),
-        dateTo: moment(data.dateTo).format("YYYY-MM-DD:HH:mm:ss"),
+        dateFrom: moment(data.dateFrom).format('YYYY-MM-DD:HH:mm:ss'),
+        dateTo: moment(data.dateTo).format('YYYY-MM-DD:HH:mm:ss'),
         maxParticipants: Number(data.maxParticipants),
         lecturers: data.lecturers,
         location: data.location,
         educationId: data.educationId,
         ...(educationTermId && { id: educationTermId as string }),
       };
-      if (action === "create") {
+      if (action === 'create') {
         await createEducationTerm.mutateAsync(formData);
-      } else if (action === "update") {
+      } else if (action === 'update') {
         await updateEducationTerm.mutateAsync(formData);
       }
-      router.push("/educations/term");
+
+      router.push('/educations/term');
     } catch (error) {
       console.error(
-        `Failed to ${action === "create" ? "create" : "update"} education:`,
+        `Failed to ${action === 'create' ? 'create' : 'update'} education:`,
         error,
       );
     }
@@ -107,10 +108,10 @@ const EducationsTermForm: FC<Props> = ({
       <FormSelect
         id="type"
         label="Tip*"
-        {...form.register("type", {
-          required: "Tip je obavezno polje",
+        {...form.register('type', {
+          required: 'Tip je obavezno polje',
         })}
-        disabled={action === "update"}
+        disabled={action === 'update'}
         placeholder="Odaberite tip"
       >
         {educationTypes.map((type) => (
@@ -124,9 +125,9 @@ const EducationsTermForm: FC<Props> = ({
         <FormSelect
           id="educationId"
           label="Edukacija*"
-          disabled={action === "update"}
-          {...form.register("educationId", {
-            required: "Edukacija je obavezno polje",
+          disabled={action === 'update'}
+          {...form.register('educationId', {
+            required: 'Edukacija je obavezno polje',
           })}
           placeholder="Odaberite edukaciju"
         >
@@ -141,8 +142,8 @@ const EducationsTermForm: FC<Props> = ({
       <FormInput
         id="title"
         label="Naziv*"
-        {...form.register("title", {
-          required: "Naziv je obavezno polje",
+        {...form.register('title', {
+          required: 'Naziv je obavezno polje',
         })}
       />
 
@@ -151,8 +152,8 @@ const EducationsTermForm: FC<Props> = ({
         label="Datum od*"
         partOfDay="START"
         value={formData?.dateFrom}
-        {...form.register("dateFrom", {
-          required: "Datum od je obavezno polje",
+        {...form.register('dateFrom', {
+          required: 'Datum od je obavezno polje',
         })}
       />
 
@@ -161,15 +162,15 @@ const EducationsTermForm: FC<Props> = ({
         label="Datum do*"
         partOfDay="END"
         value={formData?.dateTo}
-        {...form.register("dateTo", { required: "Datum do je obavezno polje" })}
+        {...form.register('dateTo', { required: 'Datum do je obavezno polje' })}
       />
 
       <FormInput
         id="maxParticipants"
         label="Maksimalan broj sudionika*"
         type="number"
-        {...form.register("maxParticipants", {
-          required: "Maksimalan broj sudionika je obavezno polje",
+        {...form.register('maxParticipants', {
+          required: 'Maksimalan broj sudionika je obavezno polje',
         })}
       />
 
@@ -177,16 +178,16 @@ const EducationsTermForm: FC<Props> = ({
         id="location"
         label="Lokacija*"
         type="text"
-        {...form.register("location", {
-          required: "Lokacija je obavezno polje",
+        {...form.register('location', {
+          required: 'Lokacija je obavezno polje',
         })}
       />
 
       <FormTextArea
         id="lecturers"
         label="Predavači*"
-        {...form.register("lecturers", {
-          required: "Predavači su obavezno polje",
+        {...form.register('lecturers', {
+          required: 'Predavači su obavezno polje',
         })}
       />
 
@@ -196,7 +197,7 @@ const EducationsTermForm: FC<Props> = ({
         showLoading={isSubmitting}
       >
         <span>
-          {action === "create" ? "Kreiraj termin edukacije" : "Spremi promjene"}
+          {action === 'create' ? 'Kreiraj termin edukacije' : 'Spremi promjene'}
         </span>
       </Button>
     </FormComponent>

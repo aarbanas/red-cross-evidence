@@ -1,12 +1,12 @@
-"use client";
-import MainLayout from "~/components/layout/mainLayout";
-import LicencesSearch from "~/app/(pages)/licenses/_components/LicencesSearch";
-import { useCallback, useMemo, useState } from "react";
-import Licences from "~/app/(pages)/licenses/_components/Licences";
-import { api } from "~/trpc/react";
-import type { DropdownOption } from "~/components/atoms/Dropdown";
-import Link from "next/link";
-import { CirclePlus } from "lucide-react";
+'use client';
+import { CirclePlus } from 'lucide-react';
+import Link from 'next/link';
+import { useCallback, useMemo, useState } from 'react';
+import Licences from '~/app/(pages)/licenses/_components/Licences';
+import LicencesSearch from '~/app/(pages)/licenses/_components/LicencesSearch';
+import type { DropdownOption } from '~/components/atoms/Dropdown';
+import MainLayout from '~/components/layout/mainLayout';
+import { api } from '~/trpc/react';
 
 const LicencePage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(

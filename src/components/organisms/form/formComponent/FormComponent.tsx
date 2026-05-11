@@ -1,23 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-base-to-string */
-import { type ComponentProps } from "react";
+import type { ComponentProps } from 'react';
 import {
   type FieldValues,
   FormProvider,
   type SubmitHandler,
-  useFormContext,
   type UseFormReturn,
-} from "react-hook-form";
+  useFormContext,
+} from 'react-hook-form';
 
-import styles from "./FormComponent.module.css";
+import styles from './FormComponent.module.css';
 
 interface FormProps<
   T extends FieldValues,
   TContext = unknown,
   TTransformedValues extends FieldValues | undefined = undefined,
-> extends Omit<ComponentProps<"form">, "onSubmit"> {
+> extends Omit<ComponentProps<'form'>, 'onSubmit'> {
   form: UseFormReturn<T, TContext, TTransformedValues>;
   onSubmit: SubmitHandler<T>;
 }
@@ -64,17 +60,16 @@ export const FieldError = ({ name }: { name?: string }) => {
       );
     }
   } catch (e) {
-    console.log("getFieldState failed:", e);
+    console.log('getFieldState failed:', e);
   }
 
   // Fallback to manual traversal
-  const nameParts = name.split(".");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const nameParts = name.split('.');
   let error: any = errors;
 
   // Traverse through each part of the nested path
   for (const part of nameParts) {
-    if (error && typeof error === "object" && part in error) {
+    if (error && typeof error === 'object' && part in error) {
       error = error[part];
     } else {
       error = null;
@@ -97,7 +92,7 @@ export const FieldError = ({ name }: { name?: string }) => {
   }
 
   // Check if error is the message itself (string)
-  if (typeof error === "string") {
+  if (typeof error === 'string') {
     return (
       <small className={styles.error}>
         <span role="alert">{error}</span>

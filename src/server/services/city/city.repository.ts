@@ -1,7 +1,7 @@
-import { db } from "~/server/db";
-import { cities } from "~/server/db/schema";
-import { asc, ilike, eq, and } from "drizzle-orm";
-import { type CreateCityDTO } from "~/server/services/city/types";
+import { and, asc, eq, ilike } from 'drizzle-orm';
+import { db } from '~/server/db';
+import { cities } from '~/server/db/schema';
+import type { CreateCityDTO } from '~/server/services/city/types';
 
 export type FindCityNameReturnDTO = {
   name: string;

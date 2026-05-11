@@ -1,5 +1,5 @@
-import bcrypt from "bcrypt";
-import crypto from "crypto";
+import crypto from 'node:crypto';
+import bcrypt from 'bcrypt';
 
 const SALT_ROUNDS = 10;
 
@@ -12,7 +12,7 @@ export const generateRandomHashedPassword = async (): Promise<{
   hashedPassword: string;
 }> => {
   // Generate a random password (16 characters, alphanumeric + special chars)
-  const password = crypto.randomBytes(12).toString("base64");
+  const password = crypto.randomBytes(12).toString('base64');
 
   // Hash the password
   const hashedPassword = await hashPassword(password);

@@ -1,7 +1,7 @@
-import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { createUserSchema, paginationQuerySchema } from "~/server/api/schema";
-import userService from "~/server/services/user/user.service";
+import { z } from 'zod';
+import { createUserSchema, paginationQuerySchema } from '~/server/api/schema';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
+import userService from '~/server/services/user/user.service';
 
 export const userRouter = createTRPCRouter({
   findById: protectedProcedure

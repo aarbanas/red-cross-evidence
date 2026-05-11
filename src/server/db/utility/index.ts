@@ -1,6 +1,6 @@
-import { and, asc, desc, type SQL } from "drizzle-orm";
-import { TRPCError } from "@trpc/server";
-import { type PgColumn } from "drizzle-orm/pg-core";
+import { TRPCError } from '@trpc/server';
+import { and, asc, desc, type SQL } from 'drizzle-orm';
+import type { PgColumn } from 'drizzle-orm/pg-core';
 
 export const prepareOrderBy = (
   mapKeyToColumn: (key: string | undefined) => PgColumn,
@@ -12,8 +12,8 @@ export const prepareOrderBy = (
     return [asc(defaultColumn)];
   }
 
-  if (typeof sort === "string") {
-    const [key, value] = sort.split(":");
+  if (typeof sort === 'string') {
+    const [key, value] = sort.split(':');
 
     return [
       generateSortFunction(
@@ -26,7 +26,7 @@ export const prepareOrderBy = (
 
   const sorts = [];
   for (const _sort of sort) {
-    const [key, value] = _sort.split(":");
+    const [key, value] = _sort.split(':');
     const sortValue = generateSortFunction(
       { sortableKeys, key, value },
       defaultColumn,
@@ -52,18 +52,17 @@ const generateSortFunction = (
   const { sortableKeys, key, value } = data;
   if (
     value &&
-    Object.values(sortableKeys).findIndex(
-      (sortableKey) => sortableKey === key,
-    ) > -1
+    key !== undefined &&
+    Object.values(sortableKeys).indexOf(key) > -1
   ) {
-    if (!["asc", "desc"].includes(value)) {
+    if (!['asc', 'desc'].includes(value)) {
       throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Invalid sort direction",
+        code: 'BAD_REQUEST',
+        message: 'Invalid sort direction',
       });
     }
 
-    return value === "asc"
+    return value === 'asc'
       ? asc(mapKeyToColumn(key))
       : desc(mapKeyToColumn(key));
   }
@@ -83,7 +82,7 @@ export const prepareWhere = (
   if (!filter) return undefined;
 
   if (Object.keys(filter).length === 1) {
-    const [key, value] = Object.entries(filter)[0] ?? ["", ""];
+    const [key, value] = Object.entries(filter)[0] ?? ['', ''];
     if (!Object.values(filterableKeys).includes(key)) {
       return undefined;
     }

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const MAX_PAGE_SIZE = 50;
 const MIN_PAGE_SIZE = 1;

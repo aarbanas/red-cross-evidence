@@ -1,6 +1,6 @@
-import React from "react";
-import { Button } from "~/components/atoms/Button";
-import { CirclePlusIcon } from "lucide-react";
+import { CirclePlusIcon } from 'lucide-react';
+import type React from 'react';
+import { Button } from '~/components/atoms/Button';
 
 type Props = {
   onClick: () => void;

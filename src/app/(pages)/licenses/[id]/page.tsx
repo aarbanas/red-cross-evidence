@@ -1,9 +1,9 @@
-"use client";
-import MainLayout from "~/components/layout/mainLayout";
-import LicencesForm from "~/app/(pages)/licenses/_components/LicencesForm";
-import { useParams } from "next/navigation";
-import { api } from "~/trpc/react";
-import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
+'use client';
+import { useParams } from 'next/navigation';
+import LicencesForm from '~/app/(pages)/licenses/_components/LicencesForm';
+import MainLayout from '~/components/layout/mainLayout';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '~/trpc/react';
 
 const UpdateLicensePage = () => {
   const { id } = useParams();
@@ -27,12 +27,12 @@ const UpdateLicensePage = () => {
   return (
     <MainLayout headerChildren={<h1>Ažuriraj licencu</h1>}>
       <LicencesForm
-        action={"update"}
+        action={'update'}
         formData={{
           id: data.id,
           name: data.name,
           type: data.type,
-          description: data.description ?? "",
+          description: data.description ?? '',
         }}
       />
     </MainLayout>

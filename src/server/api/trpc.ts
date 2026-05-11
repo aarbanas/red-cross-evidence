@@ -7,16 +7,14 @@
  * need to use are documented accordingly near the end.
  */
 
-import { initTRPC, TRPCError } from "@trpc/server";
-import superjson from "superjson";
-import { ZodError } from "zod";
-
-import { auth } from "~/server/auth/index";
-import { db } from "~/server/db";
-import { env } from "~/env"; // Import the environment variables
-
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import { initTRPC, TRPCError } from '@trpc/server';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+import superjson from 'superjson';
+import { ZodError } from 'zod';
+import { env } from '~/env'; // Import the environment variables
+import { auth } from '~/server/auth';
+import { db } from '~/server/db';
 
 /**
  * 1. CONTEXT
@@ -95,7 +93,7 @@ let rateLimiter: Ratelimit | null = null;
 if (env.RATE_LIMITER_ENABLED) {
   rateLimiter = new Ratelimit({
     redis: Redis.fromEnv(),
-    limiter: Ratelimit.slidingWindow(10, "10 s"),
+    limiter: Ratelimit.slidingWindow(10, '10 s'),
   });
 }
 
@@ -109,12 +107,13 @@ if (env.RATE_LIMITER_ENABLED) {
  */
 export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   if (!ctx.session?.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
+
   if (rateLimiter) {
     const { success } = await rateLimiter.limit(ctx.session.user.id);
     if (!success) {
-      throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+      throw new TRPCError({ code: 'TOO_MANY_REQUESTS' });
     }
   }
 

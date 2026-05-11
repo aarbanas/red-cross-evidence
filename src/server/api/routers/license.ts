@@ -1,7 +1,7 @@
-import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { paginationQuerySchema } from "~/server/api/schema";
-import licenseService from "~/server/services/license/license.service";
+import { z } from 'zod';
+import { paginationQuerySchema } from '~/server/api/schema';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
+import licenseService from '~/server/services/license/license.service';
 
 const licenseFormDataSchema = z.object({
   id: z.string().optional(),

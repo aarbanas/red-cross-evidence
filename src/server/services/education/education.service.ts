@@ -1,8 +1,8 @@
-import educationRepository from "~/server/services/education/education.repository";
-import type { FindQueryDTO } from "~/server/db/utility/types";
-import { type EducationFormData } from "~/app/(pages)/educations/list/[id]/_components/EducationsForm";
-import { type EducationTermFormData } from "~/app/(pages)/educations/term/_components/EducationsTermForm";
-import { type EducationType } from "~/server/db/schema";
+import type { EducationFormData } from '~/app/(pages)/educations/list/[id]/_components/EducationsForm';
+import type { EducationTermFormData } from '~/app/(pages)/educations/term/_components/EducationsTermForm';
+import type { EducationType } from '~/server/db/schema';
+import type { FindQueryDTO } from '~/server/db/utility/types';
+import educationRepository from '~/server/services/education/education.repository';
 
 const educationService = {
   list: {

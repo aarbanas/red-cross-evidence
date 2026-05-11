@@ -1,21 +1,21 @@
-import { db } from "~/server/db";
-import { licenses } from "~/server/db/schema";
-import { count, eq, ilike, type SQL } from "drizzle-orm";
-import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
-import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
-import { type LicencesFormData } from "~/app/(pages)/licenses/_components/LicencesForm";
+import { count, eq, ilike, type SQL } from 'drizzle-orm';
+import type { LicencesFormData } from '~/app/(pages)/licenses/_components/LicencesForm';
+import { db } from '~/server/db';
+import { licenses } from '~/server/db/schema';
+import { prepareOrderBy, prepareWhere } from '~/server/db/utility';
+import type { FindQueryDTO, FindReturnDTO } from '~/server/db/utility/types';
 
 enum SortableKeys {
-  ID = "id",
-  TYPE = "type",
-  NAME = "name",
-  DESCRIPTION = "description",
+  ID = 'id',
+  TYPE = 'type',
+  NAME = 'name',
+  DESCRIPTION = 'description',
 }
 
 enum FilterableKeys {
-  TYPE = "type",
-  NAME = "name",
-  DESCRIPTION = "description",
+  TYPE = 'type',
+  NAME = 'name',
+  DESCRIPTION = 'description',
 }
 
 export type FindLicenseReturnDTO = {
@@ -135,7 +135,7 @@ const licenseRepository = {
   update: async (data: LicencesFormData) => {
     const { id, type, name, description } = data;
     if (!id) {
-      throw new Error("Id is required for updating license");
+      throw new Error('Id is required for updating license');
     }
 
     return db

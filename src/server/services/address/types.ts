@@ -1,4 +1,4 @@
-import { type AddressType } from "~/server/db/schema";
+import type { AddressType } from '~/server/db/schema';
 
 export type FindAddressQuery = {
   street: string;

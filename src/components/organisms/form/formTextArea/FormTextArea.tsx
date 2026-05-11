@@ -1,8 +1,8 @@
-import styles from "./FormTextArea.module.css";
-import { FieldError } from "~/components/organisms/form/formComponent/FormComponent";
-import { forwardRef, type ComponentProps } from "react";
+import { type ComponentProps, forwardRef } from 'react';
+import { FieldError } from '~/components/organisms/form/formComponent/FormComponent';
+import styles from './FormTextArea.module.css';
 
-interface FormTextAreaProps extends ComponentProps<"textarea"> {
+interface FormTextAreaProps extends ComponentProps<'textarea'> {
   id: string;
   label: string;
   className?: string;
@@ -22,6 +22,6 @@ const FormTextArea = forwardRef<HTMLTextAreaElement, FormTextAreaProps>(
   },
 );
 
-FormTextArea.displayName = "FormTextarea";
+FormTextArea.displayName = 'FormTextarea';
 
 export default FormTextArea;

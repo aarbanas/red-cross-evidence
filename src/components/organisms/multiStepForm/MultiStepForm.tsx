@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+'use client';
 
-import React, { type ReactElement, useState, useEffect } from "react";
-import { Button } from "~/components/atoms/Button";
-import { useForm, type FieldValues, type DefaultValues } from "react-hook-form";
-import FormComponent from "../form/formComponent/FormComponent";
-import { type ZodObject } from "zod";
-import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
+import React, { type ReactElement, useEffect, useState } from 'react';
+import { type DefaultValues, type FieldValues, useForm } from 'react-hook-form';
+import type { ZodObject } from 'zod';
+import { Button } from '~/components/atoms/Button';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import FormComponent from '../form/formComponent/FormComponent';
 
 export interface FormStep {
   name: string;
@@ -35,17 +34,17 @@ function generateForm<T extends FieldValues>(
     const schemaKeys: string[] = schema.keyof()._def.values;
     const numberOfFields = schemaKeys.length;
     if (numberOfFields !== forms.length)
-      console.error("Amount of steps and fields in schema do not match");
+      console.error('Amount of steps and fields in schema do not match');
 
     const [currentStep, setCurrentStep] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     let isLastStep = false;
 
     const methods = useForm<T>({
-      mode: "all",
+      mode: 'all',
       defaultValues: saveToLocalStorage
         ? (JSON.parse(
-            localStorage.getItem("multiStepFormData") ?? "{}",
+            localStorage.getItem('multiStepFormData') ?? '{}',
           ) as DefaultValues<T>)
         : undefined,
     });
@@ -54,7 +53,7 @@ function generateForm<T extends FieldValues>(
     useEffect(() => {
       if (saveToLocalStorage) {
         localStorage.setItem(
-          "multiStepFormData",
+          'multiStepFormData',
           JSON.stringify(watchedValues),
         );
       }
@@ -86,11 +85,12 @@ function generateForm<T extends FieldValues>(
               setCurrentStep(errorStepIndex);
             }
           }
+
           return;
         }
 
         if (saveToLocalStorage) {
-          localStorage.removeItem("multiStepFormData");
+          localStorage.removeItem('multiStepFormData');
         }
 
         setIsSubmitting(true);
@@ -122,8 +122,8 @@ function generateForm<T extends FieldValues>(
         <nav className="mb-4 flex space-x-4 pb-3">
           {forms.map((formStep, index) => (
             <Button
-              key={index}
-              variant={`${currentStep === index ? "default" : "ghost"}`}
+              key={formStep.name}
+              variant={`${currentStep === index ? 'default' : 'ghost'}`}
               onClick={() => setCurrentStep(index)}
               className="cursor-pointer"
               disabled={isSubmitting}
@@ -158,7 +158,7 @@ function generateForm<T extends FieldValues>(
                 variant="default"
                 disabled={!methods.formState.isValid || isSubmitting}
               >
-                {currentStep < numSteps - 1 ? "Naprijed" : "Spremi"}
+                {currentStep < numSteps - 1 ? 'Naprijed' : 'Spremi'}
               </Button>
             </div>
           </FormComponent>
@@ -176,4 +176,5 @@ function generateForm<T extends FieldValues>(
     />
   );
 }
+
 export default generateForm;

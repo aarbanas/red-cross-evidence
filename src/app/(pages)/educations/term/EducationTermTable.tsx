@@ -1,5 +1,10 @@
-import { type FC, useState } from "react";
-import { type FindEducationTermReturnDTO } from "~/server/services/education/education.repository";
+import { Pencil, Trash2 } from 'lucide-react';
+import moment from 'moment';
+import Link from 'next/link';
+import { type FC, useState } from 'react';
+import { Button } from '~/components/atoms/Button';
+import Modal from '~/components/organisms/modal/Modal';
+import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
 import {
   Table,
   TableBody,
@@ -7,14 +12,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/organisms/Table";
-import { Pencil, Trash2 } from "lucide-react";
-import Link from "next/link";
-import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
-import moment from "moment";
-import { Button } from "~/components/atoms/Button";
-import Modal from "~/components/organisms/modal/Modal";
-import { api } from "~/trpc/react";
+} from '~/components/organisms/Table';
+import type { FindEducationTermReturnDTO } from '~/server/services/education/education.repository';
+import { api } from '~/trpc/react';
 
 type Props = {
   data?: FindEducationTermReturnDTO[];
@@ -47,7 +47,7 @@ const EducationTermTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
       refetch();
       setIsModalOpen(false);
     } catch (error) {
-      console.error("Failed to delete education:", error);
+      console.error('Failed to delete education:', error);
     }
   };
 
@@ -74,12 +74,12 @@ const EducationTermTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
                   {educationTerm.title}
                 </TableCell>
                 <TableCell className="md:table-cell">
-                  {moment(educationTerm.dateFrom).format("DD.MM.YYYY")}
+                  {moment(educationTerm.dateFrom).format('DD.MM.YYYY')}
                 </TableCell>
                 <TableCell className="md:table-cell">
                   {educationTerm.dateTo
-                    ? moment(educationTerm.dateTo).format("DD.MM.YYYY")
-                    : "-"}
+                    ? moment(educationTerm.dateTo).format('DD.MM.YYYY')
+                    : '-'}
                 </TableCell>
                 <TableCell className="md:table-cell">
                   {educationTerm.location}
@@ -97,7 +97,10 @@ const EducationTermTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
                   </Link>
                 </TableCell>
                 <TableCell className="cursor-pointer md:table-cell">
-                  <button onClick={() => openModal(educationTerm.id)}>
+                  <button
+                    type="button"
+                    onClick={() => openModal(educationTerm.id)}
+                  >
                     <Trash2 color="red" />
                   </button>
                 </TableCell>

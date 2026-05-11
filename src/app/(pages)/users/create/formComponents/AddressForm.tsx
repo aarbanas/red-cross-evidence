@@ -1,13 +1,13 @@
-import { useFormContext, useFieldArray } from "react-hook-form";
-import FormInput from "~/components/organisms/form/formInput/FormInput";
-import { AddressType } from "~/server/db/schema";
-import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
-import FormCitySearch from "~/components/organisms/form/formCitySearch/FormCitySearch";
-import FormStreetSearch from "~/components/organisms/form/formStreetSearch/FormStreetSearch";
-import { translateAddressType } from "~/app/(pages)/users/create/utils";
-import { type FC } from "react";
-import { type SearchCityReturnDTO } from "~/server/services/city/city.repository";
-import { Button } from "~/components/atoms/Button";
+import type { FC } from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { translateAddressType } from '~/app/(pages)/users/create/utils';
+import { Button } from '~/components/atoms/Button';
+import FormCitySearch from '~/components/organisms/form/formCitySearch/FormCitySearch';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import FormStreetSearch from '~/components/organisms/form/formStreetSearch/FormStreetSearch';
+import { AddressType } from '~/server/db/schema';
+import type { SearchCityReturnDTO } from '~/server/services/city/city.repository';
 
 export type AddressFormProps = {
   addresses: {
@@ -35,10 +35,10 @@ const AddressForm: FC<Props> = ({ countries }) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "addresses",
+    name: 'addresses',
   });
 
-  const watchedAddresses = (watch("addresses") ?? []) as AddressFormProps[];
+  const watchedAddresses = (watch('addresses') ?? []) as AddressFormProps[];
 
   // Handle primary address selection - only one can be primary
   const handlePrimaryChange = (selectedIndex: number) => {
@@ -53,11 +53,11 @@ const AddressForm: FC<Props> = ({ countries }) => {
   const addNewAddress = () => {
     append({
       type: AddressType.PERMANENT_RESIDENCE,
-      street: "",
-      streetNumber: "",
-      city: "",
-      postalCode: "",
-      country: "",
+      street: '',
+      streetNumber: '',
+      city: '',
+      postalCode: '',
+      country: '',
       isPrimary: fields.length === 0, // First address is primary by default
     });
   };
@@ -92,7 +92,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
 
         // Extract cityId for street search
         const cityId =
-          typeof selectedCity === "object" && selectedCity?.id
+          typeof selectedCity === 'object' && selectedCity?.id
             ? selectedCity.id
             : undefined;
 
@@ -125,13 +125,13 @@ const AddressForm: FC<Props> = ({ countries }) => {
               label="Primarna adresa"
               checked={isPrimary}
               onChange={() => handlePrimaryChange(index)}
-              type={"checkbox"}
+              type={'checkbox'}
             />
             <FormSelect
               id={`type-${index}`}
               label="Vrsta*"
               {...register(`addresses.${index}.type`, {
-                required: "Tip adrese je obavezno polje",
+                required: 'Tip adrese je obavezno polje',
               })}
               placeholder="Odaberite vrstu adrese"
             >
@@ -148,7 +148,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
               id={`country-${index}`}
               label="Država*"
               {...register(`addresses.${index}.country`, {
-                required: "Država je obavezno polje",
+                required: 'Država je obavezno polje',
               })}
               placeholder="Odaberite državu"
             >
@@ -176,7 +176,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
                   id={`postalCode-${index}`}
                   label="Poštanski broj*"
                   {...register(`addresses.${index}.postalCode`, {
-                    required: "Poštanski broj je obavezno polje",
+                    required: 'Poštanski broj je obavezno polje',
                   })}
                   placeholder="Unesite poštanski broj"
                 />
@@ -198,7 +198,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
                   id={`streetNumber-${index}`}
                   label="Kućni broj*"
                   {...register(`addresses.${index}.streetNumber`, {
-                    required: "Kućni broj je obavezno polje",
+                    required: 'Kućni broj je obavezno polje',
                   })}
                   placeholder="Unesite kućni broj"
                 />

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import { api } from "~/trpc/react";
-import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
-import TabLayout from "~/components/layout/tabLayout";
-import EducationsTermForm from "~/app/(pages)/educations/term/_components/EducationsTermForm";
+import { useParams } from 'next/navigation';
+import EducationsTermForm from '~/app/(pages)/educations/term/_components/EducationsTermForm';
+import TabLayout from '~/components/layout/tabLayout';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '~/trpc/react';
 
 const UpdateEducationTermPage = () => {
   const { id } = useParams();
@@ -35,7 +35,7 @@ const UpdateEducationTermPage = () => {
     <TabLayout>
       <div>
         <EducationsTermForm
-          action={"update"}
+          action={'update'}
           educationTermId={id}
           formData={{
             title: data.title,

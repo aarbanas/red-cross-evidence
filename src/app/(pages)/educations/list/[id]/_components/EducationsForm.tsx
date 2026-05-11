@@ -1,14 +1,14 @@
-import { useForm } from "react-hook-form";
-import FormInput from "~/components/organisms/form/formInput/FormInput";
-import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
-import FormTextarea from "~/components/organisms/form/formTextArea/FormTextArea";
-import { Button } from "~/components/atoms/Button";
-import FormComponent from "~/components/organisms/form/formComponent/FormComponent";
-import React from "react";
-import { translateEducationType } from "~/app/(pages)/educations/utils";
-import { type EducationType } from "~/server/db/schema";
-import { api } from "~/trpc/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { useForm } from 'react-hook-form';
+import { translateEducationType } from '~/app/(pages)/educations/utils';
+import { Button } from '~/components/atoms/Button';
+import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import FormTextarea from '~/components/organisms/form/formTextArea/FormTextArea';
+import type { EducationType } from '~/server/db/schema';
+import { api } from '~/trpc/react';
 
 export type EducationFormData = {
   id?: string;
@@ -66,15 +66,16 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
     };
 
     try {
-      if (id === "create") {
+      if (id === 'create') {
         await createEducation.mutateAsync(formData);
       } else {
         await updateEducation.mutateAsync(formData);
       }
-      router.push("/educations/list");
+
+      router.push('/educations/list');
     } catch (error) {
       console.error(
-        `Failed to ${id === "create" ? "create" : "update"} education:`,
+        `Failed to ${id === 'create' ? 'create' : 'update'} education:`,
         error,
       );
     }
@@ -85,8 +86,8 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
       <FormSelect
         id="type"
         label="Tip*"
-        {...form.register("type", {
-          required: "Tip je obavezno polje",
+        {...form.register('type', {
+          required: 'Tip je obavezno polje',
         })}
         placeholder="Odaberite tip"
       >
@@ -100,61 +101,61 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
       <FormInput
         id="title"
         label="Naziv*"
-        {...form.register("title", {
-          required: "Naziv je obavezno polje",
+        {...form.register('title', {
+          required: 'Naziv je obavezno polje',
         })}
       />
 
       <FormTextarea
         id="description"
         label="Opis*"
-        {...form.register("description", {
-          required: "Opis je obavezno polje",
+        {...form.register('description', {
+          required: 'Opis je obavezno polje',
         })}
       />
 
-      {(id === "create" || formData.precondition) && (
+      {(id === 'create' || formData.precondition) && (
         <FormTextarea
           id="precondition"
           label="Preduvjet"
-          {...form.register("precondition")}
+          {...form.register('precondition')}
         />
       )}
 
-      {(id === "create" || formData.duration) && (
+      {(id === 'create' || formData.duration) && (
         <FormInput
           id="duration"
           label="Trajanje"
-          {...form.register("duration")}
+          {...form.register('duration')}
         />
       )}
 
-      {(id === "create" || formData.lecturers) && (
+      {(id === 'create' || formData.lecturers) && (
         <FormInput
           id="lecturers"
           label="Predavači"
-          {...form.register("lecturers")}
+          {...form.register('lecturers')}
         />
       )}
 
-      {(id === "create" || formData.courseDuration) && (
+      {(id === 'create' || formData.courseDuration) && (
         <FormInput
           id="courseDuration"
           label="Trajanje tečaja"
-          {...form.register("courseDuration")}
+          {...form.register('courseDuration')}
         />
       )}
 
-      {(id === "create" || formData.renewalDuration) && (
+      {(id === 'create' || formData.renewalDuration) && (
         <FormInput
           id="renewalDuration"
           label="Trajanje obnove"
-          {...form.register("renewalDuration")}
+          {...form.register('renewalDuration')}
         />
       )}
 
-      {(id === "create" || formData.topics) && (
-        <FormTextarea id="topics" label="Teme" {...form.register("topics")} />
+      {(id === 'create' || formData.topics) && (
+        <FormTextarea id="topics" label="Teme" {...form.register('topics')} />
       )}
 
       <Button
@@ -162,7 +163,7 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
         type="submit"
         showLoading={isSubmitting}
       >
-        <span>{id === "create" ? "Kreiraj edukaciju" : "Spremi promjene"}</span>
+        <span>{id === 'create' ? 'Kreiraj edukaciju' : 'Spremi promjene'}</span>
       </Button>
     </FormComponent>
   );

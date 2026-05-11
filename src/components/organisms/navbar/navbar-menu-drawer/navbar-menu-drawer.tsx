@@ -1,7 +1,7 @@
-import { type PropsWithChildren, useState } from "react";
-import { type NextPage } from "next";
-import { Menu, X } from "lucide-react";
-import styles from "./navbar-menu-drawer.module.scss";
+import { Menu, X } from 'lucide-react';
+import type { NextPage } from 'next';
+import { type PropsWithChildren, useState } from 'react';
+import styles from './navbar-menu-drawer.module.scss';
 
 type Props = {
   title: string;
@@ -13,6 +13,7 @@ const NewNavbarMenuDrawer: NextPage<Props> = ({ title, children }) => {
 
   return !showMenu ? (
     <button
+      type="button"
       aria-label="Open menu"
       onClick={() => {
         setShowMenu(true);
@@ -26,15 +27,17 @@ const NewNavbarMenuDrawer: NextPage<Props> = ({ title, children }) => {
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <span className={styles.title}>{title}</span>
-          <div
-            className={"cursor-pointer"}
+          <button
+            type="button"
+            aria-label="Close menu"
+            className={'cursor-pointer'}
             onClick={() => {
               setMenu(false);
               setTimeout(() => setShowMenu(false), 500);
             }}
           >
             <X />
-          </div>
+          </button>
         </div>
       </div>
       {children}

@@ -3,72 +3,72 @@ import {
   EducationLevel,
   Sex,
   WorkStatus,
-} from "~/server/db/schema";
+} from '~/server/db/schema';
 
 export const translateSex = (sex: Sex) => {
   switch (sex) {
     case Sex.MALE:
-      return "Muško";
+      return 'Muško';
     case Sex.FEMALE:
-      return "Žensko";
+      return 'Žensko';
     case Sex.OTHER:
-      return "Drugo";
+      return 'Drugo';
     default:
-      throw new Error("Invalid sex value");
+      throw new Error('Invalid sex value');
   }
 };
 
 export const translateAddressType = (type: AddressType) => {
   switch (type) {
     case AddressType.PERMANENT_RESIDENCE:
-      return "Prebivlište";
+      return 'Prebivlište';
     case AddressType.TEMPORARY_RESIDENCE:
-      return "Boravište";
+      return 'Boravište';
     case AddressType.WORK:
-      return "Adresa rada";
+      return 'Adresa rada';
     case AddressType.OTHER:
-      return "Drugo";
+      return 'Drugo';
     default:
-      throw new Error("Invalid address type");
+      throw new Error('Invalid address type');
   }
 };
 
 export const translateWorkStatus = (status: WorkStatus) => {
   switch (status) {
     case WorkStatus.EMPLOYED:
-      return "Zaposlen";
+      return 'Zaposlen';
     case WorkStatus.UNEMPLOYED:
-      return "Nezaposlen";
+      return 'Nezaposlen';
     case WorkStatus.SELF_EMPLOYED:
-      return "Samozaposlen";
+      return 'Samozaposlen';
     case WorkStatus.STUDENT:
-      return "Student";
+      return 'Student';
     case WorkStatus.PUPIL:
-      return "Učenik";
+      return 'Učenik';
     case WorkStatus.RETIRED:
-      return "Umirovljen";
+      return 'Umirovljen';
     default:
-      throw new Error("Invalid work status");
+      throw new Error('Invalid work status');
   }
 };
 
 export const translateEducationLevel = (level: EducationLevel) => {
   switch (level) {
     case EducationLevel.PRIMARY:
-      return "Osnovno obrazovanje";
+      return 'Osnovno obrazovanje';
     case EducationLevel.SECONDARY:
-      return "Srednja stručna sprema";
+      return 'Srednja stručna sprema';
     case EducationLevel.COLLEGE:
-      return "Viša stručna sprema";
+      return 'Viša stručna sprema';
     case EducationLevel.BACHELOR:
-      return "Visoka stručna sprema";
+      return 'Visoka stručna sprema';
     case EducationLevel.MASTER:
-      return "Magisterij";
+      return 'Magisterij';
     case EducationLevel.DOCTORATE:
-      return "Doktorat znanosti";
+      return 'Doktorat znanosti';
     case EducationLevel.POST_DOCTORATE:
-      return "Postdoktorat";
+      return 'Postdoktorat';
     default:
-      throw new Error("Invalid education level");
+      throw new Error('Invalid education level');
   }
 };

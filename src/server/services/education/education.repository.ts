@@ -1,41 +1,41 @@
+import { asc, count, eq, gte, ilike, type SQL } from 'drizzle-orm';
+import type { EducationFormData } from '~/app/(pages)/educations/list/[id]/_components/EducationsForm';
+import type { EducationTermFormData } from '~/app/(pages)/educations/term/_components/EducationsTermForm';
+import { db } from '~/server/db';
 import {
+  type EducationType,
   educations,
   educationTerms,
-  type EducationType,
-} from "~/server/db/schema";
-import { db } from "~/server/db";
-import { asc, count, eq, gte, ilike, type SQL } from "drizzle-orm";
+} from '~/server/db/schema';
+import { prepareOrderBy, prepareWhere } from '~/server/db/utility';
 import type {
   FindQueryDTO,
   FindReturn,
   FindReturnDTO,
-} from "~/server/db/utility/types";
-import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
-import { type EducationFormData } from "~/app/(pages)/educations/list/[id]/_components/EducationsForm";
-import { type EducationTermFormData } from "~/app/(pages)/educations/term/_components/EducationsTermForm";
+} from '~/server/db/utility/types';
 
 enum ListSortableKeys {
-  TYPE = "type",
-  TITLE = "title",
+  TYPE = 'type',
+  TITLE = 'title',
 }
 
 enum TermSortableKeys {
-  EDUCATION_ID = "educationId",
-  TITLE = "title",
-  DATE_FROM = "dateFrom",
-  DATE_TO = "dateTo",
+  EDUCATION_ID = 'educationId',
+  TITLE = 'title',
+  DATE_FROM = 'dateFrom',
+  DATE_TO = 'dateTo',
 }
 
 enum ListFilterableKeys {
-  TYPE = "type",
-  TITLE = "title",
+  TYPE = 'type',
+  TITLE = 'title',
 }
 
 enum TermFilterableKeys {
-  EDUCATION_ID = "educationId",
-  TITLE = "title",
-  DATE_FROM = "dateFrom",
-  DATE_TO = "dateTo",
+  EDUCATION_ID = 'educationId',
+  TITLE = 'title',
+  DATE_FROM = 'dateFrom',
+  DATE_TO = 'dateTo',
 }
 
 export type FindEducationListReturnDTO = {
@@ -420,7 +420,7 @@ const educationRepository = {
       } = data;
 
       if (!id) {
-        throw new Error("Id is required for updating education term");
+        throw new Error('Id is required for updating education term');
       }
 
       return db

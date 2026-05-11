@@ -1,14 +1,14 @@
-import userRepository from "~/server/services/user/user.repository";
-import type { FindQueryDTO } from "~/server/db/utility/types";
+import type { AddressType } from '~/server/db/schema';
+import type { FindQueryDTO } from '~/server/db/utility/types';
+import addressRepository from '~/server/services/address/address.repository';
+import cityRepository from '~/server/services/city/city.repository';
 import type {
   CreateUserAddressesDTO,
   CreateUserAddressIdsDTO,
   CreateUserDTO,
-} from "~/server/services/user/types";
-import { generateRandomHashedPassword } from "~/server/utils/password";
-import cityRepository from "~/server/services/city/city.repository";
-import addressRepository from "~/server/services/address/address.repository";
-import { type AddressType } from "~/server/db/schema";
+} from '~/server/services/user/types';
+import userRepository from '~/server/services/user/user.repository';
+import { generateRandomHashedPassword } from '~/server/utils/password';
 
 const userService = {
   getById: async (id: string) => {
@@ -31,8 +31,8 @@ const userService = {
 };
 
 const validateUserCreation = (data: CreateUserDTO) => {
-  if (isNaN(Number(data.size.shoeSize))) {
-    throw new Error("Shoe size must be a valid number");
+  if (Number.isNaN(Number(data.size.shoeSize))) {
+    throw new Error('Shoe size must be a valid number');
   }
 };
 
@@ -43,14 +43,14 @@ const prepareAddresses = async (
 
   for (const address of data) {
     let cityId: string | null = null;
-    if (typeof address.city === "string") {
+    if (typeof address.city === 'string') {
       const newCity = await cityRepository.getOrCreate({
         name: address.city,
         postalCode: address.postalCode,
         countryId: address.country,
       });
       if (!newCity?.id) {
-        throw new Error("Failed to create new city");
+        throw new Error('Failed to create new city');
       }
 
       cityId = newCity.id;
@@ -65,7 +65,7 @@ const prepareAddresses = async (
       type: address.type as AddressType,
     });
     if (!newAddress?.id) {
-      throw new Error("Failed to create new address");
+      throw new Error('Failed to create new address');
     }
 
     addressIds.push({

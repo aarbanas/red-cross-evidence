@@ -1,11 +1,11 @@
-"use client";
-import MainLayout from "~/components/layout/mainLayout";
-import LicencesForm from "~/app/(pages)/licenses/_components/LicencesForm";
+'use client';
+import LicencesForm from '~/app/(pages)/licenses/_components/LicencesForm';
+import MainLayout from '~/components/layout/mainLayout';
 
 const CreateLicensePage = () => {
   return (
     <MainLayout headerChildren={<h1>Kreiraj novu licencu</h1>}>
-      <LicencesForm action={"create"} />
+      <LicencesForm action={'create'} />
     </MainLayout>
   );
 };

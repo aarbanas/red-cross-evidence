@@ -1,17 +1,17 @@
-"use client";
-import { type FC, type PropsWithChildren } from "react";
-import MainLayout from "~/components/layout/mainLayout";
-import Tabs, { type TabProp } from "~/components/atoms/Tabs";
+'use client';
+import type { FC, PropsWithChildren } from 'react';
+import Tabs, { type TabProp } from '~/components/atoms/Tabs';
+import MainLayout from '~/components/layout/mainLayout';
 
 const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
   const tabsData: TabProp[] = [
     {
-      label: "Termini",
-      link: "term",
+      label: 'Termini',
+      link: 'term',
     },
     {
-      label: "Popis",
-      link: "list",
+      label: 'Popis',
+      link: 'list',
     },
   ];
 

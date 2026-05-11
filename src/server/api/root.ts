@@ -1,12 +1,12 @@
-import { postRouter } from "~/server/api/routers/post";
-import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
-import { userRouter } from "~/server/api/routers/user";
-import { licenseRouter } from "./routers/license";
-import { cityRouter } from "./routers/city";
-import { educationRouter } from "~/server/api/routers/educations";
-import { countryRouter } from "~/server/api/routers/country";
-import { skillRouter } from "~/server/api/routers/skill";
-import { addressRouter } from "./routers/address";
+import { countryRouter } from '~/server/api/routers/country';
+import { educationRouter } from '~/server/api/routers/educations';
+import { postRouter } from '~/server/api/routers/post';
+import { skillRouter } from '~/server/api/routers/skill';
+import { userRouter } from '~/server/api/routers/user';
+import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
+import { addressRouter } from './routers/address';
+import { cityRouter } from './routers/city';
+import { licenseRouter } from './routers/license';
 
 /**
  * This is the primary router for your server.

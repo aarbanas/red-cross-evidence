@@ -1,4 +1,4 @@
-import { skillRepository } from "~/server/services/skills/skill.repository";
+import { skillRepository } from '~/server/services/skills/skill.repository';
 
 const skillService = {
   language: {

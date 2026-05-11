@@ -1,5 +1,5 @@
-import { db } from "~/server/db";
-import { countries } from "~/server/db/schema";
+import { db } from '~/server/db';
+import { countries } from '~/server/db/schema';
 
 const countryRepository = {
   getAllCountries: async () => {

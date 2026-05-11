@@ -1,9 +1,9 @@
-import useTotalPageNumber from "~/hooks/useTotalPageNumber";
-import { api } from "~/trpc/react";
-import React from "react";
-import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
-import LicencesTable from "~/app/(pages)/licenses/_components/LicencesTable";
-import usePagination from "~/hooks/usePagination";
+import type React from 'react';
+import LicencesTable from '~/app/(pages)/licenses/_components/LicencesTable';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import usePagination from '~/hooks/usePagination';
+import useTotalPageNumber from '~/hooks/useTotalPageNumber';
+import { api } from '~/trpc/react';
 
 type Props = {
   filter: Record<string, string> | undefined;
@@ -15,7 +15,7 @@ const Licences: React.FC<Props> = ({ filter }) => {
   const { data, isLoading, error } = api.license.find.useQuery({
     page,
     limit: 10,
-    sort: ["name:asc"],
+    sort: ['name:asc'],
     filter,
   });
 

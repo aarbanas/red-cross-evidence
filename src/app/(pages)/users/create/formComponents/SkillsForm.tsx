@@ -1,11 +1,11 @@
-"use client";
-import { useFormContext, useFieldArray } from "react-hook-form";
-import React, { type FC, useState } from "react";
-import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
-import { LanguageLevel } from "~/server/db/schema";
-import { Button } from "~/components/atoms/Button";
-import { useRouter } from "next/navigation";
-import FormInput from "~/components/organisms/form/formInput/FormInput";
+'use client';
+import { useRouter } from 'next/navigation';
+import { type FC, useState } from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { Button } from '~/components/atoms/Button';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import { LanguageLevel } from '~/server/db/schema';
 
 type Props = {
   languages: {
@@ -46,7 +46,7 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
   const { control, register } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "skills.selectedLanguages",
+    name: 'skills.selectedLanguages',
   });
   const {
     fields: licenceFields,
@@ -54,7 +54,7 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
     remove: removeLicence,
   } = useFieldArray({
     control,
-    name: "skills.selectedLicences",
+    name: 'skills.selectedLicences',
   });
   const {
     fields: otherSkillsFields,
@@ -62,11 +62,11 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
     remove: otherSkillsRemove,
   } = useFieldArray({
     control,
-    name: "skills.otherSkills",
+    name: 'skills.otherSkills',
     rules: { minLength: 1 },
   });
 
-  const [selectedLicenceId, setSelectedLicenceId] = useState<string>("");
+  const [selectedLicenceId, setSelectedLicenceId] = useState<string>('');
 
   const handleAddLicence = () => {
     console.log(selectedLicenceId);
@@ -81,17 +81,17 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
           name: licence.name,
           type: licence.type,
         });
-        setSelectedLicenceId("");
+        setSelectedLicenceId('');
       }
     }
   };
 
   const addNewLanguage = () => {
-    append({ id: "none", level: LanguageLevel.A1 });
+    append({ id: 'none', level: LanguageLevel.A1 });
   };
 
   const addNewOtherSkill = () => {
-    otherSkillsAppend({ name: "", description: "" });
+    otherSkillsAppend({ name: '', description: '' });
   };
 
   return (
@@ -180,17 +180,13 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
             onChange={(e) => setSelectedLicenceId(e.target.value)}
           >
             <option value="">Odaberi licencu iz izbornika</option>
-            <>
-              {licences
-                .filter(
-                  (l) => !licenceFields.some((field) => field.id === l.id),
-                )
-                .map((licence) => (
-                  <option key={licence.id} value={licence.id}>
-                    {licence.type} - {licence.name}
-                  </option>
-                ))}
-            </>
+            {licences
+              .filter((l) => !licenceFields.some((field) => field.id === l.id))
+              .map((licence) => (
+                <option key={licence.id} value={licence.id}>
+                  {licence.type} - {licence.name}
+                </option>
+              ))}
           </FormSelect>
           <Button
             type="button"
@@ -228,7 +224,7 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
         variant="outline"
         className="bg-blue-50 text-blue-700 hover:bg-blue-100"
         onClick={() => {
-          router.push("/licenses/create");
+          router.push('/licenses/create');
         }}
       >
         Ukoliko se licenca ne nalazi na listi, molim vas kreirajte je ovdje

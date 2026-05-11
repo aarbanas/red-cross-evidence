@@ -1,9 +1,9 @@
-import React, { type FC } from "react";
-import usePagination from "~/hooks/usePagination";
-import { api } from "~/trpc/react";
-import useTotalPageNumber from "~/hooks/useTotalPageNumber";
-import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
-import EducationTermTable from "~/app/(pages)/educations/term/EducationTermTable";
+import type { FC } from 'react';
+import EducationTermTable from '~/app/(pages)/educations/term/EducationTermTable';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import usePagination from '~/hooks/usePagination';
+import useTotalPageNumber from '~/hooks/useTotalPageNumber';
+import { api } from '~/trpc/react';
 
 type Props = {
   filter: Record<string, string> | undefined;
@@ -15,7 +15,7 @@ const EducationsTerm: FC<Props> = ({ filter }) => {
   const { data, isLoading, error, refetch } = api.education.term.find.useQuery({
     page,
     limit: 10,
-    sort: ["name:asc"],
+    sort: ['name:asc'],
     filter,
   });
 

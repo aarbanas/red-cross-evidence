@@ -1,12 +1,12 @@
-import { fileURLToPath } from "url";
-import { DrivingLicense, licenses } from "../schema";
-import { db } from "../index";
+import { fileURLToPath } from 'node:url';
+import { db } from '../index';
+import { DrivingLicense, licenses } from '../schema';
 
 export const populateLicenses = async () => {
   const _licenses = Object.values(DrivingLicense).map((type) => ({
-    type: "Vozačka dozvola",
+    type: 'Vozačka dozvola',
     name: type,
-    description: "",
+    description: '',
   }));
 
   return db.insert(licenses).values(_licenses).returning();
@@ -17,6 +17,7 @@ export const getLicenses = async () => {
   if (!_licences.length) {
     _licences = await populateLicenses();
   }
+
   return _licences;
 };
 
@@ -25,7 +26,7 @@ const __filename = fileURLToPath(import.meta.url);
 if (process.argv[1] === __filename) {
   getLicenses()
     .then(() => {
-      console.log("Done seeding licenses.");
+      console.log('Done seeding licenses.');
       process.exit(0);
     })
     .catch((err) => {

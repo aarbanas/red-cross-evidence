@@ -1,35 +1,34 @@
-import { fileURLToPath } from "url";
-import { env } from "~/env";
-import { type PgTransaction } from "drizzle-orm/pg-core";
-
-import { eq } from "drizzle-orm";
-import { hash } from "bcrypt";
-import { db } from "..";
+import { fileURLToPath } from 'node:url';
+import { hash } from 'bcrypt';
+import { eq } from 'drizzle-orm';
+import type { PgTransaction } from 'drizzle-orm/pg-core';
+import { env } from '~/env';
+import { db } from '..';
 import {
-  addresses,
   AddressType,
-  cities,
+  addresses,
   ClothingSize,
+  cities,
   countries,
   EducationLevel,
   LanguageLevel,
   languages,
+  profileSkills,
   profiles,
   profilesAddresses,
-  profileSkills,
   profilesLanguages,
   profilesLicences,
   Sex,
   sizes,
   users,
   workStatuses,
-} from "../schema";
-import { getLicenses } from "./license.seed";
+} from '../schema';
+import { getLicenses } from './license.seed';
 
 const SALT_OR_ROUNDS = 10;
 
-const names = ["John", "Jane", "Alice", "Bob", "Charlie", "Diana"];
-const surnames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia"];
+const names = ['John', 'Jane', 'Alice', 'Bob', 'Charlie', 'Diana'];
+const surnames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia'];
 
 const getRandomLanguages = (
   userId: string,
@@ -51,29 +50,28 @@ const getRandomLanguages = (
 };
 
 const insertWorkStatus = async (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   tx: PgTransaction<any>,
   profileId: string,
 ): Promise<void> => {
   const _workStatuses = [
     {
-      status: "EMPLOYED",
-      profession: "Developer",
-      institution: "Company",
+      status: 'EMPLOYED',
+      profession: 'Developer',
+      institution: 'Company',
       educationLevel: EducationLevel.BACHELOR,
       profileId,
     },
     {
-      status: "UNEMPLOYED",
-      profession: "Unemployed",
-      institution: "None",
+      status: 'UNEMPLOYED',
+      profession: 'Unemployed',
+      institution: 'None',
       educationLevel: EducationLevel.PRIMARY,
       profileId,
     },
     {
-      status: "STUDENT",
-      profession: "Student",
-      institution: "School",
+      status: 'STUDENT',
+      profession: 'Student',
+      institution: 'School',
       educationLevel: EducationLevel.SECONDARY,
       profileId,
     },
@@ -89,10 +87,10 @@ const generateProfileSkills = (
   profileId: string,
 ): { name: string; description: string; profileId: string }[] => {
   const skills = [
-    "Rad na računalu",
-    "Varenje",
-    "Piljenje drva",
-    "Telekomunikacije",
+    'Rad na računalu',
+    'Varenje',
+    'Piljenje drva',
+    'Telekomunikacije',
   ];
   const items: { name: string; description: string; profileId: string }[] = [];
 
@@ -109,8 +107,8 @@ const generateProfileSkills = (
 
 const getRandomLoremIpsum = (length: number): string => {
   const loremIpsum =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-  let result = "";
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+  let result = '';
 
   // Loop until we get the desired length of text
   while (result.length < length) {
@@ -155,7 +153,7 @@ const generateUsers = async (
           })
           .returning();
 
-        if (!user) throw new Error("User could not be created");
+        if (!user) throw new Error('User could not be created');
 
         const [userProfile] = await tx
           .insert(profiles)
@@ -172,9 +170,9 @@ const generateUsers = async (
               10000000000 + Math.random() * 90000000000,
             ).toString(),
             sex: i % 2 === 0 ? Sex.MALE : Sex.FEMALE,
-            nationality: "Foo",
-            parentName: "Test",
-            phone: "+385 91 123 4567",
+            nationality: 'Foo',
+            parentName: 'Test',
+            phone: '+385 91 123 4567',
             birthDate: new Date(1990, 1, 1).toISOString(),
           })
           .returning({ insertedId: profiles.id });
@@ -215,7 +213,6 @@ const generateUsers = async (
             .returning();
 
           await insertWorkStatus(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             tx as unknown as PgTransaction<any>,
             userProfile.insertedId,
           );
@@ -249,18 +246,18 @@ async function generateAdmin(
       })
       .returning();
 
-    if (!admin) throw new Error("Admin user could not be created");
+    if (!admin) throw new Error('Admin user could not be created');
 
     const [adminProfile] = await tx
       .insert(profiles)
       .values({
         userId: admin?.id,
-        firstName: "Admin",
-        lastName: "Admin",
+        firstName: 'Admin',
+        lastName: 'Admin',
         oib: Math.floor(10000000000 + Math.random() * 90000000000).toString(),
         sex: Sex.MALE,
-        nationality: "Foo",
-        parentName: "Test",
+        nationality: 'Foo',
+        parentName: 'Test',
         birthDate: new Date(1990, 1, 1).toISOString(),
       })
       .returning();
@@ -287,7 +284,6 @@ async function generateAdmin(
       });
 
       await insertWorkStatus(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         tx as unknown as PgTransaction<any>,
         adminProfile.id,
       );
@@ -301,208 +297,208 @@ async function generateAdmin(
 
 const generateCountriesWithCities = async (): Promise<string[]> => {
   const _cities = [
-    { name: "Rijeka", zip: "51000" },
-    { name: "Zagreb", zip: "10000" },
-    { name: "Split", zip: "21000" },
-    { name: "Osijek", zip: "31000" },
-    { name: "Dubrovnik", zip: "20000" },
-    { name: "Ljubljana", zip: "1000" },
+    { name: 'Rijeka', zip: '51000' },
+    { name: 'Zagreb', zip: '10000' },
+    { name: 'Split', zip: '21000' },
+    { name: 'Osijek', zip: '31000' },
+    { name: 'Dubrovnik', zip: '20000' },
+    { name: 'Ljubljana', zip: '1000' },
   ];
   const _countries: string[] = [
-    "Afganistan",
-    "Albanija",
-    "Alžir",
-    "Andora",
-    "Angola",
-    "Antigva i Barbuda",
-    "Argentina",
-    "Armenija",
-    "Australija",
-    "Austrija",
-    "Azerbajdžan",
-    "Bahami",
-    "Bahrein",
-    "Bangladeš",
-    "Barbados",
-    "Belgija",
-    "Beliz",
-    "Bjelorusija",
-    "Benin",
-    "Butan",
-    "Bolivija",
-    "Bosna i Hercegovina",
-    "Bocvana",
-    "Brazil",
-    "Brunej",
-    "Bugarska",
-    "Burkina Faso",
-    "Burundi",
-    "Kambodža",
-    "Kamerun",
-    "Kanada",
-    "Zelenortska Republika",
-    "Srednjoafrička Republika",
-    "Čad",
-    "Čile",
-    "Kina",
-    "Kolumbija",
-    "Komori",
-    "Kongo (Brazzaville)",
-    "Kongo (Kinshasa)",
-    "Kostarika",
-    "Hrvatska",
-    "Kuba",
-    "Kipar",
-    "Češka",
-    "Danska",
-    "Džibuti",
-    "Dominika",
-    "Dominikanska Republika",
-    "Ekvador",
-    "Egipat",
-    "Salvadore",
-    "Ekvatorska Gvineja",
-    "Eritreja",
-    "Estonija",
-    "Esvatini",
-    "Etiopija",
-    "Fidži",
-    "Finska",
-    "Francuska",
-    "Gabon",
-    "Gambija",
-    "Gruzija",
-    "Njemačka",
-    "Gana",
-    "Grčka",
-    "Grenada",
-    "Gvatemala",
-    "Gvineja",
-    "Gvineja-Bisau",
-    "Gvajana",
-    "Haiti",
-    "Honduras",
-    "Mađarska",
-    "Island",
-    "Indija",
-    "Indonezija",
-    "Iran",
-    "Irak",
-    "Irska",
-    "Izrael",
-    "Italija",
-    "Obala Bjelokosti",
-    "Jamajka",
-    "Japan",
-    "Jordan",
-    "Kazahstan",
-    "Kenija",
-    "Kiribati",
-    "Kuvajt",
-    "Kirgistan",
-    "Laos",
-    "Latvija",
-    "Libanon",
-    "Lesoto",
-    "Liberija",
-    "Libija",
-    "Lihtenštajn",
-    "Litva",
-    "Luksemburg",
-    "Madagaskar",
-    "Malavi",
-    "Malezija",
-    "Maldivi",
-    "Mali",
-    "Malta",
-    "Maršalski Otoci",
-    "Mauritanija",
-    "Mauricijus",
-    "Meksiko",
-    "Mikronezija",
-    "Moldavija",
-    "Monako",
-    "Mongolija",
-    "Crna Gora",
-    "Maroko",
-    "Mozambik",
-    "Mjanmar",
-    "Namibija",
-    "Nauru",
-    "Nepal",
-    "Nizozemska",
-    "Novi Zeland",
-    "Nikaragva",
-    "Niger",
-    "Nigerija",
-    "Sjeverna Koreja",
-    "Sjeverna Makedonija",
-    "Norveška",
-    "Oman",
-    "Pakistan",
-    "Palau",
-    "Panama",
-    "Papua Nova Gvineja",
-    "Paragvaj",
-    "Peru",
-    "Filipini",
-    "Poljska",
-    "Portugal",
-    "Katar",
-    "Rumunjska",
-    "Rusija",
-    "Ruanda",
-    "Sveti Kristofor i Nevis",
-    "Sveti Lucia",
-    "Sveti Vincent i Grenadini",
-    "Samoa",
-    "San Marino",
-    "Sao Tome i Principe",
-    "Saudijska Arabija",
-    "Senegal",
-    "Srbija",
-    "Sejšeli",
-    "Sierra Leone",
-    "Singapur",
-    "Slovačka",
-    "Slovenija",
-    "Solomonski Otoci",
-    "Somalija",
-    "Južna Afrika",
-    "Južna Koreja",
-    "Južni Sudan",
-    "Španjolska",
-    "Šri Lanka",
-    "Sudan",
-    "Surinam",
-    "Švedska",
-    "Švicarska",
-    "Sirija",
-    "Tajvan",
-    "Tadžikistan",
-    "Tanzanija",
-    "Tajland",
-    "Togo",
-    "Tonga",
-    "Trinidad i Tobago",
-    "Tunis",
-    "Turska",
-    "Turkmenistan",
-    "Tuvalu",
-    "Uganda",
-    "Ukrajina",
-    "Ujedinjeni Arapski Emirati",
-    "Ujedinjeno Kraljevstvo",
-    "Sjedinjene Američke Države",
-    "Urugvaj",
-    "Uzbekistan",
-    "Vanuatu",
-    "Vatikan",
-    "Venezuela",
-    "Vijetnam",
-    "Jemen",
-    "Zambija",
-    "Zimbabve",
+    'Afganistan',
+    'Albanija',
+    'Alžir',
+    'Andora',
+    'Angola',
+    'Antigva i Barbuda',
+    'Argentina',
+    'Armenija',
+    'Australija',
+    'Austrija',
+    'Azerbajdžan',
+    'Bahami',
+    'Bahrein',
+    'Bangladeš',
+    'Barbados',
+    'Belgija',
+    'Beliz',
+    'Bjelorusija',
+    'Benin',
+    'Butan',
+    'Bolivija',
+    'Bosna i Hercegovina',
+    'Bocvana',
+    'Brazil',
+    'Brunej',
+    'Bugarska',
+    'Burkina Faso',
+    'Burundi',
+    'Kambodža',
+    'Kamerun',
+    'Kanada',
+    'Zelenortska Republika',
+    'Srednjoafrička Republika',
+    'Čad',
+    'Čile',
+    'Kina',
+    'Kolumbija',
+    'Komori',
+    'Kongo (Brazzaville)',
+    'Kongo (Kinshasa)',
+    'Kostarika',
+    'Hrvatska',
+    'Kuba',
+    'Kipar',
+    'Češka',
+    'Danska',
+    'Džibuti',
+    'Dominika',
+    'Dominikanska Republika',
+    'Ekvador',
+    'Egipat',
+    'Salvadore',
+    'Ekvatorska Gvineja',
+    'Eritreja',
+    'Estonija',
+    'Esvatini',
+    'Etiopija',
+    'Fidži',
+    'Finska',
+    'Francuska',
+    'Gabon',
+    'Gambija',
+    'Gruzija',
+    'Njemačka',
+    'Gana',
+    'Grčka',
+    'Grenada',
+    'Gvatemala',
+    'Gvineja',
+    'Gvineja-Bisau',
+    'Gvajana',
+    'Haiti',
+    'Honduras',
+    'Mađarska',
+    'Island',
+    'Indija',
+    'Indonezija',
+    'Iran',
+    'Irak',
+    'Irska',
+    'Izrael',
+    'Italija',
+    'Obala Bjelokosti',
+    'Jamajka',
+    'Japan',
+    'Jordan',
+    'Kazahstan',
+    'Kenija',
+    'Kiribati',
+    'Kuvajt',
+    'Kirgistan',
+    'Laos',
+    'Latvija',
+    'Libanon',
+    'Lesoto',
+    'Liberija',
+    'Libija',
+    'Lihtenštajn',
+    'Litva',
+    'Luksemburg',
+    'Madagaskar',
+    'Malavi',
+    'Malezija',
+    'Maldivi',
+    'Mali',
+    'Malta',
+    'Maršalski Otoci',
+    'Mauritanija',
+    'Mauricijus',
+    'Meksiko',
+    'Mikronezija',
+    'Moldavija',
+    'Monako',
+    'Mongolija',
+    'Crna Gora',
+    'Maroko',
+    'Mozambik',
+    'Mjanmar',
+    'Namibija',
+    'Nauru',
+    'Nepal',
+    'Nizozemska',
+    'Novi Zeland',
+    'Nikaragva',
+    'Niger',
+    'Nigerija',
+    'Sjeverna Koreja',
+    'Sjeverna Makedonija',
+    'Norveška',
+    'Oman',
+    'Pakistan',
+    'Palau',
+    'Panama',
+    'Papua Nova Gvineja',
+    'Paragvaj',
+    'Peru',
+    'Filipini',
+    'Poljska',
+    'Portugal',
+    'Katar',
+    'Rumunjska',
+    'Rusija',
+    'Ruanda',
+    'Sveti Kristofor i Nevis',
+    'Sveti Lucia',
+    'Sveti Vincent i Grenadini',
+    'Samoa',
+    'San Marino',
+    'Sao Tome i Principe',
+    'Saudijska Arabija',
+    'Senegal',
+    'Srbija',
+    'Sejšeli',
+    'Sierra Leone',
+    'Singapur',
+    'Slovačka',
+    'Slovenija',
+    'Solomonski Otoci',
+    'Somalija',
+    'Južna Afrika',
+    'Južna Koreja',
+    'Južni Sudan',
+    'Španjolska',
+    'Šri Lanka',
+    'Sudan',
+    'Surinam',
+    'Švedska',
+    'Švicarska',
+    'Sirija',
+    'Tajvan',
+    'Tadžikistan',
+    'Tanzanija',
+    'Tajland',
+    'Togo',
+    'Tonga',
+    'Trinidad i Tobago',
+    'Tunis',
+    'Turska',
+    'Turkmenistan',
+    'Tuvalu',
+    'Uganda',
+    'Ukrajina',
+    'Ujedinjeni Arapski Emirati',
+    'Ujedinjeno Kraljevstvo',
+    'Sjedinjene Američke Države',
+    'Urugvaj',
+    'Uzbekistan',
+    'Vanuatu',
+    'Vatikan',
+    'Venezuela',
+    'Vijetnam',
+    'Jemen',
+    'Zambija',
+    'Zimbabve',
   ];
 
   const existingCities = await db.query.cities.findMany({
@@ -535,9 +531,9 @@ const generateCountriesWithCities = async (): Promise<string[]> => {
         name: _city.name,
         postalCode: _city.zip,
         countryId:
-          _city.name === "Ljubljana"
-            ? insertedCountries.find((c) => c.name === "Slovenia")?.insertedId
-            : insertedCountries.find((c) => c.name === "Croatia")?.insertedId,
+          _city.name === 'Ljubljana'
+            ? insertedCountries.find((c) => c.name === 'Slovenia')?.insertedId
+            : insertedCountries.find((c) => c.name === 'Croatia')?.insertedId,
       })),
     )
     .returning({ insertedId: cities.id });
@@ -551,7 +547,7 @@ const generateAddresses = async (cityIds: string[]): Promise<string[]> => {
   });
   if (existingAddresses.length) return existingAddresses.map(({ id }) => id);
 
-  const streetNames = ["Foo", "Bar", "Baz", "Qux", "Quux", "Corge"];
+  const streetNames = ['Foo', 'Bar', 'Baz', 'Qux', 'Quux', 'Corge'];
 
   const _addresses: { street: string; streetNumber: string }[] = streetNames
     .concat(streetNames)
@@ -576,25 +572,28 @@ const generateAddresses = async (cityIds: string[]): Promise<string[]> => {
 
 const generateLanguages = async (): Promise<string[]> => {
   const _languages: string[] = [
-    "Engleski",
-    "Talijanski",
-    "Njemački",
-    "Španjolski",
-    "Francuski",
-    "Ruski",
-    "Portugalski",
-    "Slovenski",
-    "Albanski",
-    "Makedonski",
-    "Mandarinski kineski",
-    "Hindustani (hindi + urdu)",
-    "Arapski",
+    'Engleski',
+    'Talijanski',
+    'Njemački',
+    'Španjolski',
+    'Francuski',
+    'Ruski',
+    'Portugalski',
+    'Slovenski',
+    'Albanski',
+    'Makedonski',
+    'Mandarinski kineski',
+    'Hindustani (hindi + urdu)',
+    'Arapski',
   ];
 
   const existingLanguages = await db.query.languages.findMany({
     columns: { id: true },
   });
-  if (existingLanguages.length) return existingLanguages.map(({ id }) => id);
+  if (existingLanguages.length) {
+    return existingLanguages.map(({ id }) => id);
+  }
+
   const items: { name: string }[] = [];
   for (const lang of _languages) {
     items.push({ name: lang });
@@ -609,7 +608,7 @@ export const getUsers = async () => {
   const addressIds = await generateAddresses(cityIds);
   const languageIds = await generateLanguages();
   const _licences = await getLicenses();
-  console.log("Done seeding licenses.");
+  console.log('Done seeding licenses.');
   let _users = await db.query.users.findMany();
   if (!_users.length) {
     _users = await generateUsers(addressIds, languageIds, _licences);
@@ -617,41 +616,39 @@ export const getUsers = async () => {
 
   return _users;
 };
-const email = "admin@dck-pgz.hr";
+
+const email = 'admin@dck-pgz.hr';
 const adminPassword = await hash(env.ADMIN_PASSWORD, SALT_OR_ROUNDS);
 
 export const getAdmin = async () => {
   const adminExists = await db.query.users.findFirst({
     where: eq(users.email, email),
   });
-  let _admin;
-
   if (!adminExists) {
     const _licences = await getLicenses();
     const cityIds = await generateCountriesWithCities();
     const addressIds = await generateAddresses(cityIds);
     const languageIds = await generateLanguages();
-    _admin = await generateAdmin(
+
+    return generateAdmin(
       email,
       adminPassword,
       _licences,
       languageIds,
       addressIds,
     );
-  } else {
-    _admin = await db.query.users.findFirst({
-      where: eq(users.email, email),
-    });
   }
 
-  return _admin;
+  return db.query.users.findFirst({
+    where: eq(users.email, email),
+  });
 };
 
 const __filename = fileURLToPath(import.meta.url);
 
 if (process.argv[1] === __filename) {
   await getUsers()
-    .then(() => console.log("Done seeding users."))
+    .then(() => console.log('Done seeding users.'))
     .catch((err) => {
       console.log(err);
       process.exit(1);
@@ -659,7 +656,7 @@ if (process.argv[1] === __filename) {
 
   await getAdmin()
     .then(() => {
-      console.log("Done seeding admin.");
+      console.log('Done seeding admin.');
       process.exit(0);
     })
     .catch((err) => {

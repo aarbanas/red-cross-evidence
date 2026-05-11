@@ -1,6 +1,6 @@
-import { usePathname, useRouter } from "next/navigation";
-import React, { type FC, useState } from "react";
-import { cn } from "~/components/utils";
+import { usePathname, useRouter } from 'next/navigation';
+import { type FC, useState } from 'react';
+import { cn } from '~/components/utils';
 
 type Props = {
   tabs: TabProp[];
@@ -26,19 +26,20 @@ const Tabs: FC<Props> = ({ tabs }: Props) => {
   return (
     <div className="w-full">
       <div className="flex gap-10 border-b border-gray-200">
-        {tabs.map((tab, index) => (
+        {tabs.map((tab) => (
           <button
-            key={index}
+            type="button"
+            key={tab.link}
             onClick={() => {
               setActiveTab(tab.link);
               router.push(`/educations/${tab.link}`);
             }}
             className={cn(
-              "cursor-pointer rounded-lg py-2 text-sm font-medium",
-              "focus:ring-1 focus:ring-red-600 focus:outline-none",
+              'cursor-pointer rounded-lg py-2 text-sm font-medium',
+              'focus:ring-1 focus:ring-red-600 focus:outline-none',
               activeTab === tab.link
-                ? "border-red px-1 text-red-600"
-                : "hover:bg-red-100",
+                ? 'border-red px-1 text-red-600'
+                : 'hover:bg-red-100',
             )}
             aria-selected={activeTab === tab.link}
             role="tab"

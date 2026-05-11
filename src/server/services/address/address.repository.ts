@@ -1,12 +1,11 @@
-import { and, asc, eq, ilike } from "drizzle-orm";
-import { addresses, cities } from "~/server/db/schema";
-
-import { db } from "~/server/db";
+import { and, asc, eq, ilike } from 'drizzle-orm';
+import { db } from '~/server/db';
+import { addresses, cities } from '~/server/db/schema';
 import type {
   CreateAddressDTO,
   FindAddressQuery,
   SearchAddressQuery,
-} from "~/server/services/address/types";
+} from '~/server/services/address/types';
 
 const addressRepository = {
   find: async (query: FindAddressQuery) => {

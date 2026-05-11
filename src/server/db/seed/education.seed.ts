@@ -1,8 +1,8 @@
-import { fileURLToPath } from "url";
-import { db } from "../index";
-import { educations, EducationType } from "~/server/db/schema";
-import * as XLSX from "xlsx";
-import { readFileSync } from "fs";
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import * as XLSX from 'xlsx';
+import { EducationType, educations } from '~/server/db/schema';
+import { db } from '../index';
 
 interface Education {
   title: string;
@@ -17,25 +17,25 @@ interface Education {
 }
 
 const headerMapping: Record<string, keyof Education> = {
-  Title: "title",
-  Description: "description",
-  Preduvjet: "precondition",
-  Trajanje: "duration",
-  Predavači: "lecturers",
-  "Trajanje tečaja": "courseDuration",
-  "Trajanje obnove": "renewalDuration",
-  Teme: "topics",
+  Title: 'title',
+  Description: 'description',
+  Preduvjet: 'precondition',
+  Trajanje: 'duration',
+  Predavači: 'lecturers',
+  'Trajanje tečaja': 'courseDuration',
+  'Trajanje obnove': 'renewalDuration',
+  Teme: 'topics',
 };
 
 const sheetNameMapping: Record<string, EducationType> = {
-  "za-volontere": EducationType.VOLUNTEERS,
-  "za-javnost": EducationType.PUBLIC,
-  "za-djelatnike": EducationType.EMPLOYEE,
+  'za-volontere': EducationType.VOLUNTEERS,
+  'za-javnost': EducationType.PUBLIC,
+  'za-djelatnike': EducationType.EMPLOYEE,
 };
 
 const readExcelFile = (filePath: string): Education[] => {
   const fileBuffer = readFileSync(filePath);
-  const workbook = XLSX.read(fileBuffer, { type: "buffer" });
+  const workbook = XLSX.read(fileBuffer, { type: 'buffer' });
 
   const educations: Education[] = [];
 
@@ -53,7 +53,7 @@ const readExcelFile = (filePath: string): Education[] => {
       headers!.forEach((header, index) => {
         const propertyName = headerMapping[header];
         if (propertyName) {
-          if (propertyName !== "type") {
+          if (propertyName !== 'type') {
             education[propertyName] = row[index];
           }
         }
@@ -69,7 +69,7 @@ const readExcelFile = (filePath: string): Education[] => {
 };
 
 const populateEducations = async () => {
-  const filePath = "scripts/educations_parser/edukacije.xlsx";
+  const filePath = 'scripts/educations_parser/edukacije.xlsx';
   const _educations = readExcelFile(filePath);
 
   return db.insert(educations).values(_educations).returning();
@@ -89,7 +89,7 @@ const __filename = fileURLToPath(import.meta.url);
 if (process.argv[1] === __filename) {
   getEducations()
     .then(() => {
-      console.log("Done seeding educations.");
+      console.log('Done seeding educations.');
       process.exit(0);
     })
     .catch((err) => {

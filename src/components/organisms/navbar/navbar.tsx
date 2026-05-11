@@ -1,8 +1,9 @@
-import React, { type PropsWithChildren } from "react";
-import { signOut } from "next-auth/react";
-import { LogOut } from "lucide-react";
-import styles from "./navbar.module.scss";
-import NewNavbarMenuDrawer from "~/components/organisms/navbar/navbar-menu-drawer/navbar-menu-drawer";
+import { LogOut } from 'lucide-react';
+import { signOut } from 'next-auth/react';
+import type React from 'react';
+import type { PropsWithChildren } from 'react';
+import NewNavbarMenuDrawer from '~/components/organisms/navbar/navbar-menu-drawer/navbar-menu-drawer';
+import styles from './navbar.module.scss';
 
 type Props = {
   title: string;
@@ -10,9 +11,9 @@ type Props = {
 
 const NewNavbar: React.FC<Props> = ({ title, children }) => {
   async function onLogoutClick() {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       await signOut();
-      window.location.href = "/";
+      window.location.href = '/';
     }
   }
 
@@ -54,12 +55,13 @@ const NavbarNavigation: React.FC<NavbarNavigationProps> = ({
   return (
     <div className="flex flex-1 flex-col overflow-auto bg-white py-2">
       {children}
-      <div
-        className={`mt-auto flex cursor-pointer items-center gap-3 rounded-lg px-6 py-2 transition-all hover:text-gray-950`}
+      <button
+        type="button"
+        className="mt-auto flex cursor-pointer items-center gap-3 rounded-lg px-6 py-2 transition-all hover:text-gray-950"
         onClick={onLogoutClick}
       >
         <LogOut /> Odjava
-      </div>
+      </button>
     </div>
   );
 };

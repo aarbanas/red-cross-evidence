@@ -1,5 +1,5 @@
-import React from "react";
-import * as Switch from "@radix-ui/react-switch";
+import * as Switch from '@radix-ui/react-switch';
+import type React from 'react';
 
 type FormSwitchProps = {
   id: string;
@@ -8,11 +8,9 @@ type FormSwitchProps = {
   setActive(checked: boolean): void;
 };
 
-// eslint-disable-next-line react/display-name
 const FormSwitch: React.FC<FormSwitchProps> = ({
   id,
   label,
-  // eslint-disable-next-line @typescript-eslint/unbound-method
   setActive,
   active,
 }) => {

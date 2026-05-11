@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useFormContext } from "react-hook-form";
-import { api } from "~/trpc/react";
-import { useDebounce } from "@uidotdev/usehooks";
-import { type SearchCityReturnDTO } from "~/server/services/city/city.repository";
+import { useDebounce } from '@uidotdev/usehooks';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import type { SearchCityReturnDTO } from '~/server/services/city/city.repository';
+import { api } from '~/trpc/react';
 
 type Props = {
   id: string;
@@ -20,7 +21,7 @@ const FormCitySearch: React.FC<Props> = ({
   countryId,
 }) => {
   const { setValue, watch } = useFormContext();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -50,12 +51,12 @@ const FormCitySearch: React.FC<Props> = ({
     if (matchingCity) {
       // City found in DB - store SearchCityReturnDTO
       setValue(cityFieldName, matchingCity);
-      setValue(postalCodeFieldName, matchingCity.postalCode ?? "");
+      setValue(postalCodeFieldName, matchingCity.postalCode ?? '');
     } else {
       // City not found - store as string for new city creation
       // setSelectedCity(null);
       setValue(cityFieldName, value);
-      setValue(postalCodeFieldName, "");
+      setValue(postalCodeFieldName, '');
     }
 
     setIsOpen(value.length > 0);
@@ -66,7 +67,7 @@ const FormCitySearch: React.FC<Props> = ({
     // setSelectedCity(city);
     setSearchTerm(city.name);
     setValue(cityFieldName, city); // Store full SearchCityReturnDTO
-    setValue(postalCodeFieldName, city.postalCode ?? "");
+    setValue(postalCodeFieldName, city.postalCode ?? '');
     setIsOpen(false);
   };
 
@@ -81,21 +82,21 @@ const FormCitySearch: React.FC<Props> = ({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   // Update search term when form value changes externally
   useEffect(() => {
     const currentCityValue = cityValue;
-    let displayValue = "";
+    let displayValue = '';
 
-    if (typeof currentCityValue === "string") {
+    if (typeof currentCityValue === 'string') {
       displayValue = currentCityValue;
     } else if (
       currentCityValue &&
-      typeof currentCityValue === "object" &&
-      "name" in currentCityValue
+      typeof currentCityValue === 'object' &&
+      'name' in currentCityValue
     ) {
       displayValue = currentCityValue.name;
     }
@@ -140,26 +141,26 @@ const FormCitySearch: React.FC<Props> = ({
               </div>
             )}
 
-          {!isLoading && cities && cities.length > 0 && (
-            <>
-              {cities.map((city) => (
-                <div
-                  key={city.id}
-                  className="cursor-pointer border-b border-gray-100 px-3 py-2 last:border-b-0 hover:bg-gray-100"
-                  onClick={() => handleCitySelect(city)}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">{city.name}</span>
-                    {city.postalCode && (
-                      <span className="text-xs text-gray-500">
-                        {city.postalCode}
-                      </span>
-                    )}
-                  </div>
+          {!isLoading &&
+            cities &&
+            cities.length > 0 &&
+            cities.map((city) => (
+              <button
+                type="button"
+                key={city.id}
+                className="w-full cursor-pointer border-b border-gray-100 px-3 py-2 text-left last:border-b-0 hover:bg-gray-100"
+                onClick={() => handleCitySelect(city)}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{city.name}</span>
+                  {city.postalCode && (
+                    <span className="text-xs text-gray-500">
+                      {city.postalCode}
+                    </span>
+                  )}
                 </div>
-              ))}
-            </>
-          )}
+              </button>
+            ))}
         </div>
       )}
     </div>

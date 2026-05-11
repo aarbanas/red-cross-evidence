@@ -1,9 +1,10 @@
-"use client";
-import React, { useState, useEffect, useRef } from "react";
-import { useFormContext } from "react-hook-form";
-import { api } from "~/trpc/react";
-import { useDebounce } from "@uidotdev/usehooks";
-import { type SearchAddressReturnDTO } from "~/server/services/address/types";
+'use client';
+import { useDebounce } from '@uidotdev/usehooks';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import type { SearchAddressReturnDTO } from '~/server/services/address/types';
+import { api } from '~/trpc/react';
 
 type Props = {
   id: string;
@@ -21,7 +22,7 @@ const FormStreetSearch: React.FC<Props> = ({
   cityId,
 }) => {
   const { setValue, watch } = useFormContext();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -37,13 +38,14 @@ const FormStreetSearch: React.FC<Props> = ({
       if (streetValue) {
         setSearchTerm(streetValue);
       }
+
       setIsInitialized(true);
     }
   }, [streetValue, isInitialized]);
 
   // Search addresses when debounced search term changes and cityId is available
   const { data: addresses, isLoading } = api.address.searchAddresses.useQuery(
-    { searchTerm: debouncedSearchTerm, cityId: cityId ?? "" },
+    { searchTerm: debouncedSearchTerm, cityId: cityId ?? '' },
     {
       enabled: debouncedSearchTerm.length > 0 && !!cityId,
       staleTime: 5 * 60 * 1000, // 5 minutes
@@ -62,8 +64,8 @@ const FormStreetSearch: React.FC<Props> = ({
     setValue(streetFieldName, value);
 
     // Clear street number when typing new content (unless it's the current street number)
-    if (!streetNumberValue || streetNumberValue.trim() === "") {
-      setValue(streetNumberFieldName, "");
+    if (!streetNumberValue || streetNumberValue.trim() === '') {
+      setValue(streetNumberFieldName, '');
     }
   };
 
@@ -71,7 +73,7 @@ const FormStreetSearch: React.FC<Props> = ({
   const handleAddressSelect = (address: SearchAddressReturnDTO) => {
     setSearchTerm(address.street);
     setValue(streetFieldName, address.street); // Store only the street name as string
-    setValue(streetNumberFieldName, address.streetNumber ?? "");
+    setValue(streetNumberFieldName, address.streetNumber ?? '');
     setIsOpen(false);
   };
 
@@ -86,8 +88,8 @@ const FormStreetSearch: React.FC<Props> = ({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   // Update search term when form value changes externally (but only after initialization)
@@ -103,9 +105,9 @@ const FormStreetSearch: React.FC<Props> = ({
   useEffect(() => {
     if (isInitialized && !cityId) {
       // Clear when no city is selected
-      setSearchTerm("");
-      setValue(streetFieldName, "");
-      setValue(streetNumberFieldName, "");
+      setSearchTerm('');
+      setValue(streetFieldName, '');
+      setValue(streetNumberFieldName, '');
       setIsOpen(false);
     }
   }, [cityId, setValue, streetFieldName, streetNumberFieldName, isInitialized]);
@@ -122,7 +124,7 @@ const FormStreetSearch: React.FC<Props> = ({
         value={searchTerm}
         onChange={handleInputChange}
         onFocus={() => searchTerm.length > 0 && !!cityId && setIsOpen(true)}
-        placeholder={"Počnite tipkati naziv ulice..."}
+        placeholder={'Počnite tipkati naziv ulice...'}
         className="w-full rounded-md border-none bg-gray-100 px-3 py-4 shadow-lg focus:border-red-400 focus:ring focus:ring-red-300/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       />
 
@@ -145,28 +147,26 @@ const FormStreetSearch: React.FC<Props> = ({
               </div>
             )}
 
-          {!isLoading && addresses && addresses.length > 0 && (
-            <>
-              {addresses.map((address) => (
-                <div
-                  key={address.id}
-                  className="cursor-pointer border-b border-gray-100 px-3 py-2 last:border-b-0 hover:bg-gray-100"
-                  onClick={() => handleAddressSelect(address)}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">
-                      {address.street}
+          {!isLoading &&
+            addresses &&
+            addresses.length > 0 &&
+            addresses.map((address) => (
+              <button
+                type="button"
+                key={address.id}
+                className="w-full cursor-pointer border-b border-gray-100 px-3 py-2 text-left last:border-b-0 hover:bg-gray-100"
+                onClick={() => handleAddressSelect(address)}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{address.street}</span>
+                  {address.streetNumber && (
+                    <span className="text-xs text-gray-500">
+                      {address.streetNumber}
                     </span>
-                    {address.streetNumber && (
-                      <span className="text-xs text-gray-500">
-                        {address.streetNumber}
-                      </span>
-                    )}
-                  </div>
+                  )}
                 </div>
-              ))}
-            </>
-          )}
+              </button>
+            ))}
         </div>
       )}
     </div>

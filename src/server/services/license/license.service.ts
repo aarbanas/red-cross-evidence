@@ -1,6 +1,6 @@
-import licenseRepository from "~/server/services/license/license.repository";
-import type { FindQueryDTO } from "~/server/db/utility/types";
-import type { LicencesFormData } from "~/app/(pages)/licenses/_components/LicencesForm";
+import type { LicencesFormData } from '~/app/(pages)/licenses/_components/LicencesForm';
+import type { FindQueryDTO } from '~/server/db/utility/types';
+import licenseRepository from '~/server/services/license/license.repository';
 
 const licenseService = {
   getById: async (id: string) => {
@@ -35,7 +35,7 @@ const licenseService = {
 
 const prettifyLicenseName = (name: string) => {
   return name
-    .replace(/\s{2,}/g, " ") // Replace multiple spaces with a single space
+    .replace(/\s{2,}/g, ' ') // Replace multiple spaces with a single space
     .trim() // Remove leading/trailing spaces
     .replace(/^\w/, (c) => c.toUpperCase()); // Capitalize the first letter
 };

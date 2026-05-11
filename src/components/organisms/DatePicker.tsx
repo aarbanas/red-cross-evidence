@@ -1,18 +1,15 @@
-"use client";
-/* eslint-disable @typescript-eslint/no-unsafe-assignment,
-@typescript-eslint/no-unsafe-call,
-@typescript-eslint/no-unsafe-member-access,
-@typescript-eslint/no-unsafe-argument */
+'use client';
+import { CalendarDaysIcon } from 'lucide-react';
+import moment from 'moment';
+import type React from 'react';
+import { useState } from 'react';
+import { Input } from '~/components/atoms/Input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "~/components/atoms/Popover";
-import { Input } from "~/components/atoms/Input";
-import { CalendarDaysIcon } from "lucide-react";
-import { Calendar } from "~/components/organisms/Calendar";
-import React, { useState } from "react";
-import moment from "moment";
+} from '~/components/atoms/Popover';
+import { Calendar } from '~/components/organisms/Calendar';
 
 const DatePicker: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -27,7 +24,7 @@ const DatePicker: React.FC = () => {
             type="date"
             readOnly
             value={
-              selectedDate ? moment(selectedDate).format("yyyy-MM-DD") : ""
+              selectedDate ? moment(selectedDate).format('yyyy-MM-DD') : ''
             }
           />
           <div className="absolute inset-y-0 right-3 flex items-center">
