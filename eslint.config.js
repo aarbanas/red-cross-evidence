@@ -47,6 +47,10 @@ export default tseslint.config(
         "error",
         { drizzleObjectName: ["db", "ctx.db"] },
       ],
+      "padding-line-between-statements": [
+        "error",
+        { blankLine: "always", prev: ["if", "block-like"], next: "*" },
+      ],
     },
   },
   {
