@@ -30,7 +30,6 @@ const Modal: FC<PropsWithChildren<Props>> = ({
 
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: modal backdrop closes on click by design
-    // biome-ignore lint/a11y/useKeyWithClickEvents: escape key is handled via onKeyDown
     <div
       ref={overlayRef}
       className={`${styles.overlay} bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black`}
