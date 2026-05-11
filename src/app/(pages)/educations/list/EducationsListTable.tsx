@@ -1,3 +1,10 @@
+import { Pencil, Trash2 } from 'lucide-react'
+import Link from 'next/link'
+import { type FC, useState } from 'react'
+import { translateEducationType } from '~/app/(pages)/educations/utils'
+import { Button } from '~/components/atoms/Button'
+import Modal from '~/components/organisms/modal/Modal'
+import PaginationComponent from '~/components/organisms/pagination/PaginationComponent'
 import {
   Table,
   TableBody,
@@ -5,55 +12,48 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/organisms/Table";
-import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
-import { useState, type FC } from "react";
-import type { FindEducationListReturnDTO } from "~/server/services/education/education.repository";
-import { translateEducationType } from "~/app/(pages)/educations/utils";
-import { type EducationType } from "~/server/db/schema";
-import Link from "next/link";
-import { api } from "~/trpc/react";
-import { Trash2, Pencil } from "lucide-react";
-import Modal from "~/components/organisms/modal/Modal";
-import { Button } from "~/components/atoms/Button";
+} from '~/components/organisms/Table'
+import type { EducationType } from '~/server/db/schema'
+import type { FindEducationListReturnDTO } from '~/server/services/education/education.repository'
+import { api } from '~/trpc/react'
 
 type Props = {
-  data?: FindEducationListReturnDTO[];
-  totalPageNumber: number;
-  refetch: () => void;
-};
+  data?: FindEducationListReturnDTO[]
+  totalPageNumber: number
+  refetch: () => void
+}
 
 const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
 
-  const deleteEducation = api.education.list.deleteById.useMutation();
+  const deleteEducation = api.education.list.deleteById.useMutation()
 
   const handleDelete = async () => {
-    if (!selectedId) return;
+    if (!selectedId) return
 
     try {
-      await deleteEducation.mutateAsync({ id: selectedId });
+      await deleteEducation.mutateAsync({ id: selectedId })
 
-      refetch();
-      setIsModalOpen(false);
+      refetch()
+      setIsModalOpen(false)
     } catch (error) {
-      console.error("Failed to delete education:", error);
+      console.error('Failed to delete education:', error)
     }
-  };
+  }
 
   const openModal = (id: string) => {
-    setSelectedId(id);
-    setIsModalOpen(true);
-  };
+    setSelectedId(id)
+    setIsModalOpen(true)
+  }
 
   const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedId(null);
-  };
+    setIsModalOpen(false)
+    setSelectedId(null)
+  }
 
   if (!data?.length) {
-    return <div>Nema rezultata</div>;
+    return <div>Nema rezultata</div>
   }
 
   return (
@@ -91,7 +91,10 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
                   </Link>
                 </TableCell>
                 <TableCell className="cursor-pointer md:table-cell">
-                  <button onClick={() => openModal(educationList.id)}>
+                  <button
+                    type="button"
+                    onClick={() => openModal(educationList.id)}
+                  >
                     <Trash2 color="red" />
                   </button>
                 </TableCell>
@@ -113,7 +116,7 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
         </div>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default EducationsListTable;
+export default EducationsListTable

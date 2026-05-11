@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useFormContext } from "react-hook-form";
-import { api } from "~/trpc/react";
-import { useDebounce } from "@uidotdev/usehooks";
-import { type SearchCityReturnDTO } from "~/server/services/city/city.repository";
+import { useDebounce } from '@uidotdev/usehooks'
+import type React from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useFormContext } from 'react-hook-form'
+import type { SearchCityReturnDTO } from '~/server/services/city/city.repository'
+import { api } from '~/trpc/react'
 
 type Props = {
-  id: string;
-  label: string;
-  cityFieldName: string;
-  postalCodeFieldName: string;
-  countryId: string;
-};
+  id: string
+  label: string
+  cityFieldName: string
+  postalCodeFieldName: string
+  countryId: string
+}
 
 const FormCitySearch: React.FC<Props> = ({
   id,
@@ -19,16 +20,16 @@ const FormCitySearch: React.FC<Props> = ({
   postalCodeFieldName,
   countryId,
 }) => {
-  const { setValue, watch } = useFormContext();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { setValue, watch } = useFormContext()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
+  const debouncedSearchTerm = useDebounce(searchTerm, 300)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   const cityValue = watch(cityFieldName) as
     | SearchCityReturnDTO
     | string
-    | undefined;
+    | undefined
 
   // Search cities when debounced search term changes
   const { data: cities, isLoading } = api.city.searchCities.useQuery(
@@ -37,38 +38,38 @@ const FormCitySearch: React.FC<Props> = ({
       enabled: debouncedSearchTerm.length > 0,
       staleTime: 5 * 60 * 1000, // 5 minutes
     },
-  );
+  )
 
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
+    const value = e.target.value
+    setSearchTerm(value)
 
     // Check if current value matches a found city
-    const matchingCity = cities?.find((city) => city.name === value);
+    const matchingCity = cities?.find((city) => city.name === value)
 
     if (matchingCity) {
       // City found in DB - store SearchCityReturnDTO
-      setValue(cityFieldName, matchingCity);
-      setValue(postalCodeFieldName, matchingCity.postalCode ?? "");
+      setValue(cityFieldName, matchingCity)
+      setValue(postalCodeFieldName, matchingCity.postalCode ?? '')
     } else {
       // City not found - store as string for new city creation
       // setSelectedCity(null);
-      setValue(cityFieldName, value);
-      setValue(postalCodeFieldName, "");
+      setValue(cityFieldName, value)
+      setValue(postalCodeFieldName, '')
     }
 
-    setIsOpen(value.length > 0);
-  };
+    setIsOpen(value.length > 0)
+  }
 
   // Handle city selection from dropdown
   const handleCitySelect = (city: SearchCityReturnDTO) => {
     // setSelectedCity(city);
-    setSearchTerm(city.name);
-    setValue(cityFieldName, city); // Store full SearchCityReturnDTO
-    setValue(postalCodeFieldName, city.postalCode ?? "");
-    setIsOpen(false);
-  };
+    setSearchTerm(city.name)
+    setValue(cityFieldName, city) // Store full SearchCityReturnDTO
+    setValue(postalCodeFieldName, city.postalCode ?? '')
+    setIsOpen(false)
+  }
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -77,33 +78,33 @@ const FormCitySearch: React.FC<Props> = ({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false);
+        setIsOpen(false)
       }
-    };
+    }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   // Update search term when form value changes externally
   useEffect(() => {
-    const currentCityValue = cityValue;
-    let displayValue = "";
+    const currentCityValue = cityValue
+    let displayValue = ''
 
-    if (typeof currentCityValue === "string") {
-      displayValue = currentCityValue;
+    if (typeof currentCityValue === 'string') {
+      displayValue = currentCityValue
     } else if (
       currentCityValue &&
-      typeof currentCityValue === "object" &&
-      "name" in currentCityValue
+      typeof currentCityValue === 'object' &&
+      'name' in currentCityValue
     ) {
-      displayValue = currentCityValue.name;
+      displayValue = currentCityValue.name
     }
 
     if (displayValue !== searchTerm) {
-      setSearchTerm(displayValue);
+      setSearchTerm(displayValue)
     }
-  }, [cityValue, searchTerm]);
+  }, [cityValue, searchTerm])
 
   return (
     <div className="relative flex w-full flex-col gap-2" ref={dropdownRef}>
@@ -140,30 +141,30 @@ const FormCitySearch: React.FC<Props> = ({
               </div>
             )}
 
-          {!isLoading && cities && cities.length > 0 && (
-            <>
-              {cities.map((city) => (
-                <div
-                  key={city.id}
-                  className="cursor-pointer border-b border-gray-100 px-3 py-2 last:border-b-0 hover:bg-gray-100"
-                  onClick={() => handleCitySelect(city)}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">{city.name}</span>
-                    {city.postalCode && (
-                      <span className="text-xs text-gray-500">
-                        {city.postalCode}
-                      </span>
-                    )}
-                  </div>
+          {!isLoading &&
+            cities &&
+            cities.length > 0 &&
+            cities.map((city) => (
+              <button
+                type="button"
+                key={city.id}
+                className="w-full cursor-pointer border-b border-gray-100 px-3 py-2 text-left last:border-b-0 hover:bg-gray-100"
+                onClick={() => handleCitySelect(city)}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{city.name}</span>
+                  {city.postalCode && (
+                    <span className="text-xs text-gray-500">
+                      {city.postalCode}
+                    </span>
+                  )}
                 </div>
-              ))}
-            </>
-          )}
+              </button>
+            ))}
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default FormCitySearch;
+export default FormCitySearch

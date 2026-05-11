@@ -1,18 +1,18 @@
-import { db } from "~/server/db";
-import { cities } from "~/server/db/schema";
-import { asc, ilike, eq, and } from "drizzle-orm";
-import { type CreateCityDTO } from "~/server/services/city/types";
+import { and, asc, eq, ilike } from 'drizzle-orm'
+import { db } from '~/server/db'
+import { cities } from '~/server/db/schema'
+import type { CreateCityDTO } from '~/server/services/city/types'
 
 export type FindCityNameReturnDTO = {
-  name: string;
-  id: string;
-};
+  name: string
+  id: string
+}
 
 export type SearchCityReturnDTO = {
-  id: string;
-  name: string;
-  postalCode: string | null;
-};
+  id: string
+  name: string
+  postalCode: string | null
+}
 
 const cityRepository = {
   findUniqueCityNames: async () => {
@@ -20,7 +20,7 @@ const cityRepository = {
       .selectDistinct({ name: cities.name, id: cities.id })
       .from(cities)
       .orderBy(asc(cities.name))
-      .execute();
+      .execute()
   },
   searchCities: async (searchTerm: string, countryId: string, limit = 10) => {
     return db
@@ -38,7 +38,7 @@ const cityRepository = {
       )
       .orderBy(asc(cities.name))
       .limit(limit)
-      .execute();
+      .execute()
   },
   getOrCreate: async (data: CreateCityDTO) => {
     const existingCity = await db
@@ -54,20 +54,20 @@ const cityRepository = {
           eq(cities.countryId, data.countryId),
         ),
       )
-      .execute();
+      .execute()
 
     if (existingCity.length > 0) {
-      return existingCity[0];
+      return existingCity[0]
     }
 
     const newCity = await db
       .insert(cities)
       .values(data)
       .returning({ id: cities.id, name: cities.name })
-      .execute();
+      .execute()
 
-    return newCity[0];
+    return newCity[0]
   },
-};
+}
 
-export default cityRepository;
+export default cityRepository

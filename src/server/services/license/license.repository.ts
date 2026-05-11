@@ -1,77 +1,77 @@
-import { db } from "~/server/db";
-import { licenses } from "~/server/db/schema";
-import { count, eq, ilike, type SQL } from "drizzle-orm";
-import { prepareOrderBy, prepareWhere } from "~/server/db/utility";
-import type { FindQueryDTO, FindReturnDTO } from "~/server/db/utility/types";
-import { type LicencesFormData } from "~/app/(pages)/licenses/_components/LicencesForm";
+import { count, eq, ilike, type SQL } from 'drizzle-orm'
+import type { LicencesFormData } from '~/app/(pages)/licenses/_components/LicencesForm'
+import { db } from '~/server/db'
+import { licenses } from '~/server/db/schema'
+import { prepareOrderBy, prepareWhere } from '~/server/db/utility'
+import type { FindQueryDTO, FindReturnDTO } from '~/server/db/utility/types'
 
 enum SortableKeys {
-  ID = "id",
-  TYPE = "type",
-  NAME = "name",
-  DESCRIPTION = "description",
+  ID = 'id',
+  TYPE = 'type',
+  NAME = 'name',
+  DESCRIPTION = 'description',
 }
 
 enum FilterableKeys {
-  TYPE = "type",
-  NAME = "name",
-  DESCRIPTION = "description",
+  TYPE = 'type',
+  NAME = 'name',
+  DESCRIPTION = 'description',
 }
 
 export type FindLicenseReturnDTO = {
-  id: string;
-  type: string;
-  name: string;
-  description: string | null;
-};
+  id: string
+  type: string
+  name: string
+  description: string | null
+}
 
 const mapKeyToColumn = (key?: string) => {
   switch (key as SortableKeys) {
     case SortableKeys.ID:
-      return licenses.id;
+      return licenses.id
     case SortableKeys.TYPE:
-      return licenses.type;
+      return licenses.type
     case SortableKeys.NAME:
-      return licenses.name;
+      return licenses.name
     default:
-      return licenses.id;
+      return licenses.id
   }
-};
+}
 
 const mapFilterableKeyToConditional = (
   key: string,
   value: string,
 ): SQL | undefined => {
   if (key === FilterableKeys.NAME.valueOf())
-    return ilike(mapKeyToColumn(key), `${value}%`);
+    return ilike(mapKeyToColumn(key), `${value}%`)
 
   if (key === FilterableKeys.TYPE.valueOf() && value)
-    return eq(mapKeyToColumn(key), value);
+    return eq(mapKeyToColumn(key), value)
 
-  return undefined;
-};
+  return undefined
+}
 
 const licenseRepository = {
   find: async (data: FindQueryDTO) => {
-    const { page, limit, sort, filter } = data;
+    const { page, limit, sort, filter } = data
     const orderBy = prepareOrderBy(
       mapKeyToColumn,
       SortableKeys,
       licenses.name,
       sort,
-    );
+    )
     const where = prepareWhere(
       filter,
       FilterableKeys,
       mapFilterableKeyToConditional,
-    );
+    )
 
     const { totalCount, returnData } = await db.transaction(
       async (tx): Promise<FindReturnDTO<FindLicenseReturnDTO>> => {
         const [totalCount] = await tx
           .select({ count: count() })
           .from(licenses)
-          .where(where);
+          .where(where)
 
         const returnData = await tx
           .select({
@@ -84,11 +84,11 @@ const licenseRepository = {
           .where(where)
           .orderBy(...orderBy)
           .limit(limit ?? 10)
-          .offset(page ? Number(page) * (limit ?? 10) : 0);
+          .offset(page ? Number(page) * (limit ?? 10) : 0)
 
-        return { totalCount: totalCount?.count ?? 0, returnData };
+        return { totalCount: totalCount?.count ?? 0, returnData }
       },
-    );
+    )
 
     return {
       data: returnData,
@@ -96,7 +96,7 @@ const licenseRepository = {
         count: totalCount,
         limit: limit ?? 10,
       },
-    };
+    }
   },
   findById: async (id: string) => {
     return db
@@ -108,7 +108,7 @@ const licenseRepository = {
       })
       .from(licenses)
       .where(eq(licenses.id, id))
-      .execute();
+      .execute()
   },
   findUniqueTypes: async () => {
     return db
@@ -117,10 +117,10 @@ const licenseRepository = {
       })
       .from(licenses)
       .orderBy(licenses.type)
-      .execute();
+      .execute()
   },
   create: async (data: LicencesFormData) => {
-    const { type, name, description } = data;
+    const { type, name, description } = data
     return db
       .insert(licenses)
       .values({ type, name, description })
@@ -130,12 +130,12 @@ const licenseRepository = {
         name: licenses.name,
         description: licenses.description,
       })
-      .execute();
+      .execute()
   },
   update: async (data: LicencesFormData) => {
-    const { id, type, name, description } = data;
+    const { id, type, name, description } = data
     if (!id) {
-      throw new Error("Id is required for updating license");
+      throw new Error('Id is required for updating license')
     }
 
     return db
@@ -148,7 +148,7 @@ const licenseRepository = {
         name: licenses.name,
         description: licenses.description,
       })
-      .execute();
+      .execute()
   },
   findAll: async () => {
     return db
@@ -160,8 +160,8 @@ const licenseRepository = {
       })
       .from(licenses)
       .orderBy(licenses.name)
-      .execute();
+      .execute()
   },
-};
+}
 
-export default licenseRepository;
+export default licenseRepository

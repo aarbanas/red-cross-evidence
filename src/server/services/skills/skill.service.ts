@@ -1,11 +1,11 @@
-import { skillRepository } from "~/server/services/skills/skill.repository";
+import { skillRepository } from '~/server/services/skills/skill.repository'
 
 const skillService = {
   language: {
     getAll: async () => {
-      return skillRepository.language.getAll();
+      return skillRepository.language.getAll()
     },
   },
-};
+}
 
-export default skillService;
+export default skillService

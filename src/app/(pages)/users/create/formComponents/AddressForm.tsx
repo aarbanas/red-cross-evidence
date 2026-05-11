@@ -1,66 +1,66 @@
-import { useFormContext, useFieldArray } from "react-hook-form";
-import FormInput from "~/components/organisms/form/formInput/FormInput";
-import { AddressType } from "~/server/db/schema";
-import FormSelect from "~/components/organisms/form/formSelect/FormSelect";
-import FormCitySearch from "~/components/organisms/form/formCitySearch/FormCitySearch";
-import FormStreetSearch from "~/components/organisms/form/formStreetSearch/FormStreetSearch";
-import { translateAddressType } from "~/app/(pages)/users/create/utils";
-import { type FC } from "react";
-import { type SearchCityReturnDTO } from "~/server/services/city/city.repository";
-import { Button } from "~/components/atoms/Button";
+import type { FC } from 'react'
+import { useFieldArray, useFormContext } from 'react-hook-form'
+import { translateAddressType } from '~/app/(pages)/users/create/utils'
+import { Button } from '~/components/atoms/Button'
+import FormCitySearch from '~/components/organisms/form/formCitySearch/FormCitySearch'
+import FormInput from '~/components/organisms/form/formInput/FormInput'
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect'
+import FormStreetSearch from '~/components/organisms/form/formStreetSearch/FormStreetSearch'
+import { AddressType } from '~/server/db/schema'
+import type { SearchCityReturnDTO } from '~/server/services/city/city.repository'
 
 export type AddressFormProps = {
   addresses: {
-    type: AddressType;
-    street: string;
-    streetNumber: string;
-    city: string;
-    postalCode: string;
-    country: string;
-    isPrimary: boolean;
-  }[];
-};
+    type: AddressType
+    street: string
+    streetNumber: string
+    city: string
+    postalCode: string
+    country: string
+    isPrimary: boolean
+  }[]
+}
 
 type Props = {
   countries: {
-    id: string;
-    name: string;
-    createdAt: Date;
-    updatedAt: Date | null;
-  }[];
-};
+    id: string
+    name: string
+    createdAt: Date
+    updatedAt: Date | null
+  }[]
+}
 
 const AddressForm: FC<Props> = ({ countries }) => {
-  const { register, watch, control, setValue } = useFormContext();
+  const { register, watch, control, setValue } = useFormContext()
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "addresses",
-  });
+    name: 'addresses',
+  })
 
-  const watchedAddresses = (watch("addresses") ?? []) as AddressFormProps[];
+  const watchedAddresses = (watch('addresses') ?? []) as AddressFormProps[]
 
   // Handle primary address selection - only one can be primary
   const handlePrimaryChange = (selectedIndex: number) => {
     // Set all addresses to non-primary first
     watchedAddresses.forEach((_: AddressFormProps, index: number) => {
-      setValue(`addresses.${index}.isPrimary`, false);
-    });
+      setValue(`addresses.${index}.isPrimary`, false)
+    })
     // Set the selected address as primary
-    setValue(`addresses.${selectedIndex}.isPrimary`, true);
-  };
+    setValue(`addresses.${selectedIndex}.isPrimary`, true)
+  }
 
   const addNewAddress = () => {
     append({
       type: AddressType.PERMANENT_RESIDENCE,
-      street: "",
-      streetNumber: "",
-      city: "",
-      postalCode: "",
-      country: "",
+      street: '',
+      streetNumber: '',
+      city: '',
+      postalCode: '',
+      country: '',
       isPrimary: fields.length === 0, // First address is primary by default
-    });
-  };
+    })
+  }
 
   return (
     <div className="space-y-6">
@@ -84,20 +84,20 @@ const AddressForm: FC<Props> = ({ countries }) => {
       )}
 
       {fields.map((field, index) => {
-        const selectedCountry = watch(`addresses.${index}.country`) as string;
+        const selectedCountry = watch(`addresses.${index}.country`) as string
         const selectedCity = watch(`addresses.${index}.city`) as
           | SearchCityReturnDTO
           | string
-          | undefined;
+          | undefined
 
         // Extract cityId for street search
         const cityId =
-          typeof selectedCity === "object" && selectedCity?.id
+          typeof selectedCity === 'object' && selectedCity?.id
             ? selectedCity.id
-            : undefined;
+            : undefined
 
         const isPrimary = (watch(`addresses.${index}.isPrimary`) ??
-          false) as boolean;
+          false) as boolean
 
         return (
           <div
@@ -125,13 +125,13 @@ const AddressForm: FC<Props> = ({ countries }) => {
               label="Primarna adresa"
               checked={isPrimary}
               onChange={() => handlePrimaryChange(index)}
-              type={"checkbox"}
+              type={'checkbox'}
             />
             <FormSelect
               id={`type-${index}`}
               label="Vrsta*"
               {...register(`addresses.${index}.type`, {
-                required: "Tip adrese je obavezno polje",
+                required: 'Tip adrese je obavezno polje',
               })}
               placeholder="Odaberite vrstu adrese"
             >
@@ -140,7 +140,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
                   <option key={key} value={value}>
                     {translateAddressType(value)}
                   </option>
-                );
+                )
               })}
             </FormSelect>
 
@@ -148,7 +148,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
               id={`country-${index}`}
               label="Država*"
               {...register(`addresses.${index}.country`, {
-                required: "Država je obavezno polje",
+                required: 'Država je obavezno polje',
               })}
               placeholder="Odaberite državu"
             >
@@ -157,7 +157,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
                   <option key={id} value={id}>
                     {name}
                   </option>
-                );
+                )
               })}
             </FormSelect>
 
@@ -176,7 +176,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
                   id={`postalCode-${index}`}
                   label="Poštanski broj*"
                   {...register(`addresses.${index}.postalCode`, {
-                    required: "Poštanski broj je obavezno polje",
+                    required: 'Poštanski broj je obavezno polje',
                   })}
                   placeholder="Unesite poštanski broj"
                 />
@@ -198,17 +198,17 @@ const AddressForm: FC<Props> = ({ countries }) => {
                   id={`streetNumber-${index}`}
                   label="Kućni broj*"
                   {...register(`addresses.${index}.streetNumber`, {
-                    required: "Kućni broj je obavezno polje",
+                    required: 'Kućni broj je obavezno polje',
                   })}
                   placeholder="Unesite kućni broj"
                 />
               </div>
             </div>
           </div>
-        );
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
-export default AddressForm;
+export default AddressForm

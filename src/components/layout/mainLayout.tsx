@@ -1,21 +1,22 @@
-import React, { type ReactNode } from "react";
-import { BookMarked, Users, IdCard } from "lucide-react";
-import Link from "next/link";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import NewNavbar from "~/components/organisms/navbar/navbar";
-import Header from "~/components/organisms/Header";
-import { usePathname } from "next/navigation";
+import { BookMarked, IdCard, Users } from 'lucide-react'
+import Link from 'next/link'
+import type React from 'react'
+import type { ReactNode } from 'react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { usePathname } from 'next/navigation'
+import Header from '~/components/organisms/Header'
+import NewNavbar from '~/components/organisms/navbar/navbar'
 
 type Props = {
-  children: ReactNode;
-  headerChildren: ReactNode;
-};
+  children: ReactNode
+  headerChildren: ReactNode
+}
 
 enum AppRoutes {
-  HOME = "/users",
-  EDUCATIONS = "/educations",
-  LICENSES = "/licenses",
+  HOME = '/users',
+  EDUCATIONS = '/educations',
+  LICENSES = '/licenses',
 }
 
 const MainLayout: React.FC<Readonly<Props>> = ({
@@ -38,16 +39,16 @@ const MainLayout: React.FC<Readonly<Props>> = ({
       </div>
       <ToastContainer />
     </>
-  );
-};
+  )
+}
 
 const Navigation = () => {
-  const currentPath = usePathname() as AppRoutes;
+  const currentPath = usePathname() as AppRoutes
 
   return (
     <nav className="grid items-start text-sm font-medium lg:px-4">
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-red-100 ${currentPath === AppRoutes.HOME ? "text-red-600" : ""}`}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-red-100 ${currentPath === AppRoutes.HOME ? 'text-red-600' : ''}`}
         href={AppRoutes.HOME}
       >
         <Users />
@@ -55,22 +56,22 @@ const Navigation = () => {
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.EDUCATIONS) ? "text-red-600" : ""}`}
-        href={AppRoutes.EDUCATIONS + "/term"}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.EDUCATIONS) ? 'text-red-600' : ''}`}
+        href={`${AppRoutes.EDUCATIONS}/term`}
       >
         <BookMarked />
         Edukacije
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.LICENSES) ? "text-red-600" : ""}`}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.LICENSES) ? 'text-red-600' : ''}`}
         href={AppRoutes.LICENSES}
       >
         <IdCard />
         Licence
       </Link>
     </nav>
-  );
-};
+  )
+}
 
-export default MainLayout;
+export default MainLayout

@@ -1,19 +1,19 @@
-"use client";
-import TabLayout from "~/components/layout/tabLayout";
-import { useState } from "react";
-import EducationsTermSearch from "~/app/(pages)/educations/term/EducationsTermSearch";
-import Link from "next/link";
-import { CirclePlus } from "lucide-react";
-import EducationsTerm from "~/app/(pages)/educations/term/EducationsTerm";
+'use client'
+import { CirclePlus } from 'lucide-react'
+import Link from 'next/link'
+import { useState } from 'react'
+import EducationsTerm from '~/app/(pages)/educations/term/EducationsTerm'
+import EducationsTermSearch from '~/app/(pages)/educations/term/EducationsTermSearch'
+import TabLayout from '~/components/layout/tabLayout'
 
 const EducationsEvidencePage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
     undefined,
-  );
+  )
 
   const handleSearch = (newFilter: Record<string, string> | undefined) => {
-    setFilter(newFilter);
-  };
+    setFilter(newFilter)
+  }
 
   return (
     <TabLayout>
@@ -34,7 +34,7 @@ const EducationsEvidencePage = () => {
 
       <EducationsTerm filter={filter} />
     </TabLayout>
-  );
-};
+  )
+}
 
-export default EducationsEvidencePage;
+export default EducationsEvidencePage

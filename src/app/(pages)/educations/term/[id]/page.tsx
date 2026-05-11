@@ -1,41 +1,41 @@
-"use client";
+'use client'
 
-import { useParams } from "next/navigation";
-import { api } from "~/trpc/react";
-import LoadingSpinner from "~/components/organisms/loadingSpinner/LoadingSpinner";
-import TabLayout from "~/components/layout/tabLayout";
-import EducationsTermForm from "~/app/(pages)/educations/term/_components/EducationsTermForm";
+import { useParams } from 'next/navigation'
+import EducationsTermForm from '~/app/(pages)/educations/term/_components/EducationsTermForm'
+import TabLayout from '~/components/layout/tabLayout'
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner'
+import { api } from '~/trpc/react'
 
 const UpdateEducationTermPage = () => {
-  const { id } = useParams();
+  const { id } = useParams()
 
   const { data, isLoading, error } = api.education.term.findById.useQuery({
     id: id as string,
-  });
+  })
 
-  const { data: educationTpes } = api.education.list.getUniqueTypes.useQuery();
+  const { data: educationTpes } = api.education.list.getUniqueTypes.useQuery()
 
   if (!educationTpes?.length) {
-    return <div>No unique types found</div>;
+    return <div>No unique types found</div>
   }
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner />
   }
 
   if (error) {
-    return <div>Greška</div>;
+    return <div>Greška</div>
   }
 
   if (!data) {
-    return <div>Podaci nisu pronađeni</div>;
+    return <div>Podaci nisu pronađeni</div>
   }
 
   return (
     <TabLayout>
       <div>
         <EducationsTermForm
-          action={"update"}
+          action={'update'}
           educationTermId={id}
           formData={{
             title: data.title,
@@ -50,7 +50,7 @@ const UpdateEducationTermPage = () => {
         />
       </div>
     </TabLayout>
-  );
-};
+  )
+}
 
-export default UpdateEducationTermPage;
+export default UpdateEducationTermPage

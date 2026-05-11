@@ -1,8 +1,8 @@
-import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { paginationQuerySchema } from "~/server/api/schema";
-import educationService from "~/server/services/education/education.service";
-import { EducationType } from "~/server/db/schema";
+import { z } from 'zod'
+import { paginationQuerySchema } from '~/server/api/schema'
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc'
+import { EducationType } from '~/server/db/schema'
+import educationService from '~/server/services/education/education.service'
 
 const educationFormDataSchema = z.object({
   id: z.string().optional(),
@@ -15,7 +15,7 @@ const educationFormDataSchema = z.object({
   courseDuration: z.string().optional(),
   renewalDuration: z.string().optional(),
   topics: z.string().optional(),
-});
+})
 
 const educationTermFormDataSchema = z.object({
   id: z.string().optional(),
@@ -26,77 +26,77 @@ const educationTermFormDataSchema = z.object({
   lecturers: z.string(),
   location: z.string(),
   educationId: z.string(),
-});
+})
 
 export const educationRouter = createTRPCRouter({
   list: {
     findById: protectedProcedure
       .input(z.object({ id: z.string() }))
       .query(async ({ input }) => {
-        const result = await educationService.list.getById(input.id);
+        const result = await educationService.list.getById(input.id)
 
-        return result;
+        return result
       }),
     find: protectedProcedure
       .input(paginationQuerySchema)
       .query(async ({ input }) => {
-        return educationService.list.find(input);
+        return educationService.list.find(input)
       }),
     getUniqueTypes: protectedProcedure.query(async () => {
-      return educationService.list.getUniqueTypes();
+      return educationService.list.getUniqueTypes()
     }),
     deleteById: protectedProcedure
       .input(z.object({ id: z.string() }))
       .mutation(async ({ input }) => {
-        await educationService.list.deleteById(input.id);
-        return { success: true };
+        await educationService.list.deleteById(input.id)
+        return { success: true }
       }),
     create: protectedProcedure
       .input(educationFormDataSchema)
       .mutation(async ({ input }) => {
-        const result = await educationService.list.create(input);
-        return result;
+        const result = await educationService.list.create(input)
+        return result
       }),
     update: protectedProcedure
       .input(educationFormDataSchema)
       .mutation(async ({ input }) => {
-        const result = await educationService.list.update(input);
-        return result;
+        const result = await educationService.list.update(input)
+        return result
       }),
     getAllTitles: protectedProcedure
       .input(z.nativeEnum(EducationType).optional())
       .query(async ({ input }) => {
-        return educationService.list.getAllTitles(input);
+        return educationService.list.getAllTitles(input)
       }),
   },
   term: {
     findById: protectedProcedure
       .input(z.object({ id: z.string() }))
       .query(async ({ input }) => {
-        const result = await educationService.term.getById(input.id);
+        const result = await educationService.term.getById(input.id)
 
-        return result;
+        return result
       }),
     find: protectedProcedure
       .input(paginationQuerySchema)
       .query(async ({ input }) => {
-        return educationService.term.find(input);
+        return educationService.term.find(input)
       }),
     deleteById: protectedProcedure
       .input(z.object({ id: z.string() }))
       .mutation(async ({ input }) => {
-        await educationService.term.deleteById(input.id);
-        return { success: true };
+        await educationService.term.deleteById(input.id)
+        return { success: true }
       }),
     create: protectedProcedure
       .input(educationTermFormDataSchema)
       .mutation(async ({ input }) => {
-        return educationService.term.create(input);
+        return educationService.term.create(input)
       }),
     update: protectedProcedure
       .input(educationTermFormDataSchema)
       .mutation(async ({ input }) => {
-        return educationService.term.update(input);
+        return educationService.term.update(input)
       }),
   },
-});
+})

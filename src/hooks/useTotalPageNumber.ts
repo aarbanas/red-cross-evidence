@@ -1,26 +1,26 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from 'react'
 
 const useTotalPageNumber = <
   T extends { meta?: { count: number; limit: number } },
 >(
   data: T | undefined,
 ) => {
-  const [totalPageNumber, setTotalPageNumber] = useState<number>(1);
+  const [totalPageNumber, setTotalPageNumber] = useState<number>(1)
 
   const memoizedSetTotalPageNumber = useCallback(
     (count: number, limit: number) => {
-      setTotalPageNumber(Math.ceil(count / limit));
+      setTotalPageNumber(Math.ceil(count / limit))
     },
     [],
-  );
+  )
 
   useEffect(() => {
     if (data?.meta) {
-      memoizedSetTotalPageNumber(data.meta.count, data.meta.limit);
+      memoizedSetTotalPageNumber(data.meta.count, data.meta.limit)
     }
-  }, [data, memoizedSetTotalPageNumber]);
+  }, [data, memoizedSetTotalPageNumber])
 
-  return { totalPageNumber };
-};
+  return { totalPageNumber }
+}
 
-export default useTotalPageNumber;
+export default useTotalPageNumber

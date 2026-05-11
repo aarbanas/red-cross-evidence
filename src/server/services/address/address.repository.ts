@@ -1,12 +1,11 @@
-import { and, asc, eq, ilike } from "drizzle-orm";
-import { addresses, cities } from "~/server/db/schema";
-
-import { db } from "~/server/db";
+import { and, asc, eq, ilike } from 'drizzle-orm'
+import { db } from '~/server/db'
+import { addresses, cities } from '~/server/db/schema'
 import type {
   CreateAddressDTO,
   FindAddressQuery,
   SearchAddressQuery,
-} from "~/server/services/address/types";
+} from '~/server/services/address/types'
 
 const addressRepository = {
   find: async (query: FindAddressQuery) => {
@@ -14,10 +13,10 @@ const addressRepository = {
       .select()
       .from(addresses)
       .innerJoin(cities, eq(addresses.cityId, cities.id))
-      .where(ilike(addresses.street, query.street));
+      .where(ilike(addresses.street, query.street))
   },
   searchAddresses: async (query: SearchAddressQuery, limit = 10) => {
-    const { searchTerm, cityId } = query;
+    const { searchTerm, cityId } = query
     return db
       .select({
         id: addresses.id,
@@ -34,7 +33,7 @@ const addressRepository = {
       )
       .orderBy(asc(addresses.street))
       .limit(limit)
-      .execute();
+      .execute()
   },
   getOrCreate: async (data: CreateAddressDTO) => {
     const existingAddressId = await db
@@ -49,18 +48,18 @@ const addressRepository = {
         ),
       )
       .limit(1)
-      .execute();
+      .execute()
     if (existingAddressId.length > 0) {
-      return existingAddressId[0];
+      return existingAddressId[0]
     }
 
     const newAddress = await db
       .insert(addresses)
       .values(data)
       .returning({ id: addresses.id })
-      .execute();
-    return newAddress[0];
+      .execute()
+    return newAddress[0]
   },
-};
+}
 
-export default addressRepository;
+export default addressRepository

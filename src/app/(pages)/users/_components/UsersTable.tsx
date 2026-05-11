@@ -1,3 +1,6 @@
+import { CheckCircle2, Pencil, XCircle } from 'lucide-react'
+import Link from 'next/link'
+import PaginationComponent from '~/components/organisms/pagination/PaginationComponent'
 import {
   Table,
   TableBody,
@@ -5,20 +8,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "~/components/organisms/Table";
-import { CheckCircle2, Pencil, XCircle } from "lucide-react";
-import PaginationComponent from "~/components/organisms/pagination/PaginationComponent";
-import Link from "next/link";
-import { type FindUserReturnDTO } from "~/server/services/user/user.repository";
+} from '~/components/organisms/Table'
+import type { FindUserReturnDTO } from '~/server/services/user/user.repository'
 
 type Props = {
-  data?: FindUserReturnDTO[];
-  totalPageNumber: number;
-};
+  data?: FindUserReturnDTO[]
+  totalPageNumber: number
+}
 
 const UsersTable: React.FC<Props> = ({ data, totalPageNumber }) => {
   if (!data?.length) {
-    return <div>Nema rezultata</div>;
+    return <div>Nema rezultata</div>
   }
 
   return (
@@ -68,7 +68,7 @@ const UsersTable: React.FC<Props> = ({ data, totalPageNumber }) => {
       </div>
       <PaginationComponent totalPageNumber={totalPageNumber} />
     </>
-  );
-};
+  )
+}
 
-export default UsersTable;
+export default UsersTable
