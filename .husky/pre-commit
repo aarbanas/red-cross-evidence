@@ -1,1 +1,1 @@
-npx @biomejs/biome check --staged
+npx @biomejs/biome check --staged --no-errors-on-unmatched --files-ignore-unknown=true
