@@ -1,18 +1,18 @@
-import type React from 'react'
-import { useEffect, useState } from 'react'
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 export type DropdownOption = {
-  key: string
-  value: string
-}
+  key: string;
+  value: string;
+};
 
 type Props = {
-  options: DropdownOption[]
-  label: string
-  searchKey: string
-  defaultValue?: string
-  onSearch: (key: string, value: string) => void
-}
+  options: DropdownOption[];
+  label: string;
+  searchKey: string;
+  defaultValue?: string;
+  onSearch: (key: string, value: string) => void;
+};
 
 const Dropdown: React.FC<Props> = ({
   options,
@@ -21,11 +21,11 @@ const Dropdown: React.FC<Props> = ({
   defaultValue,
   onSearch,
 }) => {
-  const [selectedValue, setSelectedValue] = useState(defaultValue ?? '')
+  const [selectedValue, setSelectedValue] = useState(defaultValue ?? '');
 
   useEffect(() => {
-    onSearch(searchKey, selectedValue)
-  }, [onSearch, searchKey, selectedValue])
+    onSearch(searchKey, selectedValue);
+  }, [onSearch, searchKey, selectedValue]);
 
   return (
     <div className="flex gap-2">
@@ -43,7 +43,7 @@ const Dropdown: React.FC<Props> = ({
         ))}
       </select>
     </div>
-  )
-}
+  );
+};
 
-export default Dropdown
+export default Dropdown;

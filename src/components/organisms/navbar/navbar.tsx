@@ -1,19 +1,19 @@
-import { LogOut } from 'lucide-react'
-import { signOut } from 'next-auth/react'
-import type React from 'react'
-import type { PropsWithChildren } from 'react'
-import NewNavbarMenuDrawer from '~/components/organisms/navbar/navbar-menu-drawer/navbar-menu-drawer'
-import styles from './navbar.module.scss'
+import { LogOut } from 'lucide-react';
+import { signOut } from 'next-auth/react';
+import type React from 'react';
+import type { PropsWithChildren } from 'react';
+import NewNavbarMenuDrawer from '~/components/organisms/navbar/navbar-menu-drawer/navbar-menu-drawer';
+import styles from './navbar.module.scss';
 
 type Props = {
-  title: string
-} & PropsWithChildren
+  title: string;
+} & PropsWithChildren;
 
 const NewNavbar: React.FC<Props> = ({ title, children }) => {
   async function onLogoutClick() {
     if (typeof window !== 'undefined') {
-      await signOut()
-      window.location.href = '/'
+      await signOut();
+      window.location.href = '/';
     }
   }
 
@@ -41,12 +41,12 @@ const NewNavbar: React.FC<Props> = ({ title, children }) => {
         </NewNavbarMenuDrawer>
       </div>
     </>
-  )
-}
+  );
+};
 
 type NavbarNavigationProps = {
-  onLogoutClick: () => void
-} & PropsWithChildren
+  onLogoutClick: () => void;
+} & PropsWithChildren;
 
 const NavbarNavigation: React.FC<NavbarNavigationProps> = ({
   onLogoutClick,
@@ -63,7 +63,7 @@ const NavbarNavigation: React.FC<NavbarNavigationProps> = ({
         <LogOut /> Odjava
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default NewNavbar
+export default NewNavbar;

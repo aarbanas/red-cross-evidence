@@ -1,15 +1,15 @@
-import { type ComponentProps, forwardRef, type ReactNode } from 'react'
-import { FieldError } from '~/components/organisms/form/formComponent/FormComponent'
-import styles from './FormSelect.module.css'
+import { type ComponentProps, forwardRef, type ReactNode } from 'react';
+import { FieldError } from '~/components/organisms/form/formComponent/FormComponent';
+import styles from './FormSelect.module.css';
 
-const DEFAULT_VALUE = 'none'
+const DEFAULT_VALUE = 'none';
 
 interface FormSelectProps extends ComponentProps<'select'> {
-  id: string
-  label: string
-  children?: ReactNode
-  labelClassName?: string
-  placeholder?: string
+  id: string;
+  label: string;
+  children?: ReactNode;
+  labelClassName?: string;
+  placeholder?: string;
 }
 
 const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
@@ -30,10 +30,10 @@ const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
         </select>
         <FieldError name={props.name} />
       </div>
-    )
+    );
   },
-)
+);
 
-FormSelect.displayName = 'FormSelect'
+FormSelect.displayName = 'FormSelect';
 
-export default FormSelect
+export default FormSelect;

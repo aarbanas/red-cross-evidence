@@ -1,15 +1,15 @@
-import type React from 'react'
-import Dropdown, { type DropdownOption } from '~/components/atoms/Dropdown'
-import SearchInput from '~/components/atoms/SearchInput'
-import useSearch from '~/hooks/useSearch'
+import type React from 'react';
+import Dropdown, { type DropdownOption } from '~/components/atoms/Dropdown';
+import SearchInput from '~/components/atoms/SearchInput';
+import useSearch from '~/hooks/useSearch';
 
 type Props = {
-  onSearch: (filter?: Record<string, string>) => void
-  cities?: DropdownOption[]
-}
+  onSearch: (filter?: Record<string, string>) => void;
+  cities?: DropdownOption[];
+};
 
 const UsersSearch: React.FC<Props> = ({ onSearch, cities }) => {
-  const { handleSearch } = useSearch(onSearch)
+  const { handleSearch } = useSearch(onSearch);
 
   return (
     <div className="flex gap-5">
@@ -32,7 +32,7 @@ const UsersSearch: React.FC<Props> = ({ onSearch, cities }) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default UsersSearch
+export default UsersSearch;

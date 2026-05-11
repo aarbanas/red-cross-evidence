@@ -1,30 +1,31 @@
-'use client'
-import { useParams } from 'next/navigation'
-import EducationForm from '~/app/(pages)/educations/list/[id]/_components/EducationsForm'
-import TabLayout from '~/components/layout/tabLayout'
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner'
-import { api } from '~/trpc/react'
+'use client';
+import { useParams } from 'next/navigation';
+import EducationForm from '~/app/(pages)/educations/list/[id]/_components/EducationsForm';
+import TabLayout from '~/components/layout/tabLayout';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '~/trpc/react';
 
 export default function EducationDetailPage() {
-  const { id } = useParams()
+  const { id } = useParams();
 
   // Fetch unique types
-  const { data: uniqueTypesData } = api.education.list.getUniqueTypes.useQuery()
+  const { data: uniqueTypesData } =
+    api.education.list.getUniqueTypes.useQuery();
 
   const { data, isLoading, error } = api.education.list.findById.useQuery(
     { id: id as string },
     { enabled: id !== 'create' },
-  )
+  );
 
   if (isLoading) {
-    return <LoadingSpinner />
+    return <LoadingSpinner />;
   }
 
   if (error) {
-    return <div>Greška</div>
+    return <div>Greška</div>;
   }
 
-  const uniqueTypes = uniqueTypesData ?? []
+  const uniqueTypes = uniqueTypesData ?? [];
 
   return (
     <TabLayout>
@@ -48,5 +49,5 @@ export default function EducationDetailPage() {
         )}
       </div>
     </TabLayout>
-  )
+  );
 }

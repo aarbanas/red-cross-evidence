@@ -5,8 +5,8 @@ import {
   text,
   timestamp,
   uuid,
-} from 'drizzle-orm/pg-core'
-import { users } from './user'
+} from 'drizzle-orm/pg-core';
+import { users } from './user';
 
 export const accounts = pgTable(
   'account',
@@ -30,7 +30,7 @@ export const accounts = pgTable(
       columns: [account.provider, account.providerAccountId],
     }),
   }),
-)
+);
 
 export const sessions = pgTable('session', {
   sessionToken: text('sessionToken').notNull().primaryKey(),
@@ -38,7 +38,7 @@ export const sessions = pgTable('session', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   expires: timestamp('expires').notNull(),
-})
+});
 
 export const verificationTokens = pgTable(
   'verificationToken',
@@ -50,4 +50,4 @@ export const verificationTokens = pgTable(
   (vt) => ({
     compositePk: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
-)
+);

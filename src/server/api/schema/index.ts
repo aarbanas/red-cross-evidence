@@ -1,4 +1,4 @@
-import createUserSchema from './createUser.schema'
-import paginationQuerySchema from './paginationQuery.schema'
+import createUserSchema from './createUser.schema';
+import paginationQuerySchema from './paginationQuery.schema';
 
-export { createUserSchema, paginationQuerySchema }
+export { createUserSchema, paginationQuerySchema };

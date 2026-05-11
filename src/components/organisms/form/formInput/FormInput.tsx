@@ -1,11 +1,11 @@
-import { type ComponentProps, forwardRef } from 'react'
-import { FieldError } from '~/components/organisms/form/formComponent/FormComponent'
-import styles from './FormInput.module.css'
+import { type ComponentProps, forwardRef } from 'react';
+import { FieldError } from '~/components/organisms/form/formComponent/FormComponent';
+import styles from './FormInput.module.css';
 
 interface FormInputProps extends ComponentProps<'input'> {
-  id: string
-  label: string
-  className?: string
+  id: string;
+  label: string;
+  className?: string;
 }
 
 const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
@@ -24,7 +24,7 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
             {label}
           </label>
         </div>
-      )
+      );
     }
 
     return (
@@ -41,10 +41,10 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
         />
         <FieldError name={props.name} />
       </div>
-    )
+    );
   },
-)
+);
 
-FormInput.displayName = 'FormInput'
+FormInput.displayName = 'FormInput';
 
-export default FormInput
+export default FormInput;

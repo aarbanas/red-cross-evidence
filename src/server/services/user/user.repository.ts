@@ -1,5 +1,5 @@
-import { and, count, eq, ilike, type SQL } from 'drizzle-orm'
-import { db } from '~/server/db'
+import { and, count, eq, ilike, type SQL } from 'drizzle-orm';
+import { db } from '~/server/db';
 import {
   addresses,
   cities,
@@ -11,26 +11,26 @@ import {
   sizes,
   users,
   workStatuses,
-} from '~/server/db/schema'
-import { prepareOrderBy, prepareWhere } from '~/server/db/utility'
-import type { FindQueryDTO, FindReturnDTO } from '~/server/db/utility/types'
+} from '~/server/db/schema';
+import { prepareOrderBy, prepareWhere } from '~/server/db/utility';
+import type { FindQueryDTO, FindReturnDTO } from '~/server/db/utility/types';
 import type {
   CreateUserAddressIdsDTO,
   CreateUserDTO,
-} from '~/server/services/user/types'
+} from '~/server/services/user/types';
 
 export type FindUserReturnDTO = {
-  id: string
-  email: string
-  active: boolean | null
-  createdAt: Date
+  id: string;
+  email: string;
+  active: boolean | null;
+  createdAt: Date;
   profile: {
-    id: string
-    firstName: string
-    lastName: string
-  } | null
-  city: string | null
-}
+    id: string;
+    firstName: string;
+    lastName: string;
+  } | null;
+  city: string | null;
+};
 
 enum SortableKeys {
   ID = 'id',
@@ -57,50 +57,50 @@ const mapFilterableKeyToConditional = (
     key === FilterableKeys.FIRSTNAME.valueOf() ||
     key === FilterableKeys.LASTNAME.valueOf()
   )
-    return ilike(mapKeyToColumn(key as FilterableKeys), `${value}%`)
+    return ilike(mapKeyToColumn(key as FilterableKeys), `${value}%`);
 
   if (
     key === FilterableKeys.EMAIL.valueOf() ||
     (key === FilterableKeys.CITY.valueOf() && value !== '')
   )
-    return eq(mapKeyToColumn(key), value)
+    return eq(mapKeyToColumn(key), value);
 
-  return undefined
-}
+  return undefined;
+};
 
 const mapKeyToColumn = (key?: string) => {
   switch (key) {
     case SortableKeys.ID:
-      return users.id
+      return users.id;
     case SortableKeys.FIRSTNAME:
-      return profiles.firstName
+      return profiles.firstName;
     case SortableKeys.LASTNAME:
-      return profiles.lastName
+      return profiles.lastName;
     case SortableKeys.EMAIL:
-      return users.email
+      return users.email;
     case SortableKeys.ACTIVE:
-      return users.active
+      return users.active;
     case SortableKeys.CITY:
-      return cities.id
+      return cities.id;
     default:
-      return users.id
+      return users.id;
   }
-}
+};
 
 const userRepository = {
   find: async (data: FindQueryDTO) => {
-    const { page, limit, sort, filter } = data
+    const { page, limit, sort, filter } = data;
     const orderBy = prepareOrderBy(
       mapKeyToColumn,
       SortableKeys,
       users.createdAt,
       sort,
-    )
+    );
     const where = prepareWhere(
       filter,
       FilterableKeys,
       mapFilterableKeyToConditional,
-    )
+    );
 
     const { totalCount, returnData } = await db.transaction(
       async (tx): Promise<FindReturnDTO<FindUserReturnDTO>> => {
@@ -117,7 +117,7 @@ const userRepository = {
           )
           .leftJoin(addresses, eq(profilesAddresses.addressId, addresses.id))
           .leftJoin(cities, eq(addresses.cityId, cities.id))
-          .where(where)
+          .where(where);
 
         const returnData = await tx
           .select({
@@ -146,11 +146,11 @@ const userRepository = {
           .where(where)
           .orderBy(...orderBy)
           .limit(limit ?? 10)
-          .offset(page ? Number(page) * (limit ?? 10) : 0)
+          .offset(page ? Number(page) * (limit ?? 10) : 0);
 
-        return { totalCount: totalCount?.count ?? 0, returnData }
+        return { totalCount: totalCount?.count ?? 0, returnData };
       },
-    )
+    );
 
     return {
       data: returnData,
@@ -158,7 +158,7 @@ const userRepository = {
         count: totalCount,
         limit: limit ?? 10,
       },
-    }
+    };
   },
   findById: async (id: string) => {
     return db
@@ -175,7 +175,7 @@ const userRepository = {
       .from(users)
       .where(eq(users.id, id))
       .leftJoin(profiles, eq(users.id, profiles.userId))
-      .execute()
+      .execute();
   },
   create: async (
     data: CreateUserDTO,
@@ -191,9 +191,9 @@ const userRepository = {
           active: true,
           password,
         })
-        .returning({ id: users.id })
+        .returning({ id: users.id });
       if (!newUser) {
-        throw new Error('Failed to create user')
+        throw new Error('Failed to create user');
       }
 
       // Insert profile (pass user id)
@@ -211,9 +211,9 @@ const userRepository = {
           phone: data.profile.phone,
           userId: newUser.id,
         })
-        .returning({ id: profiles.id })
+        .returning({ id: profiles.id });
       if (!newProfile) {
-        throw new Error('Failed to create profile')
+        throw new Error('Failed to create profile');
       }
 
       // Insert size (pass profile id)
@@ -223,7 +223,7 @@ const userRepository = {
         height: data.size.height,
         weight: data.size.weight,
         profileId: newProfile.id,
-      })
+      });
 
       // Insert work status (pass profile id)
       await tx.insert(workStatuses).values({
@@ -232,7 +232,7 @@ const userRepository = {
         institution: data.workStatus.institution,
         educationLevel: data.workStatus.educationLevel,
         profileId: newProfile.id,
-      })
+      });
 
       // Insert profile addresses (profile id + address ids, mark primary)
       await tx.insert(profilesAddresses).values(
@@ -241,7 +241,7 @@ const userRepository = {
           addressId: addrData.addressId,
           isPrimary: addrData.isPrimary,
         })),
-      )
+      );
 
       // Insert profile languages (profile id + language ids + level)
       if (data.skills.selectedLanguages?.length) {
@@ -251,7 +251,7 @@ const userRepository = {
             languageId: language.id,
             level: language.level,
           })),
-        )
+        );
       }
 
       // Insert profile licences (profile id + licence ids)
@@ -261,7 +261,7 @@ const userRepository = {
             profileId: newProfile.id,
             licenceId: licence.id,
           })),
-        )
+        );
       }
 
       if (data.skills.otherSkills?.length) {
@@ -271,10 +271,10 @@ const userRepository = {
             name: skill.name,
             description: skill.description,
           })),
-        )
+        );
       }
-    })
+    });
   },
-}
+};
 
-export default userRepository
+export default userRepository;

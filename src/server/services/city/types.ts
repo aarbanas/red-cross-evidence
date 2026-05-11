@@ -1,5 +1,5 @@
 export type CreateCityDTO = {
-  name: string
-  postalCode: string
-  countryId: string
-}
+  name: string;
+  postalCode: string;
+  countryId: string;
+};

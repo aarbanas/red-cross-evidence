@@ -1,17 +1,17 @@
-import type { FC } from 'react'
+import type { FC } from 'react';
 import {
   Pagination,
   PaginationContent,
   PaginationPages,
-} from '~/components/organisms/pagination/Pagination'
-import usePagination from '~/hooks/usePagination'
+} from '~/components/organisms/pagination/Pagination';
+import usePagination from '~/hooks/usePagination';
 
 type Props = {
-  totalPageNumber: number
-}
+  totalPageNumber: number;
+};
 
 const PaginationComponent: FC<Props> = ({ totalPageNumber }) => {
-  const { page, handlePageChange } = usePagination()
+  const { page, handlePageChange } = usePagination();
 
   return (
     <Pagination>
@@ -22,22 +22,22 @@ const PaginationComponent: FC<Props> = ({ totalPageNumber }) => {
           onChangePage={(pageNumber) => handlePageChange(pageNumber)}
           onPreviousPage={() => {
             if (page === 0) {
-              return
+              return;
             }
 
-            handlePageChange(page - 1)
+            handlePageChange(page - 1);
           }}
           onNextPage={() => {
             if (page === totalPageNumber - 1) {
-              return
+              return;
             }
 
-            handlePageChange(page + 1)
+            handlePageChange(page + 1);
           }}
         />
       </PaginationContent>
     </Pagination>
-  )
-}
+  );
+};
 
-export default PaginationComponent
+export default PaginationComponent;

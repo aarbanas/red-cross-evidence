@@ -1,33 +1,33 @@
-import { useRouter } from 'next/navigation'
-import type React from 'react'
-import { useForm } from 'react-hook-form'
-import { translateEducationType } from '~/app/(pages)/educations/utils'
-import { Button } from '~/components/atoms/Button'
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent'
-import FormInput from '~/components/organisms/form/formInput/FormInput'
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect'
-import FormTextarea from '~/components/organisms/form/formTextArea/FormTextArea'
-import type { EducationType } from '~/server/db/schema'
-import { api } from '~/trpc/react'
+import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { useForm } from 'react-hook-form';
+import { translateEducationType } from '~/app/(pages)/educations/utils';
+import { Button } from '~/components/atoms/Button';
+import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import FormTextarea from '~/components/organisms/form/formTextArea/FormTextArea';
+import type { EducationType } from '~/server/db/schema';
+import { api } from '~/trpc/react';
 
 export type EducationFormData = {
-  id?: string
-  type: string
-  title: string
-  description: string
-  precondition?: string
-  duration?: string
-  lecturers?: string
-  courseDuration?: string
-  renewalDuration?: string
-  topics?: string
-}
+  id?: string;
+  type: string;
+  title: string;
+  description: string;
+  precondition?: string;
+  duration?: string;
+  lecturers?: string;
+  courseDuration?: string;
+  renewalDuration?: string;
+  topics?: string;
+};
 
 type Props = {
-  id: string
-  formData: EducationFormData
-  uniqueTypes: { type: string }[]
-}
+  id: string;
+  formData: EducationFormData;
+  uniqueTypes: { type: string }[];
+};
 
 const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
   const form = useForm<EducationFormData>({
@@ -42,16 +42,16 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
       renewalDuration: formData.renewalDuration,
       topics: formData.topics,
     },
-  })
-  const router = useRouter()
+  });
+  const router = useRouter();
 
-  const { isSubmitting } = form.formState
-  const createEducation = api.education.list.create.useMutation()
-  const updateEducation = api.education.list.update.useMutation()
+  const { isSubmitting } = form.formState;
+  const createEducation = api.education.list.create.useMutation();
+  const updateEducation = api.education.list.update.useMutation();
 
   // Handle form submission
   const handleSubmit = async () => {
-    const data = form.getValues()
+    const data = form.getValues();
     const formData: EducationFormData = {
       type: data.type,
       title: data.title,
@@ -63,23 +63,23 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
       renewalDuration: data.renewalDuration,
       topics: data.topics,
       ...(id && { id }),
-    }
+    };
 
     try {
       if (id === 'create') {
-        await createEducation.mutateAsync(formData)
+        await createEducation.mutateAsync(formData);
       } else {
-        await updateEducation.mutateAsync(formData)
+        await updateEducation.mutateAsync(formData);
       }
 
-      router.push('/educations/list')
+      router.push('/educations/list');
     } catch (error) {
       console.error(
         `Failed to ${id === 'create' ? 'create' : 'update'} education:`,
         error,
-      )
+      );
     }
-  }
+  };
 
   return (
     <FormComponent form={form} onSubmit={handleSubmit}>
@@ -166,7 +166,7 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
         <span>{id === 'create' ? 'Kreiraj edukaciju' : 'Spremi promjene'}</span>
       </Button>
     </FormComponent>
-  )
-}
+  );
+};
 
-export default EducationForm
+export default EducationForm;

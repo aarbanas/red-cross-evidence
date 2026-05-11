@@ -1,35 +1,35 @@
-'use client'
-import moment from 'moment'
-import { useRouter } from 'next/navigation'
-import { type FC, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { translateEducationType } from '~/app/(pages)/educations/utils'
-import { Button } from '~/components/atoms/Button'
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent'
-import FormDatePicker from '~/components/organisms/form/formDatePicker/FormDatePicker'
-import FormInput from '~/components/organisms/form/formInput/FormInput'
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect'
-import FormTextArea from '~/components/organisms/form/formTextArea/FormTextArea'
-import { EducationType } from '~/server/db/schema'
-import { api } from '~/trpc/react'
+'use client';
+import moment from 'moment';
+import { useRouter } from 'next/navigation';
+import { type FC, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { translateEducationType } from '~/app/(pages)/educations/utils';
+import { Button } from '~/components/atoms/Button';
+import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
+import FormDatePicker from '~/components/organisms/form/formDatePicker/FormDatePicker';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import FormTextArea from '~/components/organisms/form/formTextArea/FormTextArea';
+import { EducationType } from '~/server/db/schema';
+import { api } from '~/trpc/react';
 
 export type EducationTermFormData = {
-  id?: string
-  title: string
-  dateFrom: string
-  dateTo: string
-  maxParticipants: number
-  lecturers: string
-  location: string
-  educationId: string
-}
+  id?: string;
+  title: string;
+  dateFrom: string;
+  dateTo: string;
+  maxParticipants: number;
+  lecturers: string;
+  location: string;
+  educationId: string;
+};
 
 type Props = {
-  action: 'create' | 'update'
-  formData?: Partial<EducationTermFormData>
-  educationTermId?: string | string[]
-  educationTypes: { type: string }[]
-}
+  action: 'create' | 'update';
+  formData?: Partial<EducationTermFormData>;
+  educationTermId?: string | string[];
+  educationTypes: { type: string }[];
+};
 
 const EducationsTermForm: FC<Props> = ({
   action,
@@ -47,35 +47,35 @@ const EducationsTermForm: FC<Props> = ({
       location: formData?.location ?? '',
       educationId: formData?.educationId ?? '',
     },
-  })
+  });
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const { watch, setValue } = form
-  const { isSubmitting } = form.formState
-  const educationType = watch('type', EducationType.VOLUNTEERS)
-  const createEducationTerm = api.education.term.create.useMutation()
-  const updateEducationTerm = api.education.term.update.useMutation()
+  const { watch, setValue } = form;
+  const { isSubmitting } = form.formState;
+  const educationType = watch('type', EducationType.VOLUNTEERS);
+  const createEducationTerm = api.education.term.create.useMutation();
+  const updateEducationTerm = api.education.term.update.useMutation();
   const { data: educations } = api.education.list.getAllTitles.useQuery(
     action === 'create' ? educationType : undefined,
-  )
+  );
 
   useEffect(() => {
     if (action === 'update') {
       const education = educations?.find(
         (education) => education.id === formData?.educationId,
-      )
+      );
 
       setValue(
         'type',
         (education?.type as EducationType) ?? EducationType.VOLUNTEERS,
-      )
+      );
     }
-  }, [action, educations, formData?.educationId, setValue])
+  }, [action, educations, formData?.educationId, setValue]);
 
   // Handle form submission
   const handleSubmit = async () => {
-    const data = form.getValues()
+    const data = form.getValues();
 
     try {
       const formData: EducationTermFormData = {
@@ -87,21 +87,21 @@ const EducationsTermForm: FC<Props> = ({
         location: data.location,
         educationId: data.educationId,
         ...(educationTermId && { id: educationTermId as string }),
-      }
+      };
       if (action === 'create') {
-        await createEducationTerm.mutateAsync(formData)
+        await createEducationTerm.mutateAsync(formData);
       } else if (action === 'update') {
-        await updateEducationTerm.mutateAsync(formData)
+        await updateEducationTerm.mutateAsync(formData);
       }
 
-      router.push('/educations/term')
+      router.push('/educations/term');
     } catch (error) {
       console.error(
         `Failed to ${action === 'create' ? 'create' : 'update'} education:`,
         error,
-      )
+      );
     }
-  }
+  };
 
   return (
     <FormComponent form={form} onSubmit={handleSubmit}>
@@ -201,7 +201,7 @@ const EducationsTermForm: FC<Props> = ({
         </span>
       </Button>
     </FormComponent>
-  )
-}
+  );
+};
 
-export default EducationsTermForm
+export default EducationsTermForm;

@@ -1,21 +1,21 @@
-'use client'
-import { CirclePlus } from 'lucide-react'
-import Link from 'next/link'
-import { useMemo, useState } from 'react'
-import { translateEducationType } from '~/app/(pages)/educations/utils'
-import type { DropdownOption } from '~/components/atoms/Dropdown'
-import TabLayout from '~/components/layout/tabLayout'
-import type { EducationType } from '~/server/db/schema'
-import { api } from '~/trpc/react'
-import EducationsList from './EducationsList'
-import EducationsListSearch from './EducationsListSearch'
+'use client';
+import { CirclePlus } from 'lucide-react';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
+import { translateEducationType } from '~/app/(pages)/educations/utils';
+import type { DropdownOption } from '~/components/atoms/Dropdown';
+import TabLayout from '~/components/layout/tabLayout';
+import type { EducationType } from '~/server/db/schema';
+import { api } from '~/trpc/react';
+import EducationsList from './EducationsList';
+import EducationsListSearch from './EducationsListSearch';
 
 const EducationsListTab = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
     undefined,
-  )
+  );
 
-  const { data } = api.education.list.getUniqueTypes.useQuery()
+  const { data } = api.education.list.getUniqueTypes.useQuery();
   const types: DropdownOption[] | undefined = useMemo(
     () =>
       data?.map(({ type }) => ({
@@ -23,11 +23,11 @@ const EducationsListTab = () => {
         key: type,
       })),
     [data],
-  )
+  );
 
   const handleSearch = (newFilter: Record<string, string> | undefined) => {
-    setFilter(newFilter)
-  }
+    setFilter(newFilter);
+  };
 
   return (
     <TabLayout>
@@ -48,7 +48,7 @@ const EducationsListTab = () => {
 
       <EducationsList filter={filter} />
     </TabLayout>
-  )
-}
+  );
+};
 
-export default EducationsListTab
+export default EducationsListTab;

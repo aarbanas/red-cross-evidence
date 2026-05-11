@@ -1,16 +1,16 @@
-import { DrizzleAdapter } from '@auth/drizzle-adapter'
-import { compare } from 'bcrypt'
-import { eq } from 'drizzle-orm'
-import type { DefaultSession, NextAuthConfig } from 'next-auth'
-import type { Adapter } from 'next-auth/adapters'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import { db } from '~/server/db'
+import { DrizzleAdapter } from '@auth/drizzle-adapter';
+import { compare } from 'bcrypt';
+import { eq } from 'drizzle-orm';
+import type { DefaultSession, NextAuthConfig } from 'next-auth';
+import type { Adapter } from 'next-auth/adapters';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { db } from '~/server/db';
 import {
   accounts,
   sessions,
   users,
   verificationTokens,
-} from '~/server/db/schema'
+} from '~/server/db/schema';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -21,10 +21,10 @@ import {
 declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
-      id: string
+      id: string;
       // ...other properties
       // role: UserRole;
-    } & DefaultSession['user']
+    } & DefaultSession['user'];
   }
 
   // interface User {
@@ -49,28 +49,28 @@ export const authConfig = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, _req) {
-        if (!credentials?.email || !credentials?.password) return null
+        if (!credentials?.email || !credentials?.password) return null;
 
-        const email = credentials.email as string
-        const password = credentials.password as string
+        const email = credentials.email as string;
+        const password = credentials.password as string;
 
         const [user] = await db
           .select()
           .from(users)
           .where(eq(users.email, email))
-          .limit(1)
+          .limit(1);
 
-        if (!user?.active || !user?.password) return null
+        if (!user?.active || !user?.password) return null;
 
-        const isValid = await compare(password, user.password)
-        if (!isValid) return null
+        const isValid = await compare(password, user.password);
+        if (!isValid) return null;
 
         // Return user object with required fields for NextAuth
         return {
           id: user.id,
           email: user.email,
           name: user.email, // Use email as name if no name field exists
-        }
+        };
       },
     }),
     /**
@@ -92,10 +92,10 @@ export const authConfig = {
   callbacks: {
     jwt: ({ token, user }) => {
       if (user) {
-        token.sub = user.id
+        token.sub = user.id;
       }
 
-      return token
+      return token;
     },
     session: ({ session, token }) => ({
       ...session,
@@ -105,4 +105,4 @@ export const authConfig = {
       },
     }),
   },
-} satisfies NextAuthConfig
+} satisfies NextAuthConfig;

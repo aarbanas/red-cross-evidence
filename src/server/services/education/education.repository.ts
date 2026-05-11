@@ -1,18 +1,18 @@
-import { asc, count, eq, gte, ilike, type SQL } from 'drizzle-orm'
-import type { EducationFormData } from '~/app/(pages)/educations/list/[id]/_components/EducationsForm'
-import type { EducationTermFormData } from '~/app/(pages)/educations/term/_components/EducationsTermForm'
-import { db } from '~/server/db'
+import { asc, count, eq, gte, ilike, type SQL } from 'drizzle-orm';
+import type { EducationFormData } from '~/app/(pages)/educations/list/[id]/_components/EducationsForm';
+import type { EducationTermFormData } from '~/app/(pages)/educations/term/_components/EducationsTermForm';
+import { db } from '~/server/db';
 import {
   type EducationType,
   educations,
   educationTerms,
-} from '~/server/db/schema'
-import { prepareOrderBy, prepareWhere } from '~/server/db/utility'
+} from '~/server/db/schema';
+import { prepareOrderBy, prepareWhere } from '~/server/db/utility';
 import type {
   FindQueryDTO,
   FindReturn,
   FindReturnDTO,
-} from '~/server/db/utility/types'
+} from '~/server/db/utility/types';
 
 enum ListSortableKeys {
   TYPE = 'type',
@@ -39,74 +39,74 @@ enum TermFilterableKeys {
 }
 
 export type FindEducationListReturnDTO = {
-  id: string
-  type: string
-  title: string
-  description: string | null
-}
+  id: string;
+  type: string;
+  title: string;
+  description: string | null;
+};
 
 export type FindEducationTermReturnDTO = {
-  id: string
-  title: string
-  dateFrom: Date
-  dateTo: Date
-  maxParticipants: number
-  location: string
+  id: string;
+  title: string;
+  dateFrom: Date;
+  dateTo: Date;
+  maxParticipants: number;
+  location: string;
   education: {
-    id: string
-    title: string
-  } | null
-}
+    id: string;
+    title: string;
+  } | null;
+};
 
 const listMapKeyToColumn = (key: string | undefined) => {
   switch (key as ListSortableKeys) {
     case ListSortableKeys.TYPE:
-      return educations.type
+      return educations.type;
     case ListSortableKeys.TITLE:
-      return educations.title
+      return educations.title;
     default:
-      return educations.id
+      return educations.id;
   }
-}
+};
 
 const termMapKeyToColumn = (key: string | undefined) => {
   switch (key as TermSortableKeys) {
     case TermSortableKeys.EDUCATION_ID:
-      return educationTerms.educationId
+      return educationTerms.educationId;
     case TermSortableKeys.TITLE:
-      return educationTerms.title
+      return educationTerms.title;
     case TermSortableKeys.DATE_FROM:
-      return educationTerms.dateFrom
+      return educationTerms.dateFrom;
     case TermSortableKeys.DATE_TO:
-      return educationTerms.dateTo
+      return educationTerms.dateTo;
     default:
-      return educationTerms.id
+      return educationTerms.id;
   }
-}
+};
 
 const listMapFilterableKeyToConditional = (
   key: string,
   value: string,
 ): SQL | undefined => {
   if (key === ListFilterableKeys.TITLE.valueOf())
-    return ilike(listMapKeyToColumn(key), `%${value}%`)
+    return ilike(listMapKeyToColumn(key), `%${value}%`);
 
   if (key === ListFilterableKeys.TYPE.valueOf() && value)
-    return eq(listMapKeyToColumn(key), value)
+    return eq(listMapKeyToColumn(key), value);
 
-  return undefined
-}
+  return undefined;
+};
 
 const termMapFilterableKeyToConditional = (
   key: string,
   value: string,
 ): SQL | undefined => {
   if (key === TermFilterableKeys.TITLE.valueOf()) {
-    return ilike(termMapKeyToColumn(key), `%${value}%`)
+    return ilike(termMapKeyToColumn(key), `%${value}%`);
   }
 
   if (key === TermFilterableKeys.EDUCATION_ID.valueOf() && value) {
-    return eq(termMapKeyToColumn(key), value)
+    return eq(termMapKeyToColumn(key), value);
   }
 
   if (
@@ -114,36 +114,36 @@ const termMapFilterableKeyToConditional = (
       key === TermFilterableKeys.DATE_TO.valueOf()) &&
     value
   ) {
-    return gte(termMapKeyToColumn(key), new Date(value))
+    return gte(termMapKeyToColumn(key), new Date(value));
   }
 
-  return undefined
-}
+  return undefined;
+};
 
 const educationRepository = {
   list: {
     find: async (
       data: FindQueryDTO,
     ): Promise<FindReturn<FindEducationListReturnDTO>> => {
-      const { page, limit, sort, filter } = data
+      const { page, limit, sort, filter } = data;
       const orderBy = prepareOrderBy(
         listMapKeyToColumn,
         ListSortableKeys,
         educations.title,
         sort,
-      )
+      );
       const where = prepareWhere(
         filter,
         ListFilterableKeys,
         listMapFilterableKeyToConditional,
-      )
+      );
 
       const { totalCount, returnData } = await db.transaction(
         async (tx): Promise<FindReturnDTO<FindEducationListReturnDTO>> => {
           const [totalCount] = await tx
             .select({ count: count() })
             .from(educations)
-            .where(where)
+            .where(where);
 
           const returnData = await tx
             .select({
@@ -156,11 +156,11 @@ const educationRepository = {
             .where(where)
             .orderBy(...orderBy)
             .limit(limit ?? 10)
-            .offset(page ? Number(page) * (limit ?? 10) : 0)
+            .offset(page ? Number(page) * (limit ?? 10) : 0);
 
-          return { totalCount: totalCount?.count ?? 0, returnData }
+          return { totalCount: totalCount?.count ?? 0, returnData };
         },
-      )
+      );
 
       return {
         data: returnData,
@@ -168,7 +168,7 @@ const educationRepository = {
           count: totalCount,
           limit: limit ?? 10,
         },
-      }
+      };
     },
     findById: async (id: string) => {
       return db
@@ -185,17 +185,17 @@ const educationRepository = {
         })
         .from(educations)
         .where(eq(educations.id, id))
-        .execute()
+        .execute();
     },
     findUniqueTypes: async () => {
       return db
         .selectDistinct({ type: educations.type })
         .from(educations)
         .orderBy(asc(educations.type))
-        .execute()
+        .execute();
     },
     deleteById: async (id: string) => {
-      return db.delete(educations).where(eq(educations.id, id)).execute()
+      return db.delete(educations).where(eq(educations.id, id)).execute();
     },
     create: async (data: EducationFormData) => {
       const {
@@ -208,7 +208,7 @@ const educationRepository = {
         courseDuration,
         renewalDuration,
         topics,
-      } = data
+      } = data;
 
       return db
         .insert(educations)
@@ -235,7 +235,7 @@ const educationRepository = {
           renewalDuration: educations.renewalDuration,
           topics: educations.topics,
         })
-        .execute()
+        .execute();
     },
     update: async (data: EducationFormData) => {
       const {
@@ -249,7 +249,7 @@ const educationRepository = {
         courseDuration,
         renewalDuration,
         topics,
-      } = data
+      } = data;
 
       return db
         .update(educations)
@@ -277,7 +277,7 @@ const educationRepository = {
           renewalDuration: educations.renewalDuration,
           topics: educations.topics,
         })
-        .execute()
+        .execute();
     },
     getAllTitles: async (type?: EducationType) => {
       return db
@@ -289,32 +289,32 @@ const educationRepository = {
         .from(educations)
         .where(type ? eq(educations.type, type) : undefined)
         .orderBy(asc(educations.title))
-        .execute()
+        .execute();
     },
   },
   term: {
     find: async (
       data: FindQueryDTO,
     ): Promise<FindReturn<FindEducationTermReturnDTO>> => {
-      const { page, limit, sort, filter } = data
+      const { page, limit, sort, filter } = data;
       const orderBy = prepareOrderBy(
         termMapKeyToColumn,
         TermSortableKeys,
         educationTerms.dateFrom,
         sort,
-      )
+      );
       const where = prepareWhere(
         filter,
         TermFilterableKeys,
         termMapFilterableKeyToConditional,
-      )
+      );
 
       const { totalCount, returnData } = await db.transaction(
         async (tx): Promise<FindReturnDTO<FindEducationTermReturnDTO>> => {
           const [totalCount] = await tx
             .select({ count: count() })
             .from(educationTerms)
-            .where(where)
+            .where(where);
 
           const returnData = await tx
             .select({
@@ -334,11 +334,11 @@ const educationRepository = {
             .leftJoin(educations, eq(educationTerms.educationId, educations.id))
             .orderBy(...orderBy)
             .limit(limit ?? 10)
-            .offset(page ? Number(page) * (limit ?? 10) : 0)
+            .offset(page ? Number(page) * (limit ?? 10) : 0);
 
-          return { totalCount: totalCount?.count ?? 0, returnData }
+          return { totalCount: totalCount?.count ?? 0, returnData };
         },
-      )
+      );
 
       return {
         data: returnData,
@@ -346,7 +346,7 @@ const educationRepository = {
           count: totalCount,
           limit: limit ?? 10,
         },
-      }
+      };
     },
     findById: async (id: string) => {
       return db
@@ -365,13 +365,13 @@ const educationRepository = {
         .from(educationTerms)
         .where(eq(educationTerms.id, id))
         .leftJoin(educations, eq(educationTerms.educationId, educations.id))
-        .execute()
+        .execute();
     },
     deleteById: async (id: string) => {
       return db
         .delete(educationTerms)
         .where(eq(educationTerms.id, id))
-        .execute()
+        .execute();
     },
     create: async (data: EducationTermFormData) => {
       const {
@@ -382,7 +382,7 @@ const educationRepository = {
         location,
         educationId,
         lecturers,
-      } = data
+      } = data;
 
       return db
         .insert(educationTerms)
@@ -405,7 +405,7 @@ const educationRepository = {
           lecturers: educationTerms.lecturers,
           educationId: educationTerms.educationId,
         })
-        .execute()
+        .execute();
     },
     update: async (data: EducationTermFormData) => {
       const {
@@ -417,10 +417,10 @@ const educationRepository = {
         location,
         educationId,
         lecturers,
-      } = data
+      } = data;
 
       if (!id) {
-        throw new Error('Id is required for updating education term')
+        throw new Error('Id is required for updating education term');
       }
 
       return db
@@ -445,9 +445,9 @@ const educationRepository = {
           lecturers: educationTerms.lecturers,
           educationId: educationTerms.educationId,
         })
-        .execute()
+        .execute();
     },
   },
-}
+};
 
-export default educationRepository
+export default educationRepository;

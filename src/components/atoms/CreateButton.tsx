@@ -1,12 +1,12 @@
-import { CirclePlusIcon } from 'lucide-react'
-import type React from 'react'
-import { Button } from '~/components/atoms/Button'
+import { CirclePlusIcon } from 'lucide-react';
+import type React from 'react';
+import { Button } from '~/components/atoms/Button';
 
 type Props = {
-  onClick: () => void
-  title: string
-  className?: string
-}
+  onClick: () => void;
+  title: string;
+  className?: string;
+};
 
 const CreateButton: React.FC<Props> = ({ onClick, title, className }) => {
   return (
@@ -17,7 +17,7 @@ const CreateButton: React.FC<Props> = ({ onClick, title, className }) => {
       <CirclePlusIcon className="mr-2 h-5 w-5" />
       {title}
     </Button>
-  )
-}
+  );
+};
 
-export default CreateButton
+export default CreateButton;

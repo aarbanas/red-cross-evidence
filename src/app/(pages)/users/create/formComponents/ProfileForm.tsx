@@ -1,26 +1,26 @@
-import { useFormContext } from 'react-hook-form'
-import { translateSex } from '~/app/(pages)/users/create/utils'
-import FormInput from '~/components/organisms/form/formInput/FormInput'
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect'
-import { Sex } from '~/server/db/schema'
+import { useFormContext } from 'react-hook-form';
+import { translateSex } from '~/app/(pages)/users/create/utils';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import { Sex } from '~/server/db/schema';
 
 export type ProfileFormProps = {
   profile: {
-    firstName: string
-    lastName: string
-    email: string
-    phone: string
-    oib: string
-    sex: string
-    parentName: string
-    nationality: string
-    birthDate: string
-    birthPlace: string
-  }
-}
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    oib: string;
+    sex: string;
+    parentName: string;
+    nationality: string;
+    birthDate: string;
+    birthPlace: string;
+  };
+};
 
 export const ProfileForm = () => {
-  const { register } = useFormContext()
+  const { register } = useFormContext();
 
   return (
     <>
@@ -118,5 +118,5 @@ export const ProfileForm = () => {
         />
       </div>
     </>
-  )
-}
+  );
+};

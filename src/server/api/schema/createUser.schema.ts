@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 const createUserSchema = z.object({
   profile: z.object({
@@ -83,6 +83,6 @@ const createUserSchema = z.object({
       )
       .optional(),
   }),
-})
+});
 
-export default createUserSchema
+export default createUserSchema;

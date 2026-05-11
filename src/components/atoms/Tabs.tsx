@@ -1,26 +1,26 @@
-import { usePathname, useRouter } from 'next/navigation'
-import { type FC, useState } from 'react'
-import { cn } from '~/components/utils'
+import { usePathname, useRouter } from 'next/navigation';
+import { type FC, useState } from 'react';
+import { cn } from '~/components/utils';
 
 type Props = {
-  tabs: TabProp[]
-}
+  tabs: TabProp[];
+};
 
 export type TabProp = {
-  label: string
-  link: string
-}
+  label: string;
+  link: string;
+};
 
 const Tabs: FC<Props> = ({ tabs }: Props) => {
-  const router = useRouter()
-  const pathname = usePathname()
+  const router = useRouter();
+  const pathname = usePathname();
   const [activeTab, setActiveTab] = useState<string>(() => {
-    const activeTab = tabs.find((tab) => pathname.includes(tab.link))
-    return activeTab ? activeTab.link : tabs[0]!.link
-  })
+    const activeTab = tabs.find((tab) => pathname.includes(tab.link));
+    return activeTab ? activeTab.link : tabs[0]!.link;
+  });
 
   if (!tabs || tabs.length === 0) {
-    return <div className="text-center text-gray-500">No tabs provided</div>
+    return <div className="text-center text-gray-500">No tabs provided</div>;
   }
 
   return (
@@ -31,8 +31,8 @@ const Tabs: FC<Props> = ({ tabs }: Props) => {
             type="button"
             key={tab.link}
             onClick={() => {
-              setActiveTab(tab.link)
-              router.push(`/educations/${tab.link}`)
+              setActiveTab(tab.link);
+              router.push(`/educations/${tab.link}`);
             }}
             className={cn(
               'cursor-pointer rounded-lg py-2 text-sm font-medium',
@@ -49,7 +49,7 @@ const Tabs: FC<Props> = ({ tabs }: Props) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Tabs
+export default Tabs;

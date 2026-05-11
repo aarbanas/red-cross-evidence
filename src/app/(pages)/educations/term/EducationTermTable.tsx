@@ -1,10 +1,10 @@
-import { Pencil, Trash2 } from 'lucide-react'
-import moment from 'moment'
-import Link from 'next/link'
-import { type FC, useState } from 'react'
-import { Button } from '~/components/atoms/Button'
-import Modal from '~/components/organisms/modal/Modal'
-import PaginationComponent from '~/components/organisms/pagination/PaginationComponent'
+import { Pencil, Trash2 } from 'lucide-react';
+import moment from 'moment';
+import Link from 'next/link';
+import { type FC, useState } from 'react';
+import { Button } from '~/components/atoms/Button';
+import Modal from '~/components/organisms/modal/Modal';
+import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
 import {
   Table,
   TableBody,
@@ -12,44 +12,44 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '~/components/organisms/Table'
-import type { FindEducationTermReturnDTO } from '~/server/services/education/education.repository'
-import { api } from '~/trpc/react'
+} from '~/components/organisms/Table';
+import type { FindEducationTermReturnDTO } from '~/server/services/education/education.repository';
+import { api } from '~/trpc/react';
 
 type Props = {
-  data?: FindEducationTermReturnDTO[]
-  totalPageNumber: number
-  refetch: () => void
-}
+  data?: FindEducationTermReturnDTO[];
+  totalPageNumber: number;
+  refetch: () => void;
+};
 
 const EducationTermTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const deleteEducationTerm = api.education.term.deleteById.useMutation()
+  const deleteEducationTerm = api.education.term.deleteById.useMutation();
 
   const openModal = (id: string) => {
-    setIsModalOpen(true)
-    setSelectedId(id)
-  }
+    setIsModalOpen(true);
+    setSelectedId(id);
+  };
 
   const closeModal = () => {
-    setIsModalOpen(false)
-    setSelectedId(null)
-  }
+    setIsModalOpen(false);
+    setSelectedId(null);
+  };
 
   const handleDelete = async () => {
-    if (!selectedId) return
+    if (!selectedId) return;
 
     try {
-      await deleteEducationTerm.mutateAsync({ id: selectedId })
+      await deleteEducationTerm.mutateAsync({ id: selectedId });
 
-      refetch()
-      setIsModalOpen(false)
+      refetch();
+      setIsModalOpen(false);
     } catch (error) {
-      console.error('Failed to delete education:', error)
+      console.error('Failed to delete education:', error);
     }
-  }
+  };
 
   return (
     <>
@@ -123,7 +123,7 @@ const EducationTermTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
         </div>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default EducationTermTable
+export default EducationTermTable;

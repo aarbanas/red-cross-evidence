@@ -1,24 +1,24 @@
-import crypto from 'node:crypto'
-import bcrypt from 'bcrypt'
+import crypto from 'node:crypto';
+import bcrypt from 'bcrypt';
 
-const SALT_ROUNDS = 10
+const SALT_ROUNDS = 10;
 
 /**
  * Generate a random password and return the hashed version
  * @returns Promise<{password: string, hashedPassword: string}>
  */
 export const generateRandomHashedPassword = async (): Promise<{
-  password: string
-  hashedPassword: string
+  password: string;
+  hashedPassword: string;
 }> => {
   // Generate a random password (16 characters, alphanumeric + special chars)
-  const password = crypto.randomBytes(12).toString('base64')
+  const password = crypto.randomBytes(12).toString('base64');
 
   // Hash the password
-  const hashedPassword = await hashPassword(password)
+  const hashedPassword = await hashPassword(password);
 
-  return { password, hashedPassword }
-}
+  return { password, hashedPassword };
+};
 
 /**
  * Hash a password
@@ -26,8 +26,8 @@ export const generateRandomHashedPassword = async (): Promise<{
  * @returns Promise<string> - The hashed password
  */
 export const hashPassword = async (password: string): Promise<string> => {
-  return bcrypt.hash(password, SALT_ROUNDS)
-}
+  return bcrypt.hash(password, SALT_ROUNDS);
+};
 
 /**
  * Compare a password with a hashed password
@@ -39,5 +39,5 @@ export const comparePasswords = async (
   password: string,
   hashedPassword: string,
 ): Promise<boolean> => {
-  return bcrypt.compare(password, hashedPassword)
-}
+  return bcrypt.compare(password, hashedPassword);
+};

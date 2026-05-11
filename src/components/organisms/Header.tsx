@@ -1,5 +1,5 @@
-import type React from 'react'
-import type { PropsWithChildren } from 'react'
+import type React from 'react';
+import type { PropsWithChildren } from 'react';
 
 const Header: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -9,7 +9,7 @@ const Header: React.FC<PropsWithChildren> = ({ children }) => {
     >
       {children}
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

@@ -1,10 +1,10 @@
-import type { z } from 'zod'
-import type { createUserSchema } from '~/server/api/schema'
+import type { z } from 'zod';
+import type { createUserSchema } from '~/server/api/schema';
 
-export type CreateUserDTO = z.infer<typeof createUserSchema>
+export type CreateUserDTO = z.infer<typeof createUserSchema>;
 
 export type CreateUserAddressesDTO = z.infer<
   typeof createUserSchema
->['addresses']
+>['addresses'];
 
-export type CreateUserAddressIdsDTO = { addressId: string; isPrimary: boolean }
+export type CreateUserAddressIdsDTO = { addressId: string; isPrimary: boolean };

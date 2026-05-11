@@ -1,19 +1,19 @@
-import { useFormContext } from 'react-hook-form'
-import FormInput from '~/components/organisms/form/formInput/FormInput'
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect'
-import { ClothingSize } from '~/server/db/schema'
+import { useFormContext } from 'react-hook-form';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import { ClothingSize } from '~/server/db/schema';
 
 export type SizeFormProps = {
   size: {
-    clothingSize: ClothingSize
-    shoeSize: string
-    height: number
-    weight: number
-  }
-}
+    clothingSize: ClothingSize;
+    shoeSize: string;
+    height: number;
+    weight: number;
+  };
+};
 
 const SizeForm = () => {
-  const { register } = useFormContext()
+  const { register } = useFormContext();
 
   return (
     <>
@@ -29,7 +29,7 @@ const SizeForm = () => {
             <option key={key} value={value}>
               {value}
             </option>
-          )
+          );
         })}
       </FormSelect>
 
@@ -76,7 +76,7 @@ const SizeForm = () => {
         })}
       />
     </>
-  )
-}
+  );
+};
 
-export default SizeForm
+export default SizeForm;

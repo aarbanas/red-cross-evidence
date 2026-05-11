@@ -1,24 +1,24 @@
-import { useParams, useRouter } from 'next/navigation'
-import type React from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
-import { Button } from '~/components/atoms/Button'
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent'
-import FormInput from '~/components/organisms/form/formInput/FormInput'
-import FormTextArea from '~/components/organisms/form/formTextArea/FormTextArea'
-import { api } from '~/trpc/react'
+import { useParams, useRouter } from 'next/navigation';
+import type React from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { Button } from '~/components/atoms/Button';
+import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormTextArea from '~/components/organisms/form/formTextArea/FormTextArea';
+import { api } from '~/trpc/react';
 
 export type LicencesFormData = {
-  id?: string
-  name: string
-  type: string
-  description?: string
-}
+  id?: string;
+  name: string;
+  type: string;
+  description?: string;
+};
 
 type Props = {
-  action: 'create' | 'update'
-  formData?: LicencesFormData
-}
+  action: 'create' | 'update';
+  formData?: LicencesFormData;
+};
 
 const LicencesForm: React.FC<Props> = ({ action, formData }) => {
   const form = useForm<LicencesFormData>({
@@ -28,15 +28,15 @@ const LicencesForm: React.FC<Props> = ({ action, formData }) => {
       type: formData?.type ?? '',
       description: formData?.description ?? '',
     },
-  })
-  const router = useRouter()
-  const params = useParams<{ id: string }>()
-  const { isSubmitting } = form.formState
-  const createLicence = api.license.create.useMutation()
-  const updateLicence = api.license.update.useMutation()
+  });
+  const router = useRouter();
+  const params = useParams<{ id: string }>();
+  const { isSubmitting } = form.formState;
+  const createLicence = api.license.create.useMutation();
+  const updateLicence = api.license.update.useMutation();
 
   const handleSubmit = async () => {
-    const data = form.getValues()
+    const data = form.getValues();
 
     try {
       const formData: LicencesFormData = {
@@ -44,23 +44,23 @@ const LicencesForm: React.FC<Props> = ({ action, formData }) => {
         name: data.name,
         description: data.description,
         ...(params.id && { id: params.id }),
-      }
+      };
 
       if (action === 'create') {
-        await createLicence.mutateAsync(formData)
+        await createLicence.mutateAsync(formData);
       } else {
-        await updateLicence.mutateAsync(formData)
+        await updateLicence.mutateAsync(formData);
       }
 
-      router.push('/licenses')
+      router.push('/licenses');
     } catch (error) {
       if (error instanceof Error) {
-        toast(error.message, { type: 'error' })
+        toast(error.message, { type: 'error' });
       }
 
-      return
+      return;
     }
-  }
+  };
 
   return (
     <FormComponent form={form} onSubmit={handleSubmit}>
@@ -96,7 +96,7 @@ const LicencesForm: React.FC<Props> = ({ action, formData }) => {
         </span>
       </Button>
     </FormComponent>
-  )
-}
+  );
+};
 
-export default LicencesForm
+export default LicencesForm;

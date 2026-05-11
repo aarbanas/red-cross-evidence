@@ -1,7 +1,7 @@
-import { Pencil } from 'lucide-react'
-import Link from 'next/link'
-import type { FC } from 'react'
-import PaginationComponent from '~/components/organisms/pagination/PaginationComponent'
+import { Pencil } from 'lucide-react';
+import Link from 'next/link';
+import type { FC } from 'react';
+import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
 import {
   Table,
   TableBody,
@@ -9,17 +9,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '~/components/organisms/Table'
-import type { FindLicenseReturnDTO } from '~/server/services/license/license.repository'
+} from '~/components/organisms/Table';
+import type { FindLicenseReturnDTO } from '~/server/services/license/license.repository';
 
 type Props = {
-  data?: FindLicenseReturnDTO[]
-  totalPageNumber: number
-}
+  data?: FindLicenseReturnDTO[];
+  totalPageNumber: number;
+};
 
 const LicencesTable: FC<Props> = ({ data, totalPageNumber }) => {
   if (!data?.length) {
-    return <div>Nema rezultata</div>
+    return <div>Nema rezultata</div>;
   }
 
   return (
@@ -58,7 +58,7 @@ const LicencesTable: FC<Props> = ({ data, totalPageNumber }) => {
       </div>
       <PaginationComponent totalPageNumber={totalPageNumber} />
     </>
-  )
-}
+  );
+};
 
-export default LicencesTable
+export default LicencesTable;

@@ -1,35 +1,35 @@
-'use client'
-import { CirclePlus } from 'lucide-react'
-import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
-import { memo, useCallback, useEffect, useMemo, useState } from 'react'
-import { toast } from 'react-toastify'
-import Users from '~/app/(pages)/users/_components/Users'
-import UsersSearch from '~/app/(pages)/users/_components/UsersSearch'
-import type { DropdownOption } from '~/components/atoms/Dropdown'
-import MainLayout from '~/components/layout/mainLayout'
-import { api } from '~/trpc/react'
+'use client';
+import { CirclePlus } from 'lucide-react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
+import Users from '~/app/(pages)/users/_components/Users';
+import UsersSearch from '~/app/(pages)/users/_components/UsersSearch';
+import type { DropdownOption } from '~/components/atoms/Dropdown';
+import MainLayout from '~/components/layout/mainLayout';
+import { api } from '~/trpc/react';
 
 const UsersPage = () => {
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
     undefined,
-  )
+  );
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {
       toast('Volonter uspješno kreiran', {
         type: 'success',
-      })
+      });
 
       //remove the success param from the url
-      const url = new URL(window.location.href)
-      url.searchParams.delete('success')
-      window.history.replaceState({}, document.title, url.toString())
+      const url = new URL(window.location.href);
+      url.searchParams.delete('success');
+      window.history.replaceState({}, document.title, url.toString());
     }
-  }, [searchParams])
+  }, [searchParams]);
 
-  const { data } = api.city.findUniqueCityNames.useQuery()
+  const { data } = api.city.findUniqueCityNames.useQuery();
 
   const cities: DropdownOption[] | undefined = useMemo(
     () =>
@@ -38,11 +38,11 @@ const UsersPage = () => {
         key: city.id,
       })),
     [data],
-  )
+  );
 
   const handleSearch = useCallback((newFilter?: Record<string, string>) => {
-    setFilter(newFilter)
-  }, [])
+    setFilter(newFilter);
+  }, []);
 
   return (
     <MainLayout headerChildren={<div>Volonteri</div>}>
@@ -64,7 +64,7 @@ const UsersPage = () => {
 
       <Users filter={filter} />
     </MainLayout>
-  )
-}
+  );
+};
 
-export default memo(UsersPage)
+export default memo(UsersPage);

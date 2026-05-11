@@ -1,10 +1,10 @@
-import type { FC } from 'react'
-import styles from './LoadingSpinner.module.css'
+import type { FC } from 'react';
+import styles from './LoadingSpinner.module.css';
 
 type LoadingSpinnerProps = {
-  size?: number
-  color?: '#ffffff' | '#de3333'
-}
+  size?: number;
+  color?: '#ffffff' | '#de3333';
+};
 
 const LoadingSpinner: FC<LoadingSpinnerProps> = ({
   size = 32,
@@ -47,7 +47,7 @@ const LoadingSpinner: FC<LoadingSpinnerProps> = ({
         </g>
       </svg>
     </div>
-  )
-}
+  );
+};
 
-export default LoadingSpinner
+export default LoadingSpinner;

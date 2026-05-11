@@ -1,6 +1,6 @@
-import type { Config } from 'drizzle-kit'
+import type { Config } from 'drizzle-kit';
 
-import { env } from '~/env'
+import { env } from '~/env';
 
 export default {
   out: './drizzle',
@@ -11,4 +11,4 @@ export default {
   },
   verbose: true,
   strict: true,
-} satisfies Config
+} satisfies Config;

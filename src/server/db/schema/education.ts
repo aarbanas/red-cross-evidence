@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm'
+import { relations } from 'drizzle-orm';
 import {
   integer,
   pgEnum,
@@ -8,8 +8,8 @@ import {
   timestamp,
   uuid,
   varchar,
-} from 'drizzle-orm/pg-core'
-import { profiles } from '~/server/db/schema/user'
+} from 'drizzle-orm/pg-core';
+import { profiles } from '~/server/db/schema/user';
 
 export enum EducationType {
   VOLUNTEERS = 'Volunteers',
@@ -20,7 +20,7 @@ export enum EducationType {
 export const educationTypeEnum = pgEnum(
   'educationtypeenum',
   Object.values(EducationType) as [string, ...string[]],
-)
+);
 
 export const educations = pgTable('education', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -33,11 +33,11 @@ export const educations = pgTable('education', {
   renewalDuration: varchar('renewal_duration', { length: 255 }),
   topics: varchar('topics', { length: 255 }),
   type: educationTypeEnum('type').notNull(),
-})
+});
 
 export const educationsRelations = relations(educations, ({ many }) => ({
   educationTerms: many(educationTerms),
-}))
+}));
 
 export const educationTerms = pgTable('education_term', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -50,7 +50,7 @@ export const educationTerms = pgTable('education_term', {
   educationId: uuid('education_id')
     .notNull()
     .references(() => educations.id, { onDelete: 'cascade' }),
-})
+});
 
 export const educationTermsRelations = relations(
   educationTerms,
@@ -62,7 +62,7 @@ export const educationTermsRelations = relations(
     }),
     profileEducationTerms: many(profileEducationTerms),
   }),
-)
+);
 
 export const profileEducationTerms = pgTable(
   'profile_education_term',
@@ -78,7 +78,7 @@ export const profileEducationTerms = pgTable(
   (table) => ({
     pk: primaryKey({ columns: [table.profileId, table.educationTermId] }),
   }),
-)
+);
 
 export const profileEducationTermsRelations = relations(
   profileEducationTerms,
@@ -94,4 +94,4 @@ export const profileEducationTermsRelations = relations(
       references: [educationTerms.id],
     }),
   }),
-)
+);

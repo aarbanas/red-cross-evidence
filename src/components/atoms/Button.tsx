@@ -1,9 +1,9 @@
-import { Slot } from '@radix-ui/react-slot'
-import { cva, type VariantProps } from 'class-variance-authority'
-import * as React from 'react'
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner'
-import { cn } from '~/components/utils'
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import { cn } from '~/components/utils';
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
@@ -30,14 +30,14 @@ const buttonVariants = cva(
       size: 'default',
     },
   },
-)
+);
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean
-  showLoading?: boolean
-  children?: React.ReactNode
+  asChild?: boolean;
+  showLoading?: boolean;
+  children?: React.ReactNode;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -53,7 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    const Comp = asChild ? Slot : 'button'
+    const Comp = asChild ? Slot : 'button';
 
     return (
       <Comp
@@ -64,9 +64,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {showLoading && <LoadingSpinner size={24} />}
         {children}
       </Comp>
-    )
+    );
   },
-)
-Button.displayName = 'Button'
+);
+Button.displayName = 'Button';
 
-export { Button, buttonVariants }
+export { Button, buttonVariants };

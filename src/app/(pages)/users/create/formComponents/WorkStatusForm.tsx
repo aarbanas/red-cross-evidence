@@ -1,23 +1,23 @@
-import { useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form';
 import {
   translateEducationLevel,
   translateWorkStatus,
-} from '~/app/(pages)/users/create/utils'
-import FormInput from '~/components/organisms/form/formInput/FormInput'
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect'
-import { EducationLevel, WorkStatus } from '~/server/db/schema'
+} from '~/app/(pages)/users/create/utils';
+import FormInput from '~/components/organisms/form/formInput/FormInput';
+import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import { EducationLevel, WorkStatus } from '~/server/db/schema';
 
 export type WorkStatusFormProps = {
   workStatus: {
-    status: WorkStatus
-    educationLevel: EducationLevel
-    profession?: string
-    institution?: string
-  }
-}
+    status: WorkStatus;
+    educationLevel: EducationLevel;
+    profession?: string;
+    institution?: string;
+  };
+};
 
 const WorkStatusForm = () => {
-  const { register } = useFormContext()
+  const { register } = useFormContext();
 
   return (
     <>
@@ -31,7 +31,7 @@ const WorkStatusForm = () => {
             <option key={key} value={value}>
               {translateWorkStatus(value)}
             </option>
-          )
+          );
         })}
       </FormSelect>
 
@@ -45,7 +45,7 @@ const WorkStatusForm = () => {
             <option key={key} value={value}>
               {translateEducationLevel(value)}
             </option>
-          )
+          );
         })}
       </FormSelect>
 
@@ -61,7 +61,7 @@ const WorkStatusForm = () => {
         {...register('workStatus.institution')}
       />
     </>
-  )
-}
+  );
+};
 
-export default WorkStatusForm
+export default WorkStatusForm;

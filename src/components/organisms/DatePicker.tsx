@@ -1,18 +1,18 @@
-'use client'
-import { CalendarDaysIcon } from 'lucide-react'
-import moment from 'moment'
-import type React from 'react'
-import { useState } from 'react'
-import { Input } from '~/components/atoms/Input'
+'use client';
+import { CalendarDaysIcon } from 'lucide-react';
+import moment from 'moment';
+import type React from 'react';
+import { useState } from 'react';
+import { Input } from '~/components/atoms/Input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '~/components/atoms/Popover'
-import { Calendar } from '~/components/organisms/Calendar'
+} from '~/components/atoms/Popover';
+import { Calendar } from '~/components/organisms/Calendar';
 
 const DatePicker: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
   return (
     <Popover>
@@ -36,7 +36,7 @@ const DatePicker: React.FC = () => {
         <Calendar mode="single" onSelect={(date) => setSelectedDate(date)} />
       </PopoverContent>
     </Popover>
-  )
-}
+  );
+};
 
-export default DatePicker
+export default DatePicker;

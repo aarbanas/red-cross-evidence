@@ -1,33 +1,33 @@
 const isOibValid = (input: string): boolean => {
-  const oib = input.toString()
+  const oib = input.toString();
 
   if (/\d{11}/.exec(oib) === null) {
-    return false
+    return false;
   }
 
-  let calculated = 10
+  let calculated = 10;
 
   for (const digit of oib.substring(0, 10)) {
-    calculated += parseInt(digit, 10)
+    calculated += parseInt(digit, 10);
 
-    calculated %= 10
+    calculated %= 10;
 
     if (calculated === 0) {
-      calculated = 10
+      calculated = 10;
     }
 
-    calculated *= 2
+    calculated *= 2;
 
-    calculated %= 11
+    calculated %= 11;
   }
 
-  let check = 11 - calculated
+  let check = 11 - calculated;
 
   if (check === 10) {
-    check = 0
+    check = 0;
   }
 
-  return check === parseInt(oib[10]!, 10)
-}
+  return check === parseInt(oib[10]!, 10);
+};
 
-export default isOibValid
+export default isOibValid;

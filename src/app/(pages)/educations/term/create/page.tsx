@@ -1,13 +1,13 @@
-'use client'
-import EducationsTermForm from '~/app/(pages)/educations/term/_components/EducationsTermForm'
-import TabLayout from '~/components/layout/tabLayout'
-import { api } from '~/trpc/react'
+'use client';
+import EducationsTermForm from '~/app/(pages)/educations/term/_components/EducationsTermForm';
+import TabLayout from '~/components/layout/tabLayout';
+import { api } from '~/trpc/react';
 
 const CreateEducationTerm = () => {
-  const { data: educationTpes } = api.education.list.getUniqueTypes.useQuery()
+  const { data: educationTpes } = api.education.list.getUniqueTypes.useQuery();
 
   if (!educationTpes?.length) {
-    return <div>No unique types found</div>
+    return <div>No unique types found</div>;
   }
 
   return (
@@ -16,7 +16,7 @@ const CreateEducationTerm = () => {
         <EducationsTermForm action={'create'} educationTypes={educationTpes} />
       </div>
     </TabLayout>
-  )
-}
+  );
+};
 
-export default CreateEducationTerm
+export default CreateEducationTerm;

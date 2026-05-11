@@ -1,12 +1,12 @@
-import * as Switch from '@radix-ui/react-switch'
-import type React from 'react'
+import * as Switch from '@radix-ui/react-switch';
+import type React from 'react';
 
 type FormSwitchProps = {
-  id: string
-  label: string
-  active: boolean
-  setActive(checked: boolean): void
-}
+  id: string;
+  label: string;
+  active: boolean;
+  setActive(checked: boolean): void;
+};
 
 const FormSwitch: React.FC<FormSwitchProps> = ({
   id,
@@ -26,7 +26,7 @@ const FormSwitch: React.FC<FormSwitchProps> = ({
         <Switch.Thumb className="shadow-blackA4 block h-[21px] w-[21px] translate-x-0.5 rounded-full bg-white shadow-[0_2px_2px] transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
       </Switch.Root>
     </div>
-  )
-}
+  );
+};
 
-export default FormSwitch
+export default FormSwitch;

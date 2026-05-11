@@ -1,17 +1,17 @@
-import { BookMarked, IdCard, Users } from 'lucide-react'
-import Link from 'next/link'
-import type React from 'react'
-import type { ReactNode } from 'react'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { usePathname } from 'next/navigation'
-import Header from '~/components/organisms/Header'
-import NewNavbar from '~/components/organisms/navbar/navbar'
+import { BookMarked, IdCard, Users } from 'lucide-react';
+import Link from 'next/link';
+import type React from 'react';
+import type { ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { usePathname } from 'next/navigation';
+import Header from '~/components/organisms/Header';
+import NewNavbar from '~/components/organisms/navbar/navbar';
 
 type Props = {
-  children: ReactNode
-  headerChildren: ReactNode
-}
+  children: ReactNode;
+  headerChildren: ReactNode;
+};
 
 enum AppRoutes {
   HOME = '/users',
@@ -39,11 +39,11 @@ const MainLayout: React.FC<Readonly<Props>> = ({
       </div>
       <ToastContainer />
     </>
-  )
-}
+  );
+};
 
 const Navigation = () => {
-  const currentPath = usePathname() as AppRoutes
+  const currentPath = usePathname() as AppRoutes;
 
   return (
     <nav className="grid items-start text-sm font-medium lg:px-4">
@@ -71,7 +71,7 @@ const Navigation = () => {
         Licence
       </Link>
     </nav>
-  )
-}
+  );
+};
 
-export default MainLayout
+export default MainLayout;

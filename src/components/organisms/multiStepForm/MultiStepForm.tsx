@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import React, { type ReactElement, useEffect, useState } from 'react'
-import { type DefaultValues, type FieldValues, useForm } from 'react-hook-form'
-import type { ZodObject } from 'zod'
-import { Button } from '~/components/atoms/Button'
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner'
-import FormComponent from '../form/formComponent/FormComponent'
+import React, { type ReactElement, useEffect, useState } from 'react';
+import { type DefaultValues, type FieldValues, useForm } from 'react-hook-form';
+import type { ZodObject } from 'zod';
+import { Button } from '~/components/atoms/Button';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import FormComponent from '../form/formComponent/FormComponent';
 
 export interface FormStep {
-  name: string
-  form: ReactElement
+  name: string;
+  form: ReactElement;
 }
 
 function generateForm<T extends FieldValues>(
@@ -19,10 +19,10 @@ function generateForm<T extends FieldValues>(
   saveToLocalStorage = false,
 ): ReactElement {
   interface FormProps {
-    forms: FormStep[]
-    schema: ZodObject<any>
-    onSubmit: (data: T) => void | Promise<void>
-    saveToLocalStorage: boolean
+    forms: FormStep[];
+    schema: ZodObject<any>;
+    onSubmit: (data: T) => void | Promise<void>;
+    saveToLocalStorage: boolean;
   }
 
   const MultiStepForm: React.FC<FormProps> = ({
@@ -31,14 +31,14 @@ function generateForm<T extends FieldValues>(
     onSubmit,
     saveToLocalStorage,
   }) => {
-    const schemaKeys: string[] = schema.keyof()._def.values
-    const numberOfFields = schemaKeys.length
+    const schemaKeys: string[] = schema.keyof()._def.values;
+    const numberOfFields = schemaKeys.length;
     if (numberOfFields !== forms.length)
-      console.error('Amount of steps and fields in schema do not match')
+      console.error('Amount of steps and fields in schema do not match');
 
-    const [currentStep, setCurrentStep] = useState(0)
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    let isLastStep = false
+    const [currentStep, setCurrentStep] = useState(0);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    let isLastStep = false;
 
     const methods = useForm<T>({
       mode: 'all',
@@ -47,59 +47,62 @@ function generateForm<T extends FieldValues>(
             localStorage.getItem('multiStepFormData') ?? '{}',
           ) as DefaultValues<T>)
         : undefined,
-    })
-    const watchedValues = methods.watch()
+    });
+    const watchedValues = methods.watch();
 
     useEffect(() => {
       if (saveToLocalStorage) {
-        localStorage.setItem('multiStepFormData', JSON.stringify(watchedValues))
+        localStorage.setItem(
+          'multiStepFormData',
+          JSON.stringify(watchedValues),
+        );
       }
-    }, [saveToLocalStorage, watchedValues])
+    }, [saveToLocalStorage, watchedValues]);
 
-    const numSteps = forms.length
+    const numSteps = forms.length;
 
     const nextStep = () => {
       if (currentStep < numSteps - 1) {
-        setCurrentStep(currentStep + 1)
-      } else isLastStep = true
-    }
+        setCurrentStep(currentStep + 1);
+      } else isLastStep = true;
+    };
 
     const prevStep = () => {
       if (currentStep > 0) {
-        setCurrentStep(currentStep - 1)
+        setCurrentStep(currentStep - 1);
       }
-    }
+    };
 
     const handleFormSubmit = async (data: T) => {
       if (isLastStep) {
-        const parse = schema.safeParse(methods.getValues())
+        const parse = schema.safeParse(methods.getValues());
         if (!parse.success) {
           // Find the first error and navigate to its step
-          const firstErrorPath = parse.error.issues[0]?.path[0]
+          const firstErrorPath = parse.error.issues[0]?.path[0];
           if (firstErrorPath) {
-            const errorStepIndex = schemaKeys.indexOf(firstErrorPath as string)
+            const errorStepIndex = schemaKeys.indexOf(firstErrorPath as string);
             if (errorStepIndex !== -1) {
-              setCurrentStep(errorStepIndex)
+              setCurrentStep(errorStepIndex);
             }
           }
 
-          return
+          return;
         }
 
         if (saveToLocalStorage) {
-          localStorage.removeItem('multiStepFormData')
+          localStorage.removeItem('multiStepFormData');
         }
 
-        setIsSubmitting(true)
+        setIsSubmitting(true);
         try {
-          await onSubmit(data)
+          await onSubmit(data);
         } finally {
-          setIsSubmitting(false)
+          setIsSubmitting(false);
         }
       }
-    }
+    };
 
-    const progressPercentage = ((currentStep + 1) / numSteps) * 100
+    const progressPercentage = ((currentStep + 1) / numSteps) * 100;
 
     return (
       <div className="relative mx-auto flex w-full flex-col items-center rounded-lg border bg-white p-4">
@@ -161,8 +164,8 @@ function generateForm<T extends FieldValues>(
           </FormComponent>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <MultiStepForm
@@ -171,7 +174,7 @@ function generateForm<T extends FieldValues>(
       schema={schema}
       saveToLocalStorage={saveToLocalStorage}
     />
-  )
+  );
 }
 
-export default generateForm
+export default generateForm;

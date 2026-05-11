@@ -1,13 +1,18 @@
-import { type FC, type MouseEvent, type PropsWithChildren, useRef } from 'react'
-import { classNames } from '~/components/utils'
-import styles from './Modal.module.css'
+import {
+  type FC,
+  type MouseEvent,
+  type PropsWithChildren,
+  useRef,
+} from 'react';
+import { classNames } from '~/components/utils';
+import styles from './Modal.module.css';
 
 type Props = {
-  isOpen: boolean
-  onClose: () => void
-  className?: string
-  persistent?: boolean
-}
+  isOpen: boolean;
+  onClose: () => void;
+  className?: string;
+  persistent?: boolean;
+};
 
 const Modal: FC<PropsWithChildren<Props>> = ({
   children,
@@ -16,17 +21,17 @@ const Modal: FC<PropsWithChildren<Props>> = ({
   className = '',
   persistent = false,
 }) => {
-  const overlayRef = useRef<HTMLDivElement | null>(null)
+  const overlayRef = useRef<HTMLDivElement | null>(null);
 
   if (!isOpen) {
-    return null
+    return null;
   }
 
   const handleClose = (e: MouseEvent<HTMLDivElement>) => {
     if (overlayRef?.current === e.target && !persistent) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: modal backdrop closes on click by design
@@ -54,7 +59,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
         {children}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;
