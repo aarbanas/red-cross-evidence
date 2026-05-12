@@ -65,7 +65,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-medium">Adrese</h3>
+        <h3 className="font-medium text-lg">Adrese</h3>
         <Button
           type="button"
           onClick={addNewAddress}

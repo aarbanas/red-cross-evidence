@@ -31,6 +31,9 @@ const licenseService = {
   findAll: async () => {
     return licenseRepository.findAll();
   },
+  delete: async (id: string) => {
+    return licenseRepository.deleteById(id);
+  },
 };
 
 const prettifyLicenseName = (name: string) => {

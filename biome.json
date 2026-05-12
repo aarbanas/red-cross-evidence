@@ -29,6 +29,15 @@
       "style": {
         "useImportType": "warn",
         "noNonNullAssertion": "off"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {
+            "functions": ["cn", "classNames", "clsx", "cva"]
+          }
+        }
       }
     }
   },

@@ -25,7 +25,7 @@ const Tabs: FC<Props> = ({ tabs }: Props) => {
 
   return (
     <div className="w-full">
-      <div className="flex gap-10 border-b border-gray-200">
+      <div className="flex gap-10 border-gray-200 border-b">
         {tabs.map((tab) => (
           <button
             type="button"
@@ -35,8 +35,8 @@ const Tabs: FC<Props> = ({ tabs }: Props) => {
               router.push(`/educations/${tab.link}`);
             }}
             className={cn(
-              'cursor-pointer rounded-lg py-2 text-sm font-medium',
-              'focus:ring-1 focus:ring-red-600 focus:outline-none',
+              'cursor-pointer rounded-lg py-2 font-medium text-sm',
+              'focus:outline-none focus:ring-1 focus:ring-red-600',
               activeTab === tab.link
                 ? 'border-red px-1 text-red-600'
                 : 'hover:bg-red-100',

@@ -73,7 +73,7 @@ const DateRangeFilter: FC<DateRangeFilterProps> = ({
           startDate={startDate}
           endDate={endDate}
           isClearable
-          className="rounded-md border border-gray-300 leading-none shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+          className="rounded-md border border-gray-300 leading-none shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
         />
       </div>
       <div className={cn('flex gap-2', column && 'flex-col')}>
@@ -96,7 +96,7 @@ const DateRangeFilter: FC<DateRangeFilterProps> = ({
           endDate={endDate}
           isClearable
           minDate={startDate ?? undefined}
-          className="rounded-md border border-gray-300 leading-none shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+          className="rounded-md border border-gray-300 leading-none shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
         />
       </div>
     </div>

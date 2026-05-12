@@ -37,7 +37,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
     // biome-ignore lint/a11y/noStaticElementInteractions: modal backdrop closes on click by design
     <div
       ref={overlayRef}
-      className={`${styles.overlay} bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black`}
+      className={`${styles.overlay} fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50`}
       onClick={handleClose}
       onKeyDown={(e) => e.key === 'Escape' && onClose()}
     >
@@ -45,13 +45,13 @@ const Modal: FC<PropsWithChildren<Props>> = ({
         className={classNames(
           styles.content,
           className,
-          'relative w-full max-w-lg rounded-md bg-white p-6 shadow-md',
+          'relative rounded-md bg-white p-6 shadow-md',
         )}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-2 right-2 text-xl font-bold text-black hover:text-red-500"
+          className="absolute top-2 right-2 font-bold text-black text-xl hover:text-red-500"
           aria-label="Close modal"
         >
           ×

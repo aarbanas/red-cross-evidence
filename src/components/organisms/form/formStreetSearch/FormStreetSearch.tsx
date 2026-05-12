@@ -125,14 +125,14 @@ const FormStreetSearch: React.FC<Props> = ({
         onChange={handleInputChange}
         onFocus={() => searchTerm.length > 0 && !!cityId && setIsOpen(true)}
         placeholder={'Počnite tipkati naziv ulice...'}
-        className="w-full rounded-md border-none bg-gray-100 px-3 py-4 shadow-lg focus:border-red-400 focus:ring focus:ring-red-300/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-md border-none bg-gray-100 px-3 py-4 shadow-lg focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300/40 disabled:cursor-not-allowed disabled:opacity-50"
       />
 
       {/* Dropdown */}
       {isOpen && cityId && (
         <div className="absolute top-full z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-300 bg-white shadow-lg">
           {isLoading && (
-            <div className="px-3 py-2 text-sm text-gray-500">
+            <div className="px-3 py-2 text-gray-500 text-sm">
               Pretražujem adrese...
             </div>
           )}
@@ -141,7 +141,7 @@ const FormStreetSearch: React.FC<Props> = ({
             addresses?.length === 0 &&
             debouncedSearchTerm.length > 0 && (
               <div className="space-y-2">
-                <div className="px-3 py-2 text-sm text-gray-500">
+                <div className="px-3 py-2 text-gray-500 text-sm">
                   Nema rezultata za &quot;{debouncedSearchTerm}&quot;
                 </div>
               </div>
@@ -154,13 +154,13 @@ const FormStreetSearch: React.FC<Props> = ({
               <button
                 type="button"
                 key={address.id}
-                className="w-full cursor-pointer border-b border-gray-100 px-3 py-2 text-left last:border-b-0 hover:bg-gray-100"
+                className="w-full cursor-pointer border-gray-100 border-b px-3 py-2 text-left last:border-b-0 hover:bg-gray-100"
                 onClick={() => handleAddressSelect(address)}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{address.street}</span>
+                  <span className="font-medium text-sm">{address.street}</span>
                   {address.streetNumber && (
-                    <span className="text-xs text-gray-500">
+                    <span className="text-gray-500 text-xs">
                       {address.streetNumber}
                     </span>
                   )}

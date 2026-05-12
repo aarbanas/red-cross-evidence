@@ -97,7 +97,7 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-medium">Strani jezik</h3>
+        <h3 className="font-medium text-lg">Strani jezik</h3>
         <Button
           type="button"
           onClick={addNewLanguage}
@@ -167,10 +167,10 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
         );
       })}
 
-      <hr className="my-5 border-t border-gray-300" />
+      <hr className="my-5 border-gray-300 border-t" />
 
       <div>
-        <h3 className="text-lg font-medium">Licence</h3>
+        <h3 className="font-medium text-lg">Licence</h3>
         <div className="mt-2 flex items-end gap-3">
           <FormSelect
             id="licence-select"
@@ -230,10 +230,10 @@ const SkillsForm: FC<Props> = ({ languages, licences }) => {
         Ukoliko se licenca ne nalazi na listi, molim vas kreirajte je ovdje
       </Button>
 
-      <hr className="my-5 border-t border-gray-300" />
+      <hr className="my-5 border-gray-300 border-t" />
 
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-medium">Dodatne vještine</h3>
+        <h3 className="font-medium text-lg">Dodatne vještine</h3>
         <Button
           type="button"
           onClick={addNewOtherSkill}

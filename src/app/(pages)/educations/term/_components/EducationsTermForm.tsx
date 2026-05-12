@@ -192,7 +192,7 @@ const EducationsTermForm: FC<Props> = ({
       />
 
       <Button
-        className="bg-black !text-base text-white"
+        className="!text-base bg-black text-white"
         type="submit"
         showLoading={isSubmitting}
       >
