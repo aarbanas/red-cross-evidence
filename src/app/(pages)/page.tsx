@@ -4,7 +4,7 @@ import { auth } from '~/server/auth/index';
 const Home = async () => {
   const session = await auth();
   if (!session?.user) {
-    redirect('/api/auth/signin');
+    redirect('/login');
   } else {
     redirect('/users');
   }
