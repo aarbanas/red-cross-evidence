@@ -37,4 +37,9 @@ export const licenseRouter = createTRPCRouter({
   findAll: protectedProcedure.query(async () => {
     return licenseService.findAll();
   }),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      return licenseService.delete(input.id);
+    }),
 });

@@ -1,6 +1,11 @@
-import { Pencil } from 'lucide-react';
+'use client';
+
+import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import type { FC } from 'react';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { Button } from '~/components/atoms/Button';
+import Modal from '~/components/organisms/modal/Modal';
 import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
 import {
   Table,
@@ -11,13 +16,30 @@ import {
   TableRow,
 } from '~/components/organisms/Table';
 import type { FindLicenseReturnDTO } from '~/server/services/license/license.repository';
+import { api } from '~/trpc/react';
 
 type Props = {
   data?: FindLicenseReturnDTO[];
   totalPageNumber: number;
 };
 
-const LicencesTable: FC<Props> = ({ data, totalPageNumber }) => {
+const LicencesTable = ({ data, totalPageNumber }: Props) => {
+  const [licenseToDelete, setLicenseToDelete] =
+    useState<FindLicenseReturnDTO | null>(null);
+  const utils = api.useUtils();
+
+  const deleteMutation = api.license.delete.useMutation({
+    onSuccess: async () => {
+      await utils.license.find.invalidate();
+      toast('Licenca uspješno obrisana', { type: 'success' });
+      setLicenseToDelete(null);
+    },
+    onError: (error) => {
+      toast(error.message, { type: 'error' });
+      setLicenseToDelete(null);
+    },
+  });
+
   if (!data?.length) {
     return <div>Nema rezultata</div>;
   }
@@ -31,7 +53,7 @@ const LicencesTable: FC<Props> = ({ data, totalPageNumber }) => {
               <TableHead className="md:table-cell">Tip</TableHead>
               <TableHead className="md:table-cell">Naziv</TableHead>
               <TableHead className="md:table-cell">Opis</TableHead>
-              <TableHead className="md:table-cell">Uredi</TableHead>
+              <TableHead className="md:table-cell">Akcije</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -43,13 +65,24 @@ const LicencesTable: FC<Props> = ({ data, totalPageNumber }) => {
                 <TableCell className="md:table-cell">
                   {license.description}
                 </TableCell>
-                <TableCell className="cursor-pointer md:table-cell">
-                  <Link
-                    href={`/licenses/${license.id}`}
-                    className="flex items-center justify-center"
-                  >
-                    <Pencil />
-                  </Link>
+                <TableCell className="md:table-cell">
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href={`/licenses/${license.id}`}
+                      className="flex items-center justify-center cursor-pointer"
+                    >
+                      <Pencil />
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={() => setLicenseToDelete(license)}
+                      className="flex items-center justify-center text-red-500 hover:text-red-700 cursor-pointer"
+                      aria-label="Obriši licencu"
+                    >
+                      <Trash2 />
+                    </button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
@@ -57,6 +90,40 @@ const LicencesTable: FC<Props> = ({ data, totalPageNumber }) => {
         </Table>
       </div>
       <PaginationComponent totalPageNumber={totalPageNumber} />
+
+      <Modal
+        isOpen={!!licenseToDelete}
+        onClose={() => setLicenseToDelete(null)}
+      >
+        <h2 className="mb-2 text-lg font-semibold">Obriši licencu?</h2>
+        <p className="mb-6 text-sm text-gray-600">
+          Ovo će trajno obrisati ovu licencu i ukloniti je od svih korisnika
+          kojima je dodijeljena. Ova radnja se ne može poništiti.
+        </p>
+        <div className="flex justify-end gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="cursor-pointer"
+            onClick={() => setLicenseToDelete(null)}
+          >
+            Odustani
+          </Button>
+          <Button
+            type="button"
+            variant="destructive"
+            className="cursor-pointer"
+            disabled={deleteMutation.isPending}
+            onClick={() => {
+              if (licenseToDelete) {
+                deleteMutation.mutate({ id: licenseToDelete.id });
+              }
+            }}
+          >
+            Obriši
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 };

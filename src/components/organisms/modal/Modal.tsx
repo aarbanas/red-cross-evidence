@@ -45,7 +45,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
         className={classNames(
           styles.content,
           className,
-          'relative w-full max-w-lg rounded-md bg-white p-6 shadow-md',
+          'relative rounded-md bg-white p-6 shadow-md',
         )}
       >
         <button

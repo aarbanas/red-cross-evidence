@@ -162,6 +162,9 @@ const licenseRepository = {
       .orderBy(licenses.name)
       .execute();
   },
+  deleteById: async (id: string) => {
+    return db.delete(licenses).where(eq(licenses.id, id)).execute();
+  },
 };
 
 export default licenseRepository;
