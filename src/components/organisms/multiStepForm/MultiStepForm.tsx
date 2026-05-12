@@ -107,7 +107,7 @@ function generateForm<T extends FieldValues>(
     return (
       <div className="relative mx-auto flex w-full flex-col items-center rounded-lg border bg-white p-4">
         {isSubmitting && (
-          <div className="bg-opacity-50 absolute inset-0 z-50 flex items-center justify-center rounded-lg bg-white">
+          <div className="absolute inset-0 z-50 flex items-center justify-center rounded-lg bg-white bg-opacity-50">
             <LoadingSpinner />
           </div>
         )}

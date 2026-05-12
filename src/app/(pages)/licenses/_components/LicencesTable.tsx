@@ -69,7 +69,7 @@ const LicencesTable = ({ data, totalPageNumber }: Props) => {
                   <div className="flex items-center gap-3">
                     <Link
                       href={`/licenses/${license.id}`}
-                      className="flex items-center justify-center cursor-pointer"
+                      className="flex cursor-pointer items-center justify-center"
                     >
                       <Pencil />
                     </Link>
@@ -77,7 +77,7 @@ const LicencesTable = ({ data, totalPageNumber }: Props) => {
                     <button
                       type="button"
                       onClick={() => setLicenseToDelete(license)}
-                      className="flex items-center justify-center text-red-500 hover:text-red-700 cursor-pointer"
+                      className="flex cursor-pointer items-center justify-center text-red-500 hover:text-red-700"
                       aria-label="Obriši licencu"
                     >
                       <Trash2 />
@@ -95,11 +95,12 @@ const LicencesTable = ({ data, totalPageNumber }: Props) => {
         isOpen={!!licenseToDelete}
         onClose={() => setLicenseToDelete(null)}
       >
-        <h2 className="mb-2 text-lg font-semibold">Obriši licencu?</h2>
-        <p className="mb-6 text-sm text-gray-600">
+        <h2 className="mb-2 font-semibold text-lg">Obriši licencu?</h2>
+        <p className="mb-6 text-gray-600 text-sm">
           Ovo će trajno obrisati ovu licencu i ukloniti je od svih korisnika
           kojima je dodijeljena. Ova radnja se ne može poništiti.
         </p>
+
         <div className="flex justify-end gap-2">
           <Button
             type="button"

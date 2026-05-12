@@ -159,7 +159,7 @@ const EducationForm: React.FC<Props> = ({ id, formData, uniqueTypes }) => {
       )}
 
       <Button
-        className="bg-black !text-base text-white"
+        className="!text-base bg-black text-white"
         type="submit"
         showLoading={isSubmitting}
       >
