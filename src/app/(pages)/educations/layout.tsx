@@ -18,7 +18,7 @@ const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <MainLayout headerChildren={<div>Edukacije</div>}>
       <div>
-        <Tabs tabs={tabsData} />
+        <Tabs tabs={tabsData} basePath="/educations" />
         <main>{children}</main>
       </div>
     </MainLayout>
