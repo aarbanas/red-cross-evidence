@@ -1,0 +1,173 @@
+name: Move Linked Issues to "Done"
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  close-linked-issues:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.merged == true }}
+    steps:
+      - name: Move linked issues to "Done"
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script: |
+            const prBody = context.payload.pull_request.body || '';
+            const prNumber = context.payload.pull_request.number;
+            const repo = context.repo;
+
+            console.log(`Processing merged PR #${prNumber}`);
+
+            const issuePattern = /(?:closes?|fixes?|resolves?|refs?|references?)\s+#(\d+)/gi;
+            const matches = [...prBody.matchAll(issuePattern)];
+            const issueNumbers = [...new Set(matches.map(m => parseInt(m[1])))];
+
+            if (issueNumbers.length === 0) {
+              console.log('No linked issues found in PR description.');
+              return;
+            }
+
+            console.log(`Found linked issues: ${issueNumbers.join(', ')}`);
+
+            const PROJECT_NUMBER = 1;
+            const PROJECT_OWNER = 'aarbanas';
+
+            const projectQuery = await github.graphql(`
+              query {
+                user(login: "${PROJECT_OWNER}") {
+                  projectV2(number: ${PROJECT_NUMBER}) {
+                    id
+                    fields(first: 30) {
+                      nodes {
+                        ... on ProjectV2SingleSelectField {
+                          id
+                          name
+                          options {
+                            id
+                            name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `);
+
+            const project = projectQuery.user.projectV2;
+            const projectId = project.id;
+
+            const statusField = project.fields.nodes.find(
+              f => f.name && f.name.toLowerCase() === 'status'
+            );
+
+            if (!statusField) {
+              console.log('No "Status" field found in the project.');
+              return;
+            }
+
+            const doneOption = statusField.options.find(
+              o => o.name.toLowerCase().trim() === 'done'
+            );
+
+            if (!doneOption) {
+              console.log(
+                `"Done" option not found. Available options: ${statusField.options.map(o => o.name).join(', ')}`
+              );
+              return;
+            }
+
+            console.log(`Project ID: ${projectId}`);
+            console.log(`Status field ID: ${statusField.id}`);
+            console.log(`"Done" option ID: ${doneOption.id}`);
+
+            for (const issueNumber of issueNumbers) {
+              try {
+                const issueQuery = await github.graphql(`
+                  query {
+                    repository(owner: "${repo.owner}", name: "${repo.repo}") {
+                      issue(number: ${issueNumber}) {
+                        id
+                        title
+                      }
+                    }
+                  }
+                `);
+
+                const issue = issueQuery.repository.issue;
+                if (!issue) {
+                  console.log(`Issue #${issueNumber} not found.`);
+                  continue;
+                }
+
+                console.log(`Processing issue #${issueNumber}: "${issue.title}"`);
+
+                const itemQuery = await github.graphql(`
+                  query {
+                    node(id: "${issue.id}") {
+                      ... on Issue {
+                        projectItems(first: 100) {
+                          nodes {
+                            id
+                            project {
+                              id
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                `);
+
+                const projectItems = itemQuery.node.projectItems.nodes;
+                const projectItem = projectItems.find(item => item.project.id === projectId);
+
+                let itemId;
+
+                if (!projectItem) {
+                  console.log(`Issue #${issueNumber} is not in the project yet. Adding it...`);
+                  const addResult = await github.graphql(`
+                    mutation {
+                      addProjectV2ItemById(input: {
+                        projectId: "${projectId}"
+                        contentId: "${issue.id}"
+                      }) {
+                        item {
+                          id
+                        }
+                      }
+                    }
+                  `);
+                  itemId = addResult.addProjectV2ItemById.item.id;
+                  console.log(`Added issue #${issueNumber} to project. Item ID: ${itemId}`);
+                } else {
+                  itemId = projectItem.id;
+                  console.log(`Found existing project item for issue #${issueNumber}: ${itemId}`);
+                }
+
+                await github.graphql(`
+                  mutation {
+                    updateProjectV2ItemFieldValue(input: {
+                      projectId: "${projectId}"
+                      itemId: "${itemId}"
+                      fieldId: "${statusField.id}"
+                      value: {
+                        singleSelectOptionId: "${doneOption.id}"
+                      }
+                    }) {
+                      projectV2Item {
+                        id
+                      }
+                    }
+                  }
+                `);
+
+                console.log(`✅ Issue #${issueNumber} status updated to "Done"`);
+
+              } catch (err) {
+                console.error(`❌ Failed to update issue #${issueNumber}: ${err.message}`);
+              }
+            }
