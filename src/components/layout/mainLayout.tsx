@@ -1,4 +1,4 @@
-import { BookMarked, IdCard, Users } from 'lucide-react';
+import { BookMarked, Building2, IdCard, Users } from 'lucide-react';
 import Link from 'next/link';
 import type React from 'react';
 import type { ReactNode } from 'react';
@@ -17,6 +17,7 @@ enum AppRoutes {
   HOME = '/users',
   EDUCATIONS = '/educations',
   LICENSES = '/licenses',
+  SOCIETIES = '/societies',
 }
 
 const MainLayout: React.FC<Readonly<Props>> = ({
@@ -69,6 +70,14 @@ const Navigation = () => {
       >
         <IdCard />
         Licence
+      </Link>
+
+      <Link
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.SOCIETIES) ? 'text-red-600' : ''}`}
+        href={`${AppRoutes.SOCIETIES}/list`}
+      >
+        <Building2 />
+        Društva
       </Link>
     </nav>
   );
