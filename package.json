@@ -13,6 +13,7 @@
     "db:seed:educationTerms": "dotenv npx tsx ./src/server/db/seed/educationTerm.seed.ts",
     "db:seed:licenses": "dotenv npx tsx ./src/server/db/seed/license.seed.ts",
     "db:seed:users": "dotenv npx tsx ./src/server/db/seed/user.seed.ts",
+    "db:seed:societies": "dotenv npx tsx ./src/server/db/seed/society.seed.ts",
     "db:seed:all": "dotenv npx tsx ./src/server/db/seed/index.ts",
     "db:schema:generate": "node --experimental-specifier-resolution=node --loader ts-node/esm src/server/db/dbml-generator/dbml.ts && dbml-renderer -i schema.dbml -o erd.svg",
     "dev": "next dev --turbo",
