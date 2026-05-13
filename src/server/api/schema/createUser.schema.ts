@@ -15,6 +15,8 @@ const createUserSchema = z.object({
     birthDate: z.string().optional(),
     birthPlace: z.string().optional(),
     phone: z.string().optional(),
+    societyId: z.string().optional(),
+    citySocietyId: z.string().optional(),
   }),
   addresses: z
     .array(
