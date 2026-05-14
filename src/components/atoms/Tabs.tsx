@@ -4,6 +4,7 @@ import { cn } from '~/components/utils';
 
 type Props = {
   tabs: TabProp[];
+  basePath: string;
 };
 
 export type TabProp = {
@@ -11,7 +12,7 @@ export type TabProp = {
   link: string;
 };
 
-const Tabs: FC<Props> = ({ tabs }: Props) => {
+const Tabs: FC<Props> = ({ tabs, basePath }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -32,7 +33,7 @@ const Tabs: FC<Props> = ({ tabs }: Props) => {
             key={tab.link}
             onClick={() => {
               setActiveTab(tab.link);
-              router.push(`/educations/${tab.link}`);
+              router.push(`${basePath}/${tab.link}`);
             }}
             className={cn(
               'cursor-pointer rounded-lg py-2 font-medium text-sm',

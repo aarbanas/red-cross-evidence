@@ -1,28 +1,29 @@
 'use client';
+
 import type { FC, PropsWithChildren } from 'react';
 import Tabs, { type TabProp } from '~/components/atoms/Tabs';
 import MainLayout from '~/components/layout/mainLayout';
 
-const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
+const SocietiesLayout: FC<PropsWithChildren> = ({ children }) => {
   const tabsData: TabProp[] = [
     {
-      label: 'Termini',
-      link: 'term',
+      label: 'Društva',
+      link: 'list',
     },
     {
-      label: 'Popis',
-      link: 'list',
+      label: 'Gradska društva',
+      link: 'city',
     },
   ];
 
   return (
-    <MainLayout headerChildren={<div>Edukacije</div>}>
+    <MainLayout headerChildren={<div>Društva</div>}>
       <div>
-        <Tabs tabs={tabsData} basePath="/educations" />
+        <Tabs tabs={tabsData} basePath="/societies" />
         <main>{children}</main>
       </div>
     </MainLayout>
   );
 };
 
-export default EducationLayout;
+export default SocietiesLayout;

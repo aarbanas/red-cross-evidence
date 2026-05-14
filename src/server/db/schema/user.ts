@@ -137,6 +137,8 @@ export const profiles = pgTable('profile', {
   userId: uuid('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
+  societyId: uuid('society_id'),
+  citySocietyId: uuid('city_society_id'),
 });
 
 export const profilesRelations = relations(profiles, ({ one, many }) => ({

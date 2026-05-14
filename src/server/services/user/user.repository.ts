@@ -209,6 +209,8 @@ const userRepository = {
           parentName: data.profile.parentName,
           nationality: data.profile.nationality,
           phone: data.profile.phone,
+          societyId: data.profile.societyId ?? null,
+          citySocietyId: data.profile.citySocietyId ?? null,
           userId: newUser.id,
         })
         .returning({ id: profiles.id });

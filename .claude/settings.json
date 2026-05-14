@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if echo \"$CLAUDE_TOOL_INPUT_FILE_PATH\" | grep -qE '\\.(ts|tsx|js|jsx|mjs|cjs|json|css|scss|md)$'; then npx prettier --write \"$CLAUDE_TOOL_INPUT_FILE_PATH\" 2>/dev/null && echo \"[Hook] Formatted: $CLAUDE_TOOL_INPUT_FILE_PATH\" >&2; fi"
+            "command": "if echo \"$CLAUDE_TOOL_INPUT_FILE_PATH\" | grep -qE '\\.(ts|tsx|js|jsx|mjs|cjs|json|css|scss|md)$'; then ./node_modules/.bin/biome format --write \"$CLAUDE_TOOL_INPUT_FILE_PATH\" 2>/dev/null && echo \"[Hook] Formatted: $CLAUDE_TOOL_INPUT_FILE_PATH\" >&2; fi"
           }
         ]
       }

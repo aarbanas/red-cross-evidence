@@ -1,0 +1,1285 @@
+{
+  "societies": [
+    {
+      "name": "Društvo Crvenog križa Bjelovarsko-bilogorske županije",
+      "address": "V. Nazora 13/1",
+      "director": "Melita Lozina",
+      "phone": "043 531 156",
+      "email": "ckgaresnica@gmail.com",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Brodsko-posavske županije",
+      "address": "Ante Starčevića 13",
+      "director": "Mirjana Matanović",
+      "phone": "035 444 554",
+      "email": "crveni.kriz.sb@gmail.com",
+      "website": "",
+      "city": "Slavonski Brod"
+    },
+    {
+      "name": "Društvo Crvenog križa Dubrovačko-neretvanske županije",
+      "address": "Obala Pape Ivana Pavla II 61",
+      "director": "Tanja Medak",
+      "phone": "",
+      "email": "zuckdubner@gmail.com",
+      "website": "",
+      "city": "Dubrovnik"
+    },
+    {
+      "name": "Gradsko društvo Crvenog križa Zagreb",
+      "address": "Ilica 223",
+      "director": "Ivica Golubić",
+      "phone": "01 3778 236",
+      "email": "info@ckzg.hr",
+      "website": "www.ckzg.hr",
+      "city": "Zagreb"
+    },
+    {
+      "name": "Društvo Crvenog križa Istarske županije",
+      "address": "M. B. Rašana 5",
+      "director": "Sandra Stipanov",
+      "phone": "052 624 579",
+      "email": "hck.istra@gmail.com",
+      "website": "www.hck-istra.hr",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Karlovačke županije",
+      "address": "Smičiklasova 25",
+      "director": "Branka Hastor",
+      "phone": "047 422 586",
+      "email": "financije.ckk@email.t-com.hr",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Koprivničko-križevačke županije",
+      "address": "Herešinska ulica 33",
+      "director": "Adela Sočev",
+      "phone": "048 642 193",
+      "email": "hrvatski.crveni.kriz1@kc.t-com.hr",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Krapinsko-zagorske županije",
+      "address": "Bobovje 52B",
+      "director": "Bojan Bjelja",
+      "phone": "",
+      "email": "info@dckkzz-krapina.hr",
+      "website": "www.dckkzz-krapina.hr",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Ličko-senjske županije",
+      "address": "Miroslava Kraljevića 2",
+      "director": "Igor Bošnjak",
+      "phone": "053 572 851",
+      "email": "hck.lickosenjska@gmail.com",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Međimurske županije",
+      "address": "Kralja Tomislava 29",
+      "director": "Kristijan Valkaj",
+      "phone": "040 395 248",
+      "email": "info@crveni-kriz-cakovec.hr",
+      "website": "www.crveni-kriz-cakovec.hr",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Osječko-baranjske županije",
+      "address": "Europska avenija 10",
+      "director": "Goran Latković",
+      "phone": "031 494 063",
+      "email": "dckobz@dckobz.hr",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Požeško-slavonske županije",
+      "address": "Osječka 12",
+      "director": "Miroslav Zelenika",
+      "phone": "034 273 354",
+      "email": "pisarnicagdckpozega@gmail.com",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Mire Raduna Ban 14",
+      "director": "Branka Maračić",
+      "phone": "051 677 057",
+      "email": "info@dck-pgz.hr",
+      "website": "www.dck-pgz.hr",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Sisačko-moslavačke županije",
+      "address": "Josipa Marića 2",
+      "director": "Dino Jakopinec",
+      "phone": "",
+      "email": "smzdck@gmail.com",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Petra Krešimira IV. 31a",
+      "director": "Joško Metličić",
+      "phone": "021 244 411",
+      "email": "info@hck-dcksdz.hr",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Šibensko-kninske županije",
+      "address": "Eugena Kvaternika 2",
+      "director": "Antonia Gregov Jukić",
+      "phone": "022 219 258",
+      "email": "info@dck-skz.hr",
+      "website": "",
+      "city": "Šibenik"
+    },
+    {
+      "name": "Društvo Crvenog križa Varaždinske županije",
+      "address": "Pavlinska 8",
+      "director": "Sandra Vidaček",
+      "phone": "042 320 411",
+      "email": "ured.dckvzd@gmail.com",
+      "website": "www.dck-vz.hr",
+      "city": ""
+    },
+    {
+      "name": "Društvo Crvenog križa Virovitičko-podravske županije",
+      "address": "Masarykova 6",
+      "director": "Vladimir Jelenčić",
+      "phone": "033 551 230",
+      "email": "ce.kaj13@gmail.com",
+      "website": "",
+      "city": "Virovitica"
+    },
+    {
+      "name": "Društvo crvenog križa Vukovarsko-srijemske županije",
+      "address": "Trg bana Josipa Šokčevića 1",
+      "director": "Marija Dugalić",
+      "phone": "032 831 607",
+      "email": "dckvusz@gmail.com",
+      "website": "",
+      "city": "Vinkovci"
+    },
+    {
+      "name": "Društvo Crvenog križa Zadarske županije",
+      "address": "Obala kneza Branimira 4d",
+      "director": "Katarina Radeljić",
+      "phone": "023 211 204",
+      "email": "gdckzd@outlook.com",
+      "website": "",
+      "city": "Zadar"
+    },
+    {
+      "name": "Društvo Crvenog križa Zagrebačke županije",
+      "address": "Savke Dabčević Kučar 6",
+      "director": "Drinka Sopta",
+      "phone": "01 3876 062",
+      "email": "info@dck-zagrebacka-zupanija.hr",
+      "website": "www.dck-zagrebacka-zupanija.hr",
+      "city": "Samobor"
+    }
+  ],
+  "citySocieties": [
+    {
+      "name": "Bjelovar",
+      "societyName": "Društvo Crvenog križa Bjelovarsko-bilogorske županije",
+      "address": "108. puka 1",
+      "director": "Vida Malek",
+      "phone": "043 410 100",
+      "email": "hck.bjelovar@gmail.com",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Čazma",
+      "societyName": "Društvo Crvenog križa Bjelovarsko-bilogorske županije",
+      "address": "Milana Novačića 5",
+      "director": "Ivan Tomašević",
+      "phone": "043 771 148",
+      "email": "ckcazma@gmail.com",
+      "website": "",
+      "city": "Čazma"
+    },
+    {
+      "name": "Daruvar",
+      "societyName": "Društvo Crvenog križa Bjelovarsko-bilogorske županije",
+      "address": "Trg kralja Tomislava 9",
+      "director": "Andrea Brletić",
+      "phone": "043 331 630",
+      "email": "gdck@daruvar.tcloud.hr",
+      "website": "",
+      "city": "Daruvar"
+    },
+    {
+      "name": "Garešnica",
+      "societyName": "Društvo Crvenog križa Bjelovarsko-bilogorske županije",
+      "address": "V. Nazora 13/1",
+      "director": "Melita Lozina",
+      "phone": "043 531 156",
+      "email": "ckgaresnica@gmail.com",
+      "website": "",
+      "city": "Garešnica"
+    },
+    {
+      "name": "Grubišno Polje",
+      "societyName": "Društvo Crvenog križa Bjelovarsko-bilogorske županije",
+      "address": "4. studenoga 1991. br. 1/1",
+      "director": "Alenka Soldan",
+      "phone": "043 485 129",
+      "email": "hrvatski.crveni.kriz.grubisno.polje@bj.t-com.hr",
+      "website": "",
+      "city": "Grubišno Polje"
+    },
+    {
+      "name": "Slavonski Brod",
+      "societyName": "Društvo Crvenog križa Brodsko-posavske županije",
+      "address": "Ante Starčevića 13",
+      "director": "Mirjana Matanović",
+      "phone": "035 444 554",
+      "email": "crveni.kriz.sb@gmail.com",
+      "website": "",
+      "city": "Slavonski Brod"
+    },
+    {
+      "name": "Nova Gradiška",
+      "societyName": "Društvo Crvenog križa Brodsko-posavske županije",
+      "address": "Miroslava Kraljevića 6",
+      "director": "Dario Pauković",
+      "phone": "035 363 888",
+      "email": "crvenikriz.ng@gmail.com",
+      "website": "",
+      "city": "Nova Gradiška"
+    },
+    {
+      "name": "Dubrovnik",
+      "societyName": "Društvo Crvenog križa Dubrovačko-neretvanske županije",
+      "address": "Obala pape Ivana Pavla II 61",
+      "director": "Tomislav Moretić",
+      "phone": "020 418 810",
+      "email": "info@crvenikrizdubrovnik.hr",
+      "website": "www.crvenikrizdubrovnik.hr",
+      "city": "Dubrovnik"
+    },
+    {
+      "name": "Korčula",
+      "societyName": "Društvo Crvenog križa Dubrovačko-neretvanske županije",
+      "address": "PP 23, Plokata bb",
+      "director": "Marijana Milat",
+      "phone": "020 715 152",
+      "email": "crvenikrizkorcula2@gmail.com",
+      "website": "",
+      "city": "Korčula"
+    },
+    {
+      "name": "Metković",
+      "societyName": "Društvo Crvenog križa Dubrovačko-neretvanske županije",
+      "address": "Ante Starčevića 10",
+      "director": "Tanja Medak",
+      "phone": "020 681 610",
+      "email": "ck.metkovic@gmail.com",
+      "website": "",
+      "city": "Metković"
+    },
+    {
+      "name": "Ploče",
+      "societyName": "Društvo Crvenog križa Dubrovačko-neretvanske županije",
+      "address": "Vladimira Nazora 20",
+      "director": "Maja Barbir",
+      "phone": "020 679 563",
+      "email": "hck.crveni.kriz.ploce@du.t-com.hr",
+      "website": "",
+      "city": "Ploče"
+    },
+    {
+      "name": "Lastovo",
+      "societyName": "Društvo Crvenog križa Dubrovačko-neretvanske županije",
+      "address": "",
+      "director": "",
+      "phone": "",
+      "email": "",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Gradsko društvo Crvenog križa Zagreb",
+      "address": "Ilica 223",
+      "director": "Ivica Golubić",
+      "phone": "01 3778 236",
+      "email": "info@ckzg.hr",
+      "website": "www.ckzg.hr",
+      "city": "Zagreb",
+      "societyName": "Gradsko društvo Crvenog križa Zagreb"
+    },
+    {
+      "name": "Buzet",
+      "societyName": "Društvo Crvenog križa Istarske županije",
+      "address": "II. istarske brigade 13/1",
+      "director": "Lara Černeka",
+      "phone": "052 662 445",
+      "email": "hck.gdck.porec@pu.t-com.hr",
+      "website": "",
+      "city": "Buzet"
+    },
+    {
+      "name": "Buje",
+      "societyName": "Društvo Crvenog križa Istarske županije",
+      "address": "1. svibnja 9",
+      "director": "Hrvoje Kovačević",
+      "phone": "052 772 446",
+      "email": "crveni.kriz.buje@hi.t-com.hr",
+      "website": "",
+      "city": "Buje"
+    },
+    {
+      "name": "Labin",
+      "societyName": "Društvo Crvenog križa Istarske županije",
+      "address": "Katuri 17",
+      "director": "Morin Hukić",
+      "phone": "052 855 585",
+      "email": "gdcklabin@gmail.com",
+      "website": "www.crvenikrizlabin.hr",
+      "city": "Labin"
+    },
+    {
+      "name": "Pazin",
+      "societyName": "Društvo Crvenog križa Istarske županije",
+      "address": "Prolaz Ernesta Jelušića 2",
+      "director": "Marijana Krbavac Žulić",
+      "phone": "052 623 405",
+      "email": "ckpazin@gmail.com",
+      "website": "",
+      "city": "Pazin"
+    },
+    {
+      "name": "Poreč",
+      "societyName": "Društvo Crvenog križa Istarske županije",
+      "address": "Partizanska 7a",
+      "director": "Igor Ostojić",
+      "phone": "052 431 013",
+      "email": "hck.gdck.porec@pu.t-com.hr",
+      "website": "",
+      "city": "Poreč"
+    },
+    {
+      "name": "Pula",
+      "societyName": "Društvo Crvenog križa Istarske županije",
+      "address": "Nobileova 2",
+      "director": "Jasna Vekić",
+      "phone": "052 543 708",
+      "email": "info@crvenikrizpula.hr",
+      "website": "www.crvenikrizpula.hr",
+      "city": "Pula"
+    },
+    {
+      "name": "Rovinj",
+      "societyName": "Društvo Crvenog križa Istarske županije",
+      "address": "Edmondo De Amicis 11a",
+      "director": "Dajana Medić",
+      "phone": "052 811 105",
+      "email": "crveni-kriz-rovinj@pu.htnet.hr",
+      "website": "http://crvenikrizrovinj.hr/",
+      "city": "Rovinj"
+    },
+    {
+      "name": "Duga Resa",
+      "societyName": "Društvo Crvenog križa Karlovačke županije",
+      "address": "Trg Sv. Jurja 3",
+      "director": "Irena Poje",
+      "phone": "047 844 269",
+      "email": "gdck.dugaresa@gmail.com",
+      "website": "https://crveni-kriz-duga-resa.hr/",
+      "city": "Duga Resa"
+    },
+    {
+      "name": "Karlovac",
+      "societyName": "Društvo Crvenog križa Karlovačke županije",
+      "address": "Smičiklasova 25",
+      "director": "Branka Hastor",
+      "phone": "047 422 586",
+      "email": "crvenikriz.karlovac@ka.htnet.hr",
+      "website": "",
+      "city": "Karlovac"
+    },
+    {
+      "name": "Ogulin",
+      "societyName": "Društvo Crvenog križa Karlovačke županije",
+      "address": "Proce 16",
+      "director": "Valentina Bartolović",
+      "phone": "099 608 7444",
+      "email": "ckog@net.hr",
+      "website": "",
+      "city": "Ogulin"
+    },
+    {
+      "name": "Ozalj",
+      "societyName": "Društvo Crvenog križa Karlovačke županije",
+      "address": "Kurilovac 8",
+      "director": "Sanja Valčić",
+      "phone": "047 295 276",
+      "email": "ck.ozalj@gmail.com",
+      "website": "",
+      "city": "Ozalj"
+    },
+    {
+      "name": "Slunj",
+      "societyName": "Društvo Crvenog križa Karlovačke županije",
+      "address": "Školska 1",
+      "director": "Marija Lucić",
+      "phone": "047 777 204",
+      "email": "crveni.kriz.slunj@gmail.com",
+      "website": "",
+      "city": "Slunj"
+    },
+    {
+      "name": "Đurđevac",
+      "societyName": "Društvo Crvenog križa Koprivničko-križevačke županije",
+      "address": "Trg Sv. Jurja 5",
+      "director": "Sofija Paša",
+      "phone": "048 812 113",
+      "email": "gdck.djurdjevac@gmail.com",
+      "website": "",
+      "city": "Đurđevac"
+    },
+    {
+      "name": "Koprivnica",
+      "societyName": "Društvo Crvenog križa Koprivničko-križevačke županije",
+      "address": "Herešinska ulica 33",
+      "director": "Adela Sočev",
+      "phone": "048 642 193",
+      "email": "hrvatski.crveni.kriz1@kc.t-com.hr",
+      "website": "www.hck-koprivnica.hr",
+      "city": "Koprivnica"
+    },
+    {
+      "name": "Križevci",
+      "societyName": "Društvo Crvenog križa Koprivničko-križevačke županije",
+      "address": "Ul. Franje Račkoga 22",
+      "director": "Antonija Pukec",
+      "phone": "048 711 700",
+      "email": "gdck.krizevci@gmail.com",
+      "website": "",
+      "city": "Križevci"
+    },
+    {
+      "name": "Donja Stubica",
+      "societyName": "Društvo Crvenog križa Krapinsko-zagorske županije",
+      "address": "Župana Vratislava 6",
+      "director": "Maja Rešetar Pavrlišak",
+      "phone": "049 286 145",
+      "email": "crveni.kriz.donja.stubica@kr.t-com.hr",
+      "website": "",
+      "city": "Donja Stubica"
+    },
+    {
+      "name": "Klanjec",
+      "societyName": "Društvo Crvenog križa Krapinsko-zagorske županije",
+      "address": "Lijepe naše 22",
+      "director": "Mario Harapin",
+      "phone": "049 550 149",
+      "email": "gdck.klanjec@gmail.com",
+      "website": "",
+      "city": "Klanjec"
+    },
+    {
+      "name": "Krapina",
+      "societyName": "Društvo Crvenog križa Krapinsko-zagorske županije",
+      "address": "Bobovje 52B",
+      "director": "Davor Šimunović",
+      "phone": "049 371 141",
+      "email": "info@gdck-krapina.hr",
+      "website": "www.gdck-krapina.hr",
+      "city": "Krapina"
+    },
+    {
+      "name": "Pregrada",
+      "societyName": "Društvo Crvenog križa Krapinsko-zagorske županije",
+      "address": "Kostelgradska 18",
+      "director": "Štefica Pasarić",
+      "phone": "049 376 013",
+      "email": "gdck.pregrada@gmail.com",
+      "website": "",
+      "city": "Pregrada"
+    },
+    {
+      "name": "Zabok",
+      "societyName": "Društvo Crvenog križa Krapinsko-zagorske županije",
+      "address": "Matije Gupca 53/1",
+      "director": "Željka Vukić",
+      "phone": "049 221 444",
+      "email": "info@gdck-zabok.hr",
+      "website": "",
+      "city": "Zabok"
+    },
+    {
+      "name": "Zlatar",
+      "societyName": "Društvo Crvenog križa Krapinsko-zagorske županije",
+      "address": "Vladimira Nazora 54",
+      "director": "Vesna Pavleković",
+      "phone": "049 461 505",
+      "email": "ck.zlatar@gmail.com",
+      "website": "",
+      "city": "Zlatar Bistrica"
+    },
+    {
+      "name": "Gospić",
+      "societyName": "Društvo Crvenog križa Ličko-senjske županije",
+      "address": "Miroslava Kraljevića 2",
+      "director": "Vlado Brkljačić",
+      "phone": "053 572 851",
+      "email": "info@hck-gospic.hr",
+      "website": "www.hck-gospic.hr",
+      "city": "Gospić"
+    },
+    {
+      "name": "Novalja",
+      "societyName": "Društvo Crvenog križa Ličko-senjske županije",
+      "address": "Vodovodna ulica 3",
+      "director": "Gjimi Deda",
+      "phone": "091 617 7723",
+      "email": "gdcknovalja@gmail.com",
+      "website": "",
+      "city": ""
+    },
+    {
+      "name": "Otočac",
+      "societyName": "Društvo Crvenog križa Ličko-senjske županije",
+      "address": "Ulica Kralja Zvonimira 8",
+      "director": "Dragica Cvitković",
+      "phone": "053 771 405",
+      "email": "crveni.kriz@gs.t-com.hr",
+      "website": "",
+      "city": "Otočac"
+    },
+    {
+      "name": "Senj",
+      "societyName": "Društvo Crvenog križa Ličko-senjske županije",
+      "address": "Strmac 1",
+      "director": "Ante Škrgatić",
+      "phone": "053 881 013",
+      "email": "info@gdck-senj.hr",
+      "website": "",
+      "city": "Senj"
+    },
+    {
+      "name": "Donji Lapac",
+      "societyName": "Društvo Crvenog križa Ličko-senjske županije",
+      "address": "Stojana Matića 27",
+      "director": "Mirjana Dotlić",
+      "phone": "053 765 117",
+      "email": "hckdonjilapac3@gmail.com",
+      "website": "",
+      "city": "Donji Lapac"
+    },
+    {
+      "name": "Plitvička jezera",
+      "societyName": "Društvo Crvenog križa Ličko-senjske županije",
+      "address": "Trg Svetog Jurja 5",
+      "director": "Anita Ugarković",
+      "phone": "053 776 533",
+      "email": "crveni.kriz3@gs.t-com.hr",
+      "website": "",
+      "city": "Korenica"
+    },
+    {
+      "name": "Čakovec",
+      "societyName": "Društvo Crvenog križa Međimurske županije",
+      "address": "Kralja Tomislava 29",
+      "director": "Kristijan Valkaj",
+      "phone": "040 395 248",
+      "email": "info@crveni-kriz-cakovec.hr",
+      "website": "www.crveni-kriz-cakovec.hr",
+      "city": "Čakovec"
+    },
+    {
+      "name": "Beli Manastir",
+      "societyName": "Društvo Crvenog križa Osječko-baranjske županije",
+      "address": "Vladimira Nazora 28a",
+      "director": "Damir Mendler",
+      "phone": "031 701 275",
+      "email": "gdck.belimanastir@gmail.com",
+      "website": "",
+      "city": "Beli Manastir"
+    },
+    {
+      "name": "Donji Miholjac",
+      "societyName": "Društvo Crvenog križa Osječko-baranjske županije",
+      "address": "Ljudevita Gaja 15",
+      "director": "Mihaela Šimunović",
+      "phone": "031 631 410",
+      "email": "crveni-kriz-d.miholjac@os.t-com.hr",
+      "website": "www.ckdm.hr",
+      "city": "Donji Miholjac"
+    },
+    {
+      "name": "Đakovo",
+      "societyName": "Društvo Crvenog križa Osječko-baranjske županije",
+      "address": "Kralja Tomislava 16",
+      "director": "Darko Banović",
+      "phone": "031 813 252",
+      "email": "hck-djakovo@os.htnet.hr",
+      "website": "",
+      "city": "Đakovo"
+    },
+    {
+      "name": "Našice",
+      "societyName": "Društvo Crvenog križa Osječko-baranjske županije",
+      "address": "Kralja Tomislava 6",
+      "director": "Igor Feldi",
+      "phone": "031 613 275",
+      "email": "crveni-kriz-nasice@cknasice.hr",
+      "website": "",
+      "city": "Našice"
+    },
+    {
+      "name": "Osijek",
+      "societyName": "Društvo Crvenog križa Osječko-baranjske županije",
+      "address": "Šetalište Petra Preradovića 6",
+      "director": "Martina Hećimović",
+      "phone": "031 205 488",
+      "email": "crvenikrizosijek@crvenikrizosijek.hr",
+      "website": "www.crvenikrizosijek.hr",
+      "city": "Osijek"
+    },
+    {
+      "name": "Valpovo",
+      "societyName": "Društvo Crvenog križa Osječko-baranjske županije",
+      "address": "Prilaz Crvenom križu 2",
+      "director": "Sanja Habuda",
+      "phone": "031 651 479",
+      "email": "info@crvenikrizvalpovo.hr",
+      "website": "www.crvenikrizvalpovo.hr",
+      "city": "Valpovo"
+    },
+    {
+      "name": "Požega",
+      "societyName": "Društvo Crvenog križa Požeško-slavonske županije",
+      "address": "Osječka 12",
+      "director": "Miroslav Zelenika",
+      "phone": "034 273 354",
+      "email": "pisarnicagdckpozega@gmail.com",
+      "website": "",
+      "city": "Požega"
+    },
+    {
+      "name": "Pakrac",
+      "societyName": "Društvo Crvenog križa Požeško-slavonske županije",
+      "address": "Braće Radić 13",
+      "director": "Danijela Kiš",
+      "phone": "034 411 324",
+      "email": "pisarnica.gdckpakrac@gmail.com",
+      "website": "www.gdck-pakrac.hr",
+      "city": "Pakrac"
+    },
+    {
+      "name": "Crikvenica",
+      "societyName": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Trg Stjepana Radića 2",
+      "director": "Irena Gašparović",
+      "phone": "051 677 217",
+      "email": "crikvenica.hck@ri.t-com.hr",
+      "website": "www.dck-pgz.hr",
+      "city": "Crikvenica"
+    },
+    {
+      "name": "Čabar",
+      "societyName": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Narodnog oslobođenja 2",
+      "director": "Eleonora Piščević",
+      "phone": "051 212 717",
+      "email": "gdck.cabar@gmail.com",
+      "website": "www.gdck-cabar.hr",
+      "city": "Čabar"
+    },
+    {
+      "name": "Delnice",
+      "societyName": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Školska 25",
+      "director": "Snježana Krizmanić",
+      "phone": "051 812 686",
+      "email": "hck.delnice@hi.t-com.hr",
+      "website": "www.dck-pgz.hr",
+      "city": "Delnice"
+    },
+    {
+      "name": "Krk",
+      "societyName": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Trg Svetog Kvirina 1",
+      "director": "Marija Jakominić",
+      "phone": "051 221 094",
+      "email": "crveni.kriz.krk@gmail.com",
+      "website": "www.dck-pgz.hr",
+      "city": "Krk"
+    },
+    {
+      "name": "Mali Lošinj",
+      "societyName": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Vladimira Gortana 25",
+      "director": "Antonio Badurina",
+      "phone": "051 231 812",
+      "email": "gdck.malilosinj@gmail.com",
+      "website": "www.dck-pgz.hr",
+      "city": "Mali Lošinj"
+    },
+    {
+      "name": "Novi Vinodolski",
+      "societyName": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Lokvica 2",
+      "director": "Zrinka Jovanović",
+      "phone": "051 245 622",
+      "email": "hck-noviv@hi.t-com.hr",
+      "website": "www.dck-pgz.hr",
+      "city": "Novi Vinodolski"
+    },
+    {
+      "name": "Opatija",
+      "societyName": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Joakima Rakovca 15",
+      "director": "Eni Šebalj",
+      "phone": "051 712 577",
+      "email": "hck-opatija@inet.hr",
+      "website": "www.hck-opatija.hr",
+      "city": "Opatija"
+    },
+    {
+      "name": "Rab",
+      "societyName": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Banjol 20",
+      "director": "Tanja Rizner",
+      "phone": "051 724 264",
+      "email": "gradsko.drustvo.crvenog.kriza.rab@ri.t-com.hr",
+      "website": "www.gdck-rab.hr",
+      "city": "Rab"
+    },
+    {
+      "name": "Rijeka",
+      "societyName": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Trg Republike Hrvatske 2/II",
+      "director": "Petra Šuljić",
+      "phone": "051 333 699",
+      "email": "gdck-rijeka@hi.t-com.hr",
+      "website": "www.ck-rijeka.hr",
+      "city": "Rijeka"
+    },
+    {
+      "name": "Vrbovsko",
+      "societyName": "Društvo Crvenog križa Primorsko-goranske županije",
+      "address": "Kralja Tomislava 16a",
+      "director": "Ivana Vaccino",
+      "phone": "091/9220 328",
+      "email": "gdck.vrbovsko@gmail.com",
+      "website": "www.gdck-vrbovsko.hr",
+      "city": "Vrbovsko"
+    },
+    {
+      "name": "Glina",
+      "societyName": "Društvo Crvenog križa Sisačko-moslavačke županije",
+      "address": "Trg Petra Krešimira IV br. 2",
+      "director": "Alberta Cestarić",
+      "phone": "044 882 027",
+      "email": "crveni.kriz.glina@sk.t-com.hr",
+      "website": "",
+      "city": "Glina"
+    },
+    {
+      "name": "Hrvatska Kostajnica",
+      "societyName": "Društvo Crvenog križa Sisačko-moslavačke županije",
+      "address": "Josipa Marića 2",
+      "director": "Maja Böhm",
+      "phone": "044 851 080",
+      "email": "gdckhrvatskakostajnica@gmail.com",
+      "website": "",
+      "city": "Hrvatska Kostajnica"
+    },
+    {
+      "name": "Kutina",
+      "societyName": "Društvo Crvenog križa Sisačko-moslavačke županije",
+      "address": "Augusta Šenoe 2",
+      "director": "Katica Zeman",
+      "phone": "044 683 946",
+      "email": "crveni.kriz.kutina@sk.t-com.hr",
+      "website": "",
+      "city": "Kutina"
+    },
+    {
+      "name": "Novska",
+      "societyName": "Društvo Crvenog križa Sisačko-moslavačke županije",
+      "address": "Trg Đure Szabe 5",
+      "director": "Zoran Prpić",
+      "phone": "044 600 572",
+      "email": "hck-novska@sk.t-com.hr",
+      "website": "www.crvenikriz-novska.hr",
+      "city": "Novska"
+    },
+    {
+      "name": "Petrinja",
+      "societyName": "Društvo Crvenog križa Sisačko-moslavačke županije",
+      "address": "Turkulinova 7",
+      "director": "Ivana Kovačević Škrinjarić",
+      "phone": "098 460 926",
+      "email": "crveni.kriz.petrinja@sk.t-com.hr",
+      "website": "",
+      "city": "Petrinja"
+    },
+    {
+      "name": "Sisak",
+      "societyName": "Društvo Crvenog križa Sisačko-moslavačke županije",
+      "address": "Kralja Tomislava 18",
+      "director": "Igor Čičak",
+      "phone": "044 543 211",
+      "email": "crvenikriz.sisak@gmail.com",
+      "website": "www.crvenikrizsisak.hr/",
+      "city": "Sisak"
+    },
+    {
+      "name": "Dvor",
+      "societyName": "Društvo Crvenog križa Sisačko-moslavačke županije",
+      "address": "Trg bana Josipa Jelačića 18",
+      "director": "Dragan Šašo",
+      "phone": "044 871 132",
+      "email": "odck.dvor@gmail.com",
+      "website": "",
+      "city": "Dvor"
+    },
+    {
+      "name": "Gvozd",
+      "societyName": "Društvo Crvenog križa Sisačko-moslavačke županije",
+      "address": "Trg dr. Franje Tuđmana 1",
+      "director": "Slavica Zagorac",
+      "phone": "044 881 534",
+      "email": "odckgvozd@gmail.com",
+      "website": "",
+      "city": "Gvozd"
+    },
+    {
+      "name": "Topusko",
+      "societyName": "Društvo Crvenog križa Sisačko-moslavačke županije",
+      "address": "Trg bana J. Jelačića 1",
+      "director": "Ivica Kireta",
+      "phone": "044 885 926",
+      "email": "odcktopusko@gmail.com",
+      "website": "",
+      "city": "Topusko"
+    },
+    {
+      "name": "Hvar",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Domovinskog rata 2",
+      "director": "Dragica Visković",
+      "phone": "021 741 710",
+      "email": "gdcrvenikrizhvar@gmail.com",
+      "website": "",
+      "city": "Hvar"
+    },
+    {
+      "name": "Imotski",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Brune Bušića 39",
+      "director": "Ana Petričević",
+      "phone": "021 841 427",
+      "email": "gdck-imotski@net.hr",
+      "website": "",
+      "city": "Imotski"
+    },
+    {
+      "name": "Kaštela",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Braće Radić 1a",
+      "director": "Vjenceslav Pejša",
+      "phone": "021 224 472",
+      "email": "gdck.kastela@gmail.com",
+      "website": "",
+      "city": "Kaštel Sućurac"
+    },
+    {
+      "name": "Makarska",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Kačićev trg 11",
+      "director": "Gloryan Grabner",
+      "phone": "021 612 258 / 099 48 49 100",
+      "email": "ckmakarska@gmail.com",
+      "website": "https://crvenikriz-makarska.hr/",
+      "city": "Makarska"
+    },
+    {
+      "name": "Omiš",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Punta 1",
+      "director": "Ana Stejskal",
+      "phone": "021 861 224",
+      "email": "gdck-omis@email.t-com.hr",
+      "website": "",
+      "city": "Omiš"
+    },
+    {
+      "name": "Sinj",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Miljenka Buljana 37",
+      "director": "Ante Zorica",
+      "phone": "021 822 200",
+      "email": "gdcksinj@st.ht.hr",
+      "website": "",
+      "city": "Sinj"
+    },
+    {
+      "name": "Solin",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Ulica hrvatskih branitelja 40",
+      "director": "Buga Bulj",
+      "phone": "021 244 411",
+      "email": "gdck.solin@gmail.com",
+      "website": "",
+      "city": "Solin"
+    },
+    {
+      "name": "Split",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Ruđera Boškovića 28",
+      "director": "Tomislav Gojo",
+      "phone": "021 489 464",
+      "email": "gdck.split@gmail.com",
+      "website": "www.crvenikriz-split.com",
+      "city": "Split"
+    },
+    {
+      "name": "Supetar",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Petra Jakšića 11",
+      "director": "Mate Mladina",
+      "phone": "021 631 569",
+      "email": "crvenikrizbrac1@gmail.com",
+      "website": "",
+      "city": "Supetar"
+    },
+    {
+      "name": "Trogir",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Hrvatskih mučenika 6",
+      "director": "Tanja Jakus",
+      "phone": "021 881 950",
+      "email": "hck-trogir@st.t-com.hr",
+      "website": "",
+      "city": "Trogir"
+    },
+    {
+      "name": "Vis",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Šetalište A. Zanelle 5",
+      "director": "Zoran Bulajić",
+      "phone": "021 711 138",
+      "email": "vis@st.t-com.hr",
+      "website": "",
+      "city": "Vis"
+    },
+    {
+      "name": "Vrgorac",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Tina Ujevića 8",
+      "director": "Tina Jelavić",
+      "phone": "021 674 010",
+      "email": "crveni.kriz.vrgorac@st.t-com.hr",
+      "website": "",
+      "city": "Vrgorac"
+    },
+    {
+      "name": "Vrlika",
+      "societyName": "Društvo Crvenog križa Splitsko-dalmatinske županije",
+      "address": "Trg fra Filipa Grabovca 5",
+      "director": "Zdravka Plazonić",
+      "phone": "091 122 2427",
+      "email": "gdckvrlika@gmail.com",
+      "website": "",
+      "city": "Vrlika"
+    },
+    {
+      "name": "Drniš",
+      "societyName": "Društvo Crvenog križa Šibensko-kninske županije",
+      "address": "Nikole Tesle 39",
+      "director": "Vinka Badžim",
+      "phone": "022 886 755",
+      "email": "crvenikriz.drnis@gmail.com",
+      "website": "",
+      "city": "Drniš"
+    },
+    {
+      "name": "Knin",
+      "societyName": "Društvo Crvenog križa Šibensko-kninske županije",
+      "address": "Fra Filipa Grabovca 1",
+      "director": "Anđelka Balić",
+      "phone": "022 662 019",
+      "email": "ck@gdck-knin.hr",
+      "website": "",
+      "city": "Knin"
+    },
+    {
+      "name": "Šibenik",
+      "societyName": "Društvo Crvenog križa Šibensko-kninske županije",
+      "address": "Eugena Kvaternika 2",
+      "director": "Antonia Gregov Jukić",
+      "phone": "022 219 258",
+      "email": "info@gdck-sibenik.hr",
+      "website": "www.gdck-sibenik.hr",
+      "city": "Šibenik"
+    },
+    {
+      "name": "Vodice",
+      "societyName": "Društvo Crvenog križa Šibensko-kninske županije",
+      "address": "Obala Juričev Ive Cote 9",
+      "director": "Marijana Biluš",
+      "phone": "022 310 325",
+      "email": "crvenikriz.vodice@gmail.com",
+      "website": "www.crvenikriz-vodice.hr",
+      "city": "Vodice"
+    },
+    {
+      "name": "Ivanec",
+      "societyName": "Društvo Crvenog križa Varaždinske županije",
+      "address": "Đure Arnolda 11",
+      "director": "Sanja Pajtak",
+      "phone": "042 781 534",
+      "email": "info@crveni-kriz-ivanec.hr",
+      "website": "www.crveni-kriz-ivanec.hr",
+      "city": "Ivanec"
+    },
+    {
+      "name": "Ludbreg",
+      "societyName": "Društvo Crvenog križa Varaždinske županije",
+      "address": "Vinogradska 1",
+      "director": "Mirjana Jerbić",
+      "phone": "042 819 522",
+      "email": "crvenikriz.ludbreg@gmail.com",
+      "website": "",
+      "city": "Ludbreg"
+    },
+    {
+      "name": "Novi Marof",
+      "societyName": "Društvo Crvenog križa Varaždinske županije",
+      "address": "Kralja Tomislava 16",
+      "director": "Mirjana Matić Brdar",
+      "phone": "042 611 401",
+      "email": "crveni.kriz-novi.marof@vz.t-com.hr",
+      "website": "",
+      "city": "Novi Marof"
+    },
+    {
+      "name": "Varaždin",
+      "societyName": "Društvo Crvenog križa Varaždinske županije",
+      "address": "Trg Matije Gupca 3",
+      "director": "Sandra Mintas",
+      "phone": "042 214 496",
+      "email": "ck-varazdin@vz.t-com.hr",
+      "website": "www.gdck-varazdin.hr",
+      "city": "Varaždin"
+    },
+    {
+      "name": "Orahovica",
+      "societyName": "Društvo Crvenog križa Virovitičko-podravske županije",
+      "address": "Trg bana I. Mažuranića 8a",
+      "director": "Vladimir Kribl",
+      "phone": "033 673 106",
+      "email": "gdck-orahovica@vt.t-com.hr",
+      "website": "",
+      "city": "Orahovica"
+    },
+    {
+      "name": "Slatina",
+      "societyName": "Društvo Crvenog križa Virovitičko-podravske županije",
+      "address": "Braće Radić 13a",
+      "director": "Vladimir Jelenčić",
+      "phone": "033 551 230",
+      "email": "ce.kaj13@gmail.com",
+      "website": "",
+      "city": "Slatina"
+    },
+    {
+      "name": "Virovitica",
+      "societyName": "Društvo Crvenog križa Virovitičko-podravske županije",
+      "address": "Masarykova 6",
+      "director": "Nikola Slavić",
+      "phone": "033 729 459",
+      "email": "crveni-kriz-virovitica@net.hr",
+      "website": "www.crvenikrizvirovitica.blog.hr",
+      "city": "Virovitica"
+    },
+    {
+      "name": "Ilok",
+      "societyName": "Društvo crvenog križa Vukovarsko-srijemske županije",
+      "address": "Trg Nikole Iločkog 13",
+      "director": "Josip Lončar",
+      "phone": "032 590 281",
+      "email": "gdckilok@net.hr",
+      "website": "",
+      "city": "Ilok"
+    },
+    {
+      "name": "Vukovar",
+      "societyName": "Društvo crvenog križa Vukovarsko-srijemske županije",
+      "address": "204. vukovarske brigade 45",
+      "director": "Vlatko Glavaš",
+      "phone": "032 441 364",
+      "email": "gdckvu@gmail.com",
+      "website": "",
+      "city": "Vukovar"
+    },
+    {
+      "name": "Vinkovci",
+      "societyName": "Društvo crvenog križa Vukovarsko-srijemske županije",
+      "address": "Trg bana Josipa Šokčevića 1",
+      "director": "Branislav Tomić",
+      "phone": "032 332 523",
+      "email": "crveni-kriz-vk@vk.htnet.hr",
+      "website": "www.crveni-kriz-vinkovci.hr",
+      "city": "Vinkovci"
+    },
+    {
+      "name": "Županja",
+      "societyName": "Društvo crvenog križa Vukovarsko-srijemske županije",
+      "address": "Dr. Franje Račkog 30b",
+      "director": "Marija Dugalić",
+      "phone": "032 831 607",
+      "email": "gradsko.drustvo.crvenog.kriza1@vu.t-com.hr",
+      "website": "",
+      "city": "Županja"
+    },
+    {
+      "name": "Benkovac",
+      "societyName": "Društvo Crvenog križa Zadarske županije",
+      "address": "Petra Zoranića 5a",
+      "director": "Antonija Tokić",
+      "phone": "099 875 5198",
+      "email": "crveni.kriz.benkovac@gmail.com",
+      "website": "",
+      "city": "Benkovac"
+    },
+    {
+      "name": "Biograd na Moru",
+      "societyName": "Društvo Crvenog križa Zadarske županije",
+      "address": "Ribarska 11a",
+      "director": "Franka Troskot",
+      "phone": "023 383 761",
+      "email": "crvenikrizbiograd@zd.t-com.hr",
+      "website": "",
+      "city": "Biograd na Moru"
+    },
+    {
+      "name": "Obrovac",
+      "societyName": "Društvo Crvenog križa Zadarske županije",
+      "address": "Jadranska ulica 4",
+      "director": "Zrinka Klanac",
+      "phone": "023 689 053",
+      "email": "gdckobrovac@gmail.com",
+      "website": "",
+      "city": "Obrovac"
+    },
+    {
+      "name": "Pag",
+      "societyName": "Društvo Crvenog križa Zadarske županije",
+      "address": "Prosika 41a",
+      "director": "Darijo Šupraha",
+      "phone": "091/3680-068",
+      "email": "gdckpag@gmail.com",
+      "website": "",
+      "city": "Pag"
+    },
+    {
+      "name": "Zadar",
+      "societyName": "Društvo Crvenog križa Zadarske županije",
+      "address": "Obala kneza Branimira 4d",
+      "director": "Katarina Radeljić",
+      "phone": "023 211 204",
+      "email": "gdckzd@outlook.com",
+      "website": "",
+      "city": "Zadar"
+    },
+    {
+      "name": "Dugo Selo",
+      "societyName": "Društvo Crvenog križa Zagrebačke županije",
+      "address": "Ulica 2. gardijske brigade \"Gromovi\" 3",
+      "director": "Renata Jakić",
+      "phone": "01 2753 130",
+      "email": "info@gdck-dugoselo.hr",
+      "website": "https://gdck-dugoselo.hr/",
+      "city": "Dugo Selo"
+    },
+    {
+      "name": "Ivanić-Grad",
+      "societyName": "Društvo Crvenog križa Zagrebačke županije",
+      "address": "Vulinčeva 30",
+      "director": "Ivana Bajt",
+      "phone": "01 2883 001",
+      "email": "gradsko.drustvo.crvenog.kriza@zg.t-com.hr",
+      "website": "www.crvenikriz-ivanic.hr",
+      "city": "Ivanić Grad"
+    },
+    {
+      "name": "Jastrebarsko",
+      "societyName": "Društvo Crvenog križa Zagrebačke županije",
+      "address": "Vlatka Mačeka 2",
+      "director": "Dunja Vlašić",
+      "phone": "01 6283 363",
+      "email": "info@crvenikrizjastrebarsko.hr",
+      "website": "",
+      "city": "Jastrebarsko"
+    },
+    {
+      "name": "Samobor",
+      "societyName": "Društvo Crvenog križa Zagrebačke županije",
+      "address": "Ilirskog pokreta 2",
+      "director": "Anica Francetić Kufrin",
+      "phone": "01 3361 681",
+      "email": "info@crvenikrizsamobor.hr",
+      "website": "",
+      "city": "Samobor"
+    },
+    {
+      "name": "Sveti Ivan Zelina",
+      "societyName": "Društvo Crvenog križa Zagrebačke županije",
+      "address": "Bocakova ulica 13",
+      "director": "Branka Puhelek",
+      "phone": "01 2060 415",
+      "email": "info@crveni-kriz-zelina.hr",
+      "website": "",
+      "city": "Sveti Ivan Zelina"
+    },
+    {
+      "name": "Velika Gorica",
+      "societyName": "Društvo Crvenog križa Zagrebačke županije",
+      "address": "Cvjetno naselje 16",
+      "director": "Renata Deak",
+      "phone": "01 6221 318",
+      "email": "info@ckvg.hr",
+      "website": "www.ckvg.hr",
+      "city": "Velika Gorica"
+    },
+    {
+      "name": "Vrbovec",
+      "societyName": "Društvo Crvenog križa Zagrebačke županije",
+      "address": "Ulica poginulih branitelja 5",
+      "director": "Jelena Mucko",
+      "phone": "098 800 310",
+      "email": "jelenamucko@net.hr",
+      "website": "",
+      "city": "Vrbovec"
+    },
+    {
+      "name": "Zaprešić",
+      "societyName": "Društvo Crvenog križa Zagrebačke županije",
+      "address": "Trg žrtava fašizma 8",
+      "director": "Denis Ljevaković",
+      "phone": "01 3313 302",
+      "email": "ckzapresic@hotmail.com",
+      "website": "",
+      "city": "Zaprešić"
+    }
+  ]
+}
