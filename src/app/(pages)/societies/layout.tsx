@@ -7,7 +7,7 @@ import MainLayout from '~/components/layout/mainLayout';
 const SocietiesLayout: FC<PropsWithChildren> = ({ children }) => {
   const tabsData: TabProp[] = [
     {
-      label: 'Društva',
+      label: 'Županijska društva',
       link: 'list',
     },
     {

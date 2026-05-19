@@ -26,7 +26,7 @@ export type ProfileFormProps = {
 };
 
 export const ProfileForm = () => {
-  const { register, watch, setValue } = useFormContext();
+  const { register, watch, setValue, getValues } = useFormContext();
   const selectedSocietyId = watch('profile.societyId') as string | undefined;
   const isMounted = useRef(false);
 
@@ -39,14 +39,14 @@ export const ProfileForm = () => {
   useEffect(() => {
     if (!societyOptions?.length) return;
 
-    const current = watch('profile.societyId') as string | undefined;
+    const current = getValues('profile.societyId') as string | undefined;
     if (current) return;
 
     const pgz = societyOptions.find((s) => s.name === PGZ_SOCIETY_NAME);
     if (pgz) {
       setValue('profile.societyId', pgz.id, { shouldDirty: false });
     }
-  }, [societyOptions, setValue, watch]);
+  }, [societyOptions, setValue, getValues]);
 
   useEffect(() => {
     if (!isMounted.current) {
@@ -156,8 +156,8 @@ export const ProfileForm = () => {
       <div className="flex gap-10">
         <FormSelect
           id="societyId"
-          label="Društvo"
-          placeholder="Odaberite društvo"
+          label="Županijsko društvo"
+          placeholder="Odaberite županijsko društvo"
           {...register('profile.societyId')}
         >
           <option value="">-- Bez izbora --</option>

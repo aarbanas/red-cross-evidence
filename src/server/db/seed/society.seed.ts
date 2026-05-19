@@ -48,12 +48,21 @@ async function getOrCreateCity(
   countryId: string,
 ): Promise<string> {
   const existing = await db
-    .select({ id: cities.id })
+    .select({ id: cities.id, countryId: cities.countryId })
     .from(cities)
     .where(eq(cities.name, name))
     .limit(1);
 
-  if (existing[0]) return existing[0].id;
+  if (existing[0]) {
+    if (!existing[0].countryId) {
+      await db
+        .update(cities)
+        .set({ countryId })
+        .where(eq(cities.id, existing[0].id));
+    }
+
+    return existing[0].id;
+  }
 
   const [created] = await db
     .insert(cities)

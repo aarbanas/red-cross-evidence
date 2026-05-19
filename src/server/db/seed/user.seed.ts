@@ -532,8 +532,8 @@ const generateCountriesWithCities = async (): Promise<string[]> => {
         postalCode: _city.zip,
         countryId:
           _city.name === 'Ljubljana'
-            ? insertedCountries.find((c) => c.name === 'Slovenia')?.insertedId
-            : insertedCountries.find((c) => c.name === 'Croatia')?.insertedId,
+            ? insertedCountries.find((c) => c.name === 'Slovenija')?.insertedId
+            : insertedCountries.find((c) => c.name === 'Hrvatska')?.insertedId,
       })),
     )
     .returning({ insertedId: cities.id });

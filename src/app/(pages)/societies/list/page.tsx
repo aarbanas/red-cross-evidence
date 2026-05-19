@@ -27,7 +27,7 @@ const SocietiesListPage = () => {
             href={{ pathname: '/societies/list/create' }}
           >
             <CirclePlus />
-            Kreiraj novo društvo
+            Kreiraj novo županijsko društvo
           </Link>
         </div>
       </div>

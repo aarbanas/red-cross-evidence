@@ -43,6 +43,7 @@ const SocietyForm: React.FC<Props> = ({ action, formData }) => {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const { isSubmitting } = form.formState;
+  const utils = api.useUtils();
   const createSociety = api.society.create.useMutation();
   const updateSociety = api.society.update.useMutation();
 
@@ -70,6 +71,7 @@ const SocietyForm: React.FC<Props> = ({ action, formData }) => {
         await updateSociety.mutateAsync(payload);
       }
 
+      await utils.society.find.invalidate();
       router.push('/societies/list');
     } catch (error) {
       if (error instanceof Error) {
@@ -117,12 +119,14 @@ const SocietyForm: React.FC<Props> = ({ action, formData }) => {
       )}
 
       <Button
-        className="!text-base bg-black text-white"
+        className="cursor-pointer bg-black text-base! text-white"
         type="submit"
         showLoading={isSubmitting}
       >
         <span>
-          {action === 'create' ? 'Kreiraj novo društvo' : 'Spremi promjene'}
+          {action === 'create'
+            ? 'Kreiraj novo županijsko društvo'
+            : 'Spremi promjene'}
         </span>
       </Button>
     </FormComponent>

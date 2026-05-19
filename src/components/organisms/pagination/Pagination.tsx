@@ -32,6 +32,9 @@ type PaginationProps = {
   onNextPage(): void;
 };
 
+const DELTA = 2;
+const ELLIPSIS_JUMP = 5;
+
 const PaginationPages: React.FC<PaginationProps> = ({
   totalPageNumber,
   currentPage,
@@ -39,25 +42,60 @@ const PaginationPages: React.FC<PaginationProps> = ({
   onPreviousPage,
   onNextPage,
 }) => {
+  const windowStart = Math.max(2, currentPage - DELTA);
+  const windowEnd = Math.min(totalPageNumber - 1, currentPage + DELTA);
+  const windowPages: number[] = [];
+
+  for (let i = windowStart; i <= windowEnd; i++) {
+    windowPages.push(i);
+  }
+
+  const showLeftEllipsis = windowStart > 2;
+  const showRightEllipsis = windowEnd < totalPageNumber - 1;
+
   return (
     <>
       <PaginationItem onClick={() => onPreviousPage()}>
         <PaginationPrevious />
       </PaginationItem>
 
-      {Array.from({ length: totalPageNumber }, (_, i) => i).map((num) => (
-        <React.Fragment key={num}>
-          <PaginationItem onClick={() => onChangePage(Number(num))}>
-            <PaginationLink isActive={currentPage === num + 1}>
-              {num + 1}
-            </PaginationLink>
-          </PaginationItem>
-        </React.Fragment>
+      <PaginationItem onClick={() => onChangePage(0)}>
+        <PaginationLink isActive={currentPage === 1}>1</PaginationLink>
+      </PaginationItem>
+
+      {showLeftEllipsis && (
+        <PaginationItem
+          onClick={() =>
+            onChangePage(Math.max(1, currentPage - ELLIPSIS_JUMP) - 1)
+          }
+        >
+          <PaginationEllipsis />
+        </PaginationItem>
+      )}
+
+      {windowPages.map((num) => (
+        <PaginationItem key={num} onClick={() => onChangePage(num - 1)}>
+          <PaginationLink isActive={currentPage === num}>{num}</PaginationLink>
+        </PaginationItem>
       ))}
 
-      {totalPageNumber > 10 && (
-        <PaginationItem>
+      {showRightEllipsis && (
+        <PaginationItem
+          onClick={() =>
+            onChangePage(
+              Math.min(totalPageNumber, currentPage + ELLIPSIS_JUMP) - 1,
+            )
+          }
+        >
           <PaginationEllipsis />
+        </PaginationItem>
+      )}
+
+      {totalPageNumber > 1 && (
+        <PaginationItem onClick={() => onChangePage(totalPageNumber - 1)}>
+          <PaginationLink isActive={currentPage === totalPageNumber}>
+            {totalPageNumber}
+          </PaginationLink>
         </PaginationItem>
       )}
 

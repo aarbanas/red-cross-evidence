@@ -50,6 +50,7 @@ const CitySocietyForm: React.FC<Props> = ({ action, formData }) => {
   const { data: countries } = api.country.getAllCountries.useQuery();
   const croatia = countries?.find((c) => c.name === 'Hrvatska');
 
+  const utils = api.useUtils();
   const createCitySociety = api.citySociety.create.useMutation();
   const updateCitySociety = api.citySociety.update.useMutation();
 
@@ -75,6 +76,7 @@ const CitySocietyForm: React.FC<Props> = ({ action, formData }) => {
         await updateCitySociety.mutateAsync(payload);
       }
 
+      await utils.citySociety.find.invalidate();
       router.push('/societies/city');
     } catch (error) {
       if (error instanceof Error) {
@@ -85,6 +87,24 @@ const CitySocietyForm: React.FC<Props> = ({ action, formData }) => {
 
   return (
     <FormComponent form={form} onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-1">
+        <label htmlFor="societyId" className="font-medium text-sm">
+          Društvo
+        </label>
+        <select
+          id="societyId"
+          className="rounded-md border px-3 py-2 text-sm"
+          {...form.register('societyId')}
+        >
+          <option value="">-- Odaberi društvo --</option>
+          {societyOptions?.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <FormInput
         id="name"
         label="Naziv*"
@@ -121,26 +141,8 @@ const CitySocietyForm: React.FC<Props> = ({ action, formData }) => {
         />
       )}
 
-      <div className="flex flex-col gap-1">
-        <label htmlFor="societyId" className="font-medium text-sm">
-          Društvo
-        </label>
-        <select
-          id="societyId"
-          className="rounded-md border px-3 py-2 text-sm"
-          {...form.register('societyId')}
-        >
-          <option value="">-- Odaberi društvo --</option>
-          {societyOptions?.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
       <Button
-        className="!text-base bg-black text-white"
+        className="cursor-pointer bg-black text-base! text-white"
         type="submit"
         showLoading={isSubmitting}
       >

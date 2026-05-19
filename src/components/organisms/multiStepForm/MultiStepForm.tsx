@@ -77,6 +77,7 @@ function generateForm<T extends FieldValues>(
       if (isLastStep) {
         const parse = schema.safeParse(methods.getValues());
         if (!parse.success) {
+          console.error(parse.error);
           // Find the first error and navigate to its step
           const firstErrorPath = parse.error.issues[0]?.path[0];
           if (firstErrorPath) {
