@@ -15,11 +15,13 @@ export interface FormStep {
 function generateForm<T extends FieldValues>(
   forms: FormStep[],
   onSubmit: (data: T) => void | Promise<void>,
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   schema: ZodObject<any>,
   saveToLocalStorage = false,
 ): ReactElement {
   interface FormProps {
     forms: FormStep[];
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     schema: ZodObject<any>;
     onSubmit: (data: T) => void | Promise<void>;
     saveToLocalStorage: boolean;

@@ -50,6 +50,7 @@ const getRandomLanguages = (
 };
 
 const insertWorkStatus = async (
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   tx: PgTransaction<any>,
   profileId: string,
 ): Promise<void> => {
@@ -284,6 +285,7 @@ async function generateAdmin(
       });
 
       await insertWorkStatus(
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tx as unknown as PgTransaction<any>,
         adminProfile.id,
       );
