@@ -15,11 +15,13 @@ export interface FormStep {
 function generateForm<T extends FieldValues>(
   forms: FormStep[],
   onSubmit: (data: T) => void | Promise<void>,
+  // biome-ignore lint/suspicious/noExplicitAny: any is required here
   schema: ZodObject<any>,
   saveToLocalStorage = false,
 ): ReactElement {
   interface FormProps {
     forms: FormStep[];
+    // biome-ignore lint/suspicious/noExplicitAny: any is required here
     schema: ZodObject<any>;
     onSubmit: (data: T) => void | Promise<void>;
     saveToLocalStorage: boolean;
@@ -77,6 +79,7 @@ function generateForm<T extends FieldValues>(
       if (isLastStep) {
         const parse = schema.safeParse(methods.getValues());
         if (!parse.success) {
+          console.error(parse.error);
           // Find the first error and navigate to its step
           const firstErrorPath = parse.error.issues[0]?.path[0];
           if (firstErrorPath) {

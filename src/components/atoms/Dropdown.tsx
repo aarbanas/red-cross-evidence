@@ -28,10 +28,10 @@ const Dropdown: React.FC<Props> = ({
   }, [onSearch, searchKey, selectedValue]);
 
   return (
-    <div className="flex gap-2">
+    <div className="flex max-w-1/3 gap-2">
       {label}
       <select
-        className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:outline-none"
+        className="block w-full text-ellipsis rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:outline-none"
         value={selectedValue}
         onChange={(e) => setSelectedValue(e.target.value)}
       >

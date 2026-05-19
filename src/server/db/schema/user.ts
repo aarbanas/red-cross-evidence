@@ -133,10 +133,12 @@ export const profiles = pgTable('profile', {
   birthPlace: varchar('birth_place', { length: 255 }),
   parentName: varchar('parent_name', { length: 255 }),
   nationality: varchar('nationality', { length: 255 }),
-  phone: varchar('phone', { length: 20 }),
+  phone: varchar('phone', { length: 50 }),
   userId: uuid('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
+  societyId: uuid('society_id'),
+  citySocietyId: uuid('city_society_id'),
 });
 
 export const profilesRelations = relations(profiles, ({ one, many }) => ({

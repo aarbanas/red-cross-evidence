@@ -20,7 +20,7 @@ const SizeForm = () => {
       <FormSelect
         id="clothingSize"
         label="Veličina odjeće*"
-        {...register('ç.clothingSize', {
+        {...register('size.clothingSize', {
           required: 'Velilina odjeće je obavezno polje',
         })}
       >
