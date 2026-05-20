@@ -21,7 +21,8 @@
     "lint:fix": "biome check --fix .",
     "format": "biome format --write .",
     "start": "next start",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "jest --config jest.config.cjs"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.2",
