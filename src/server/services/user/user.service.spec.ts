@@ -53,16 +53,16 @@ describe('userService.create', () => {
     jest.clearAllMocks();
   });
 
-  it('returns undefined and skips user creation when shoe size is not a number', async () => {
+  it('throws and skips user creation when shoe size is not a number', async () => {
     const data = {
       ...baseData,
       size: { ...baseData.size, shoeSize: 'abc' },
       addresses: [baseAddress],
     };
 
-    const result = await userService.create(data as never);
-
-    expect(result).toBeUndefined();
+    await expect(userService.create(data as never)).rejects.toThrow(
+      'Shoe size must be a valid number',
+    );
     expect(jest.mocked(userRepository.create)).not.toHaveBeenCalled();
   });
 
@@ -105,18 +105,18 @@ describe('userService.create', () => {
     expect(jest.mocked(cityRepository.getOrCreate)).not.toHaveBeenCalled();
   });
 
-  it('returns undefined and skips user creation when cityRepository.getOrCreate returns no id', async () => {
+  it('throws and skips user creation when cityRepository.getOrCreate returns no id', async () => {
     jest.mocked(cityRepository.getOrCreate).mockResolvedValue(undefined);
 
     const data = { ...baseData, addresses: [baseAddress] };
 
-    const result = await userService.create(data as never);
-
-    expect(result).toBeUndefined();
+    await expect(userService.create(data as never)).rejects.toThrow(
+      'Failed to create new city',
+    );
     expect(jest.mocked(userRepository.create)).not.toHaveBeenCalled();
   });
 
-  it('returns undefined and skips user creation when addressRepository.getOrCreate returns no id', async () => {
+  it('throws and skips user creation when addressRepository.getOrCreate returns no id', async () => {
     jest
       .mocked(cityRepository.getOrCreate)
       .mockResolvedValue({ id: 'city-1', name: 'Zagreb' });
@@ -124,9 +124,9 @@ describe('userService.create', () => {
 
     const data = { ...baseData, addresses: [baseAddress] };
 
-    const result = await userService.create(data as never);
-
-    expect(result).toBeUndefined();
+    await expect(userService.create(data as never)).rejects.toThrow(
+      'Failed to create new address',
+    );
     expect(jest.mocked(userRepository.create)).not.toHaveBeenCalled();
   });
 
