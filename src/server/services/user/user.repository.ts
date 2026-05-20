@@ -189,6 +189,7 @@ const userRepository = {
         .values({
           email: data.profile.email,
           active: true,
+          type: data.profile.type,
           password,
         })
         .returning({ id: users.id });

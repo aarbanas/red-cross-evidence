@@ -8,6 +8,7 @@ const createUserSchema = z.object({
       .string()
       .min(11, 'Oib mora imati 11 znamenki')
       .max(11, 'Oib mora imati 11 znamenki'),
+    type: z.string().min(1, 'Vrsta je obavezna'),
     sex: z.string(),
     email: z.string().email('Neispravan email'),
     parentName: z.string().optional(),

@@ -1,9 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { translateSex } from '~/app/(pages)/users/create/utils';
+import {
+  translateSex,
+  translateUserType,
+} from '~/app/(pages)/users/create/utils';
 import FormInput from '~/components/organisms/form/formInput/FormInput';
 import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import { Sex } from '~/server/db/schema';
+import { Sex, UserType } from '~/server/db/schema';
 import { api } from '~/trpc/react';
 
 const PGZ_SOCIETY_NAME = 'Društvo Crvenog Križa Primorsko-goranske županije';
@@ -15,6 +18,7 @@ export type ProfileFormProps = {
     email: string;
     phone: string;
     oib: string;
+    type: string;
     sex: string;
     parentName: string;
     nationality: string;
@@ -93,6 +97,29 @@ export const ProfileForm = () => {
             },
           })}
         />
+      </div>
+
+      <div className="flex gap-10">
+        <FormSelect
+          id="type"
+          label="Vrsta*"
+          placeholder="Odaberite vrstu"
+          {...register('profile.type', {
+            required: 'Vrsta je obavezno polje',
+          })}
+        >
+          {Object.entries(UserType)
+            .sort(([, a], [, b]) => {
+              if (a === UserType.VOLUNTEER) return -1;
+              if (b === UserType.VOLUNTEER) return 1;
+              return 0;
+            })
+            .map(([key, value]) => (
+              <option key={key} value={value}>
+                {translateUserType(value)}
+              </option>
+            ))}
+        </FormSelect>
         <FormSelect
           id="sex"
           label="Spol*"

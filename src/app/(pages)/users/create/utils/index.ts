@@ -2,8 +2,20 @@ import {
   AddressType,
   EducationLevel,
   Sex,
+  UserType,
   WorkStatus,
 } from '~/server/db/schema';
+
+export const translateUserType = (type: UserType) => {
+  switch (type) {
+    case UserType.EMPLOYEE:
+      return 'Zaposlenik';
+    case UserType.VOLUNTEER:
+      return 'Volonter';
+    default:
+      throw new Error('Invalid user type value');
+  }
+};
 
 export const translateSex = (sex: Sex) => {
   switch (sex) {
