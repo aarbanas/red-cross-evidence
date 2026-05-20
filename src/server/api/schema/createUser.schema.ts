@@ -52,16 +52,24 @@ const createUserSchema = z.object({
     clothingSize: z.string().min(1),
     shoeSize: z.string().min(1),
     height: z
-      .number()
-      .min(50, 'Visina mora biti veća od 50 cm')
-      .max(250, 'Visina ne smije biti veća od 250 cm')
-      .nullable()
+      .union([
+        z
+          .number()
+          .min(50, 'Visina mora biti veća od 50 cm')
+          .max(250, 'Visina ne smije biti veća od 250 cm')
+          .nullable(),
+        z.nan(),
+      ])
       .optional(),
     weight: z
-      .number()
-      .min(1, 'Težina mora biti veća od 0 kg')
-      .max(500, 'Težina ne smije biti veća od 500 kg')
-      .nullable()
+      .union([
+        z
+          .number()
+          .min(1, 'Težina mora biti veća od 0 kg')
+          .max(500, 'Težina ne smije biti veća od 500 kg')
+          .nullable(),
+        z.nan(),
+      ])
       .optional(),
   }),
   skills: z.object({

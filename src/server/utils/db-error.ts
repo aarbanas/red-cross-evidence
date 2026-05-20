@@ -1,6 +1,7 @@
 type PgError = {
   code?: string;
-  constraint?: string;
+  constraint_name?: string;
+  detail?: string;
 };
 
 const PG_UNIQUE_VIOLATION = '23505';
@@ -10,9 +11,14 @@ const PG_NOT_NULL_VIOLATION = '23502';
 export const mapDbError = (error: unknown): Error => {
   const cause = (error as { cause?: PgError })?.cause;
 
+  console.log(cause);
   if (cause?.code === PG_UNIQUE_VIOLATION) {
-    if (cause.constraint?.includes('oib')) {
+    if (cause.constraint_name?.includes('oib')) {
       return new Error('Korisnik s tim OIB-om već postoji u sustavu.');
+    }
+
+    if (cause.constraint_name?.includes('email')) {
+      return new Error('Korisnik s tim email-om već postoji u sustavu.');
     }
 
     return new Error('Zapis s ovim podacima već postoji u sustavu.');

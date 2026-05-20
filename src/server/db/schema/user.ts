@@ -109,7 +109,7 @@ export const users = pgTable(
   'user',
   {
     id: uuid('id').defaultRandom().primaryKey(),
-    email: varchar('email', { length: 255 }).notNull(),
+    email: varchar('email', { length: 255 }).notNull().unique(),
     password: varchar('password', { length: 255 }),
     active: boolean('active').default(false),
     type: userTypeEnum('type').notNull().default(UserType.VOLUNTEER),
