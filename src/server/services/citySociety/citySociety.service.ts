@@ -1,4 +1,5 @@
 import type { FindQueryDTO } from '~/server/db/utility/types';
+import { mapDbError } from '~/server/utils/db-error';
 import citySocietyRepository, {
   type CitySocietyFormData,
 } from './citySociety.repository';
@@ -14,10 +15,18 @@ const citySocietyService = {
     return citySocietyRepository.findAll(societyId);
   },
   create: async (data: CitySocietyFormData) => {
-    return citySocietyRepository.create(data);
+    try {
+      return await citySocietyRepository.create(data);
+    } catch (error) {
+      throw mapDbError(error);
+    }
   },
   update: async (data: CitySocietyFormData) => {
-    return citySocietyRepository.update(data);
+    try {
+      return await citySocietyRepository.update(data);
+    } catch (error) {
+      throw mapDbError(error);
+    }
   },
   delete: async (id: string) => {
     return citySocietyRepository.deleteById(id);

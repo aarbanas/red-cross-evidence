@@ -1,6 +1,7 @@
 import type { LicencesFormData } from '~/app/(pages)/licenses/_components/LicencesForm';
 import type { FindQueryDTO } from '~/server/db/utility/types';
 import licenseRepository from '~/server/services/license/license.repository';
+import { mapDbError } from '~/server/utils/db-error';
 
 const licenseService = {
   getById: async (id: string) => {
@@ -18,7 +19,11 @@ const licenseService = {
       name: prettifyLicenseName(data.name),
     };
 
-    return licenseRepository.create(values);
+    try {
+      return await licenseRepository.create(values);
+    } catch (error) {
+      throw mapDbError(error);
+    }
   },
   update: async (data: LicencesFormData) => {
     const values: LicencesFormData = {
@@ -26,7 +31,11 @@ const licenseService = {
       name: prettifyLicenseName(data.name),
     };
 
-    return licenseRepository.update(values);
+    try {
+      return await licenseRepository.update(values);
+    } catch (error) {
+      throw mapDbError(error);
+    }
   },
   findAll: async () => {
     return licenseRepository.findAll();

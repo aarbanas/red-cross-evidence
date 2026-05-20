@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type ReactElement, useEffect, useState } from 'react';
+import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 import { type DefaultValues, type FieldValues, useForm } from 'react-hook-form';
 import type { ZodObject } from 'zod';
 import { Button } from '~/components/atoms/Button';
@@ -40,6 +40,7 @@ function generateForm<T extends FieldValues>(
 
     const [currentStep, setCurrentStep] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const skipLocalStorageSave = useRef(false);
     let isLastStep = false;
 
     const methods = useForm<T>({
@@ -53,7 +54,7 @@ function generateForm<T extends FieldValues>(
     const watchedValues = methods.watch();
 
     useEffect(() => {
-      if (saveToLocalStorage) {
+      if (saveToLocalStorage && !skipLocalStorageSave.current) {
         localStorage.setItem(
           'multiStepFormData',
           JSON.stringify(watchedValues),
@@ -93,13 +94,24 @@ function generateForm<T extends FieldValues>(
         }
 
         if (saveToLocalStorage) {
-          localStorage.removeItem('multiStepFormData');
+          skipLocalStorageSave.current = true;
         }
 
         setIsSubmitting(true);
+        let submitted = false;
+
         try {
           await onSubmit(data);
+          submitted = true;
         } finally {
+          if (saveToLocalStorage) {
+            if (submitted) {
+              localStorage.removeItem('multiStepFormData');
+            } else {
+              skipLocalStorageSave.current = false;
+            }
+          }
+
           setIsSubmitting(false);
         }
       }

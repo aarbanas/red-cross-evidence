@@ -82,6 +82,8 @@ const CreateUserForm = () => {
           type: 'error',
         });
       }
+
+      throw error;
     }
   };
 

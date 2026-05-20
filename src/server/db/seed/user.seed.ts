@@ -20,6 +20,7 @@ import {
   profilesLicences,
   Sex,
   sizes,
+  UserType,
   users,
   workStatuses,
 } from '../schema';
@@ -151,6 +152,7 @@ const generateUsers = async (
             email,
             password: userPwd,
             active: true,
+            type: UserType.VOLUNTEER,
           })
           .returning();
 
@@ -245,6 +247,7 @@ async function generateAdmin(
         email,
         password: adminPassword,
         active: true,
+        type: UserType.EMPLOYEE,
       })
       .returning();
 

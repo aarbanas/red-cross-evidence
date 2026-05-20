@@ -3,6 +3,7 @@ import type { EducationTermFormData } from '~/app/(pages)/educations/term/_compo
 import type { EducationType } from '~/server/db/schema';
 import type { FindQueryDTO } from '~/server/db/utility/types';
 import educationRepository from '~/server/services/education/education.repository';
+import { mapDbError } from '~/server/utils/db-error';
 
 const educationService = {
   list: {
@@ -19,10 +20,18 @@ const educationService = {
       return educationRepository.list.deleteById(id);
     },
     create: async (data: EducationFormData) => {
-      return educationRepository.list.create(data);
+      try {
+        return await educationRepository.list.create(data);
+      } catch (error) {
+        throw mapDbError(error);
+      }
     },
     update: async (data: EducationFormData) => {
-      return educationRepository.list.update(data);
+      try {
+        return await educationRepository.list.update(data);
+      } catch (error) {
+        throw mapDbError(error);
+      }
     },
     getAllTitles: async (type?: EducationType) => {
       return educationRepository.list.getAllTitles(type);
@@ -39,10 +48,18 @@ const educationService = {
       return educationRepository.term.deleteById(id);
     },
     create: async (data: EducationTermFormData) => {
-      return educationRepository.term.create(data);
+      try {
+        return await educationRepository.term.create(data);
+      } catch (error) {
+        throw mapDbError(error);
+      }
     },
     update: async (data: EducationTermFormData) => {
-      return educationRepository.term.update(data);
+      try {
+        return await educationRepository.term.update(data);
+      } catch (error) {
+        throw mapDbError(error);
+      }
     },
   },
 };

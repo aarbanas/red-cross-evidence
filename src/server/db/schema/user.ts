@@ -15,6 +15,11 @@ import {
 import { profileEducationTerms } from '~/server/db/schema/education';
 import { licenses } from '~/server/db/schema/licence';
 
+export enum UserType {
+  EMPLOYEE = 'EMPLOYEE',
+  VOLUNTEER = 'VOLUNTEER',
+}
+
 export enum AddressType {
   PERMANENT_RESIDENCE = 'permanent_residence',
   TEMPORARY_RESIDENCE = 'temporary_residence',
@@ -65,6 +70,11 @@ export enum LanguageLevel {
   C2 = 'C2',
 }
 
+export const userTypeEnum = pgEnum(
+  'usertype',
+  Object.values(UserType) as [string, ...string[]],
+);
+
 export const addressEnum = pgEnum(
   'addresstype',
   Object.values(AddressType) as [string, ...string[]],
@@ -99,9 +109,10 @@ export const users = pgTable(
   'user',
   {
     id: uuid('id').defaultRandom().primaryKey(),
-    email: varchar('email', { length: 255 }).notNull(),
+    email: varchar('email', { length: 255 }).notNull().unique(),
     password: varchar('password', { length: 255 }),
     active: boolean('active').default(false),
+    type: userTypeEnum('type').notNull().default(UserType.VOLUNTEER),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at'),
   },
