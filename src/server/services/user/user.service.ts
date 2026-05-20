@@ -8,6 +8,7 @@ import type {
   CreateUserDTO,
 } from '~/server/services/user/types';
 import userRepository from '~/server/services/user/user.repository';
+import { mapDbError } from '~/server/utils/db-error';
 import { generateRandomHashedPassword } from '~/server/utils/password';
 
 const userService = {
@@ -18,15 +19,16 @@ const userService = {
     return userRepository.find(data);
   },
   create: async (data: CreateUserDTO) => {
+    validateUserCreation(data);
+
+    const { hashedPassword } = await generateRandomHashedPassword();
+    const addressIds = await prepareAddresses(data.addresses);
+
     try {
-      validateUserCreation(data);
-
-      const { hashedPassword } = await generateRandomHashedPassword();
-
-      // prepare addresses with IDs
-      const addressIds = await prepareAddresses(data.addresses);
-      return userRepository.create(data, hashedPassword, addressIds);
-    } catch (_) {}
+      return await userRepository.create(data, hashedPassword, addressIds);
+    } catch (error) {
+      throw mapDbError(error);
+    }
   },
 };
 
