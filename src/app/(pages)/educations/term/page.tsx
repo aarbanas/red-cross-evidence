@@ -1,10 +1,11 @@
 'use client';
 import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import EducationsTerm from '~/app/(pages)/educations/term/EducationsTerm';
 import EducationsTermSearch from '~/app/(pages)/educations/term/EducationsTermSearch';
 import TabLayout from '~/components/layout/tabLayout';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
 
 const EducationsEvidencePage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
@@ -32,7 +33,9 @@ const EducationsEvidencePage = () => {
         </div>
       </div>
 
-      <EducationsTerm filter={filter} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <EducationsTerm filter={filter} />
+      </Suspense>
     </TabLayout>
   );
 };

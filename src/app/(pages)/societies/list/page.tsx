@@ -2,10 +2,11 @@
 
 import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
-import { useCallback, useState } from 'react';
+import { Suspense, useCallback, useState } from 'react';
 import Societies from '~/app/(pages)/societies/_components/Societies';
 import SocietiesSearch from '~/app/(pages)/societies/_components/SocietiesSearch';
 import TabLayout from '~/components/layout/tabLayout';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
 
 const SocietiesListPage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
@@ -32,7 +33,9 @@ const SocietiesListPage = () => {
         </div>
       </div>
 
-      <Societies filter={filter} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Societies filter={filter} />
+      </Suspense>
     </TabLayout>
   );
 };
