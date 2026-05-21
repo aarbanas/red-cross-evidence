@@ -26,7 +26,7 @@ const UsersPageContent = () => {
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {
-      toast('Volonter uspješno kreiran', {
+      toast('Korisnik uspješno kreiran', {
         type: 'success',
       });
 
@@ -52,7 +52,7 @@ const UsersPageContent = () => {
   }, []);
 
   return (
-    <MainLayout headerChildren={<div>Volonteri</div>}>
+    <MainLayout headerChildren={<div>Korisnici</div>}>
       <div className="flex">
         <UsersSearch onSearch={handleSearch} cities={cities} />
 
@@ -64,7 +64,7 @@ const UsersPageContent = () => {
             }}
           >
             <CirclePlus />
-            Kreiraj novog volontera
+            Kreiraj novog korisnika
           </Link>
         </div>
       </div>

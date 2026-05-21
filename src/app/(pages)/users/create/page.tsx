@@ -5,7 +5,7 @@ import MainLayout from '~/components/layout/mainLayout';
 
 const CreateUserPage: NextPage = () => {
   return (
-    <MainLayout headerChildren={<div>Volonteri</div>}>
+    <MainLayout headerChildren={<div>Korisnici</div>}>
       <CreateUserForm />
     </MainLayout>
   );

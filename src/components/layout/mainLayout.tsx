@@ -1,4 +1,4 @@
-import { BookMarked, Building2, IdCard, Package, Users } from 'lucide-react';
+import { BookMarked, Building2, IdCard, Shirt, Users } from 'lucide-react';
 import Link from 'next/link';
 import type React from 'react';
 import type { ReactNode } from 'react';
@@ -50,11 +50,11 @@ const Navigation = () => {
   return (
     <nav className="grid items-start font-medium text-sm lg:px-4">
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-red-100 ${currentPath === AppRoutes.HOME ? 'text-red-600' : ''}`}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-red-100 ${currentPath.includes(AppRoutes.HOME) ? 'text-red-600' : ''}`}
         href={AppRoutes.HOME}
       >
         <Users />
-        Volonteri
+        Korisnici
       </Link>
 
       <Link
@@ -77,7 +77,7 @@ const Navigation = () => {
         className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.EQUIPMENT) ? 'text-red-600' : ''}`}
         href={AppRoutes.EQUIPMENT}
       >
-        <Package />
+        <Shirt />
         Oprema
       </Link>
 
