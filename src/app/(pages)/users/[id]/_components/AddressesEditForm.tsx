@@ -172,6 +172,7 @@ const EditAddressForm = ({
   }[];
   onDone: () => void;
 }) => {
+  'use no memo';
   const form = useForm<AddressFormValues>({
     defaultValues: {
       street: address.street,
@@ -315,6 +316,7 @@ const NewAddressForm = ({
     updatedAt: Date | null;
   }[];
 }) => {
+  'use no memo';
   const [open, setOpen] = useState(false);
   const utils = api.useUtils();
   const form = useForm<AddressFormValues>({
@@ -339,6 +341,8 @@ const NewAddressForm = ({
     typeof selectedCity === 'object' && selectedCity?.id
       ? selectedCity.id
       : undefined;
+
+  console.log(selectedCountry);
 
   const addAddress = api.user.addAddress.useMutation({
     onSuccess: async () => {

@@ -20,6 +20,7 @@ const FormCitySearch: React.FC<Props> = ({
   postalCodeFieldName,
   countryId,
 }) => {
+  'use no memo';
   const { setValue, watch } = useFormContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
