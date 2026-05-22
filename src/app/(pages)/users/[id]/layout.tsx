@@ -15,10 +15,10 @@ const UserEditLayout: FC<PropsWithChildren> = ({ children }) => {
     : 'Uredi korisnika';
 
   const tabsData: TabProp[] = [
-    { label: 'Osobni podaci', link: 'osobni-podaci' },
-    { label: 'Adrese', link: 'adrese' },
-    { label: 'Odjeća i obuća', link: 'odjeca-i-obuca' },
-    { label: 'Znanja i vještine', link: 'znanja-i-vjestine' },
+    { label: 'Osobni podaci', link: 'personal-information' },
+    { label: 'Adrese', link: 'addresses' },
+    { label: 'Odjeća i obuća', link: 'sizes' },
+    { label: 'Znanja i vještine', link: 'skills' },
   ];
 
   return (

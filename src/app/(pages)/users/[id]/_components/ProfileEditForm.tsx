@@ -48,9 +48,8 @@ const PGZ_SOCIETY_NAME = 'Društvo Crvenog Križa Primorsko-goranske županije';
 const ProfileEditForm = ({ userId, defaultValues }: Props) => {
   const form = useForm<FormData>({ defaultValues });
   const { isSubmitting } = form.formState;
-  const isMounted = useRef(false);
-
   const selectedSocietyId = form.watch('profile.societyId');
+  const prevSocietyId = useRef(selectedSocietyId);
 
   const { data: societyOptions } = api.society.findAll.useQuery();
   const { data: citySocietyOptions } = api.citySociety.findAll.useQuery(
@@ -62,7 +61,10 @@ const ProfileEditForm = ({ userId, defaultValues }: Props) => {
     if (!societyOptions?.length) return;
 
     const current = form.getValues('profile.societyId');
-    if (current) return;
+    if (current) {
+      form.setValue('profile.societyId', current, { shouldDirty: false });
+      return;
+    }
 
     const pgz = societyOptions.find((s) => s.name === PGZ_SOCIETY_NAME);
     if (pgz) {
@@ -71,13 +73,19 @@ const ProfileEditForm = ({ userId, defaultValues }: Props) => {
   }, [societyOptions, form]);
 
   useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true;
-      return;
-    }
+    if (prevSocietyId.current === selectedSocietyId) return;
+    prevSocietyId.current = selectedSocietyId;
+    form.setValue('profile.citySocietyId', '', { shouldDirty: false });
+  }, [selectedSocietyId, form]);
 
-    form.setValue('profile.citySocietyId', '');
-  }, [form]);
+  useEffect(() => {
+    if (!citySocietyOptions?.length) return;
+
+    const current = form.getValues('profile.citySocietyId');
+    if (current) {
+      form.setValue('profile.citySocietyId', current, { shouldDirty: false });
+    }
+  }, [citySocietyOptions, form]);
 
   const utils = api.useUtils();
   const updateProfile = api.user.updateProfile.useMutation({

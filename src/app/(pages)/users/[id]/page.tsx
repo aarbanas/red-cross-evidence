@@ -7,7 +7,7 @@ const UserEditIndexPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace(`/users/${id}/osobni-podaci`);
+    router.replace(`/users/${id}/personal-information`);
   }, [id, router]);
 
   return null;
