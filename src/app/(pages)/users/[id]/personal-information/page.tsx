@@ -22,6 +22,8 @@ const ProfileTab = () => {
     <TabLayout>
       <ProfileEditForm
         userId={id}
+        email={data.email ?? ''}
+        active={data.active ?? null}
         defaultValues={{
           profile: {
             firstName: data.profile?.firstName ?? '',

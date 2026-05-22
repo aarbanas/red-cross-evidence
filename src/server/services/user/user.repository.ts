@@ -294,6 +294,7 @@ const userRepository = {
       .select({
         id: users.id,
         email: users.email,
+        active: users.active,
         type: users.type,
         profile: {
           id: profiles.id,

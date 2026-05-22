@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '~/components/organisms/Table';
+import usePagination from '~/hooks/usePagination';
 import type { FindEquipmentReturnDTO } from '~/server/services/equipment/equipment.repository';
 import { api } from '~/trpc/react';
 
@@ -27,10 +28,12 @@ const EquipmentTable = ({ data, totalPageNumber }: Props) => {
   const [equipmentToDelete, setEquipmentToDelete] =
     useState<FindEquipmentReturnDTO | null>(null);
   const utils = api.useUtils();
+  const { handlePageChange } = usePagination();
 
   const deleteMutation = api.equipment.delete.useMutation({
     onSuccess: async () => {
       await utils.equipment.find.invalidate();
+      handlePageChange(0);
       toast('Oprema uspješno obrisana', { type: 'success' });
       setEquipmentToDelete(null);
     },
@@ -89,7 +92,9 @@ const EquipmentTable = ({ data, totalPageNumber }: Props) => {
           </TableBody>
         </Table>
       </div>
-      <PaginationComponent totalPageNumber={totalPageNumber} />
+      {totalPageNumber > 1 && (
+        <PaginationComponent totalPageNumber={totalPageNumber} />
+      )}
 
       <Modal
         isOpen={!!equipmentToDelete}

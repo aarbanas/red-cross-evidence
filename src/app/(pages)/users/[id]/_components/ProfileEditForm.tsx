@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
   translateEducationLevel,
@@ -41,14 +41,19 @@ type FormData = {
 type Props = {
   userId: string;
   defaultValues: FormData;
+  email: string;
+  active: boolean | null;
 };
 
 const PGZ_SOCIETY_NAME = 'Društvo Crvenog Križa Primorsko-goranske županije';
 
-const ProfileEditForm = ({ userId, defaultValues }: Props) => {
+const ProfileEditForm = ({ userId, defaultValues, email, active }: Props) => {
   const form = useForm<FormData>({ defaultValues });
   const { isSubmitting } = form.formState;
-  const selectedSocietyId = form.watch('profile.societyId');
+  const selectedSocietyId = useWatch({
+    control: form.control,
+    name: 'profile.societyId',
+  });
   const prevSocietyId = useRef(selectedSocietyId);
 
   const { data: societyOptions } = api.society.findAll.useQuery();
@@ -129,6 +134,16 @@ const ProfileEditForm = ({ userId, defaultValues }: Props) => {
 
   return (
     <FormComponent form={form} onSubmit={handleSubmit}>
+      <div className="flex gap-10">
+        <FormInput id="email" label="Email" value={email} disabled />
+        <FormInput
+          id="active"
+          label="Status"
+          value={active ? 'Aktivan' : 'Neaktivan'}
+          disabled
+        />
+      </div>
+
       <div className="flex gap-10">
         <FormInput
           id="firstName"
