@@ -120,27 +120,37 @@ function generateForm<T extends FieldValues>(
     const progressPercentage = ((currentStep + 1) / numSteps) * 100;
 
     return (
-      <div className="relative mx-auto flex w-full flex-col items-center rounded-lg border bg-white p-4">
+      <div className="relative mx-auto flex w-full flex-col items-center rounded-lg border bg-card p-6 shadow-sm">
         {isSubmitting && (
           <div className="absolute inset-0 z-50 flex items-center justify-center rounded-lg bg-white bg-opacity-50">
             <LoadingSpinner />
           </div>
         )}
-        <div className="mb-4 h-2.5 w-full rounded-full bg-gray-200">
-          <div
-            className="h-2.5 rounded-full bg-red-700 duration-500"
-            style={{ width: `${progressPercentage}%` }}
-          ></div>
+
+        {/* Progress bar with text */}
+        <div className="mb-4 w-full space-y-2">
+          <div className="h-2.5 w-full rounded-full bg-muted">
+            <div
+              className="h-2.5 rounded-full bg-primary transition-all duration-500"
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-muted-foreground text-xs">
+            <span>
+              Korak {currentStep + 1} od {numSteps}
+            </span>
+            <span>{Math.round(progressPercentage)}% završeno</span>
+          </div>
         </div>
 
-        {/* form navbar */}
-        <nav className="mb-4 flex space-x-4 pb-3">
+        {/* Step navigation pills */}
+        <nav className="mb-6 flex flex-wrap gap-2">
           {forms.map((formStep, index) => (
             <Button
               key={formStep.name}
-              variant={`${currentStep === index ? 'default' : 'ghost'}`}
+              variant={currentStep === index ? 'default' : 'secondary'}
               onClick={() => setCurrentStep(index)}
-              className="cursor-pointer"
+              className="cursor-pointer rounded-full"
               disabled={isSubmitting}
             >
               {index + 1}. {formStep.name}

@@ -63,7 +63,7 @@ export const ProfileForm = () => {
 
   return (
     <>
-      <div className="flex gap-10">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormInput
           id="firstName"
           label="Ime*"
@@ -80,7 +80,7 @@ export const ProfileForm = () => {
         />
       </div>
 
-      <div className="flex gap-10">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormInput
           id="oib"
           label="OIB*"
@@ -99,7 +99,7 @@ export const ProfileForm = () => {
         />
       </div>
 
-      <div className="flex gap-10">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormSelect
           id="type"
           label="Vrsta*"
@@ -136,7 +136,7 @@ export const ProfileForm = () => {
         </FormSelect>
       </div>
 
-      <div className="flex gap-10">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormInput
           id="parentName"
           label="Ime roditelja"
@@ -150,7 +150,7 @@ export const ProfileForm = () => {
         />
       </div>
 
-      <div className="flex gap-10">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormInput
           id="birthDate"
           type="date"
@@ -165,7 +165,7 @@ export const ProfileForm = () => {
         />
       </div>
 
-      <div className="flex gap-10">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormInput
           id="email"
           label="Email*"
@@ -180,7 +180,7 @@ export const ProfileForm = () => {
         />
       </div>
 
-      <div className="flex gap-10">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormSelect
           id="societyId"
           label="Županijsko društvo"

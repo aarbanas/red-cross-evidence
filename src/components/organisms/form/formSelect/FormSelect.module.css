@@ -5,9 +5,9 @@
 }
 
 .label {
-  @apply mb-2 font-light text-gray-500;
+  @apply mb-1 text-sm font-medium text-gray-900;
 }
 
 .select {
-  @apply w-full cursor-pointer rounded-md border-none bg-gray-100 px-3 py-4 shadow-lg focus:border-red-400 focus:ring focus:ring-red-300/40 focus:outline-none;
+  @apply w-full cursor-pointer rounded-md border-none bg-gray-100 px-3 py-4 shadow-sm focus:border-red-400 focus:ring focus:ring-red-300/40 focus:outline-none;
 }
