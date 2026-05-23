@@ -37,7 +37,7 @@ const Tabs: FC<Props> = ({ tabs, basePath }: Props) => {
             router.push(`${basePath}/${tab.link}`);
           }}
           className={cn(
-            'relative inline-flex items-center justify-center whitespace-nowrap px-1 pb-3 font-medium text-sm transition-all',
+            'relative inline-flex cursor-pointer items-center justify-center whitespace-nowrap px-1 pb-3 font-medium text-sm transition-all',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
             'after:absolute after:right-0 after:bottom-0 after:left-0 after:h-0.5 after:transition-colors',
             activeTab === tab.link
