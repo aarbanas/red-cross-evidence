@@ -2,15 +2,23 @@
 import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  memo,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { toast } from 'react-toastify';
 import Users from '~/app/(pages)/users/_components/Users';
 import UsersSearch from '~/app/(pages)/users/_components/UsersSearch';
 import type { DropdownOption } from '~/components/atoms/Dropdown';
 import MainLayout from '~/components/layout/mainLayout';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
 import { api } from '~/trpc/react';
 
-const UsersPage = () => {
+const UsersPageContent = () => {
   const searchParams = useSearchParams();
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
     undefined,
@@ -18,11 +26,10 @@ const UsersPage = () => {
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {
-      toast('Volonter uspješno kreiran', {
+      toast('Korisnik uspješno kreiran', {
         type: 'success',
       });
 
-      //remove the success param from the url
       const url = new URL(window.location.href);
       url.searchParams.delete('success');
       window.history.replaceState({}, document.title, url.toString());
@@ -45,7 +52,7 @@ const UsersPage = () => {
   }, []);
 
   return (
-    <MainLayout headerChildren={<div>Volonteri</div>}>
+    <MainLayout headerChildren={<div>Korisnici</div>}>
       <div className="flex">
         <UsersSearch onSearch={handleSearch} cities={cities} />
 
@@ -57,14 +64,22 @@ const UsersPage = () => {
             }}
           >
             <CirclePlus />
-            Kreiraj novog volontera
+            Kreiraj novog korisnika
           </Link>
         </div>
       </div>
 
-      <Users filter={filter} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Users filter={filter} />
+      </Suspense>
     </MainLayout>
   );
 };
+
+const UsersPage = () => (
+  <Suspense fallback={<LoadingSpinner />}>
+    <UsersPageContent />
+  </Suspense>
+);
 
 export default memo(UsersPage);

@@ -1,11 +1,12 @@
 'use client';
 import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
-import { useCallback, useMemo, useState } from 'react';
+import { Suspense, useCallback, useMemo, useState } from 'react';
 import Licences from '~/app/(pages)/licenses/_components/Licences';
 import LicencesSearch from '~/app/(pages)/licenses/_components/LicencesSearch';
 import type { DropdownOption } from '~/components/atoms/Dropdown';
 import MainLayout from '~/components/layout/mainLayout';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
 import { api } from '~/trpc/react';
 
 const LicencePage = () => {
@@ -45,7 +46,9 @@ const LicencePage = () => {
         </div>
       </div>
 
-      <Licences filter={filter} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Licences filter={filter} />
+      </Suspense>
     </MainLayout>
   );
 };

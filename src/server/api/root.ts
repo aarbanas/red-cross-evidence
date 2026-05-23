@@ -1,5 +1,6 @@
 import { countryRouter } from '~/server/api/routers/country';
 import { educationRouter } from '~/server/api/routers/educations';
+import { equipmentRouter } from '~/server/api/routers/equipment';
 import { postRouter } from '~/server/api/routers/post';
 import { skillRouter } from '~/server/api/routers/skill';
 import { userRouter } from '~/server/api/routers/user';
@@ -19,6 +20,7 @@ export const appRouter = createTRPCRouter({
   post: postRouter,
   user: userRouter,
   license: licenseRouter,
+  equipment: equipmentRouter,
   city: cityRouter,
   education: educationRouter,
   country: countryRouter,

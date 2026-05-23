@@ -2,8 +2,6 @@ import { type ComponentProps, forwardRef, type ReactNode } from 'react';
 import { FieldError } from '~/components/organisms/form/formComponent/FormComponent';
 import styles from './FormSelect.module.css';
 
-const DEFAULT_VALUE = 'none';
-
 interface FormSelectProps extends ComponentProps<'select'> {
   id: string;
   label: string;
@@ -13,18 +11,15 @@ interface FormSelectProps extends ComponentProps<'select'> {
 }
 
 const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
-  (
-    { id, label, value = DEFAULT_VALUE, children, labelClassName, ...props },
-    ref,
-  ) => {
+  ({ id, label, children, labelClassName, placeholder, ...props }, ref) => {
     return (
       <div className={styles.container}>
         <label htmlFor={id} className={labelClassName ?? styles.label}>
           {label}
         </label>
         <select id={id} ref={ref} className={styles.select} {...props}>
-          <option value={value} disabled>
-            {props.placeholder ?? 'Select a value'}
+          <option value="" disabled>
+            {placeholder ?? 'Select a value'}
           </option>
           {children}
         </select>

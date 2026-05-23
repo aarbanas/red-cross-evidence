@@ -13,6 +13,7 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 import { profileEducationTerms } from '~/server/db/schema/education';
+import { profileEquipment } from '~/server/db/schema/equipment';
 import { licenses } from '~/server/db/schema/licence';
 
 export enum UserType {
@@ -165,6 +166,7 @@ export const profilesRelations = relations(profiles, ({ one, many }) => ({
   sizes: many(sizes),
   workStatuses: many(workStatuses),
   educationTerms: many(profileEducationTerms),
+  profileEquipment: many(profileEquipment),
 }));
 
 export const sizes = pgTable('profile_size', {

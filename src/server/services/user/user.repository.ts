@@ -1,15 +1,26 @@
-import { and, count, eq, ilike, type SQL } from 'drizzle-orm';
+import { and, count, desc, eq, ilike, type SQL } from 'drizzle-orm';
 import { db } from '~/server/db';
 import {
+  type AddressType,
   addresses,
+  type ClothingSize,
   cities,
+  countries,
+  type EducationLevel,
+  equipment,
+  type LanguageLevel,
+  languages,
+  profileEquipment,
   profileSkills,
   profiles,
   profilesAddresses,
   profilesLanguages,
   profilesLicences,
+  type Sex,
   sizes,
+  type UserType,
   users,
+  type WorkStatus,
   workStatuses,
 } from '~/server/db/schema';
 import { prepareOrderBy, prepareWhere } from '~/server/db/utility';
@@ -271,6 +282,537 @@ const userRepository = {
         await tx.insert(profileSkills).values(
           data.skills.otherSkills.map((skill) => ({
             profileId: newProfile.id,
+            name: skill.name,
+            description: skill.description,
+          })),
+        );
+      }
+    });
+  },
+  getProfile: async (userId: string) => {
+    const [userWithProfile] = await db
+      .select({
+        id: users.id,
+        email: users.email,
+        active: users.active,
+        type: users.type,
+        profile: {
+          id: profiles.id,
+          firstName: profiles.firstName,
+          lastName: profiles.lastName,
+          oib: profiles.oib,
+          sex: profiles.sex,
+          birthDate: profiles.birthDate,
+          birthPlace: profiles.birthPlace,
+          parentName: profiles.parentName,
+          nationality: profiles.nationality,
+          phone: profiles.phone,
+          societyId: profiles.societyId,
+          citySocietyId: profiles.citySocietyId,
+        },
+      })
+      .from(users)
+      .where(eq(users.id, userId))
+      .leftJoin(profiles, eq(users.id, profiles.userId))
+      .execute();
+
+    const profileId = userWithProfile?.profile?.id;
+
+    const [workStatus] = profileId
+      ? await db
+          .select({
+            id: workStatuses.id,
+            status: workStatuses.status,
+            profession: workStatuses.profession,
+            institution: workStatuses.institution,
+            educationLevel: workStatuses.educationLevel,
+          })
+          .from(workStatuses)
+          .where(eq(workStatuses.profileId, profileId))
+          .orderBy(desc(workStatuses.createdAt))
+          .limit(1)
+          .execute()
+      : [null];
+
+    return { ...userWithProfile, workStatus: workStatus ?? null };
+  },
+  getAddresses: async (userId: string) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) return [];
+
+    return db
+      .select({
+        addressId: addresses.id,
+        street: addresses.street,
+        streetNumber: addresses.streetNumber,
+        type: addresses.type,
+        isPrimary: profilesAddresses.isPrimary,
+        city: {
+          id: cities.id,
+          name: cities.name,
+          postalCode: cities.postalCode,
+        },
+        country: {
+          id: countries.id,
+          name: countries.name,
+        },
+      })
+      .from(profilesAddresses)
+      .where(eq(profilesAddresses.profileId, profile.id))
+      .innerJoin(addresses, eq(profilesAddresses.addressId, addresses.id))
+      .leftJoin(cities, eq(addresses.cityId, cities.id))
+      .leftJoin(countries, eq(cities.countryId, countries.id))
+      .execute();
+  },
+  getSizes: async (userId: string) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) return null;
+
+    const [size] = await db
+      .select({
+        id: sizes.id,
+        shoeSize: sizes.shoeSize,
+        clothingSize: sizes.clothingSize,
+        height: sizes.height,
+        weight: sizes.weight,
+      })
+      .from(sizes)
+      .where(eq(sizes.profileId, profile.id))
+      .orderBy(desc(sizes.createdAt))
+      .limit(1)
+      .execute();
+
+    return size ?? null;
+  },
+  getRentedEquipment: async (userId: string) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) return [];
+
+    return db
+      .select({
+        equipmentId: equipment.id,
+        name: equipment.name,
+        type: equipment.type,
+        size: equipment.size,
+        rentedQuantity: profileEquipment.quantity,
+        dateOfRent: profileEquipment.dateOfRent,
+      })
+      .from(profileEquipment)
+      .where(eq(profileEquipment.profileId, profile.id))
+      .innerJoin(equipment, eq(profileEquipment.equipmentId, equipment.id))
+      .execute();
+  },
+  getSkills: async (userId: string) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) return { languages: [], licences: [], otherSkills: [] };
+
+    const [langs, licences, otherSkills] = await Promise.all([
+      db
+        .select({
+          id: languages.id,
+          name: languages.name,
+          level: profilesLanguages.level,
+        })
+        .from(profilesLanguages)
+        .where(eq(profilesLanguages.profileId, profile.id))
+        .innerJoin(languages, eq(profilesLanguages.languageId, languages.id))
+        .execute(),
+      db
+        .select({
+          id: profilesLicences.licenceId,
+        })
+        .from(profilesLicences)
+        .where(eq(profilesLicences.profileId, profile.id))
+        .execute(),
+      db
+        .select({
+          id: profileSkills.id,
+          name: profileSkills.name,
+          description: profileSkills.description,
+        })
+        .from(profileSkills)
+        .where(eq(profileSkills.profileId, profile.id))
+        .execute(),
+    ]);
+
+    return { languages: langs, licences, otherSkills };
+  },
+  updateProfile: async (
+    userId: string,
+    profileData: {
+      firstName: string;
+      lastName: string;
+      oib: string;
+      sex: Sex;
+      type: UserType;
+      birthDate?: string | null;
+      birthPlace?: string | null;
+      parentName?: string | null;
+      nationality?: string | null;
+      phone?: string | null;
+      societyId?: string | null;
+      citySocietyId?: string | null;
+    },
+    workStatusData: {
+      status: WorkStatus;
+      profession?: string | null;
+      institution?: string | null;
+      educationLevel?: EducationLevel | null;
+    },
+  ) => {
+    return db.transaction(async (tx) => {
+      await tx
+        .update(users)
+        .set({ type: profileData.type, updatedAt: new Date() })
+        .where(eq(users.id, userId));
+
+      const [profile] = await tx
+        .update(profiles)
+        .set({
+          firstName: profileData.firstName,
+          lastName: profileData.lastName,
+          oib: profileData.oib,
+          sex: profileData.sex,
+          birthDate: profileData.birthDate ?? null,
+          birthPlace: profileData.birthPlace ?? null,
+          parentName: profileData.parentName ?? null,
+          nationality: profileData.nationality ?? null,
+          phone: profileData.phone ?? null,
+          societyId: profileData.societyId ?? null,
+          citySocietyId: profileData.citySocietyId ?? null,
+        })
+        .where(eq(profiles.userId, userId))
+        .returning({ id: profiles.id });
+
+      if (!profile) throw new Error('Profile not found');
+
+      const [existingWorkStatus] = await tx
+        .select({ id: workStatuses.id })
+        .from(workStatuses)
+        .where(eq(workStatuses.profileId, profile.id))
+        .orderBy(desc(workStatuses.createdAt))
+        .limit(1);
+
+      if (existingWorkStatus) {
+        await tx
+          .update(workStatuses)
+          .set({
+            status: workStatusData.status,
+            profession: workStatusData.profession ?? null,
+            institution: workStatusData.institution ?? null,
+            educationLevel: workStatusData.educationLevel ?? null,
+            updatedAt: new Date(),
+          })
+          .where(eq(workStatuses.id, existingWorkStatus.id));
+      } else {
+        await tx.insert(workStatuses).values({
+          profileId: profile.id,
+          status: workStatusData.status,
+          profession: workStatusData.profession ?? null,
+          institution: workStatusData.institution ?? null,
+          educationLevel: workStatusData.educationLevel ?? null,
+        });
+      }
+    });
+  },
+  addAddress: async (
+    userId: string,
+    addressData: {
+      street: string;
+      streetNumber: string;
+      type: AddressType;
+      cityId: string;
+      isPrimary: boolean;
+    },
+  ) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) throw new Error('Profile not found');
+
+    return db.transaction(async (tx) => {
+      const [newAddress] = await tx
+        .insert(addresses)
+        .values({
+          street: addressData.street,
+          streetNumber: addressData.streetNumber,
+          type: addressData.type,
+          cityId: addressData.cityId,
+        })
+        .returning({ id: addresses.id });
+
+      if (!newAddress) throw new Error('Failed to create address');
+
+      if (addressData.isPrimary) {
+        await tx
+          .update(profilesAddresses)
+          .set({ isPrimary: false })
+          .where(eq(profilesAddresses.profileId, profile.id));
+      }
+
+      await tx.insert(profilesAddresses).values({
+        profileId: profile.id,
+        addressId: newAddress.id,
+        isPrimary: addressData.isPrimary,
+      });
+    });
+  },
+  updateAddress: async (
+    userId: string,
+    oldAddressId: string,
+    addressData: {
+      street: string;
+      streetNumber: string;
+      type: AddressType;
+      cityId: string;
+      isPrimary: boolean;
+    },
+  ) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) throw new Error('Profile not found');
+
+    return db.transaction(async (tx) => {
+      const [newAddress] = await tx
+        .insert(addresses)
+        .values({
+          street: addressData.street,
+          streetNumber: addressData.streetNumber,
+          type: addressData.type,
+          cityId: addressData.cityId,
+        })
+        .returning({ id: addresses.id });
+
+      if (!newAddress) throw new Error('Failed to create address');
+
+      if (addressData.isPrimary) {
+        await tx
+          .update(profilesAddresses)
+          .set({ isPrimary: false })
+          .where(eq(profilesAddresses.profileId, profile.id));
+      }
+
+      await tx
+        .delete(profilesAddresses)
+        .where(
+          and(
+            eq(profilesAddresses.profileId, profile.id),
+            eq(profilesAddresses.addressId, oldAddressId),
+          ),
+        );
+
+      await tx.insert(profilesAddresses).values({
+        profileId: profile.id,
+        addressId: newAddress.id,
+        isPrimary: addressData.isPrimary,
+      });
+    });
+  },
+  deleteAddress: async (userId: string, addressId: string) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) throw new Error('Profile not found');
+
+    return db
+      .delete(profilesAddresses)
+      .where(
+        and(
+          eq(profilesAddresses.profileId, profile.id),
+          eq(profilesAddresses.addressId, addressId),
+        ),
+      )
+      .execute();
+  },
+  setPrimaryAddress: async (userId: string, addressId: string) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) throw new Error('Profile not found');
+
+    return db.transaction(async (tx) => {
+      await tx
+        .update(profilesAddresses)
+        .set({ isPrimary: false })
+        .where(eq(profilesAddresses.profileId, profile.id));
+
+      await tx
+        .update(profilesAddresses)
+        .set({ isPrimary: true })
+        .where(
+          and(
+            eq(profilesAddresses.profileId, profile.id),
+            eq(profilesAddresses.addressId, addressId),
+          ),
+        );
+    });
+  },
+  updateSizes: async (
+    userId: string,
+    sizeData: {
+      shoeSize?: number | null;
+      clothingSize?: ClothingSize | null;
+      height?: number | null;
+      weight?: number | null;
+    },
+  ) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) throw new Error('Profile not found');
+
+    const [existing] = await db
+      .select({ id: sizes.id })
+      .from(sizes)
+      .where(eq(sizes.profileId, profile.id))
+      .orderBy(desc(sizes.createdAt))
+      .limit(1)
+      .execute();
+
+    if (existing) {
+      return db
+        .update(sizes)
+        .set({ ...sizeData, updatedAt: new Date() })
+        .where(eq(sizes.id, existing.id))
+        .execute();
+    }
+
+    return db
+      .insert(sizes)
+      .values({ ...sizeData, profileId: profile.id })
+      .execute();
+  },
+  addRentedEquipment: async (
+    userId: string,
+    equipmentId: string,
+    quantity: number,
+    dateOfRent: string,
+  ) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) throw new Error('Profile not found');
+
+    return db
+      .insert(profileEquipment)
+      .values({
+        profileId: profile.id,
+        equipmentId,
+        quantity,
+        dateOfRent,
+      })
+      .execute();
+  },
+  removeRentedEquipment: async (userId: string, equipmentId: string) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) throw new Error('Profile not found');
+
+    return db
+      .delete(profileEquipment)
+      .where(
+        and(
+          eq(profileEquipment.profileId, profile.id),
+          eq(profileEquipment.equipmentId, equipmentId),
+        ),
+      )
+      .execute();
+  },
+  updateSkills: async (
+    userId: string,
+    skillsData: {
+      selectedLanguages: { id: string; level: LanguageLevel }[];
+      selectedLicences: { id: string }[];
+      otherSkills: { name: string; description: string }[];
+    },
+  ) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) throw new Error('Profile not found');
+
+    return db.transaction(async (tx) => {
+      await tx
+        .delete(profilesLanguages)
+        .where(eq(profilesLanguages.profileId, profile.id));
+
+      await tx
+        .delete(profilesLicences)
+        .where(eq(profilesLicences.profileId, profile.id));
+
+      await tx
+        .delete(profileSkills)
+        .where(eq(profileSkills.profileId, profile.id));
+
+      if (skillsData.selectedLanguages.length) {
+        await tx.insert(profilesLanguages).values(
+          skillsData.selectedLanguages.map((lang) => ({
+            profileId: profile.id,
+            languageId: lang.id,
+            level: lang.level,
+          })),
+        );
+      }
+
+      if (skillsData.selectedLicences.length) {
+        await tx.insert(profilesLicences).values(
+          skillsData.selectedLicences.map((lic) => ({
+            profileId: profile.id,
+            licenceId: lic.id,
+          })),
+        );
+      }
+
+      if (skillsData.otherSkills.length) {
+        await tx.insert(profileSkills).values(
+          skillsData.otherSkills.map((skill) => ({
+            profileId: profile.id,
             name: skill.name,
             description: skill.description,
           })),

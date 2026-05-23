@@ -2,11 +2,12 @@
 
 import { CirclePlus } from 'lucide-react';
 import Link from 'next/link';
-import { useCallback, useMemo, useState } from 'react';
+import { Suspense, useCallback, useMemo, useState } from 'react';
 import CitySocieties from '~/app/(pages)/societies/_components/CitySocieties';
 import CitySocietiesSearch from '~/app/(pages)/societies/_components/CitySocietiesSearch';
 import type { DropdownOption } from '~/components/atoms/Dropdown';
 import TabLayout from '~/components/layout/tabLayout';
+import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
 import { api } from '~/trpc/react';
 
 const CitySocietiesPage = () => {
@@ -44,7 +45,9 @@ const CitySocietiesPage = () => {
         </div>
       </div>
 
-      <CitySocieties filter={filter} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <CitySocieties filter={filter} />
+      </Suspense>
     </TabLayout>
   );
 };
