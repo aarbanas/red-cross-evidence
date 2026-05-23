@@ -91,9 +91,7 @@ const LicencesForm: React.FC<Props> = ({ action, formData }) => {
         type="submit"
         showLoading={isSubmitting}
       >
-        <span>
-          {action === 'create' ? 'Kreiraj novu licencu' : 'Spremi promjene'}
-        </span>
+        <span>{action === 'create' ? 'Nova licence' : 'Spremi promjene'}</span>
       </Button>
     </FormComponent>
   );

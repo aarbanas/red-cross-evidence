@@ -1,6 +1,4 @@
 'use client';
-import { CirclePlus } from 'lucide-react';
-import Link from 'next/link';
 import { Suspense, useState } from 'react';
 import EducationsTerm from '~/app/(pages)/educations/term/EducationsTerm';
 import EducationsTermSearch from '~/app/(pages)/educations/term/EducationsTermSearch';
@@ -20,17 +18,6 @@ const EducationsEvidencePage = () => {
     <TabLayout>
       <div className="flex">
         <EducationsTermSearch onSearch={handleSearch} />
-        <div className="mt-auto ml-auto h-1/2 rounded-md border px-2">
-          <Link
-            className="flex gap-2"
-            href={{
-              pathname: `/educations/term/create`,
-            }}
-          >
-            <CirclePlus />
-            Kreiraj novi termin
-          </Link>
-        </div>
       </div>
 
       <Suspense fallback={<LoadingSpinner />}>

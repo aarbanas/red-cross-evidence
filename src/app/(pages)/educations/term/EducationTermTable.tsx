@@ -3,6 +3,7 @@ import moment from 'moment';
 import Link from 'next/link';
 import { type FC, useState } from 'react';
 import { Button } from '~/components/atoms/Button';
+import { Card } from '~/components/atoms/Card';
 import Modal from '~/components/organisms/modal/Modal';
 import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
 import {
@@ -53,7 +54,7 @@ const EducationTermTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
 
   return (
     <>
-      <div className="rounded-lg border shadow-sm">
+      <Card>
         <Table>
           <TableHeader>
             <TableRow>
@@ -108,7 +109,7 @@ const EducationTermTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
       <PaginationComponent totalPageNumber={totalPageNumber} />
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>

@@ -1,5 +1,6 @@
 import { CheckCircle2, Pencil, XCircle } from 'lucide-react';
 import Link from 'next/link';
+import { Card } from '~/components/atoms/Card';
 import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
 import {
   Table,
@@ -23,7 +24,7 @@ const UsersTable: React.FC<Props> = ({ data, totalPageNumber }) => {
 
   return (
     <>
-      <div className="rounded-lg border shadow-sm">
+      <Card>
         <Table>
           <TableHeader>
             <TableRow>
@@ -65,7 +66,7 @@ const UsersTable: React.FC<Props> = ({ data, totalPageNumber }) => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
       <PaginationComponent totalPageNumber={totalPageNumber} />
     </>
   );

@@ -106,9 +106,7 @@ const EquipmentForm: React.FC<Props> = ({ action, formData }) => {
         type="submit"
         showLoading={isSubmitting}
       >
-        <span>
-          {action === 'create' ? 'Kreiraj novu opremu' : 'Spremi promjene'}
-        </span>
+        <span>{action === 'create' ? 'Nova oprema' : 'Spremi promjene'}</span>
       </Button>
     </FormComponent>
   );

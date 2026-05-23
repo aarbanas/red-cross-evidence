@@ -60,15 +60,17 @@ const NavbarNavigation: React.FC<NavbarNavigationProps> = ({
   children,
 }) => {
   return (
-    <div className="flex flex-1 flex-col overflow-auto bg-white py-2">
+    <div className="flex flex-1 flex-col overflow-auto bg-sidebar py-2">
       {children}
-      <button
-        type="button"
-        className="mt-auto flex cursor-pointer items-center gap-3 rounded-lg px-6 py-2 transition-all hover:text-gray-950"
-        onClick={onLogoutClick}
-      >
-        <LogOut /> Odjava
-      </button>
+      <div className="mt-auto border-t p-2">
+        <button
+          type="button"
+          className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-4 py-2 transition-all hover:bg-sidebar-accent"
+          onClick={onLogoutClick}
+        >
+          <LogOut /> Odjava
+        </button>
+      </div>
     </div>
   );
 };

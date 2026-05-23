@@ -1,8 +1,9 @@
 'use client';
-import { CirclePlus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense, useCallback, useState } from 'react';
 import EquipmentList from '~/app/(pages)/equipment/_components/EquipmentList';
+import { Button } from '~/components/atoms/Button';
 import MainLayout from '~/components/layout/mainLayout';
 import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
 
@@ -16,16 +17,19 @@ const EquipmentPage = () => {
   }, []);
 
   return (
-    <MainLayout headerChildren={<div>Oprema</div>}>
-      <div className="flex">
-        <div className="ml-auto rounded-md border px-2">
-          <Link className="flex gap-2" href="/equipment/create">
-            <CirclePlus />
-            Kreiraj novu opremu
-          </Link>
+    <MainLayout
+      headerChildren={
+        <div className="flex w-full">
+          Oprema
+          <Button asChild size="sm" className="ml-auto gap-2">
+            <Link href="/equipment/create">
+              <Plus className="h-4 w-4" />
+              Nova oprema
+            </Link>
+          </Button>
         </div>
-      </div>
-
+      }
+    >
       <Suspense fallback={<LoadingSpinner />}>
         <EquipmentList filter={filter} />
       </Suspense>

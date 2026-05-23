@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { type FC, useState } from 'react';
 import { translateEducationType } from '~/app/(pages)/educations/utils';
 import { Button } from '~/components/atoms/Button';
+import { Card } from '~/components/atoms/Card';
 import Modal from '~/components/organisms/modal/Modal';
 import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
 import {
@@ -58,7 +59,7 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
 
   return (
     <>
-      <div>
+      <Card>
         <Table>
           <TableHeader>
             <TableRow>
@@ -102,7 +103,7 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
       <PaginationComponent totalPageNumber={totalPageNumber} />
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <div>

@@ -50,7 +50,7 @@ const Navigation = () => {
   return (
     <nav className="grid items-start font-medium text-sm lg:px-4">
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-red-100 ${currentPath.includes(AppRoutes.HOME) ? 'text-red-600' : ''}`}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-sidebar-accent ${currentPath.includes(AppRoutes.HOME) ? 'text-primary' : ''}`}
         href={AppRoutes.HOME}
       >
         <Users />
@@ -58,7 +58,7 @@ const Navigation = () => {
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.EDUCATIONS) ? 'text-red-600' : ''}`}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-sidebar-accent ${currentPath.includes(AppRoutes.EDUCATIONS) ? 'text-primary' : ''}`}
         href={`${AppRoutes.EDUCATIONS}/term`}
       >
         <BookMarked />
@@ -66,7 +66,7 @@ const Navigation = () => {
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.LICENSES) ? 'text-red-600' : ''}`}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-sidebar-accent ${currentPath.includes(AppRoutes.LICENSES) ? 'text-primary' : ''}`}
         href={AppRoutes.LICENSES}
       >
         <IdCard />
@@ -74,7 +74,7 @@ const Navigation = () => {
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.EQUIPMENT) ? 'text-red-600' : ''}`}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-sidebar-accent ${currentPath.includes(AppRoutes.EQUIPMENT) ? 'text-primary' : ''}`}
         href={AppRoutes.EQUIPMENT}
       >
         <Shirt />
@@ -82,7 +82,7 @@ const Navigation = () => {
       </Link>
 
       <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-red-100 ${currentPath.includes(AppRoutes.SOCIETIES) ? 'text-red-600' : ''}`}
+        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-sidebar-accent ${currentPath.includes(AppRoutes.SOCIETIES) ? 'text-primary' : ''}`}
         href={`${AppRoutes.SOCIETIES}/list`}
       >
         <Building2 />

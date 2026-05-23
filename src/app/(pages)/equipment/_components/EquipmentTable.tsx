@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button } from '~/components/atoms/Button';
+import { Card } from '~/components/atoms/Card';
 import Modal from '~/components/organisms/modal/Modal';
 import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
 import {
@@ -49,7 +50,7 @@ const EquipmentTable = ({ data, totalPageNumber }: Props) => {
 
   return (
     <>
-      <div className="rounded-lg border shadow-sm">
+      <Card>
         <Table>
           <TableHeader>
             <TableRow>
@@ -91,7 +92,7 @@ const EquipmentTable = ({ data, totalPageNumber }: Props) => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
       {totalPageNumber > 1 && (
         <PaginationComponent totalPageNumber={totalPageNumber} />
       )}

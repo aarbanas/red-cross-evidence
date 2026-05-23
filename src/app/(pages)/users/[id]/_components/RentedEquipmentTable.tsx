@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { Button } from '~/components/atoms/Button';
+import { Card } from '~/components/atoms/Card';
 import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
 import FormInput from '~/components/organisms/form/formInput/FormInput';
 import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
@@ -96,7 +97,7 @@ const RentedEquipmentTable = ({ userId, items }: Props) => {
       </div>
 
       {items.length > 0 ? (
-        <div className="rounded-lg border shadow-sm">
+        <Card>
           <Table>
             <TableHeader>
               <TableRow>
@@ -130,7 +131,7 @@ const RentedEquipmentTable = ({ userId, items }: Props) => {
               ))}
             </TableBody>
           </Table>
-        </div>
+        </Card>
       ) : (
         <div className="py-8 text-center text-gray-500">
           Nema zadužene opreme.

@@ -1,6 +1,4 @@
 'use client';
-import { CirclePlus } from 'lucide-react';
-import Link from 'next/link';
 import { Suspense, useMemo, useState } from 'react';
 import { translateEducationType } from '~/app/(pages)/educations/utils';
 import type { DropdownOption } from '~/components/atoms/Dropdown';
@@ -34,17 +32,6 @@ const EducationsListTab = () => {
     <TabLayout>
       <div className="flex">
         <EducationsListSearch onSearch={handleSearch} types={types} />
-        <div className="ml-auto rounded-md border px-2">
-          <Link
-            className="flex gap-2"
-            href={{
-              pathname: `/educations/list/create`,
-            }}
-          >
-            <CirclePlus />
-            Kreiraj novu edukaciju
-          </Link>
-        </div>
       </div>
 
       <Suspense fallback={<LoadingSpinner />}>

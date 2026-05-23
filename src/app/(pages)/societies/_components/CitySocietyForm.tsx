@@ -147,9 +147,7 @@ const CitySocietyForm: React.FC<Props> = ({ action, formData }) => {
         showLoading={isSubmitting}
       >
         <span>
-          {action === 'create'
-            ? 'Kreiraj novo gradsko društvo'
-            : 'Spremi promjene'}
+          {action === 'create' ? 'Novo gradsko društvo' : 'Spremi promjene'}
         </span>
       </Button>
     </FormComponent>
