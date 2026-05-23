@@ -6,6 +6,7 @@ import { Button } from '~/components/atoms/Button';
 import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
 import FormInput from '~/components/organisms/form/formInput/FormInput';
 import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
+import Modal from '~/components/organisms/modal/Modal';
 import {
   Table,
   TableBody,
@@ -38,6 +39,7 @@ type AddFormData = {
 
 const RentedEquipmentTable = ({ userId, items }: Props) => {
   const [showAddForm, setShowAddForm] = useState(false);
+  const [itemToRemove, setItemToRemove] = useState<RentedItem | null>(null);
   const utils = api.useUtils();
 
   const { data: allEquipment } = api.equipment.findAll.useQuery();
@@ -46,6 +48,7 @@ const RentedEquipmentTable = ({ userId, items }: Props) => {
     onSuccess: async () => {
       await utils.user.getRentedEquipment.invalidate({ userId });
       toast('Oprema uspješno uklonjena', { type: 'success' });
+      setItemToRemove(null);
     },
     onError: (error) => toast(error.message, { type: 'error' }),
   });
@@ -118,13 +121,7 @@ const RentedEquipmentTable = ({ userId, items }: Props) => {
                       type="button"
                       variant="destructive"
                       className="text-sm"
-                      disabled={removeEquipment.isPending}
-                      onClick={() =>
-                        removeEquipment.mutate({
-                          userId,
-                          equipmentId: item.equipmentId,
-                        })
-                      }
+                      onClick={() => setItemToRemove(item)}
                     >
                       Ukloni
                     </Button>
@@ -140,63 +137,99 @@ const RentedEquipmentTable = ({ userId, items }: Props) => {
         </div>
       )}
 
-      {showAddForm && (
-        <div className="rounded-lg border p-6">
-          <h4 className="mb-4 font-medium">Dodaj opremu</h4>
-          <FormComponent form={form} onSubmit={handleAdd}>
-            <FormSelect
-              id="equipmentId"
-              label="Oprema*"
-              {...form.register('equipmentId', { required: true })}
-              placeholder="Odaberite opremu"
-            >
-              <option value="">-- Odaberite opremu --</option>
-              {availableEquipment.map((e) => (
-                <option key={e.id} value={e.id}>
-                  {e.name} — {e.type}, vel. {e.size}
-                </option>
-              ))}
-            </FormSelect>
-
-            <FormInput
-              id="quantity"
-              label="Količina*"
-              type="number"
-              {...form.register('quantity', {
-                required: true,
-                min: { value: 1, message: 'Količina mora biti veća od 0' },
-              })}
-            />
-
-            <FormInput
-              id="dateOfRent"
-              label="Datum zaduženja*"
-              type="date"
-              {...form.register('dateOfRent', { required: true })}
-            />
-
-            <div className="flex gap-2">
-              <Button
-                type="submit"
-                className="bg-black text-white"
-                showLoading={addEquipment.isPending}
-              >
-                Dodaj
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  form.reset();
-                  setShowAddForm(false);
-                }}
-              >
-                Odustani
-              </Button>
-            </div>
-          </FormComponent>
+      <Modal isOpen={!!itemToRemove} onClose={() => setItemToRemove(null)}>
+        <h4 className="mb-2 font-medium">Ukloni opremu</h4>
+        <p className="mb-6 text-gray-600 text-sm">
+          Jeste li sigurni da želite ukloniti{' '}
+          <span className="font-semibold">{itemToRemove?.name}</span>?
+        </p>
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="destructive"
+            showLoading={removeEquipment.isPending}
+            onClick={() =>
+              itemToRemove &&
+              removeEquipment.mutate({
+                userId,
+                equipmentId: itemToRemove.equipmentId,
+              })
+            }
+          >
+            Ukloni
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={removeEquipment.isPending}
+            onClick={() => setItemToRemove(null)}
+          >
+            Odustani
+          </Button>
         </div>
-      )}
+      </Modal>
+
+      <Modal
+        isOpen={showAddForm}
+        onClose={() => {
+          form.reset();
+          setShowAddForm(false);
+        }}
+      >
+        <h4 className="mb-4 font-medium">Dodaj opremu</h4>
+        <FormComponent form={form} onSubmit={handleAdd}>
+          <FormSelect
+            id="equipmentId"
+            label="Oprema*"
+            {...form.register('equipmentId', { required: true })}
+            placeholder="Odaberite opremu"
+          >
+            <option value="">-- Odaberite opremu --</option>
+            {availableEquipment.map((e) => (
+              <option key={e.id} value={e.id}>
+                {e.name} — {e.type}, vel. {e.size}
+              </option>
+            ))}
+          </FormSelect>
+
+          <FormInput
+            id="quantity"
+            label="Količina*"
+            type="number"
+            {...form.register('quantity', {
+              required: true,
+              min: { value: 1, message: 'Količina mora biti veća od 0' },
+            })}
+          />
+
+          <FormInput
+            id="dateOfRent"
+            label="Datum zaduženja*"
+            type="date"
+            {...form.register('dateOfRent', { required: true })}
+          />
+
+          <div className="flex gap-2">
+            <Button
+              type="submit"
+              className="bg-black text-white"
+              showLoading={addEquipment.isPending}
+            >
+              Dodaj
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                form.reset();
+                setShowAddForm(false);
+              }}
+            >
+              Odustani
+            </Button>
+          </div>
+        </FormComponent>
+      </Modal>
     </div>
   );
 };
