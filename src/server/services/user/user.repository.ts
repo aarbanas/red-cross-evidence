@@ -554,19 +554,40 @@ const userRepository = {
     if (!profile) throw new Error('Profile not found');
 
     return db.transaction(async (tx) => {
-      const [newAddress] = await tx
-        .insert(addresses)
-        .values({
-          street: addressData.street,
-          streetNumber: addressData.streetNumber,
-          type: addressData.type,
-          cityId: addressData.cityId,
-        })
-        .returning({ id: addresses.id });
+      const [existingAddress] = await tx
+        .select({ id: addresses.id })
+        .from(addresses)
+        .where(
+          and(
+            eq(addresses.cityId, addressData.cityId),
+            eq(addresses.street, addressData.street),
+            eq(addresses.streetNumber, addressData.streetNumber),
+          ),
+        )
+        .limit(1);
 
-      if (!newAddress) throw new Error('Failed to create address');
+      let addressId: string;
+
+      if (existingAddress) {
+        addressId = existingAddress.id;
+      } else {
+        const [newAddress] = await tx
+          .insert(addresses)
+          .values({
+            street: addressData.street,
+            streetNumber: addressData.streetNumber,
+            type: addressData.type,
+            cityId: addressData.cityId,
+          })
+          .returning({ id: addresses.id });
+
+        if (!newAddress) throw new Error('Failed to create address');
+
+        addressId = newAddress.id;
+      }
 
       if (addressData.isPrimary) {
+        // Demote existing primary address
         await tx
           .update(profilesAddresses)
           .set({ isPrimary: false })
@@ -575,7 +596,7 @@ const userRepository = {
 
       await tx.insert(profilesAddresses).values({
         profileId: profile.id,
-        addressId: newAddress.id,
+        addressId,
         isPrimary: addressData.isPrimary,
       });
     });
