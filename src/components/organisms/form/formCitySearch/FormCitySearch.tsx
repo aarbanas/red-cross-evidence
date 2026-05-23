@@ -11,6 +11,7 @@ type Props = {
   cityFieldName: string;
   postalCodeFieldName: string;
   countryId: string;
+  disabled?: boolean;
 };
 
 const FormCitySearch: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const FormCitySearch: React.FC<Props> = ({
   cityFieldName,
   postalCodeFieldName,
   countryId,
+  disabled,
 }) => {
   'use no memo';
   const { setValue, watch } = useFormContext();
@@ -117,6 +119,7 @@ const FormCitySearch: React.FC<Props> = ({
         id={id}
         type="text"
         value={searchTerm}
+        disabled={disabled}
         onChange={handleInputChange}
         onFocus={() => searchTerm.length > 0 && setIsOpen(true)}
         placeholder="Počnite tipkati naziv grada..."

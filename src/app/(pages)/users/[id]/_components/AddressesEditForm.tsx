@@ -342,8 +342,6 @@ const NewAddressForm = ({
       ? selectedCity.id
       : undefined;
 
-  console.log(selectedCountry);
-
   const addAddress = api.user.addAddress.useMutation({
     onSuccess: async () => {
       await utils.user.getAddresses.invalidate({ userId });
@@ -421,12 +419,14 @@ const NewAddressForm = ({
               label="Grad*"
               cityFieldName="city"
               postalCodeFieldName="postalCode"
+              disabled={!selectedCountry}
               countryId={selectedCountry}
             />
           </div>
           <div className="flex-1">
             <FormInput
               id="new-postalCode"
+              disabled={!selectedCountry}
               label="Poštanski broj*"
               {...form.register('postalCode', { required: true })}
             />

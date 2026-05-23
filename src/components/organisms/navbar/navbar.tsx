@@ -1,4 +1,5 @@
 import { LogOut } from 'lucide-react';
+import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import type React from 'react';
 import type { PropsWithChildren } from 'react';
@@ -21,8 +22,14 @@ const NewNavbar: React.FC<Props> = ({ title, children }) => {
     <>
       <div className="hidden h-full border-r lg:block">
         <div className="flex h-full flex-col gap-2">
-          <div className="flex h-[60px] items-center border-b px-6">
+          <div className="flex h-15 items-center border-b px-6">
             <span className="flex items-center gap-2 font-semibold">
+              <Image
+                src="/red_cross.png"
+                alt="Crveni Križ logo"
+                width={28}
+                height={28}
+              />
               <span>{title}</span>
             </span>
           </div>

@@ -92,7 +92,7 @@ const SizesEditForm = ({ userId, defaultValues }: Props) => {
       />
 
       <Button
-        className="!text-base bg-black text-white"
+        className="bg-black text-base! text-white"
         type="submit"
         showLoading={isSubmitting}
       >
