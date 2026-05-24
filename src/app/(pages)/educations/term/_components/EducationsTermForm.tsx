@@ -10,6 +10,7 @@ import FormInput from '@/components/organisms/form/formInput/FormInput';
 import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
 import FormTextArea from '@/components/organisms/form/formTextArea/FormTextArea';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { EducationType } from '@/server/db/schema';
 import { api } from '@/trpc/react';
 
@@ -104,103 +105,111 @@ const EducationsTermForm: FC<Props> = ({
   };
 
   return (
-    <FormComponent form={form} onSubmit={handleSubmit}>
-      <FormSelect
-        id="type"
-        label="Tip*"
-        {...form.register('type', {
-          required: 'Tip je obavezno polje',
-        })}
-        disabled={action === 'update'}
-        placeholder="Odaberite tip"
-      >
-        {educationTypes.map((type) => (
-          <option key={type.type} value={type.type}>
-            {translateEducationType(type.type as EducationType)}
-          </option>
-        ))}
-      </FormSelect>
+    <Card>
+      <CardContent>
+        <FormComponent form={form} onSubmit={handleSubmit}>
+          <FormSelect
+            id="type"
+            label="Tip*"
+            {...form.register('type', {
+              required: 'Tip je obavezno polje',
+            })}
+            disabled={action === 'update'}
+            placeholder="Odaberite tip"
+          >
+            {educationTypes.map((type) => (
+              <option key={type.type} value={type.type}>
+                {translateEducationType(type.type as EducationType)}
+              </option>
+            ))}
+          </FormSelect>
 
-      {educations?.length && (
-        <FormSelect
-          id="educationId"
-          label="Edukacija*"
-          disabled={action === 'update'}
-          {...form.register('educationId', {
-            required: 'Edukacija je obavezno polje',
-          })}
-          placeholder="Odaberite edukaciju"
-        >
-          {educations.map((education) => (
-            <option key={education.id} value={education.id}>
-              {education.title}
-            </option>
-          ))}
-        </FormSelect>
-      )}
+          {educations?.length && (
+            <FormSelect
+              id="educationId"
+              label="Edukacija*"
+              disabled={action === 'update'}
+              {...form.register('educationId', {
+                required: 'Edukacija je obavezno polje',
+              })}
+              placeholder="Odaberite edukaciju"
+            >
+              {educations.map((education) => (
+                <option key={education.id} value={education.id}>
+                  {education.title}
+                </option>
+              ))}
+            </FormSelect>
+          )}
 
-      <FormInput
-        id="title"
-        label="Naziv*"
-        {...form.register('title', {
-          required: 'Naziv je obavezno polje',
-        })}
-      />
+          <FormInput
+            id="title"
+            label="Naziv*"
+            {...form.register('title', {
+              required: 'Naziv je obavezno polje',
+            })}
+          />
 
-      <FormDatePicker
-        id="dateFrom"
-        label="Datum od*"
-        partOfDay="START"
-        value={formData?.dateFrom}
-        {...form.register('dateFrom', {
-          required: 'Datum od je obavezno polje',
-        })}
-      />
+          <FormDatePicker
+            id="dateFrom"
+            label="Datum od*"
+            partOfDay="START"
+            value={formData?.dateFrom}
+            {...form.register('dateFrom', {
+              required: 'Datum od je obavezno polje',
+            })}
+          />
 
-      <FormDatePicker
-        id="dateTo"
-        label="Datum do*"
-        partOfDay="END"
-        value={formData?.dateTo}
-        {...form.register('dateTo', { required: 'Datum do je obavezno polje' })}
-      />
+          <FormDatePicker
+            id="dateTo"
+            label="Datum do*"
+            partOfDay="END"
+            value={formData?.dateTo}
+            {...form.register('dateTo', {
+              required: 'Datum do je obavezno polje',
+            })}
+          />
 
-      <FormInput
-        id="maxParticipants"
-        label="Maksimalan broj sudionika*"
-        type="number"
-        {...form.register('maxParticipants', {
-          required: 'Maksimalan broj sudionika je obavezno polje',
-        })}
-      />
+          <FormInput
+            id="maxParticipants"
+            label="Maksimalan broj sudionika*"
+            type="number"
+            {...form.register('maxParticipants', {
+              required: 'Maksimalan broj sudionika je obavezno polje',
+            })}
+          />
 
-      <FormInput
-        id="location"
-        label="Lokacija*"
-        type="text"
-        {...form.register('location', {
-          required: 'Lokacija je obavezno polje',
-        })}
-      />
+          <FormInput
+            id="location"
+            label="Lokacija*"
+            type="text"
+            {...form.register('location', {
+              required: 'Lokacija je obavezno polje',
+            })}
+          />
 
-      <FormTextArea
-        id="lecturers"
-        label="Predavači*"
-        {...form.register('lecturers', {
-          required: 'Predavači su obavezno polje',
-        })}
-      />
+          <FormTextArea
+            id="lecturers"
+            label="Predavači*"
+            {...form.register('lecturers', {
+              required: 'Predavači su obavezno polje',
+            })}
+          />
 
-      <Button
-        className="!text-base bg-black text-white"
-        type="submit"
-        showLoading={isSubmitting}
-      >
-        <span>
-          {action === 'create' ? 'Kreiraj termin edukacije' : 'Spremi promjene'}
-        </span>
-      </Button>
-    </FormComponent>
+          <Button
+            className="!text-base bg-black text-white"
+            type="submit"
+            showLoading={isSubmitting}
+          >
+            <span>
+              {action === 'create'
+                ? 'Kreiraj termin edukacije'
+                : 'Spremi promjene'}
+            </span>
+          </Button>
+        </FormComponent>
+      </CardContent>
+    </Card>
   );
 };
 

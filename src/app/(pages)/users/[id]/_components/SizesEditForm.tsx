@@ -5,6 +5,7 @@ import FormComponent from '@/components/organisms/form/formComponent/FormCompone
 import FormInput from '@/components/organisms/form/formInput/FormInput';
 import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { ClothingSize } from '@/server/db/schema';
 import { api } from '@/trpc/react';
 
@@ -48,57 +49,67 @@ const SizesEditForm = ({ userId, defaultValues }: Props) => {
   };
 
   return (
-    <FormComponent form={form} onSubmit={handleSubmit}>
-      <FormSelect
-        id="clothingSize"
-        label="Veličina odjeće"
-        {...form.register('clothingSize')}
-      >
-        <option value="">-- Bez izbora --</option>
-        {Object.entries(ClothingSize).map(([key, value]) => (
-          <option key={key} value={value}>
-            {value}
-          </option>
-        ))}
-      </FormSelect>
+    <Card>
+      <CardContent>
+        <FormComponent form={form} onSubmit={handleSubmit}>
+          <FormSelect
+            id="clothingSize"
+            label="Veličina odjeće"
+            {...form.register('clothingSize')}
+          >
+            <option value="">-- Bez izbora --</option>
+            {Object.entries(ClothingSize).map(([key, value]) => (
+              <option key={key} value={value}>
+                {value}
+              </option>
+            ))}
+          </FormSelect>
 
-      <FormInput
-        id="shoeSize"
-        label="Veličina obuće"
-        type="number"
-        {...form.register('shoeSize')}
-      />
+          <FormInput
+            id="shoeSize"
+            label="Veličina obuće"
+            type="number"
+            {...form.register('shoeSize')}
+          />
 
-      <FormInput
-        id="height"
-        label="Visina (cm)"
-        type="number"
-        {...form.register('height', {
-          valueAsNumber: true,
-          min: { value: 50, message: 'Visina mora biti veća od 50 cm' },
-          max: { value: 250, message: 'Visina ne smije biti veća od 250 cm' },
-        })}
-      />
+          <FormInput
+            id="height"
+            label="Visina (cm)"
+            type="number"
+            {...form.register('height', {
+              valueAsNumber: true,
+              min: { value: 50, message: 'Visina mora biti veća od 50 cm' },
+              max: {
+                value: 250,
+                message: 'Visina ne smije biti veća od 250 cm',
+              },
+            })}
+          />
 
-      <FormInput
-        id="weight"
-        label="Težina (kg)"
-        type="number"
-        {...form.register('weight', {
-          valueAsNumber: true,
-          min: { value: 1, message: 'Težina mora biti veća od 0 kg' },
-          max: { value: 500, message: 'Težina ne smije biti veća od 500 kg' },
-        })}
-      />
+          <FormInput
+            id="weight"
+            label="Težina (kg)"
+            type="number"
+            {...form.register('weight', {
+              valueAsNumber: true,
+              min: { value: 1, message: 'Težina mora biti veća od 0 kg' },
+              max: {
+                value: 500,
+                message: 'Težina ne smije biti veća od 500 kg',
+              },
+            })}
+          />
 
-      <Button
-        className="bg-black text-base! text-white"
-        type="submit"
-        showLoading={isSubmitting}
-      >
-        Spremi mjere
-      </Button>
-    </FormComponent>
+          <Button
+            className="bg-black text-base! text-white"
+            type="submit"
+            showLoading={isSubmitting}
+          >
+            Spremi mjere
+          </Button>
+        </FormComponent>
+      </CardContent>
+    </Card>
   );
 };
 

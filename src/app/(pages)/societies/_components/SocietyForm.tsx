@@ -8,6 +8,7 @@ import FormCityPicker from '@/components/organisms/form/formCityPicker/FormCityP
 import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
 import FormInput from '@/components/organisms/form/formInput/FormInput';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { api } from '@/trpc/react';
 
 export type SocietyFormData = {
@@ -81,53 +82,61 @@ const SocietyForm: React.FC<Props> = ({ action, formData }) => {
   };
 
   return (
-    <FormComponent form={form} onSubmit={handleSubmit}>
-      <FormInput
-        id="name"
-        label="Naziv*"
-        {...form.register('name', { required: 'Naziv je obavezno polje' })}
-      />
+    <Card>
+      <CardContent>
+        <FormComponent form={form} onSubmit={handleSubmit}>
+          <FormInput
+            id="name"
+            label="Naziv*"
+            {...form.register('name', { required: 'Naziv je obavezno polje' })}
+          />
 
-      <FormInput
-        id="address"
-        label="Adresa*"
-        {...form.register('address', { required: 'Adresa je obavezno polje' })}
-      />
+          <FormInput
+            id="address"
+            label="Adresa*"
+            {...form.register('address', {
+              required: 'Adresa je obavezno polje',
+            })}
+          />
 
-      <FormInput
-        id="director"
-        label="Ravnatelj*"
-        {...form.register('director', {
-          required: 'Ravnatelj je obavezno polje',
-        })}
-      />
+          <FormInput
+            id="director"
+            label="Ravnatelj*"
+            {...form.register('director', {
+              required: 'Ravnatelj je obavezno polje',
+            })}
+          />
 
-      <FormInput id="phone" label="Telefon" {...form.register('phone')} />
+          <FormInput id="phone" label="Telefon" {...form.register('phone')} />
 
-      <FormInput id="email" label="E-mail" {...form.register('email')} />
+          <FormInput id="email" label="E-mail" {...form.register('email')} />
 
-      <FormInput id="website" label="Web" {...form.register('website')} />
+          <FormInput id="website" label="Web" {...form.register('website')} />
 
-      {croatia && (
-        <FormCityPicker
-          id="cityId"
-          label="Grad"
-          fieldName="cityId"
-          countryId={croatia.id}
-          initialCityName={formData?.cityName}
-        />
-      )}
+          {croatia && (
+            <FormCityPicker
+              id="cityId"
+              label="Grad"
+              fieldName="cityId"
+              countryId={croatia.id}
+              initialCityName={formData?.cityName}
+            />
+          )}
 
-      <Button
-        className="cursor-pointer bg-black text-base! text-white"
-        type="submit"
-        showLoading={isSubmitting}
-      >
-        <span>
-          {action === 'create' ? 'Novo županijsko društvo' : 'Spremi promjene'}
-        </span>
-      </Button>
-    </FormComponent>
+          <Button
+            className="cursor-pointer bg-black text-base! text-white"
+            type="submit"
+            showLoading={isSubmitting}
+          >
+            <span>
+              {action === 'create'
+                ? 'Novo županijsko društvo'
+                : 'Spremi promjene'}
+            </span>
+          </Button>
+        </FormComponent>
+      </CardContent>
+    </Card>
   );
 };
 

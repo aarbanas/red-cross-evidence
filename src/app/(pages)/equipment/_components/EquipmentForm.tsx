@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
 import FormInput from '@/components/organisms/form/formInput/FormInput';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { api } from '@/trpc/react';
 
 export type EquipmentFormData = {
@@ -66,49 +67,55 @@ const EquipmentForm: React.FC<Props> = ({ action, formData }) => {
   };
 
   return (
-    <FormComponent form={form} onSubmit={handleSubmit}>
-      <FormInput
-        id="name"
-        label="Naziv*"
-        {...form.register('name', {
-          required: 'Naziv je obavezno polje',
-        })}
-      />
+    <Card>
+      <CardContent>
+        <FormComponent form={form} onSubmit={handleSubmit}>
+          <FormInput
+            id="name"
+            label="Naziv*"
+            {...form.register('name', {
+              required: 'Naziv je obavezno polje',
+            })}
+          />
 
-      <FormInput
-        id="type"
-        label="Tip*"
-        {...form.register('type', {
-          required: 'Tip je obavezno polje',
-        })}
-      />
+          <FormInput
+            id="type"
+            label="Tip*"
+            {...form.register('type', {
+              required: 'Tip je obavezno polje',
+            })}
+          />
 
-      <FormInput
-        id="size"
-        label="Veličina*"
-        {...form.register('size', {
-          required: 'Veličina je obavezno polje',
-        })}
-      />
+          <FormInput
+            id="size"
+            label="Veličina*"
+            {...form.register('size', {
+              required: 'Veličina je obavezno polje',
+            })}
+          />
 
-      <FormInput
-        id="quantity"
-        label="Količina*"
-        type="number"
-        {...form.register('quantity', {
-          required: 'Količina je obavezno polje',
-          min: { value: 1, message: 'Količina mora biti veća od 0' },
-        })}
-      />
+          <FormInput
+            id="quantity"
+            label="Količina*"
+            type="number"
+            {...form.register('quantity', {
+              required: 'Količina je obavezno polje',
+              min: { value: 1, message: 'Količina mora biti veća od 0' },
+            })}
+          />
 
-      <Button
-        className="!text-base bg-black text-white"
-        type="submit"
-        showLoading={isSubmitting}
-      >
-        <span>{action === 'create' ? 'Nova oprema' : 'Spremi promjene'}</span>
-      </Button>
-    </FormComponent>
+          <Button
+            className="!text-base bg-black text-white"
+            type="submit"
+            showLoading={isSubmitting}
+          >
+            <span>
+              {action === 'create' ? 'Nova oprema' : 'Spremi promjene'}
+            </span>
+          </Button>
+        </FormComponent>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -6,6 +6,7 @@ import FormComponent from '@/components/organisms/form/formComponent/FormCompone
 import FormInput from '@/components/organisms/form/formInput/FormInput';
 import FormTextArea from '@/components/organisms/form/formTextArea/FormTextArea';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { api } from '@/trpc/react';
 
 export type LicencesFormData = {
@@ -63,37 +64,43 @@ const LicencesForm: React.FC<Props> = ({ action, formData }) => {
   };
 
   return (
-    <FormComponent form={form} onSubmit={handleSubmit}>
-      <FormInput
-        id="type"
-        label="Tip*"
-        {...form.register('type', {
-          required: 'Tip je obavezno polje',
-        })}
-      />
+    <Card>
+      <CardContent>
+        <FormComponent form={form} onSubmit={handleSubmit}>
+          <FormInput
+            id="type"
+            label="Tip*"
+            {...form.register('type', {
+              required: 'Tip je obavezno polje',
+            })}
+          />
 
-      <FormInput
-        id="title"
-        label="Naziv*"
-        {...form.register('name', {
-          required: 'Naziv je obavezno polje',
-        })}
-      />
+          <FormInput
+            id="title"
+            label="Naziv*"
+            {...form.register('name', {
+              required: 'Naziv je obavezno polje',
+            })}
+          />
 
-      <FormTextArea
-        id="description"
-        label="Opis"
-        {...form.register('description')}
-      />
+          <FormTextArea
+            id="description"
+            label="Opis"
+            {...form.register('description')}
+          />
 
-      <Button
-        className="!text-base bg-black text-white"
-        type="submit"
-        showLoading={isSubmitting}
-      >
-        <span>{action === 'create' ? 'Nova licence' : 'Spremi promjene'}</span>
-      </Button>
-    </FormComponent>
+          <Button
+            className="!text-base bg-black text-white"
+            type="submit"
+            showLoading={isSubmitting}
+          >
+            <span>
+              {action === 'create' ? 'Nova licence' : 'Spremi promjene'}
+            </span>
+          </Button>
+        </FormComponent>
+      </CardContent>
+    </Card>
   );
 };
 
