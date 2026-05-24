@@ -48,9 +48,11 @@ const UserEducationsTable = ({ userId, items }: Props) => {
   );
 
   const filteredEducations =
-    allEducations?.filter((e) =>
-      e.title.toLowerCase().includes(educationSearch.toLowerCase()),
-    ) ?? [];
+    educationSearch.length > 0
+      ? (allEducations?.filter((e) =>
+          e.title.toLowerCase().includes(educationSearch.toLowerCase()),
+        ) ?? [])
+      : [];
 
   const { data: termsForEducation } =
     api.education.term.findByEducationId.useQuery(
@@ -158,35 +160,37 @@ const UserEducationsTable = ({ userId, items }: Props) => {
               className="mb-4"
             />
             {filteredEducations.length > 0 && (
-              <Card>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Naziv</TableHead>
-                      <TableHead>Tip</TableHead>
-                      <TableHead></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredEducations.map((e) => (
-                      <TableRow key={e.id}>
-                        <TableCell>{e.title}</TableCell>
-                        <TableCell>{e.type}</TableCell>
-                        <TableCell>
-                          <Button
-                            type="button"
-                            variant="outline"
-                            className="text-sm"
-                            onClick={() => setSelectedEducationId(e.id)}
-                          >
-                            Odaberi
-                          </Button>
-                        </TableCell>
+              <div className="max-h-72 overflow-y-auto">
+                <Card>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Naziv</TableHead>
+                        <TableHead>Tip</TableHead>
+                        <TableHead></TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Card>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredEducations.map((e) => (
+                        <TableRow key={e.id}>
+                          <TableCell>{e.title}</TableCell>
+                          <TableCell>{e.type}</TableCell>
+                          <TableCell>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              className="text-sm"
+                              onClick={() => setSelectedEducationId(e.id)}
+                            >
+                              Odaberi
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Card>
+              </div>
             )}
             {educationSearch && filteredEducations.length === 0 && (
               <p className="py-4 text-center text-gray-500 text-sm">
