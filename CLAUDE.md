@@ -320,3 +320,25 @@ const bar = 10;
 ```
 
 This rule applies even when the next line is a return, throw, another if, or any other statement.
+
+### Wrap forms and tables in Card
+
+Every new form and table rendered on a client page must be wrapped in the `Card` component from `@/components/ui/card`. Import and use `Card` as the outermost container.
+
+```tsx
+import { Card } from '@/components/ui/card';
+import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
+import { Table } from '@/components/organisms/Table';
+
+// ✅ Correct
+<Card>
+  <FormComponent>...</FormComponent>
+</Card>
+
+<Card>
+  <Table>...</Table>
+</Card>
+
+// ❌ Wrong — form/table directly in the page or a plain div
+<form>...</form>
+```
