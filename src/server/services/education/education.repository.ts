@@ -1,4 +1,13 @@
-import { asc, count, eq, gte, ilike, type SQL } from 'drizzle-orm';
+import {
+  and,
+  asc,
+  count,
+  eq,
+  gte,
+  ilike,
+  notInArray,
+  type SQL,
+} from 'drizzle-orm';
 import type { EducationFormData } from '@/app/(pages)/educations/list/[id]/_components/EducationsForm';
 import type { EducationTermFormData } from '@/app/(pages)/educations/term/_components/EducationsTermForm';
 import { db } from '@/server/db';
@@ -6,6 +15,9 @@ import {
   type EducationType,
   educations,
   educationTerms,
+  profileEducationTerms,
+  profiles,
+  users,
 } from '@/server/db/schema';
 import { prepareOrderBy, prepareWhere } from '@/server/db/utility';
 import type {
@@ -445,6 +457,73 @@ const educationRepository = {
           lecturers: educationTerms.lecturers,
           educationId: educationTerms.educationId,
         })
+        .execute();
+    },
+    getParticipants: async (termId: string) => {
+      return db
+        .select({
+          profileId: profiles.id,
+          firstName: profiles.firstName,
+          lastName: profiles.lastName,
+          email: users.email,
+        })
+        .from(profileEducationTerms)
+        .where(eq(profileEducationTerms.educationTermId, termId))
+        .innerJoin(profiles, eq(profileEducationTerms.profileId, profiles.id))
+        .innerJoin(users, eq(profiles.userId, users.id))
+        .execute();
+    },
+    addParticipant: async (termId: string, profileId: string) => {
+      return db
+        .insert(profileEducationTerms)
+        .values({ educationTermId: termId, profileId })
+        .execute();
+    },
+    removeParticipant: async (termId: string, profileId: string) => {
+      return db
+        .delete(profileEducationTerms)
+        .where(
+          and(
+            eq(profileEducationTerms.educationTermId, termId),
+            eq(profileEducationTerms.profileId, profileId),
+          ),
+        )
+        .execute();
+    },
+    findByEducationId: async (
+      educationId: string,
+      excludeProfileId?: string,
+    ) => {
+      const enrolledTermIds = excludeProfileId
+        ? (
+            await db
+              .select({ id: profileEducationTerms.educationTermId })
+              .from(profileEducationTerms)
+              .where(eq(profileEducationTerms.profileId, excludeProfileId))
+              .execute()
+          ).map((r) => r.id)
+        : [];
+
+      const where =
+        enrolledTermIds.length > 0
+          ? and(
+              eq(educationTerms.educationId, educationId),
+              notInArray(educationTerms.id, enrolledTermIds),
+            )
+          : eq(educationTerms.educationId, educationId);
+
+      return db
+        .select({
+          id: educationTerms.id,
+          title: educationTerms.title,
+          dateFrom: educationTerms.dateFrom,
+          dateTo: educationTerms.dateTo,
+          maxParticipants: educationTerms.maxParticipants,
+          location: educationTerms.location,
+        })
+        .from(educationTerms)
+        .where(where)
+        .orderBy(asc(educationTerms.dateFrom))
         .execute();
     },
   },

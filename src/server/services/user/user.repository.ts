@@ -1,4 +1,4 @@
-import { and, count, desc, eq, ilike, type SQL } from 'drizzle-orm';
+import { and, count, desc, eq, ilike, or, type SQL } from 'drizzle-orm';
 import { db } from '@/server/db';
 import {
   type AddressType,
@@ -7,9 +7,12 @@ import {
   cities,
   countries,
   type EducationLevel,
+  educations,
+  educationTerms,
   equipment,
   type LanguageLevel,
   languages,
+  profileEducationTerms,
   profileEquipment,
   profileSkills,
   profiles,
@@ -780,6 +783,87 @@ const userRepository = {
           eq(profileEquipment.equipmentId, equipmentId),
         ),
       )
+      .execute();
+  },
+  getEducationTerms: async (userId: string) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) return [];
+
+    return db
+      .select({
+        educationTermId: educationTerms.id,
+        termTitle: educationTerms.title,
+        dateFrom: educationTerms.dateFrom,
+        dateTo: educationTerms.dateTo,
+        educationTitle: educations.title,
+      })
+      .from(profileEducationTerms)
+      .where(eq(profileEducationTerms.profileId, profile.id))
+      .innerJoin(
+        educationTerms,
+        eq(profileEducationTerms.educationTermId, educationTerms.id),
+      )
+      .innerJoin(educations, eq(educationTerms.educationId, educations.id))
+      .execute();
+  },
+  addEducationTerm: async (userId: string, educationTermId: string) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) throw new Error('Profile not found');
+
+    return db
+      .insert(profileEducationTerms)
+      .values({ profileId: profile.id, educationTermId })
+      .execute();
+  },
+  removeEducationTerm: async (userId: string, educationTermId: string) => {
+    const [profile] = await db
+      .select({ id: profiles.id })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .execute();
+
+    if (!profile) throw new Error('Profile not found');
+
+    return db
+      .delete(profileEducationTerms)
+      .where(
+        and(
+          eq(profileEducationTerms.profileId, profile.id),
+          eq(profileEducationTerms.educationTermId, educationTermId),
+        ),
+      )
+      .execute();
+  },
+  findByName: async (search: string) => {
+    return db
+      .select({
+        id: users.id,
+        email: users.email,
+        profile: {
+          id: profiles.id,
+          firstName: profiles.firstName,
+          lastName: profiles.lastName,
+        },
+      })
+      .from(users)
+      .innerJoin(profiles, eq(users.id, profiles.userId))
+      .where(
+        or(
+          ilike(profiles.firstName, `${search}%`),
+          ilike(profiles.lastName, `${search}%`),
+        ),
+      )
+      .limit(20)
       .execute();
   },
   updateSkills: async (

@@ -180,6 +180,22 @@ const userService = {
   removeRentedEquipment: async (userId: string, equipmentId: string) => {
     return userRepository.removeRentedEquipment(userId, equipmentId);
   },
+  getEducationTerms: async (userId: string) => {
+    return userRepository.getEducationTerms(userId);
+  },
+  addEducationTerm: async (userId: string, educationTermId: string) => {
+    try {
+      return await userRepository.addEducationTerm(userId, educationTermId);
+    } catch (error) {
+      throw mapDbError(error);
+    }
+  },
+  removeEducationTerm: async (userId: string, educationTermId: string) => {
+    return userRepository.removeEducationTerm(userId, educationTermId);
+  },
+  findByName: async (search: string) => {
+    return userRepository.findByName(search);
+  },
   updateSkills: async (
     userId: string,
     skillsData: {

@@ -61,6 +61,28 @@ const educationService = {
         throw mapDbError(error);
       }
     },
+    getParticipants: async (termId: string) => {
+      return educationRepository.term.getParticipants(termId);
+    },
+    addParticipant: async (termId: string, profileId: string) => {
+      try {
+        return await educationRepository.term.addParticipant(termId, profileId);
+      } catch (error) {
+        throw mapDbError(error);
+      }
+    },
+    removeParticipant: async (termId: string, profileId: string) => {
+      return educationRepository.term.removeParticipant(termId, profileId);
+    },
+    findByEducationId: async (
+      educationId: string,
+      excludeProfileId?: string,
+    ) => {
+      return educationRepository.term.findByEducationId(
+        educationId,
+        excludeProfileId,
+      );
+    },
   },
 };
 
