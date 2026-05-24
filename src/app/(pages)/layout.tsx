@@ -1,5 +1,5 @@
 import type React from 'react';
-import { TRPCReactProvider } from '~/trpc/react';
+import { TRPCReactProvider } from '@/trpc/react';
 
 export default function PagesLayout({
   children,

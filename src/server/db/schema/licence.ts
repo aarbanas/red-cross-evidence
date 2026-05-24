@@ -1,6 +1,6 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, text, uuid, varchar } from 'drizzle-orm/pg-core';
-import { profilesLicences } from '~/server/db/schema/user';
+import { profilesLicences } from '@/server/db/schema/user';
 
 export const DrivingLicense = {
   AM: 'AM',

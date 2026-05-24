@@ -1,11 +1,11 @@
 'use client';
 import { Suspense, useMemo, useState } from 'react';
-import { translateEducationType } from '~/app/(pages)/educations/utils';
-import type { DropdownOption } from '~/components/atoms/Dropdown';
-import TabLayout from '~/components/layout/tabLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import type { EducationType } from '~/server/db/schema';
-import { api } from '~/trpc/react';
+import { translateEducationType } from '@/app/(pages)/educations/utils';
+import type { DropdownOption } from '@/components/atoms/Dropdown';
+import TabLayout from '@/components/layout/tabLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import type { EducationType } from '@/server/db/schema';
+import { api } from '@/trpc/react';
 import EducationsList from './EducationsList';
 import EducationsListSearch from './EducationsListSearch';
 

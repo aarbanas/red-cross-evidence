@@ -6,18 +6,18 @@ import type {
   Sex,
   UserType,
   WorkStatus,
-} from '~/server/db/schema';
-import type { FindQueryDTO } from '~/server/db/utility/types';
-import addressRepository from '~/server/services/address/address.repository';
-import cityRepository from '~/server/services/city/city.repository';
+} from '@/server/db/schema';
+import type { FindQueryDTO } from '@/server/db/utility/types';
+import addressRepository from '@/server/services/address/address.repository';
+import cityRepository from '@/server/services/city/city.repository';
 import type {
   CreateUserAddressesDTO,
   CreateUserAddressIdsDTO,
   CreateUserDTO,
-} from '~/server/services/user/types';
-import userRepository from '~/server/services/user/user.repository';
-import { mapDbError } from '~/server/utils/db-error';
-import { generateRandomHashedPassword } from '~/server/utils/password';
+} from '@/server/services/user/types';
+import userRepository from '@/server/services/user/user.repository';
+import { mapDbError } from '@/server/utils/db-error';
+import { generateRandomHashedPassword } from '@/server/utils/password';
 
 const userService = {
   getById: async (id: string) => {

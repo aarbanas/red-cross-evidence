@@ -1,7 +1,7 @@
-import licenseRepository from '~/server/services/license/license.repository';
+import licenseRepository from '@/server/services/license/license.repository';
 import licenseService from './license.service';
 
-jest.mock('~/server/services/license/license.repository', () => ({
+jest.mock('@/server/services/license/license.repository', () => ({
   __esModule: true,
   default: {
     create: jest.fn(),

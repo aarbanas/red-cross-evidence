@@ -1,12 +1,12 @@
 'use client';
 
 import { Suspense, useCallback, useMemo, useState } from 'react';
-import CitySocieties from '~/app/(pages)/societies/_components/CitySocieties';
-import CitySocietiesSearch from '~/app/(pages)/societies/_components/CitySocietiesSearch';
-import type { DropdownOption } from '~/components/atoms/Dropdown';
-import TabLayout from '~/components/layout/tabLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import CitySocieties from '@/app/(pages)/societies/_components/CitySocieties';
+import CitySocietiesSearch from '@/app/(pages)/societies/_components/CitySocietiesSearch';
+import type { DropdownOption } from '@/components/atoms/Dropdown';
+import TabLayout from '@/components/layout/tabLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '@/trpc/react';
 
 const CitySocietiesPage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(

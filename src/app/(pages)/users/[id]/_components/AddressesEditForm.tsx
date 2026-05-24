@@ -2,16 +2,16 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { translateAddressType } from '~/app/(pages)/users/create/utils';
-import { Button } from '~/components/atoms/Button';
-import FormCitySearch from '~/components/organisms/form/formCitySearch/FormCitySearch';
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import FormStreetSearch from '~/components/organisms/form/formStreetSearch/FormStreetSearch';
-import { AddressType } from '~/server/db/schema';
-import type { SearchCityReturnDTO } from '~/server/services/city/city.repository';
-import { api } from '~/trpc/react';
+import { translateAddressType } from '@/app/(pages)/users/create/utils';
+import FormCitySearch from '@/components/organisms/form/formCitySearch/FormCitySearch';
+import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import FormStreetSearch from '@/components/organisms/form/formStreetSearch/FormStreetSearch';
+import { Button } from '@/components/ui/button';
+import { AddressType } from '@/server/db/schema';
+import type { SearchCityReturnDTO } from '@/server/services/city/city.repository';
+import { api } from '@/trpc/react';
 
 type AddressEntry = {
   addressId: string;

@@ -1,10 +1,10 @@
 'use client';
 import type React from 'react';
-import EquipmentTable from '~/app/(pages)/equipment/_components/EquipmentTable';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import usePagination from '~/hooks/usePagination';
-import useTotalPageNumber from '~/hooks/useTotalPageNumber';
-import { api } from '~/trpc/react';
+import EquipmentTable from '@/app/(pages)/equipment/_components/EquipmentTable';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import usePagination from '@/hooks/usePagination';
+import useTotalPageNumber from '@/hooks/useTotalPageNumber';
+import { api } from '@/trpc/react';
 
 type Props = {
   filter: Record<string, string> | undefined;

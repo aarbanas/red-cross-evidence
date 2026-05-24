@@ -3,8 +3,8 @@ import {
   Pagination,
   PaginationContent,
   PaginationPages,
-} from '~/components/organisms/pagination/Pagination';
-import usePagination from '~/hooks/usePagination';
+} from '@/components/organisms/pagination/Pagination';
+import usePagination from '@/hooks/usePagination';
 
 type Props = {
   totalPageNumber: number;

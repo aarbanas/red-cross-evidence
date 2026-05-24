@@ -3,10 +3,10 @@ import { useParams, useRouter } from 'next/navigation';
 import type React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Button } from '~/components/atoms/Button';
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import { api } from '~/trpc/react';
+import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import { Button } from '@/components/ui/button';
+import { api } from '@/trpc/react';
 
 export type EquipmentFormData = {
   id?: string;

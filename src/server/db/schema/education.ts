@@ -9,7 +9,7 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
-import { profiles } from '~/server/db/schema/user';
+import { profiles } from '@/server/db/schema/user';
 
 export enum EducationType {
   VOLUNTEERS = 'Volunteers',

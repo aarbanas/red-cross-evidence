@@ -1,5 +1,5 @@
-import type { FindQueryDTO } from '~/server/db/utility/types';
-import { mapDbError } from '~/server/utils/db-error';
+import type { FindQueryDTO } from '@/server/db/utility/types';
+import { mapDbError } from '@/server/utils/db-error';
 import citySocietyRepository, {
   type CitySocietyFormData,
 } from './citySociety.repository';

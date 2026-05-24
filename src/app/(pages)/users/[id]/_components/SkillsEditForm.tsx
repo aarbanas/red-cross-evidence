@@ -3,12 +3,12 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Button } from '~/components/atoms/Button';
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import { LanguageLevel } from '~/server/db/schema';
-import { api } from '~/trpc/react';
+import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import { Button } from '@/components/ui/button';
+import { LanguageLevel } from '@/server/db/schema';
+import { api } from '@/trpc/react';
 
 type SkillsFormData = {
   selectedLanguages: { id: string; level: string }[];

@@ -2,13 +2,13 @@
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense, useCallback, useMemo, useState } from 'react';
-import Licences from '~/app/(pages)/licenses/_components/Licences';
-import LicencesSearch from '~/app/(pages)/licenses/_components/LicencesSearch';
-import { Button } from '~/components/atoms/Button';
-import type { DropdownOption } from '~/components/atoms/Dropdown';
-import MainLayout from '~/components/layout/mainLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import Licences from '@/app/(pages)/licenses/_components/Licences';
+import LicencesSearch from '@/app/(pages)/licenses/_components/LicencesSearch';
+import type { DropdownOption } from '@/components/atoms/Dropdown';
+import MainLayout from '@/components/layout/mainLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { Button } from '@/components/ui/button';
+import { api } from '@/trpc/react';
 
 const LicencePage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(

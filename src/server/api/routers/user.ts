@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { createUserSchema, paginationQuerySchema } from '~/server/api/schema';
-import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
+import { createUserSchema, paginationQuerySchema } from '@/server/api/schema';
+import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
 import {
   AddressType,
   ClothingSize,
@@ -9,8 +9,8 @@ import {
   Sex,
   UserType,
   WorkStatus,
-} from '~/server/db/schema';
-import userService from '~/server/services/user/user.service';
+} from '@/server/db/schema';
+import userService from '@/server/services/user/user.service';
 
 const addressInputSchema = z.object({
   street: z.string().min(1),

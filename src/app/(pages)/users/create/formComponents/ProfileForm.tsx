@@ -3,11 +3,11 @@ import { useFormContext } from 'react-hook-form';
 import {
   translateSex,
   translateUserType,
-} from '~/app/(pages)/users/create/utils';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import { Sex, UserType } from '~/server/db/schema';
-import { api } from '~/trpc/react';
+} from '@/app/(pages)/users/create/utils';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import { Sex, UserType } from '@/server/db/schema';
+import { api } from '@/trpc/react';
 
 const PGZ_SOCIETY_NAME = 'Društvo Crvenog Križa Primorsko-goranske županije';
 

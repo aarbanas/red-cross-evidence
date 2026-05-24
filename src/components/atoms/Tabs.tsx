@@ -1,6 +1,6 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { type FC, useState } from 'react';
-import { cn } from '~/components/utils';
+import { cn } from '@/lib/utils';
 
 type Props = {
   tabs: TabProp[];

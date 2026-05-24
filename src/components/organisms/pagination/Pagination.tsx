@@ -1,7 +1,8 @@
+import type { VariantProps } from 'class-variance-authority';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 import * as React from 'react';
-import { type ButtonProps, buttonVariants } from '~/components/atoms/Button';
-import { cn } from '~/components/utils';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/components/utils';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
@@ -123,8 +124,8 @@ PaginationItem.displayName = 'PaginationItem';
 
 type PaginationLinkProps = {
   isActive?: boolean;
-} & Pick<ButtonProps, 'size'> &
-  React.ComponentProps<'a'>;
+  size?: VariantProps<typeof buttonVariants>['size'];
+} & React.ComponentProps<'a'>;
 
 const PaginationLink = ({
   className,
@@ -152,7 +153,6 @@ const PaginationPrevious = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to previous page"
-    size="icon"
     className={cn(className)}
     {...props}
   >
@@ -167,7 +167,6 @@ const PaginationNext = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
-    size="icon"
     className={cn(className)}
     {...props}
   >

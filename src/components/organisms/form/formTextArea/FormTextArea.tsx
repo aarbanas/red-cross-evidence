@@ -1,5 +1,5 @@
 import { type ComponentProps, forwardRef } from 'react';
-import { FieldError } from '~/components/organisms/form/formComponent/FormComponent';
+import { FieldError } from '@/components/organisms/form/formComponent/FormComponent';
 import styles from './FormTextArea.module.css';
 
 interface FormTextAreaProps extends ComponentProps<'textarea'> {

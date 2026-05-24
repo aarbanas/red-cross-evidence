@@ -2,10 +2,10 @@ import { useFormContext } from 'react-hook-form';
 import {
   translateEducationLevel,
   translateWorkStatus,
-} from '~/app/(pages)/users/create/utils';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import { EducationLevel, WorkStatus } from '~/server/db/schema';
+} from '@/app/(pages)/users/create/utils';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import { EducationLevel, WorkStatus } from '@/server/db/schema';
 
 export type WorkStatusFormProps = {
   workStatus: {

@@ -1,6 +1,6 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
-import { cities } from '~/server/db/schema/user';
+import { cities } from '@/server/db/schema/user';
 
 export const societies = pgTable('society', {
   id: uuid('id').defaultRandom().primaryKey(),

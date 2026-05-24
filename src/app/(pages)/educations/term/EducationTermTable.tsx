@@ -2,10 +2,8 @@ import { Pencil, Trash2 } from 'lucide-react';
 import moment from 'moment';
 import Link from 'next/link';
 import { type FC, useState } from 'react';
-import { Button } from '~/components/atoms/Button';
-import { Card } from '~/components/atoms/Card';
-import Modal from '~/components/organisms/modal/Modal';
-import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
+import Modal from '@/components/organisms/modal/Modal';
+import PaginationComponent from '@/components/organisms/pagination/PaginationComponent';
 import {
   Table,
   TableBody,
@@ -13,9 +11,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '~/components/organisms/Table';
-import type { FindEducationTermReturnDTO } from '~/server/services/education/education.repository';
-import { api } from '~/trpc/react';
+} from '@/components/organisms/Table';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import type { FindEducationTermReturnDTO } from '@/server/services/education/education.repository';
+import { api } from '@/trpc/react';
 
 type Props = {
   data?: FindEducationTermReturnDTO[];

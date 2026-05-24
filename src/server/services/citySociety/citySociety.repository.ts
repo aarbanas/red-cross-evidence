@@ -1,8 +1,8 @@
 import { count, eq, ilike, type SQL } from 'drizzle-orm';
-import { db } from '~/server/db';
-import { cities, citySocieties, societies } from '~/server/db/schema';
-import { prepareOrderBy, prepareWhere } from '~/server/db/utility';
-import type { FindQueryDTO, FindReturnDTO } from '~/server/db/utility/types';
+import { db } from '@/server/db';
+import { cities, citySocieties, societies } from '@/server/db/schema';
+import { prepareOrderBy, prepareWhere } from '@/server/db/utility';
+import type { FindQueryDTO, FindReturnDTO } from '@/server/db/utility/types';
 
 enum SortableKeys {
   ID = 'id',

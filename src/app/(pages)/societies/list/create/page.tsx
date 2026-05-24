@@ -1,7 +1,7 @@
 'use client';
 
-import SocietyForm from '~/app/(pages)/societies/_components/SocietyForm';
-import TabLayout from '~/components/layout/tabLayout';
+import SocietyForm from '@/app/(pages)/societies/_components/SocietyForm';
+import TabLayout from '@/components/layout/tabLayout';
 
 const CreateSocietyPage = () => {
   return (

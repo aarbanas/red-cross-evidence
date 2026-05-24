@@ -1,9 +1,9 @@
 'use client';
 import { useParams } from 'next/navigation';
-import EquipmentForm from '~/app/(pages)/equipment/_components/EquipmentForm';
-import MainLayout from '~/components/layout/mainLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import EquipmentForm from '@/app/(pages)/equipment/_components/EquipmentForm';
+import MainLayout from '@/components/layout/mainLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '@/trpc/react';
 
 const UpdateEquipmentPage = () => {
   const { id } = useParams();

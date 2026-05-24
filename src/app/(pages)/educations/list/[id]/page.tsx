@@ -1,9 +1,9 @@
 'use client';
 import { useParams } from 'next/navigation';
-import EducationForm from '~/app/(pages)/educations/list/[id]/_components/EducationsForm';
-import TabLayout from '~/components/layout/tabLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import EducationForm from '@/app/(pages)/educations/list/[id]/_components/EducationsForm';
+import TabLayout from '@/components/layout/tabLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '@/trpc/react';
 
 export default function EducationDetailPage() {
   const { id } = useParams();

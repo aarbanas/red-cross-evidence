@@ -1,18 +1,18 @@
 import { asc, count, eq, gte, ilike, type SQL } from 'drizzle-orm';
-import type { EducationFormData } from '~/app/(pages)/educations/list/[id]/_components/EducationsForm';
-import type { EducationTermFormData } from '~/app/(pages)/educations/term/_components/EducationsTermForm';
-import { db } from '~/server/db';
+import type { EducationFormData } from '@/app/(pages)/educations/list/[id]/_components/EducationsForm';
+import type { EducationTermFormData } from '@/app/(pages)/educations/term/_components/EducationsTermForm';
+import { db } from '@/server/db';
 import {
   type EducationType,
   educations,
   educationTerms,
-} from '~/server/db/schema';
-import { prepareOrderBy, prepareWhere } from '~/server/db/utility';
+} from '@/server/db/schema';
+import { prepareOrderBy, prepareWhere } from '@/server/db/utility';
 import type {
   FindQueryDTO,
   FindReturn,
   FindReturnDTO,
-} from '~/server/db/utility/types';
+} from '@/server/db/utility/types';
 
 enum ListSortableKeys {
   TYPE = 'type',

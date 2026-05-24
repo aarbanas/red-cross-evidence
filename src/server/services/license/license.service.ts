@@ -1,7 +1,7 @@
-import type { LicencesFormData } from '~/app/(pages)/licenses/_components/LicencesForm';
-import type { FindQueryDTO } from '~/server/db/utility/types';
-import licenseRepository from '~/server/services/license/license.repository';
-import { mapDbError } from '~/server/utils/db-error';
+import type { LicencesFormData } from '@/app/(pages)/licenses/_components/LicencesForm';
+import type { FindQueryDTO } from '@/server/db/utility/types';
+import licenseRepository from '@/server/services/license/license.repository';
+import { mapDbError } from '@/server/utils/db-error';
 
 const licenseService = {
   getById: async (id: string) => {

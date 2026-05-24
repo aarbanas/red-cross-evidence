@@ -11,13 +11,13 @@ import {
   useState,
 } from 'react';
 import { toast } from 'react-toastify';
-import Users from '~/app/(pages)/users/_components/Users';
-import UsersSearch from '~/app/(pages)/users/_components/UsersSearch';
-import { Button } from '~/components/atoms/Button';
-import type { DropdownOption } from '~/components/atoms/Dropdown';
-import MainLayout from '~/components/layout/mainLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import Users from '@/app/(pages)/users/_components/Users';
+import UsersSearch from '@/app/(pages)/users/_components/UsersSearch';
+import type { DropdownOption } from '@/components/atoms/Dropdown';
+import MainLayout from '@/components/layout/mainLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { Button } from '@/components/ui/button';
+import { api } from '@/trpc/react';
 
 const UsersPageContent = () => {
   const searchParams = useSearchParams();

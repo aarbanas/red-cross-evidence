@@ -1,9 +1,9 @@
 'use client';
 import { useParams } from 'next/navigation';
-import ProfileEditForm from '~/app/(pages)/users/[id]/_components/ProfileEditForm';
-import TabLayout from '~/components/layout/tabLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import ProfileEditForm from '@/app/(pages)/users/[id]/_components/ProfileEditForm';
+import TabLayout from '@/components/layout/tabLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '@/trpc/react';
 
 const ProfileTab = () => {
   const { id } = useParams<{ id: string }>();

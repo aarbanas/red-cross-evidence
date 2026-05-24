@@ -2,7 +2,7 @@ import { useDebounce } from '@uidotdev/usehooks';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { api } from '~/trpc/react';
+import { api } from '@/trpc/react';
 
 type Props = {
   id: string;
@@ -66,7 +66,7 @@ const FormCityPicker: React.FC<Props> = ({
 
   return (
     <div className="relative flex w-full flex-col gap-1" ref={dropdownRef}>
-      <label htmlFor={id} className="font-medium text-sm">
+      <label htmlFor={id} className="mb-1 font-medium text-gray-900 text-sm">
         {label}
       </label>
 

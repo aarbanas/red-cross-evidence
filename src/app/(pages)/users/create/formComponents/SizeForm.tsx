@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import { ClothingSize } from '~/server/db/schema';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import { ClothingSize } from '@/server/db/schema';
 
 export type SizeFormProps = {
   size: {

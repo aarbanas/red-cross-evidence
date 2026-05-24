@@ -1,9 +1,9 @@
 'use client';
 import { useParams } from 'next/navigation';
-import SkillsEditForm from '~/app/(pages)/users/[id]/_components/SkillsEditForm';
-import TabLayout from '~/components/layout/tabLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import SkillsEditForm from '@/app/(pages)/users/[id]/_components/SkillsEditForm';
+import TabLayout from '@/components/layout/tabLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '@/trpc/react';
 
 const SkillsTab = () => {
   const { id } = useParams<{ id: string }>();

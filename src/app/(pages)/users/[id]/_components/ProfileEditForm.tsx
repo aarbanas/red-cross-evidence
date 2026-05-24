@@ -7,13 +7,13 @@ import {
   translateSex,
   translateUserType,
   translateWorkStatus,
-} from '~/app/(pages)/users/create/utils';
-import { Button } from '~/components/atoms/Button';
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import { EducationLevel, Sex, UserType, WorkStatus } from '~/server/db/schema';
-import { api } from '~/trpc/react';
+} from '@/app/(pages)/users/create/utils';
+import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import { Button } from '@/components/ui/button';
+import { EducationLevel, Sex, UserType, WorkStatus } from '@/server/db/schema';
+import { api } from '@/trpc/react';
 
 type FormData = {
   profile: {

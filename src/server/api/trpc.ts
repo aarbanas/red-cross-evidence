@@ -12,9 +12,9 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
-import { env } from '~/env'; // Import the environment variables
-import { auth } from '~/server/auth';
-import { db } from '~/server/db';
+import { env } from '@/env'; // Import the environment variables
+import { auth } from '@/server/auth';
+import { db } from '@/server/db';
 
 /**
  * 1. CONTEXT

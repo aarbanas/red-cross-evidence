@@ -1,12 +1,37 @@
-import { BookMarked, Building2, IdCard, Shirt, Users } from 'lucide-react';
+'use client';
+
+import {
+  BookMarked,
+  Building2,
+  IdCard,
+  LogOut,
+  Shirt,
+  Users,
+} from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import type React from 'react';
 import type { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { usePathname } from 'next/navigation';
-import Header from '~/components/organisms/Header';
-import NewNavbar from '~/components/organisms/navbar/navbar';
+
+import Header from '@/components/organisms/Header';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/ui/sidebar';
 
 type Props = {
   children: ReactNode;
@@ -21,74 +46,111 @@ enum AppRoutes {
   SOCIETIES = '/societies',
 }
 
+const navItems = [
+  {
+    href: AppRoutes.HOME,
+    label: 'Korisnici',
+    icon: Users,
+    route: AppRoutes.HOME,
+  },
+  {
+    href: `${AppRoutes.EDUCATIONS}/term`,
+    label: 'Edukacije',
+    icon: BookMarked,
+    route: AppRoutes.EDUCATIONS,
+  },
+  {
+    href: AppRoutes.LICENSES,
+    label: 'Licence',
+    icon: IdCard,
+    route: AppRoutes.LICENSES,
+  },
+  {
+    href: AppRoutes.EQUIPMENT,
+    label: 'Oprema',
+    icon: Shirt,
+    route: AppRoutes.EQUIPMENT,
+  },
+  {
+    href: `${AppRoutes.SOCIETIES}/list`,
+    label: 'Društva',
+    icon: Building2,
+    route: AppRoutes.SOCIETIES,
+  },
+];
+
 const MainLayout: React.FC<Readonly<Props>> = ({
   children,
   headerChildren,
 }) => {
-  return (
-    <>
-      <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
-        <NewNavbar title="Evidencija DCK PGŽ">
-          <Navigation />
-        </NewNavbar>
+  const pathname = usePathname();
 
-        <div className="flex flex-col">
-          <Header>{headerChildren}</Header>
-          <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-            {children}
-          </main>
-        </div>
-      </div>
+  async function onLogoutClick() {
+    await signOut();
+    window.location.href = '/';
+  }
+
+  return (
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarHeader>
+          <div className="flex h-14 items-center gap-2 px-2">
+            <Image
+              src="/red_cross.png"
+              alt="Crveni Križ logo"
+              width={28}
+              height={28}
+            />
+            <span className="font-semibold text-sm">Evidencija DCK PGŽ</span>
+          </div>
+        </SidebarHeader>
+
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {navItems.map((item) => (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname.includes(item.route)}
+                    >
+                      <Link href={item.href}>
+                        <item.icon />
+                        <span>{item.label}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+
+        <SidebarFooter>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={onLogoutClick}>
+                <LogOut />
+                <span>Odjava</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarFooter>
+      </Sidebar>
+
+      <SidebarInset>
+        <Header>
+          <SidebarTrigger className="-ml-1 lg:hidden" />
+          {headerChildren}
+        </Header>
+        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+          {children}
+        </main>
+      </SidebarInset>
+
       <ToastContainer />
-    </>
-  );
-};
-
-const Navigation = () => {
-  const currentPath = usePathname() as AppRoutes;
-
-  return (
-    <nav className="grid items-start font-medium text-sm lg:px-4">
-      <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-sidebar-accent ${currentPath.includes(AppRoutes.HOME) ? 'text-primary' : ''}`}
-        href={AppRoutes.HOME}
-      >
-        <Users />
-        Korisnici
-      </Link>
-
-      <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-sidebar-accent ${currentPath.includes(AppRoutes.EDUCATIONS) ? 'text-primary' : ''}`}
-        href={`${AppRoutes.EDUCATIONS}/term`}
-      >
-        <BookMarked />
-        Edukacije
-      </Link>
-
-      <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-sidebar-accent ${currentPath.includes(AppRoutes.LICENSES) ? 'text-primary' : ''}`}
-        href={AppRoutes.LICENSES}
-      >
-        <IdCard />
-        Licence
-      </Link>
-
-      <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-sidebar-accent ${currentPath.includes(AppRoutes.EQUIPMENT) ? 'text-primary' : ''}`}
-        href={AppRoutes.EQUIPMENT}
-      >
-        <Shirt />
-        Oprema
-      </Link>
-
-      <Link
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 transition hover:bg-sidebar-accent ${currentPath.includes(AppRoutes.SOCIETIES) ? 'text-primary' : ''}`}
-        href={`${AppRoutes.SOCIETIES}/list`}
-      >
-        <Building2 />
-        Društva
-      </Link>
-    </nav>
+    </SidebarProvider>
   );
 };
 

@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { paginationQuerySchema } from '~/server/api/schema';
-import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
-import citySocietyService from '~/server/services/citySociety/citySociety.service';
+import { paginationQuerySchema } from '@/server/api/schema';
+import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import citySocietyService from '@/server/services/citySociety/citySociety.service';
 
 const citySocietyFormDataSchema = z.object({
   id: z.string().optional(),

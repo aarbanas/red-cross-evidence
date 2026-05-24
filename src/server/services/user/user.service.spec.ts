@@ -1,24 +1,24 @@
-import addressRepository from '~/server/services/address/address.repository';
-import cityRepository from '~/server/services/city/city.repository';
-import userRepository from '~/server/services/user/user.repository';
+import addressRepository from '@/server/services/address/address.repository';
+import cityRepository from '@/server/services/city/city.repository';
+import userRepository from '@/server/services/user/user.repository';
 import userService from './user.service';
 
-jest.mock('~/server/services/city/city.repository', () => ({
+jest.mock('@/server/services/city/city.repository', () => ({
   __esModule: true,
   default: { getOrCreate: jest.fn() },
 }));
 
-jest.mock('~/server/services/address/address.repository', () => ({
+jest.mock('@/server/services/address/address.repository', () => ({
   __esModule: true,
   default: { getOrCreate: jest.fn() },
 }));
 
-jest.mock('~/server/services/user/user.repository', () => ({
+jest.mock('@/server/services/user/user.repository', () => ({
   __esModule: true,
   default: { create: jest.fn(), find: jest.fn(), findById: jest.fn() },
 }));
 
-jest.mock('~/server/utils/password', () => ({
+jest.mock('@/server/utils/password', () => ({
   generateRandomHashedPassword: jest.fn().mockResolvedValue({
     password: 'random-password',
     hashedPassword: 'hashed-password',

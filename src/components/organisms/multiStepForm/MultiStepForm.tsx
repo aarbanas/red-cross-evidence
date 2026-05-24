@@ -3,8 +3,8 @@
 import React, { type ReactElement, useEffect, useRef, useState } from 'react';
 import { type DefaultValues, type FieldValues, useForm } from 'react-hook-form';
 import type { ZodObject } from 'zod';
-import { Button } from '~/components/atoms/Button';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { Button } from '@/components/ui/button';
 import FormComponent from '../form/formComponent/FormComponent';
 
 export interface FormStep {

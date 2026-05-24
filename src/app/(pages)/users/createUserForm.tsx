@@ -2,26 +2,26 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import AddressForm, {
   type AddressFormProps,
-} from '~/app/(pages)/users/create/formComponents/AddressForm';
+} from '@/app/(pages)/users/create/formComponents/AddressForm';
 import {
   ProfileForm,
   type ProfileFormProps,
-} from '~/app/(pages)/users/create/formComponents/ProfileForm';
+} from '@/app/(pages)/users/create/formComponents/ProfileForm';
 import SizeForm, {
   type SizeFormProps,
-} from '~/app/(pages)/users/create/formComponents/SizeForm';
+} from '@/app/(pages)/users/create/formComponents/SizeForm';
 import SkillsForm, {
   type SkillsFormData,
-} from '~/app/(pages)/users/create/formComponents/SkillsForm';
+} from '@/app/(pages)/users/create/formComponents/SkillsForm';
 import WorkStatusForm, {
   type WorkStatusFormProps,
-} from '~/app/(pages)/users/create/formComponents/WorkStatusForm';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+} from '@/app/(pages)/users/create/formComponents/WorkStatusForm';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
 import generateForm, {
   type FormStep,
-} from '~/components/organisms/multiStepForm/MultiStepForm';
-import { createUserSchema } from '~/server/api/schema';
-import { api } from '~/trpc/react';
+} from '@/components/organisms/multiStepForm/MultiStepForm';
+import { createUserSchema } from '@/server/api/schema';
+import { api } from '@/trpc/react';
 
 type Inputs = ProfileFormProps &
   AddressFormProps &

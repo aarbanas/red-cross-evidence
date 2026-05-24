@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url';
-import { db } from '~/server/db';
-import { educationTerms } from '~/server/db/schema';
-import { getEducations } from '~/server/db/seed/education.seed';
+import { db } from '@/server/db';
+import { educationTerms } from '@/server/db/schema';
+import { getEducations } from '@/server/db/seed/education.seed';
 
 type EducationTerm = {
   id: string;

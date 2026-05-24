@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url';
 import { hash } from 'bcrypt';
 import { eq } from 'drizzle-orm';
 import type { PgTransaction } from 'drizzle-orm/pg-core';
-import { env } from '~/env';
+import { env } from '@/env';
 import { db } from '..';
 import {
   AddressType,

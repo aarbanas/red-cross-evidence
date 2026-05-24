@@ -2,10 +2,10 @@
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense, useCallback, useState } from 'react';
-import EquipmentList from '~/app/(pages)/equipment/_components/EquipmentList';
-import { Button } from '~/components/atoms/Button';
-import MainLayout from '~/components/layout/mainLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import EquipmentList from '@/app/(pages)/equipment/_components/EquipmentList';
+import MainLayout from '@/components/layout/mainLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { Button } from '@/components/ui/button';
 
 const EquipmentPage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(

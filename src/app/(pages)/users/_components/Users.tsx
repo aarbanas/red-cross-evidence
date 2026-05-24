@@ -1,9 +1,9 @@
 import type React from 'react';
-import UsersTable from '~/app/(pages)/users/_components/UsersTable';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import usePagination from '~/hooks/usePagination';
-import useTotalPageNumber from '~/hooks/useTotalPageNumber';
-import { api } from '~/trpc/react';
+import UsersTable from '@/app/(pages)/users/_components/UsersTable';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import usePagination from '@/hooks/usePagination';
+import useTotalPageNumber from '@/hooks/useTotalPageNumber';
+import { api } from '@/trpc/react';
 
 type Props = {
   filter: Record<string, string> | undefined;

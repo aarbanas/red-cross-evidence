@@ -1,10 +1,10 @@
-import { countryRouter } from '~/server/api/routers/country';
-import { educationRouter } from '~/server/api/routers/educations';
-import { equipmentRouter } from '~/server/api/routers/equipment';
-import { postRouter } from '~/server/api/routers/post';
-import { skillRouter } from '~/server/api/routers/skill';
-import { userRouter } from '~/server/api/routers/user';
-import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
+import { countryRouter } from '@/server/api/routers/country';
+import { educationRouter } from '@/server/api/routers/educations';
+import { equipmentRouter } from '@/server/api/routers/equipment';
+import { postRouter } from '@/server/api/routers/post';
+import { skillRouter } from '@/server/api/routers/skill';
+import { userRouter } from '@/server/api/routers/user';
+import { createCallerFactory, createTRPCRouter } from '@/server/api/trpc';
 import { addressRouter } from './routers/address';
 import { cityRouter } from './routers/city';
 import { citySocietyRouter } from './routers/citySociety';

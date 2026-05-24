@@ -4,9 +4,9 @@ import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
-import { Button } from '~/components/atoms/Button';
-import Tabs, { type TabProp } from '~/components/atoms/Tabs';
-import MainLayout from '~/components/layout/mainLayout';
+import Tabs, { type TabProp } from '@/components/atoms/Tabs';
+import MainLayout from '@/components/layout/mainLayout';
+import { Button } from '@/components/ui/button';
 
 const SocietiesLayout: FC<PropsWithChildren> = ({ children }) => {
   const pathname = usePathname();

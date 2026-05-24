@@ -3,15 +3,15 @@ import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { translateEducationType } from '~/app/(pages)/educations/utils';
-import { Button } from '~/components/atoms/Button';
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
-import FormDatePicker from '~/components/organisms/form/formDatePicker/FormDatePicker';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import FormTextArea from '~/components/organisms/form/formTextArea/FormTextArea';
-import { EducationType } from '~/server/db/schema';
-import { api } from '~/trpc/react';
+import { translateEducationType } from '@/app/(pages)/educations/utils';
+import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
+import FormDatePicker from '@/components/organisms/form/formDatePicker/FormDatePicker';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import FormTextArea from '@/components/organisms/form/formTextArea/FormTextArea';
+import { Button } from '@/components/ui/button';
+import { EducationType } from '@/server/db/schema';
+import { api } from '@/trpc/react';
 
 export type EducationTermFormData = {
   id?: string;

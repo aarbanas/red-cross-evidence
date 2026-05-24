@@ -1,4 +1,4 @@
-import { getEducationTerms } from '~/server/db/seed/educationTerm.seed';
+import { getEducationTerms } from '@/server/db/seed/educationTerm.seed';
 import { getEducations } from './education.seed';
 import { getLicenses } from './license.seed';
 import { getSocieties } from './society.seed';

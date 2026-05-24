@@ -4,7 +4,7 @@ import {
   Sex,
   UserType,
   WorkStatus,
-} from '~/server/db/schema';
+} from '@/server/db/schema';
 
 export const translateUserType = (type: UserType) => {
   switch (type) {

@@ -2,10 +2,10 @@
 import { useRouter } from 'next/navigation';
 import { type FC, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Button } from '~/components/atoms/Button';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import { LanguageLevel } from '~/server/db/schema';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import { Button } from '@/components/ui/button';
+import { LanguageLevel } from '@/server/db/schema';
 
 type Props = {
   languages: {

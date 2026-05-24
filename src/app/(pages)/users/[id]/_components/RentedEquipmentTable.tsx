@@ -2,12 +2,10 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Button } from '~/components/atoms/Button';
-import { Card } from '~/components/atoms/Card';
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import Modal from '~/components/organisms/modal/Modal';
+import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import Modal from '@/components/organisms/modal/Modal';
 import {
   Table,
   TableBody,
@@ -15,8 +13,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '~/components/organisms/Table';
-import { api } from '~/trpc/react';
+} from '@/components/organisms/Table';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { api } from '@/trpc/react';
 
 type RentedItem = {
   equipmentId: string;

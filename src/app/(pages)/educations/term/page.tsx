@@ -1,9 +1,9 @@
 'use client';
 import { Suspense, useState } from 'react';
-import EducationsTerm from '~/app/(pages)/educations/term/EducationsTerm';
-import EducationsTermSearch from '~/app/(pages)/educations/term/EducationsTermSearch';
-import TabLayout from '~/components/layout/tabLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import EducationsTerm from '@/app/(pages)/educations/term/EducationsTerm';
+import EducationsTermSearch from '@/app/(pages)/educations/term/EducationsTermSearch';
+import TabLayout from '@/components/layout/tabLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
 
 const EducationsEvidencePage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(

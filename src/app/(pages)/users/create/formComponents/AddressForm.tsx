@@ -1,13 +1,13 @@
 import type { FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { translateAddressType } from '~/app/(pages)/users/create/utils';
-import { Button } from '~/components/atoms/Button';
-import FormCitySearch from '~/components/organisms/form/formCitySearch/FormCitySearch';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import FormStreetSearch from '~/components/organisms/form/formStreetSearch/FormStreetSearch';
-import { AddressType } from '~/server/db/schema';
-import type { SearchCityReturnDTO } from '~/server/services/city/city.repository';
+import { translateAddressType } from '@/app/(pages)/users/create/utils';
+import FormCitySearch from '@/components/organisms/form/formCitySearch/FormCitySearch';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import FormStreetSearch from '@/components/organisms/form/formStreetSearch/FormStreetSearch';
+import { Button } from '@/components/ui/button';
+import { AddressType } from '@/server/db/schema';
+import type { SearchCityReturnDTO } from '@/server/services/city/city.repository';
 
 export type AddressFormProps = {
   addresses: {

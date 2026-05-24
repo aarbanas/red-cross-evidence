@@ -1,6 +1,6 @@
 'use client';
-import LicencesForm from '~/app/(pages)/licenses/_components/LicencesForm';
-import MainLayout from '~/components/layout/mainLayout';
+import LicencesForm from '@/app/(pages)/licenses/_components/LicencesForm';
+import MainLayout from '@/components/layout/mainLayout';
 
 const CreateLicensePage = () => {
   return (

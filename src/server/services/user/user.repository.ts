@@ -1,5 +1,5 @@
 import { and, count, desc, eq, ilike, type SQL } from 'drizzle-orm';
-import { db } from '~/server/db';
+import { db } from '@/server/db';
 import {
   type AddressType,
   addresses,
@@ -22,13 +22,13 @@ import {
   users,
   type WorkStatus,
   workStatuses,
-} from '~/server/db/schema';
-import { prepareOrderBy, prepareWhere } from '~/server/db/utility';
-import type { FindQueryDTO, FindReturnDTO } from '~/server/db/utility/types';
+} from '@/server/db/schema';
+import { prepareOrderBy, prepareWhere } from '@/server/db/utility';
+import type { FindQueryDTO, FindReturnDTO } from '@/server/db/utility/types';
 import type {
   CreateUserAddressIdsDTO,
   CreateUserDTO,
-} from '~/server/services/user/types';
+} from '@/server/services/user/types';
 
 export type FindUserReturnDTO = {
   id: string;

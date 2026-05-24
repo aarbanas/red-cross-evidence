@@ -1,7 +1,7 @@
 'use client';
 import type { NextPage } from 'next';
-import EquipmentForm from '~/app/(pages)/equipment/_components/EquipmentForm';
-import MainLayout from '~/components/layout/mainLayout';
+import EquipmentForm from '@/app/(pages)/equipment/_components/EquipmentForm';
+import MainLayout from '@/components/layout/mainLayout';
 
 const CreateEquipmentPage: NextPage = () => {
   return (

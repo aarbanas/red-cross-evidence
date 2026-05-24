@@ -4,7 +4,7 @@ import {
   type PropsWithChildren,
   useRef,
 } from 'react';
-import { classNames } from '~/components/utils';
+import { classNames } from '@/components/utils';
 import styles from './Modal.module.css';
 
 type Props = {
