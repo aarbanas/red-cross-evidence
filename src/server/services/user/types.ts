@@ -1,5 +1,5 @@
 import type { z } from 'zod';
-import type { createUserSchema } from '~/server/api/schema';
+import type { createUserSchema } from '@/server/api/schema';
 
 export type CreateUserDTO = z.infer<typeof createUserSchema>;
 

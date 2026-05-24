@@ -6,7 +6,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { hr } from 'date-fns/locale/hr';
 import moment from 'moment';
-import usePrevious from '~/hooks/usePrevious';
+import usePrevious from '@/hooks/usePrevious';
 import { cn } from './utils';
 
 registerLocale('hr', hr);

@@ -1,13 +1,13 @@
 import type { FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { translateAddressType } from '~/app/(pages)/users/create/utils';
-import { Button } from '~/components/atoms/Button';
-import FormCitySearch from '~/components/organisms/form/formCitySearch/FormCitySearch';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import FormStreetSearch from '~/components/organisms/form/formStreetSearch/FormStreetSearch';
-import { AddressType } from '~/server/db/schema';
-import type { SearchCityReturnDTO } from '~/server/services/city/city.repository';
+import { translateAddressType } from '@/app/(pages)/users/create/utils';
+import FormCitySearch from '@/components/organisms/form/formCitySearch/FormCitySearch';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import FormStreetSearch from '@/components/organisms/form/formStreetSearch/FormStreetSearch';
+import { Button } from '@/components/ui/button';
+import { AddressType } from '@/server/db/schema';
+import type { SearchCityReturnDTO } from '@/server/services/city/city.repository';
 
 export type AddressFormProps = {
   addresses: {
@@ -161,8 +161,8 @@ const AddressForm: FC<Props> = ({ countries }) => {
               })}
             </FormSelect>
 
-            <div className="flex gap-4">
-              <div className="flex-1">
+            <div className="grid grid-cols-2 gap-6">
+              <div>
                 <FormCitySearch
                   id={`city-${index}`}
                   label="Grad*"
@@ -171,7 +171,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
                   countryId={selectedCountry}
                 />
               </div>
-              <div className="flex-1">
+              <div>
                 <FormInput
                   id={`postalCode-${index}`}
                   label="Poštanski broj*"
@@ -183,8 +183,8 @@ const AddressForm: FC<Props> = ({ countries }) => {
               </div>
             </div>
 
-            <div className="flex gap-4">
-              <div className="flex-1">
+            <div className="grid grid-cols-2 gap-6">
+              <div>
                 <FormStreetSearch
                   id={`street-${index}`}
                   label="Ulica*"
@@ -193,7 +193,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
                   cityId={cityId}
                 />
               </div>
-              <div className="flex-1">
+              <div>
                 <FormInput
                   id={`streetNumber-${index}`}
                   label="Kućni broj*"

@@ -1,12 +1,10 @@
 'use client';
 
-import { CirclePlus } from 'lucide-react';
-import Link from 'next/link';
 import { Suspense, useCallback, useState } from 'react';
-import Societies from '~/app/(pages)/societies/_components/Societies';
-import SocietiesSearch from '~/app/(pages)/societies/_components/SocietiesSearch';
-import TabLayout from '~/components/layout/tabLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
+import Societies from '@/app/(pages)/societies/_components/Societies';
+import SocietiesSearch from '@/app/(pages)/societies/_components/SocietiesSearch';
+import TabLayout from '@/components/layout/tabLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
 
 const SocietiesListPage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
@@ -21,16 +19,6 @@ const SocietiesListPage = () => {
     <TabLayout>
       <div className="flex">
         <SocietiesSearch onSearch={handleSearch} />
-
-        <div className="ml-auto rounded-md border px-2">
-          <Link
-            className="flex gap-2"
-            href={{ pathname: '/societies/list/create' }}
-          >
-            <CirclePlus />
-            Kreiraj novo županijsko društvo
-          </Link>
-        </div>
       </div>
 
       <Suspense fallback={<LoadingSpinner />}>

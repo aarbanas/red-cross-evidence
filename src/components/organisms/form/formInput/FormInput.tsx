@@ -1,5 +1,5 @@
 import { type ComponentProps, forwardRef } from 'react';
-import { FieldError } from '~/components/organisms/form/formComponent/FormComponent';
+import { FieldError } from '@/components/organisms/form/formComponent/FormComponent';
 import styles from './FormInput.module.css';
 
 interface FormInputProps extends ComponentProps<'input'> {

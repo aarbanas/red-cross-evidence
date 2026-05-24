@@ -1,14 +1,12 @@
 'use client';
 
-import { CirclePlus } from 'lucide-react';
-import Link from 'next/link';
 import { Suspense, useCallback, useMemo, useState } from 'react';
-import CitySocieties from '~/app/(pages)/societies/_components/CitySocieties';
-import CitySocietiesSearch from '~/app/(pages)/societies/_components/CitySocietiesSearch';
-import type { DropdownOption } from '~/components/atoms/Dropdown';
-import TabLayout from '~/components/layout/tabLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import CitySocieties from '@/app/(pages)/societies/_components/CitySocieties';
+import CitySocietiesSearch from '@/app/(pages)/societies/_components/CitySocietiesSearch';
+import type { DropdownOption } from '@/components/atoms/Dropdown';
+import TabLayout from '@/components/layout/tabLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '@/trpc/react';
 
 const CitySocietiesPage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
@@ -33,16 +31,6 @@ const CitySocietiesPage = () => {
     <TabLayout>
       <div className="flex">
         <CitySocietiesSearch onSearch={handleSearch} societies={societies} />
-
-        <div className="ml-auto rounded-md border px-2">
-          <Link
-            className="flex gap-2"
-            href={{ pathname: '/societies/city/create' }}
-          >
-            <CirclePlus />
-            Kreiraj novo gradsko društvo
-          </Link>
-        </div>
       </div>
 
       <Suspense fallback={<LoadingSpinner />}>

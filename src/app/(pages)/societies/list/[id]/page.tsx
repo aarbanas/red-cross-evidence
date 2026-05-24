@@ -1,10 +1,10 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import SocietyForm from '~/app/(pages)/societies/_components/SocietyForm';
-import TabLayout from '~/components/layout/tabLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import SocietyForm from '@/app/(pages)/societies/_components/SocietyForm';
+import TabLayout from '@/components/layout/tabLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '@/trpc/react';
 
 const UpdateSocietyPage = () => {
   const { id } = useParams();

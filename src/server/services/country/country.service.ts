@@ -1,4 +1,4 @@
-import countryRepository from '~/server/services/country/country.repository';
+import countryRepository from '@/server/services/country/country.repository';
 
 const countryService = {
   getAllCountries: async () => {

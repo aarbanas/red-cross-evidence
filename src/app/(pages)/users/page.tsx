@@ -1,5 +1,5 @@
 'use client';
-import { CirclePlus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -11,12 +11,13 @@ import {
   useState,
 } from 'react';
 import { toast } from 'react-toastify';
-import Users from '~/app/(pages)/users/_components/Users';
-import UsersSearch from '~/app/(pages)/users/_components/UsersSearch';
-import type { DropdownOption } from '~/components/atoms/Dropdown';
-import MainLayout from '~/components/layout/mainLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import Users from '@/app/(pages)/users/_components/Users';
+import UsersSearch from '@/app/(pages)/users/_components/UsersSearch';
+import type { DropdownOption } from '@/components/atoms/Dropdown';
+import MainLayout from '@/components/layout/mainLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { Button } from '@/components/ui/button';
+import { api } from '@/trpc/react';
 
 const UsersPageContent = () => {
   const searchParams = useSearchParams();
@@ -52,21 +53,21 @@ const UsersPageContent = () => {
   }, []);
 
   return (
-    <MainLayout headerChildren={<div>Korisnici</div>}>
+    <MainLayout
+      headerChildren={
+        <div className="flex w-full">
+          Korisnici
+          <Button asChild size="sm" className="ml-auto gap-2">
+            <Link href="/users/create">
+              <Plus className="h-4 w-4" />
+              Novi korisnik
+            </Link>
+          </Button>
+        </div>
+      }
+    >
       <div className="flex">
         <UsersSearch onSearch={handleSearch} cities={cities} />
-
-        <div className="ml-auto rounded-md border px-2">
-          <Link
-            className="flex gap-2"
-            href={{
-              pathname: `/users/create`,
-            }}
-          >
-            <CirclePlus />
-            Kreiraj novog korisnika
-          </Link>
-        </div>
       </div>
 
       <Suspense fallback={<LoadingSpinner />}>

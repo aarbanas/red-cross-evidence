@@ -3,7 +3,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { hr } from 'date-fns/locale/hr';
 import moment from 'moment';
-import { FieldError } from '~/components/organisms/form/formComponent/FormComponent';
+import { FieldError } from '@/components/organisms/form/formComponent/FormComponent';
 import styles from './FormDatePicker.module.css';
 
 registerLocale('hr', hr);

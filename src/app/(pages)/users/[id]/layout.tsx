@@ -1,9 +1,9 @@
 'use client';
 import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
-import Tabs, { type TabProp } from '~/components/atoms/Tabs';
-import MainLayout from '~/components/layout/mainLayout';
-import { api } from '~/trpc/react';
+import Tabs, { type TabProp } from '@/components/atoms/Tabs';
+import MainLayout from '@/components/layout/mainLayout';
+import { api } from '@/trpc/react';
 
 const UserEditLayout: FC<PropsWithChildren> = ({ children }) => {
   const { id } = useParams<{ id: string }>();

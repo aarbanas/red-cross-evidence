@@ -1,4 +1,4 @@
-import { EducationType } from '~/server/db/schema';
+import { EducationType } from '@/server/db/schema';
 
 export const translateEducationType = (type: EducationType) => {
   switch (type) {

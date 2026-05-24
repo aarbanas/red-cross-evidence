@@ -1,9 +1,9 @@
 import { count, eq, ilike, type SQL } from 'drizzle-orm';
-import type { LicencesFormData } from '~/app/(pages)/licenses/_components/LicencesForm';
-import { db } from '~/server/db';
-import { licenses } from '~/server/db/schema';
-import { prepareOrderBy, prepareWhere } from '~/server/db/utility';
-import type { FindQueryDTO, FindReturnDTO } from '~/server/db/utility/types';
+import type { LicencesFormData } from '@/app/(pages)/licenses/_components/LicencesForm';
+import { db } from '@/server/db';
+import { licenses } from '@/server/db/schema';
+import { prepareOrderBy, prepareWhere } from '@/server/db/utility';
+import type { FindQueryDTO, FindReturnDTO } from '@/server/db/utility/types';
 
 enum SortableKeys {
   ID = 'id',

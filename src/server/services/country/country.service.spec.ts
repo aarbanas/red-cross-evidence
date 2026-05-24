@@ -1,7 +1,7 @@
-import countryRepository from '~/server/services/country/country.repository';
+import countryRepository from '@/server/services/country/country.repository';
 import countryService from './country.service';
 
-jest.mock('~/server/services/country/country.repository', () => ({
+jest.mock('@/server/services/country/country.repository', () => ({
   __esModule: true,
   default: { getAllCountries: jest.fn() },
 }));

@@ -2,8 +2,8 @@ import { useDebounce } from '@uidotdev/usehooks';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { SearchCityReturnDTO } from '~/server/services/city/city.repository';
-import { api } from '~/trpc/react';
+import type { SearchCityReturnDTO } from '@/server/services/city/city.repository';
+import { api } from '@/trpc/react';
 
 type Props = {
   id: string;
@@ -111,7 +111,7 @@ const FormCitySearch: React.FC<Props> = ({
 
   return (
     <div className="relative flex w-full flex-col gap-2" ref={dropdownRef}>
-      <label htmlFor={id} className="mb-2 font-light text-gray-500">
+      <label htmlFor={id} className="mb-1 font-medium text-gray-900 text-sm">
         {label}
       </label>
 

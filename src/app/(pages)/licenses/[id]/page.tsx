@@ -1,9 +1,9 @@
 'use client';
 import { useParams } from 'next/navigation';
-import LicencesForm from '~/app/(pages)/licenses/_components/LicencesForm';
-import MainLayout from '~/components/layout/mainLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import LicencesForm from '@/app/(pages)/licenses/_components/LicencesForm';
+import MainLayout from '@/components/layout/mainLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { api } from '@/trpc/react';
 
 const UpdateLicensePage = () => {
   const { id } = useParams();

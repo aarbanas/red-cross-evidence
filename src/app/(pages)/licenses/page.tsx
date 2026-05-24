@@ -1,13 +1,14 @@
 'use client';
-import { CirclePlus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense, useCallback, useMemo, useState } from 'react';
-import Licences from '~/app/(pages)/licenses/_components/Licences';
-import LicencesSearch from '~/app/(pages)/licenses/_components/LicencesSearch';
-import type { DropdownOption } from '~/components/atoms/Dropdown';
-import MainLayout from '~/components/layout/mainLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import { api } from '~/trpc/react';
+import Licences from '@/app/(pages)/licenses/_components/Licences';
+import LicencesSearch from '@/app/(pages)/licenses/_components/LicencesSearch';
+import type { DropdownOption } from '@/components/atoms/Dropdown';
+import MainLayout from '@/components/layout/mainLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { Button } from '@/components/ui/button';
+import { api } from '@/trpc/react';
 
 const LicencePage = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
@@ -29,21 +30,21 @@ const LicencePage = () => {
   }, []);
 
   return (
-    <MainLayout headerChildren={<div>Licence</div>}>
+    <MainLayout
+      headerChildren={
+        <div className="flex w-full">
+          Licence
+          <Button asChild size="sm" className="ml-auto gap-2">
+            <Link href="/licenses/create">
+              <Plus className="h-4 w-4" />
+              Nova licence
+            </Link>
+          </Button>
+        </div>
+      }
+    >
       <div className="flex">
         <LicencesSearch onSearch={handleSearch} types={types} />
-
-        <div className="ml-auto rounded-md border px-2">
-          <Link
-            className="flex gap-2"
-            href={{
-              pathname: `/licenses/create`,
-            }}
-          >
-            <CirclePlus />
-            Kreiraj novu licencu
-          </Link>
-        </div>
       </div>
 
       <Suspense fallback={<LoadingSpinner />}>

@@ -3,8 +3,8 @@ import { useDebounce } from '@uidotdev/usehooks';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { SearchAddressReturnDTO } from '~/server/services/address/types';
-import { api } from '~/trpc/react';
+import type { SearchAddressReturnDTO } from '@/server/services/address/types';
+import { api } from '@/trpc/react';
 
 type Props = {
   id: string;
@@ -61,7 +61,10 @@ const FormStreetSearch: React.FC<Props> = ({
     setIsOpen(value.length > 0 && !!cityId);
 
     // Always store the typed value as string
-    setValue(streetFieldName, value);
+    setValue(streetFieldName, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
 
     // Clear street number when typing new content (unless it's the current street number)
     if (!streetNumberValue || streetNumberValue.trim() === '') {
@@ -72,8 +75,14 @@ const FormStreetSearch: React.FC<Props> = ({
   // Handle address selection from dropdown
   const handleAddressSelect = (address: SearchAddressReturnDTO) => {
     setSearchTerm(address.street);
-    setValue(streetFieldName, address.street); // Store only the street name as string
-    setValue(streetNumberFieldName, address.streetNumber ?? '');
+    setValue(streetFieldName, address.street, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue(streetNumberFieldName, address.streetNumber ?? '', {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     setIsOpen(false);
   };
 
@@ -114,7 +123,7 @@ const FormStreetSearch: React.FC<Props> = ({
 
   return (
     <div className="relative flex w-full flex-col gap-2" ref={dropdownRef}>
-      <label htmlFor={id} className="mb-2 font-light text-gray-500">
+      <label htmlFor={id} className="mb-1 font-medium text-gray-900 text-sm">
         {label}
       </label>
 

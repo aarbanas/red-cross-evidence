@@ -4,11 +4,12 @@ import { useParams, useRouter } from 'next/navigation';
 import type React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Button } from '~/components/atoms/Button';
-import FormCityPicker from '~/components/organisms/form/formCityPicker/FormCityPicker';
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import { api } from '~/trpc/react';
+import FormCityPicker from '@/components/organisms/form/formCityPicker/FormCityPicker';
+import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { api } from '@/trpc/react';
 
 export type CitySocietyFormData = {
   id?: string;
@@ -86,73 +87,77 @@ const CitySocietyForm: React.FC<Props> = ({ action, formData }) => {
   };
 
   return (
-    <FormComponent form={form} onSubmit={handleSubmit}>
-      <div className="flex flex-col gap-1">
-        <label htmlFor="societyId" className="font-medium text-sm">
-          Društvo
-        </label>
-        <select
-          id="societyId"
-          className="rounded-md border px-3 py-2 text-sm"
-          {...form.register('societyId')}
-        >
-          <option value="">-- Odaberi društvo --</option>
-          {societyOptions?.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-      </div>
+    <Card>
+      <CardContent>
+        <FormComponent form={form} onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="societyId" className="font-medium text-sm">
+              Društvo
+            </label>
+            <select
+              id="societyId"
+              className="rounded-md border px-3 py-2 text-sm"
+              {...form.register('societyId')}
+            >
+              <option value="">-- Odaberi društvo --</option>
+              {societyOptions?.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-      <FormInput
-        id="name"
-        label="Naziv*"
-        {...form.register('name', { required: 'Naziv je obavezno polje' })}
-      />
+          <FormInput
+            id="name"
+            label="Naziv*"
+            {...form.register('name', { required: 'Naziv je obavezno polje' })}
+          />
 
-      <FormInput
-        id="address"
-        label="Adresa*"
-        {...form.register('address', { required: 'Adresa je obavezno polje' })}
-      />
+          <FormInput
+            id="address"
+            label="Adresa*"
+            {...form.register('address', {
+              required: 'Adresa je obavezno polje',
+            })}
+          />
 
-      <FormInput
-        id="director"
-        label="Ravnatelj*"
-        {...form.register('director', {
-          required: 'Ravnatelj je obavezno polje',
-        })}
-      />
+          <FormInput
+            id="director"
+            label="Ravnatelj*"
+            {...form.register('director', {
+              required: 'Ravnatelj je obavezno polje',
+            })}
+          />
 
-      <FormInput id="phone" label="Telefon" {...form.register('phone')} />
+          <FormInput id="phone" label="Telefon" {...form.register('phone')} />
 
-      <FormInput id="email" label="E-mail" {...form.register('email')} />
+          <FormInput id="email" label="E-mail" {...form.register('email')} />
 
-      <FormInput id="website" label="Web" {...form.register('website')} />
+          <FormInput id="website" label="Web" {...form.register('website')} />
 
-      {croatia && (
-        <FormCityPicker
-          id="cityId"
-          label="Grad"
-          fieldName="cityId"
-          countryId={croatia.id}
-          initialCityName={formData?.cityName}
-        />
-      )}
+          {croatia && (
+            <FormCityPicker
+              id="cityId"
+              label="Grad"
+              fieldName="cityId"
+              countryId={croatia.id}
+              initialCityName={formData?.cityName}
+            />
+          )}
 
-      <Button
-        className="cursor-pointer bg-black text-base! text-white"
-        type="submit"
-        showLoading={isSubmitting}
-      >
-        <span>
-          {action === 'create'
-            ? 'Kreiraj novo gradsko društvo'
-            : 'Spremi promjene'}
-        </span>
-      </Button>
-    </FormComponent>
+          <Button
+            className="cursor-pointer bg-black text-base! text-white"
+            type="submit"
+            showLoading={isSubmitting}
+          >
+            <span>
+              {action === 'create' ? 'Novo gradsko društvo' : 'Spremi promjene'}
+            </span>
+          </Button>
+        </FormComponent>
+      </CardContent>
+    </Card>
   );
 };
 

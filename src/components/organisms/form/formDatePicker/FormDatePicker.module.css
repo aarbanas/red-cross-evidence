@@ -5,7 +5,7 @@
 }
 
 .label {
-  @apply font-light text-gray-500;
+  @apply mb-1 text-sm font-medium text-gray-900;
 }
 
 .datepicker {

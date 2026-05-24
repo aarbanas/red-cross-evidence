@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import * as XLSX from 'xlsx';
-import { EducationType, educations } from '~/server/db/schema';
+import { EducationType, educations } from '@/server/db/schema';
 import { db } from '../index';
 
 interface Education {

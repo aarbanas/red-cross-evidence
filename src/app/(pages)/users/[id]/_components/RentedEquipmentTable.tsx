@@ -2,11 +2,10 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Button } from '~/components/atoms/Button';
-import FormComponent from '~/components/organisms/form/formComponent/FormComponent';
-import FormInput from '~/components/organisms/form/formInput/FormInput';
-import FormSelect from '~/components/organisms/form/formSelect/FormSelect';
-import Modal from '~/components/organisms/modal/Modal';
+import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
+import FormInput from '@/components/organisms/form/formInput/FormInput';
+import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
+import Modal from '@/components/organisms/modal/Modal';
 import {
   Table,
   TableBody,
@@ -14,8 +13,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '~/components/organisms/Table';
-import { api } from '~/trpc/react';
+} from '@/components/organisms/Table';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { api } from '@/trpc/react';
 
 type RentedItem = {
   equipmentId: string;
@@ -96,7 +97,7 @@ const RentedEquipmentTable = ({ userId, items }: Props) => {
       </div>
 
       {items.length > 0 ? (
-        <div className="rounded-lg border shadow-sm">
+        <Card>
           <Table>
             <TableHeader>
               <TableRow>
@@ -130,7 +131,7 @@ const RentedEquipmentTable = ({ userId, items }: Props) => {
               ))}
             </TableBody>
           </Table>
-        </div>
+        </Card>
       ) : (
         <div className="py-8 text-center text-gray-500">
           Nema zadužene opreme.

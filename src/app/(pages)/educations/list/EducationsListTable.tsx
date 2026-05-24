@@ -1,10 +1,9 @@
 import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { type FC, useState } from 'react';
-import { translateEducationType } from '~/app/(pages)/educations/utils';
-import { Button } from '~/components/atoms/Button';
-import Modal from '~/components/organisms/modal/Modal';
-import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
+import { translateEducationType } from '@/app/(pages)/educations/utils';
+import Modal from '@/components/organisms/modal/Modal';
+import PaginationComponent from '@/components/organisms/pagination/PaginationComponent';
 import {
   Table,
   TableBody,
@@ -12,10 +11,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '~/components/organisms/Table';
-import type { EducationType } from '~/server/db/schema';
-import type { FindEducationListReturnDTO } from '~/server/services/education/education.repository';
-import { api } from '~/trpc/react';
+} from '@/components/organisms/Table';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import type { EducationType } from '@/server/db/schema';
+import type { FindEducationListReturnDTO } from '@/server/services/education/education.repository';
+import { api } from '@/trpc/react';
 
 type Props = {
   data?: FindEducationListReturnDTO[];
@@ -58,7 +59,7 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
 
   return (
     <>
-      <div>
+      <Card>
         <Table>
           <TableHeader>
             <TableRow>
@@ -102,7 +103,7 @@ const EducationsListTable: FC<Props> = ({ data, totalPageNumber, refetch }) => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
       <PaginationComponent totalPageNumber={totalPageNumber} />
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <div>

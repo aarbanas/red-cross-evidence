@@ -1,9 +1,9 @@
 import type { FC } from 'react';
-import EducationTermTable from '~/app/(pages)/educations/term/EducationTermTable';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import usePagination from '~/hooks/usePagination';
-import useTotalPageNumber from '~/hooks/useTotalPageNumber';
-import { api } from '~/trpc/react';
+import EducationTermTable from '@/app/(pages)/educations/term/EducationTermTable';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import usePagination from '@/hooks/usePagination';
+import useTotalPageNumber from '@/hooks/useTotalPageNumber';
+import { api } from '@/trpc/react';
 
 type Props = {
   filter: Record<string, string> | undefined;

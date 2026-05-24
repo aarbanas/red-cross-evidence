@@ -1,5 +1,5 @@
 import { type ComponentProps, forwardRef, type ReactNode } from 'react';
-import { FieldError } from '~/components/organisms/form/formComponent/FormComponent';
+import { FieldError } from '@/components/organisms/form/formComponent/FormComponent';
 import styles from './FormSelect.module.css';
 
 interface FormSelectProps extends ComponentProps<'select'> {

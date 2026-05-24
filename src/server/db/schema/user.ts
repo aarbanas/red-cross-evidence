@@ -12,9 +12,9 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
-import { profileEducationTerms } from '~/server/db/schema/education';
-import { profileEquipment } from '~/server/db/schema/equipment';
-import { licenses } from '~/server/db/schema/licence';
+import { profileEducationTerms } from '@/server/db/schema/education';
+import { profileEquipment } from '@/server/db/schema/equipment';
+import { licenses } from '@/server/db/schema/licence';
 
 export enum UserType {
   EMPLOYEE = 'EMPLOYEE',

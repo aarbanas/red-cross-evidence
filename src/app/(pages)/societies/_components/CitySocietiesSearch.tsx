@@ -1,7 +1,7 @@
 import type { FC } from 'react';
-import Dropdown, { type DropdownOption } from '~/components/atoms/Dropdown';
-import SearchInput from '~/components/atoms/SearchInput';
-import useSearch from '~/hooks/useSearch';
+import Dropdown, { type DropdownOption } from '@/components/atoms/Dropdown';
+import SearchInput from '@/components/atoms/SearchInput';
+import useSearch from '@/hooks/useSearch';
 
 type Props = {
   onSearch: (filter?: Record<string, string>) => void;

@@ -4,9 +4,8 @@ import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Button } from '~/components/atoms/Button';
-import Modal from '~/components/organisms/modal/Modal';
-import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
+import Modal from '@/components/organisms/modal/Modal';
+import PaginationComponent from '@/components/organisms/pagination/PaginationComponent';
 import {
   Table,
   TableBody,
@@ -14,10 +13,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '~/components/organisms/Table';
-import usePagination from '~/hooks/usePagination';
-import type { FindEquipmentReturnDTO } from '~/server/services/equipment/equipment.repository';
-import { api } from '~/trpc/react';
+} from '@/components/organisms/Table';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import usePagination from '@/hooks/usePagination';
+import type { FindEquipmentReturnDTO } from '@/server/services/equipment/equipment.repository';
+import { api } from '@/trpc/react';
 
 type Props = {
   data?: FindEquipmentReturnDTO[];
@@ -49,7 +50,7 @@ const EquipmentTable = ({ data, totalPageNumber }: Props) => {
 
   return (
     <>
-      <div className="rounded-lg border shadow-sm">
+      <Card>
         <Table>
           <TableHeader>
             <TableRow>
@@ -91,7 +92,7 @@ const EquipmentTable = ({ data, totalPageNumber }: Props) => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
       {totalPageNumber > 1 && (
         <PaginationComponent totalPageNumber={totalPageNumber} />
       )}

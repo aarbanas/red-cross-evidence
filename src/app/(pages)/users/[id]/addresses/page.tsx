@@ -1,10 +1,10 @@
 'use client';
 import { useParams } from 'next/navigation';
-import AddressesEditForm from '~/app/(pages)/users/[id]/_components/AddressesEditForm';
-import TabLayout from '~/components/layout/tabLayout';
-import LoadingSpinner from '~/components/organisms/loadingSpinner/LoadingSpinner';
-import type { AddressType } from '~/server/db/schema';
-import { api } from '~/trpc/react';
+import AddressesEditForm from '@/app/(pages)/users/[id]/_components/AddressesEditForm';
+import TabLayout from '@/components/layout/tabLayout';
+import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import type { AddressType } from '@/server/db/schema';
+import { api } from '@/trpc/react';
 
 const AddressesTab = () => {
   const { id } = useParams<{ id: string }>();

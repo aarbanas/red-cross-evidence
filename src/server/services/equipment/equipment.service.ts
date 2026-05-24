@@ -1,8 +1,8 @@
-import type { FindQueryDTO } from '~/server/db/utility/types';
+import type { FindQueryDTO } from '@/server/db/utility/types';
 import equipmentRepository, {
   type EquipmentFormData,
-} from '~/server/services/equipment/equipment.repository';
-import { mapDbError } from '~/server/utils/db-error';
+} from '@/server/services/equipment/equipment.repository';
+import { mapDbError } from '@/server/utils/db-error';
 
 const equipmentService = {
   getById: async (id: string) => {

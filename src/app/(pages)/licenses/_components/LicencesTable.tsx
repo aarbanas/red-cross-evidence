@@ -4,9 +4,8 @@ import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Button } from '~/components/atoms/Button';
-import Modal from '~/components/organisms/modal/Modal';
-import PaginationComponent from '~/components/organisms/pagination/PaginationComponent';
+import Modal from '@/components/organisms/modal/Modal';
+import PaginationComponent from '@/components/organisms/pagination/PaginationComponent';
 import {
   Table,
   TableBody,
@@ -14,9 +13,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '~/components/organisms/Table';
-import type { FindLicenseReturnDTO } from '~/server/services/license/license.repository';
-import { api } from '~/trpc/react';
+} from '@/components/organisms/Table';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import type { FindLicenseReturnDTO } from '@/server/services/license/license.repository';
+import { api } from '@/trpc/react';
 
 type Props = {
   data?: FindLicenseReturnDTO[];
@@ -46,7 +47,7 @@ const LicencesTable = ({ data, totalPageNumber }: Props) => {
 
   return (
     <>
-      <div className="rounded-lg border shadow-sm">
+      <Card>
         <Table>
           <TableHeader>
             <TableRow>
@@ -88,7 +89,7 @@ const LicencesTable = ({ data, totalPageNumber }: Props) => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
       <PaginationComponent totalPageNumber={totalPageNumber} />
 
       <Modal
