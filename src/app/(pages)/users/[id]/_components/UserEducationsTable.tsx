@@ -145,7 +145,11 @@ const UserEducationsTable = ({ userId, items }: Props) => {
         </div>
       )}
 
-      <Modal isOpen={showAddModal} onClose={handleCloseModal}>
+      <Modal
+        isOpen={showAddModal}
+        onClose={handleCloseModal}
+        className="w-[80%]"
+      >
         <h4 className="mb-4 font-medium">Dodaj edukaciju</h4>
 
         {!selectedEducationId ? (

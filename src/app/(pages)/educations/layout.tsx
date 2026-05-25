@@ -7,6 +7,9 @@ import Tabs, { type TabProp } from '@/components/atoms/Tabs';
 import MainLayout from '@/components/layout/mainLayout';
 import { Button } from '@/components/ui/button';
 
+const TERM_DETAIL_REGEX = /\/educations\/term\/[0-9a-f-]{36}(\/|$)/;
+const LIST_DETAIL_REGEX = /\/educations\/list\/([0-9a-f-]{36}|create)(\/|$)/;
+
 const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
   const pathname = usePathname();
 
@@ -29,6 +32,9 @@ const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
     ? 'Nova edukacija'
     : 'Novi termin';
 
+  const isTermDetail =
+    TERM_DETAIL_REGEX.test(pathname) || LIST_DETAIL_REGEX.test(pathname);
+
   return (
     <MainLayout
       headerChildren={
@@ -44,7 +50,7 @@ const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
       }
     >
       <div>
-        <Tabs tabs={tabsData} basePath="/educations" />
+        {!isTermDetail && <Tabs tabs={tabsData} basePath="/educations" />}
         <main>{children}</main>
       </div>
     </MainLayout>

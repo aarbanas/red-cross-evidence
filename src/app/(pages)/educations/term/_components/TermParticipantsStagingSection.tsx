@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 import Modal from '@/components/organisms/modal/Modal';
 import {
   Table,
@@ -15,7 +14,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { api } from '@/trpc/react';
 
-type Participant = {
+export type StagedParticipant = {
   profileId: string;
   firstName: string;
   lastName: string;
@@ -23,24 +22,15 @@ type Participant = {
 };
 
 type Props = {
-  termId: string;
-  maxParticipants: number;
-  participants: Participant[];
+  participants: StagedParticipant[];
+  onChange: (participants: StagedParticipant[]) => void;
 };
 
-const TermParticipantsTable = ({
-  termId,
-  maxParticipants,
-  participants,
-}: Props) => {
+const TermParticipantsStagingSection = ({ participants, onChange }: Props) => {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [participantToRemove, setParticipantToRemove] =
-    useState<Participant | null>(null);
   const [search, setSearch] = useState('');
-  const utils = api.useUtils();
 
-  const enrolledProfileIds = new Set(participants.map((p) => p.profileId));
-  const atCapacity = participants.length >= maxParticipants;
+  const stagedProfileIds = new Set(participants.map((p) => p.profileId));
 
   const { data: searchResults } = api.user.findByName.useQuery(
     { search },
@@ -49,37 +39,35 @@ const TermParticipantsTable = ({
 
   const availableUsers =
     searchResults?.filter(
-      (u) => u.profile && !enrolledProfileIds.has(u.profile.id),
+      (u) => u.profile && !stagedProfileIds.has(u.profile.id),
     ) ?? [];
 
-  const addParticipant = api.education.term.addParticipant.useMutation({
-    onSuccess: async () => {
-      await utils.education.term.getParticipants.invalidate({ termId });
-      toast('Sudionik uspješno dodan', { type: 'success' });
-      setShowAddModal(false);
-      setSearch('');
-    },
-    onError: (error) => toast(error.message, { type: 'error' }),
-  });
+  const handleAdd = (user: (typeof availableUsers)[number]) => {
+    if (!user.profile) {
+      return;
+    }
 
-  const removeParticipant = api.education.term.removeParticipant.useMutation({
-    onSuccess: async () => {
-      await utils.education.term.getParticipants.invalidate({ termId });
-      toast('Sudionik uspješno uklonjen', { type: 'success' });
-      setParticipantToRemove(null);
-    },
-    onError: (error) => toast(error.message, { type: 'error' }),
-  });
+    onChange([
+      ...participants,
+      {
+        profileId: user.profile.id,
+        firstName: user.profile.firstName ?? '',
+        lastName: user.profile.lastName ?? '',
+        email: user.email,
+      },
+    ]);
+    setSearch('');
+  };
 
-  const handleAdd = (profileId: string) => {
-    addParticipant.mutate({ termId, profileId });
+  const handleRemove = (profileId: string) => {
+    onChange(participants.filter((p) => p.profileId !== profileId));
   };
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-lg">
-          Sudionici ({participants.length}/{maxParticipants})
+          Sudionici ({participants.length})
         </h3>
         <Button
           type="button"
@@ -113,7 +101,7 @@ const TermParticipantsTable = ({
                       type="button"
                       variant="destructive"
                       className="text-sm"
-                      onClick={() => setParticipantToRemove(p)}
+                      onClick={() => handleRemove(p.profileId)}
                     >
                       Ukloni
                     </Button>
@@ -125,7 +113,7 @@ const TermParticipantsTable = ({
         </Card>
       ) : (
         <div className="py-8 text-center text-gray-500">
-          Nema prijavljenih sudionika.
+          Nema odabranih sudionika.
         </div>
       )}
 
@@ -138,13 +126,6 @@ const TermParticipantsTable = ({
         }}
       >
         <h4 className="mb-4 font-medium">Dodaj sudionike</h4>
-
-        {atCapacity && (
-          <div className="mb-4 rounded border border-yellow-300 bg-yellow-50 p-3 text-sm text-yellow-800">
-            Termin je popunjen ({participants.length}/{maxParticipants}{' '}
-            sudionika).
-          </div>
-        )}
 
         <Input
           placeholder="Pretraži po imenu ili prezimenu..."
@@ -180,8 +161,7 @@ const TermParticipantsTable = ({
                       <Button
                         type="button"
                         className="bg-black text-sm text-white"
-                        showLoading={addParticipant.isPending}
-                        onClick={() => u.profile && handleAdd(u.profile.id)}
+                        onClick={() => handleAdd(u)}
                       >
                         Dodaj
                       </Button>
@@ -206,46 +186,8 @@ const TermParticipantsTable = ({
           </Button>
         </div>
       </Modal>
-
-      <Modal
-        isOpen={!!participantToRemove}
-        onClose={() => setParticipantToRemove(null)}
-      >
-        <h4 className="mb-2 font-medium">Ukloni sudionika</h4>
-        <p className="mb-6 text-gray-600 text-sm">
-          Jeste li sigurni da želite ukloniti{' '}
-          <span className="font-semibold">
-            {participantToRemove?.firstName} {participantToRemove?.lastName}
-          </span>
-          ?
-        </p>
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant="destructive"
-            showLoading={removeParticipant.isPending}
-            onClick={() =>
-              participantToRemove &&
-              removeParticipant.mutate({
-                termId,
-                profileId: participantToRemove.profileId,
-              })
-            }
-          >
-            Ukloni
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            disabled={removeParticipant.isPending}
-            onClick={() => setParticipantToRemove(null)}
-          >
-            Odustani
-          </Button>
-        </div>
-      </Modal>
     </div>
   );
 };
 
-export default TermParticipantsTable;
+export default TermParticipantsStagingSection;

@@ -19,7 +19,7 @@ const UserEditLayout: FC<PropsWithChildren> = ({ children }) => {
     { label: 'Adrese', link: 'addresses' },
     { label: 'Odjeća i obuća', link: 'sizes' },
     { label: 'Znanja i vještine', link: 'skills' },
-    { label: 'Edukacije', link: 'educations' },
+    { label: 'Edukacije', link: 'education-terms' },
   ];
 
   return (
