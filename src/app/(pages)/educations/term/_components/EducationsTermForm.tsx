@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import { type FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import type { StagedParticipant } from '@/app/(pages)/educations/term/_components/TermParticipantsStagingSection';
 import { translateEducationType } from '@/app/(pages)/educations/utils';
 import FormComponent from '@/components/organisms/form/formComponent/FormComponent';
 import FormDatePicker from '@/components/organisms/form/formDatePicker/FormDatePicker';
@@ -30,6 +31,7 @@ type Props = {
   formData?: Partial<EducationTermFormData>;
   educationTermId?: string | string[];
   educationTypes: { type: string }[];
+  pendingParticipants?: StagedParticipant[];
 };
 
 const EducationsTermForm: FC<Props> = ({
@@ -37,6 +39,7 @@ const EducationsTermForm: FC<Props> = ({
   formData,
   educationTermId,
   educationTypes,
+  pendingParticipants,
 }) => {
   const form = useForm<EducationTermFormData & { type: EducationType }>({
     defaultValues: {
@@ -57,6 +60,7 @@ const EducationsTermForm: FC<Props> = ({
   const educationType = watch('type', EducationType.VOLUNTEERS);
   const createEducationTerm = api.education.term.create.useMutation();
   const updateEducationTerm = api.education.term.update.useMutation();
+  const addParticipant = api.education.term.addParticipant.useMutation();
   const { data: educations } = api.education.list.getAllTitles.useQuery(
     action === 'create' ? educationType : undefined,
   );
@@ -90,7 +94,17 @@ const EducationsTermForm: FC<Props> = ({
         ...(educationTermId && { id: educationTermId as string }),
       };
       if (action === 'create') {
-        await createEducationTerm.mutateAsync(formData);
+        const created = await createEducationTerm.mutateAsync(formData);
+
+        if (pendingParticipants?.length && created?.[0]?.id) {
+          const termId = created[0].id;
+
+          await Promise.all(
+            pendingParticipants.map((p) =>
+              addParticipant.mutateAsync({ termId, profileId: p.profileId }),
+            ),
+          );
+        }
       } else if (action === 'update') {
         await updateEducationTerm.mutateAsync(formData);
       }

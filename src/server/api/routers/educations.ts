@@ -98,5 +98,41 @@ export const educationRouter = createTRPCRouter({
       .mutation(async ({ input }) => {
         return educationService.term.update(input);
       }),
+    getParticipants: protectedProcedure
+      .input(z.object({ termId: z.string() }))
+      .query(async ({ input }) => {
+        return educationService.term.getParticipants(input.termId);
+      }),
+    addParticipant: protectedProcedure
+      .input(z.object({ termId: z.string(), profileId: z.string() }))
+      .mutation(async ({ input }) => {
+        await educationService.term.addParticipant(
+          input.termId,
+          input.profileId,
+        );
+        return { success: true };
+      }),
+    removeParticipant: protectedProcedure
+      .input(z.object({ termId: z.string(), profileId: z.string() }))
+      .mutation(async ({ input }) => {
+        await educationService.term.removeParticipant(
+          input.termId,
+          input.profileId,
+        );
+        return { success: true };
+      }),
+    findByEducationId: protectedProcedure
+      .input(
+        z.object({
+          educationId: z.string(),
+          excludeProfileId: z.string().optional(),
+        }),
+      )
+      .query(async ({ input }) => {
+        return educationService.term.findByEducationId(
+          input.educationId,
+          input.excludeProfileId,
+        );
+      }),
   },
 });

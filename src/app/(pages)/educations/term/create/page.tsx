@@ -1,19 +1,34 @@
 'use client';
+import { useState } from 'react';
 import EducationsTermForm from '@/app/(pages)/educations/term/_components/EducationsTermForm';
+import TermParticipantsStagingSection, {
+  type StagedParticipant,
+} from '@/app/(pages)/educations/term/_components/TermParticipantsStagingSection';
 import TabLayout from '@/components/layout/tabLayout';
 import { api } from '@/trpc/react';
 
 const CreateEducationTerm = () => {
-  const { data: educationTpes } = api.education.list.getUniqueTypes.useQuery();
+  const [pendingParticipants, setPendingParticipants] = useState<
+    StagedParticipant[]
+  >([]);
+  const { data: educationTypes } = api.education.list.getUniqueTypes.useQuery();
 
-  if (!educationTpes?.length) {
+  if (!educationTypes?.length) {
     return <div>No unique types found</div>;
   }
 
   return (
     <TabLayout>
-      <div>
-        <EducationsTermForm action={'create'} educationTypes={educationTpes} />
+      <div className="space-y-6">
+        <EducationsTermForm
+          action={'create'}
+          educationTypes={educationTypes}
+          pendingParticipants={pendingParticipants}
+        />
+        <TermParticipantsStagingSection
+          participants={pendingParticipants}
+          onChange={setPendingParticipants}
+        />
       </div>
     </TabLayout>
   );

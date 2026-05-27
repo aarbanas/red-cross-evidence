@@ -190,4 +190,29 @@ export const userRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       return userService.updateSkills(input.userId, input.skills);
     }),
+  getEducationTerms: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input }) => {
+      return userService.getEducationTerms(input.userId);
+    }),
+  addEducationTerm: protectedProcedure
+    .input(z.object({ userId: z.string(), educationTermId: z.string() }))
+    .mutation(async ({ input }) => {
+      await userService.addEducationTerm(input.userId, input.educationTermId);
+      return { success: true };
+    }),
+  removeEducationTerm: protectedProcedure
+    .input(z.object({ userId: z.string(), educationTermId: z.string() }))
+    .mutation(async ({ input }) => {
+      await userService.removeEducationTerm(
+        input.userId,
+        input.educationTermId,
+      );
+      return { success: true };
+    }),
+  findByName: protectedProcedure
+    .input(z.object({ search: z.string() }))
+    .query(async ({ input }) => {
+      return userService.findByName(input.search);
+    }),
 });
