@@ -78,10 +78,18 @@ const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
           <DialogHeader>
             <DialogTitle>Sinkronizacija edukacija</DialogTitle>
             <DialogDescription>
-              Pokretanjem sinkronizacije preuzet će se sve edukacije s portala
-              hck.hr i usporediti s postojećim podacima u bazi. Nove edukacije
-              bit će dodane, a postojeće ažurirane. Ovaj proces može potrajati
-              nekoliko minuta.
+              Pokretanjem sinkronizacije preuzet će se sve edukacije sa stranice{' '}
+              <Link
+                href="https://www.hck.hr/edukacije-publikacije/edukacije-hrvatskog-crvenog-kriza/74"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cursor-pointer underline"
+              >
+                https://www.hck.hr/edukacije-publikacije/edukacije-hrvatskog-crvenog-kriza/74
+              </Link>{' '}
+              i usporediti s postojećim podacima u bazi. Nove edukacije bit će
+              dodane, a postojeće ažurirane. Ovaj proces može potrajati nekoliko
+              minuta.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

@@ -73,9 +73,18 @@ const SocietiesLayout: FC<PropsWithChildren> = ({ children }) => {
             <DialogTitle>Sinkronizacija društava</DialogTitle>
             <DialogDescription>
               Pokretanjem sinkronizacije preuzet će se sva županijska i gradska
-              društva s portala hck.hr i usporediti s postojećim podacima u
-              bazi. Nova društva bit će dodana, a postojeća ažurirana. Ovaj
-              proces može potrajati nekoliko minuta.
+              društva sa stranice{' '}
+              <Link
+                href="https://www.hck.hr/adresar/50"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cursor-pointer underline"
+              >
+                https://www.hck.hr/adresar/50
+              </Link>{' '}
+              i usporediti s postojećim podacima u bazi. Nova društva bit će
+              dodana, a postojeća ažurirana. Ovaj proces može potrajati nekoliko
+              minuta.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
