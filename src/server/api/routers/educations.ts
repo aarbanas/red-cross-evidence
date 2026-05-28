@@ -1,8 +1,20 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { paginationQuerySchema } from '@/server/api/schema';
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
 import { EducationType } from '@/server/db/schema';
 import educationService from '@/server/services/education/education.service';
+import synchronisationParserService from '@/server/services/synchronisationParser/synchronisationParser.service';
+import {
+  clearProgress,
+  getProgress,
+  setProgress,
+} from '@/server/utils/syncProgress';
+import {
+  checkSyncAllowed,
+  EDUCATION_SYNC_KEY,
+  markSyncCompleted,
+} from '@/server/utils/syncRateLimiter';
 
 const educationFormDataSchema = z.object({
   id: z.string().optional(),
@@ -68,6 +80,48 @@ export const educationRouter = createTRPCRouter({
       .query(async ({ input }) => {
         return educationService.list.getAllTitles(input);
       }),
+    syncProgress: protectedProcedure.query(async () => {
+      return getProgress(EDUCATION_SYNC_KEY);
+    }),
+    sync: protectedProcedure.mutation(async () => {
+      const check = await checkSyncAllowed(EDUCATION_SYNC_KEY);
+
+      if (!check.allowed) {
+        const nextSync = check.nextSyncAt.toLocaleString('hr-HR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+
+        throw new TRPCError({
+          code: 'TOO_MANY_REQUESTS',
+          message: `Sinkronizacija je već pokrenuta danas. Sljedeća dostupna sinkronizacija: ${nextSync}.`,
+        });
+      }
+
+      try {
+        setProgress(EDUCATION_SYNC_KEY, 0, 0);
+        const result = await synchronisationParserService.syncEducations(
+          (current, total) => {
+            setProgress(EDUCATION_SYNC_KEY, current, total);
+          },
+        );
+        await markSyncCompleted(EDUCATION_SYNC_KEY);
+
+        return result;
+      } catch (e) {
+        console.error('Error during education synchronization:', e);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message:
+            'Došlo je do pogreške prilikom sinkronizacije obrazovnih oblika.',
+        });
+      } finally {
+        clearProgress(EDUCATION_SYNC_KEY);
+      }
+    }),
   },
   term: {
     findById: protectedProcedure
