@@ -3,16 +3,25 @@
 import { Plus, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { FC, PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren, useState } from 'react';
 import { toast } from 'react-toastify';
 import Tabs, { type TabProp } from '@/components/atoms/Tabs';
 import MainLayout from '@/components/layout/mainLayout';
 import SyncProgressOverlay from '@/components/organisms/SyncProgressOverlay';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { api } from '@/trpc/react';
 
 const SocietiesLayout: FC<PropsWithChildren> = ({ children }) => {
   const pathname = usePathname();
+  const [syncDialogOpen, setSyncDialogOpen] = useState(false);
   const syncMutation = api.society.sync.useMutation({
     onSuccess: ({ societiesCount, citySocietiesCount }) =>
       toast.success(
@@ -58,6 +67,32 @@ const SocietiesLayout: FC<PropsWithChildren> = ({ children }) => {
           total={syncProgress?.total ?? 0}
         />
       )}
+      <Dialog open={syncDialogOpen} onOpenChange={setSyncDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Sinkronizacija društava</DialogTitle>
+            <DialogDescription>
+              Pokretanjem sinkronizacije preuzet će se sva županijska i gradska
+              društva s portala hck.hr i usporediti s postojećim podacima u
+              bazi. Nova društva bit će dodana, a postojeća ažurirana. Ovaj
+              proces može potrajati nekoliko minuta.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSyncDialogOpen(false)}>
+              Odustani
+            </Button>
+            <Button
+              onClick={() => {
+                setSyncDialogOpen(false);
+                syncMutation.mutate();
+              }}
+            >
+              Sinkroniziraj
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <MainLayout
         headerChildren={
           <div className="flex w-full items-center gap-2">
@@ -68,7 +103,7 @@ const SocietiesLayout: FC<PropsWithChildren> = ({ children }) => {
                 size="sm"
                 showLoading={syncMutation.isPending}
                 disabled={syncMutation.isPending}
-                onClick={() => syncMutation.mutate()}
+                onClick={() => setSyncDialogOpen(true)}
               >
                 <RefreshCw className="h-4 w-4" />
                 Sinkroniziraj

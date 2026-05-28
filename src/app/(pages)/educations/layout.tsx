@@ -2,12 +2,20 @@
 import { Plus, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { FC, PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren, useState } from 'react';
 import { toast } from 'react-toastify';
 import Tabs, { type TabProp } from '@/components/atoms/Tabs';
 import MainLayout from '@/components/layout/mainLayout';
 import SyncProgressOverlay from '@/components/organisms/SyncProgressOverlay';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { api } from '@/trpc/react';
 
 const TERM_DETAIL_REGEX = /\/educations\/term\/[0-9a-f-]{36}(\/|$)/;
@@ -15,6 +23,7 @@ const LIST_DETAIL_REGEX = /\/educations\/list\/([0-9a-f-]{36}|create)(\/|$)/;
 
 const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
   const pathname = usePathname();
+  const [syncDialogOpen, setSyncDialogOpen] = useState(false);
   const syncMutation = api.education.list.sync.useMutation({
     onSuccess: ({ count }) =>
       toast.success(`Sinkronizirano ${count} edukacija.`),
@@ -64,6 +73,32 @@ const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
           total={syncProgress?.total ?? 0}
         />
       )}
+      <Dialog open={syncDialogOpen} onOpenChange={setSyncDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Sinkronizacija edukacija</DialogTitle>
+            <DialogDescription>
+              Pokretanjem sinkronizacije preuzet će se sve edukacije s portala
+              hck.hr i usporediti s postojećim podacima u bazi. Nove edukacije
+              bit će dodane, a postojeće ažurirane. Ovaj proces može potrajati
+              nekoliko minuta.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSyncDialogOpen(false)}>
+              Odustani
+            </Button>
+            <Button
+              onClick={() => {
+                setSyncDialogOpen(false);
+                syncMutation.mutate();
+              }}
+            >
+              Sinkroniziraj
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <MainLayout
         headerChildren={
           <div className="flex w-full items-center gap-2">
@@ -76,7 +111,7 @@ const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
                     size="sm"
                     showLoading={syncMutation.isPending}
                     disabled={syncMutation.isPending}
-                    onClick={() => syncMutation.mutate()}
+                    onClick={() => setSyncDialogOpen(true)}
                   >
                     <RefreshCw className="h-4 w-4" />
                     Sinkroniziraj
