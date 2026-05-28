@@ -11,8 +11,10 @@ import { scrapeEducations } from '@/server/scrapers/education.scraper';
 import { scrapeSocieties } from '@/server/scrapers/society.scraper';
 
 const synchronisationParserService = {
-  syncEducations: async (): Promise<{ count: number }> => {
-    const scraped = await scrapeEducations();
+  syncEducations: async (
+    onProgress?: (current: number, total: number) => void,
+  ): Promise<{ count: number }> => {
+    const scraped = await scrapeEducations(onProgress);
 
     const existing = await db
       .select({ id: educations.id, title: educations.title })
@@ -37,12 +39,14 @@ const synchronisationParserService = {
     return { count: scraped.length };
   },
 
-  syncSocieties: async (): Promise<{
+  syncSocieties: async (
+    onProgress?: (current: number, total: number) => void,
+  ): Promise<{
     societiesCount: number;
     citySocietiesCount: number;
   }> => {
     const { societies: scrapedSocieties, citySocieties: scrapedCitySocieties } =
-      await scrapeSocieties();
+      await scrapeSocieties(onProgress);
 
     await db.transaction(async (tx) => {
       // --- societies ---

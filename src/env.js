@@ -28,6 +28,8 @@ export const env = createEnv({
       .transform((val) => val === 'true')
       .optional()
       .default('false'),
+    UPSTASH_REDIS_REST_URL: z.string().url(),
+    UPSTASH_REDIS_REST_TOKEN: z.string(),
   },
 
   /**
@@ -50,6 +52,8 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
     RATE_LIMITER_ENABLED: process.env.RATE_LIMITER_ENABLED,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

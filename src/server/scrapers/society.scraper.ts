@@ -1,6 +1,9 @@
 import 'server-only';
 import * as cheerio from 'cheerio';
 import type { AnyNode, Element } from 'domhandler';
+import { Agent, fetch as undiciFetch } from 'undici';
+
+const tlsAgent = new Agent({ connect: { rejectUnauthorized: false } });
 
 export type ScrapedSociety = {
   name: string;
@@ -172,7 +175,10 @@ const parsePage = async (
   society: ScrapedSociety | null;
   citySocieties: ScrapedCitySociety[];
 }> => {
-  const res = await fetch(url, { headers: { 'Accept-Charset': 'utf-8' } });
+  const res = await undiciFetch(url, {
+    headers: { 'Accept-Charset': 'utf-8' },
+    dispatcher: tlsAgent,
+  });
   const $ = cheerio.load(await res.text());
 
   const holder = $('div.adresar-holder').first();
@@ -233,24 +239,31 @@ const parsePage = async (
   return { society: null, citySocieties };
 };
 
-export const scrapeSocieties = async (): Promise<{
+export const scrapeSocieties = async (
+  onProgress?: (current: number, total: number) => void,
+): Promise<{
   societies: ScrapedSociety[];
   citySocieties: ScrapedCitySociety[];
 }> => {
   const societies: ScrapedSociety[] = [];
   const citySocieties: ScrapedCitySociety[] = [];
+  const total = URLS.length;
 
-  for (const [slug, url] of URLS) {
+  for (let i = 0; i < URLS.length; i++) {
+    const entry = URLS[i];
+    if (!entry) continue;
+    const [slug, url] = entry;
     const { society, citySocieties: cities } = await parsePage(slug, url);
 
     if (slug === 'grad-zagreb' && society) {
-      // grad-zagreb is both a county society and a city society
       societies.push(society);
       citySocieties.push({ ...society, societyName: society.name });
     } else {
       if (society) societies.push(society);
       citySocieties.push(...cities);
     }
+
+    onProgress?.(i + 1, total);
   }
 
   return { societies, citySocieties };

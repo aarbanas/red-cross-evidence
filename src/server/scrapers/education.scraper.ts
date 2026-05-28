@@ -1,7 +1,10 @@
 import 'server-only';
 import * as cheerio from 'cheerio';
 import type { AnyNode, Element } from 'domhandler';
+import { Agent, fetch as undiciFetch } from 'undici';
 import { EducationType } from '@/server/db/schema';
+
+const tlsAgent = new Agent({ connect: { rejectUnauthorized: false } });
 
 export type ScrapedEducation = {
   title: string;
@@ -48,7 +51,7 @@ const isElement = (node: AnyNode): node is Element => node.type === 'tag';
 const scrapeEducationDetail = async (
   url: string,
 ): Promise<Omit<ScrapedEducation, 'type'> | null> => {
-  const res = await fetch(url);
+  const res = await undiciFetch(url, { dispatcher: tlsAgent });
   const $ = cheerio.load(await res.text());
 
   const title = $('h1').first().text().trim();
@@ -122,15 +125,17 @@ const scrapeEducationDetail = async (
   return result;
 };
 
-const scrapeCategory = async (
+const collectCategoryUrls = async (
   url: string,
   type: EducationType,
-): Promise<ScrapedEducation[]> => {
-  const results: ScrapedEducation[] = [];
+): Promise<Array<{ detailUrl: string; type: EducationType }>> => {
+  const urls: Array<{ detailUrl: string; type: EducationType }> = [];
   let page = 1;
 
   while (true) {
-    const res = await fetch(`${url}?page=${page}`);
+    const res = await undiciFetch(`${url}?page=${page}`, {
+      dispatcher: tlsAgent,
+    });
     const $ = cheerio.load(await res.text());
 
     const items = $('div.block-standard.publikacije');
@@ -139,12 +144,7 @@ const scrapeCategory = async (
 
     for (const el of items.toArray()) {
       const href = $(el).find('div.bs-title a').first().attr('href');
-
-      if (!href) continue;
-
-      const detail = await scrapeEducationDetail(`https://www.hck.hr${href}`);
-
-      if (detail) results.push({ ...detail, type });
+      if (href) urls.push({ detailUrl: `https://www.hck.hr${href}`, type });
     }
 
     const activePage = $('ul.cpagination li.active').first().text().trim();
@@ -154,15 +154,28 @@ const scrapeCategory = async (
     page++;
   }
 
-  return results;
+  return urls;
 };
 
-export const scrapeEducations = async (): Promise<ScrapedEducation[]> => {
-  const results: ScrapedEducation[] = [];
+export const scrapeEducations = async (
+  onProgress?: (current: number, total: number) => void,
+): Promise<ScrapedEducation[]> => {
+  const allItems: Array<{ detailUrl: string; type: EducationType }> = [];
 
   for (const [url, type] of CATEGORY_URLS) {
-    const items = await scrapeCategory(url, type);
-    results.push(...items);
+    const urls = await collectCategoryUrls(url, type);
+    allItems.push(...urls);
+  }
+
+  const total = allItems.length;
+  const results: ScrapedEducation[] = [];
+
+  for (let i = 0; i < allItems.length; i++) {
+    const item = allItems[i];
+    if (!item) continue;
+    const detail = await scrapeEducationDetail(item.detailUrl);
+    if (detail) results.push({ ...detail, type: item.type });
+    onProgress?.(i + 1, total);
   }
 
   return results;
