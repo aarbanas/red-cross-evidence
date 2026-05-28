@@ -321,6 +321,34 @@ const bar = 10;
 
 This rule applies even when the next line is a return, throw, another if, or any other statement.
 
+### Always use arrow functions
+
+All functions must be declared as `const` arrow functions. Never use `function` declarations.
+
+✅ Correct:
+
+```typescript
+const fetchData = async (id: string): Promise<Data> => {
+  return db.select().from(table).where(eq(table.id, id));
+};
+
+export const myHelper = (value: string): string => value.trim();
+```
+
+❌ Wrong:
+
+```typescript
+async function fetchData(id: string): Promise<Data> {
+  return db.select().from(table).where(eq(table.id, id));
+}
+
+export function myHelper(value: string): string {
+  return value.trim();
+}
+```
+
+This applies everywhere — utilities, scrapers, services, route handlers, and React components (use arrow function components).
+
 ### Wrap forms and tables in Card
 
 Every new form and table rendered on a client page must be wrapped in the `Card` component from `@/components/ui/card`. Import and use `Card` as the outermost container.

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { paginationQuerySchema } from '@/server/api/schema';
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
 import societyService from '@/server/services/society/society.service';
+import synchronisationParserService from '@/server/services/synchronisationParser/synchronisationParser.service';
 
 const societyFormDataSchema = z.object({
   id: z.string().optional(),
@@ -43,4 +44,7 @@ export const societyRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       return societyService.delete(input.id);
     }),
+  sync: protectedProcedure.mutation(async () => {
+    return synchronisationParserService.syncSocieties();
+  }),
 });

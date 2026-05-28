@@ -3,6 +3,7 @@ import { paginationQuerySchema } from '@/server/api/schema';
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
 import { EducationType } from '@/server/db/schema';
 import educationService from '@/server/services/education/education.service';
+import synchronisationParserService from '@/server/services/synchronisationParser/synchronisationParser.service';
 
 const educationFormDataSchema = z.object({
   id: z.string().optional(),
@@ -68,6 +69,9 @@ export const educationRouter = createTRPCRouter({
       .query(async ({ input }) => {
         return educationService.list.getAllTitles(input);
       }),
+    sync: protectedProcedure.mutation(async () => {
+      return synchronisationParserService.syncEducations();
+    }),
   },
   term: {
     findById: protectedProcedure
