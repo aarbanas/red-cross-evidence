@@ -61,7 +61,8 @@ export const searchRouter = createTRPCRouter({
       try {
         responseText = await getLLMResponse(input.prompt);
         console.log(responseText);
-      } catch {
+      } catch (error) {
+        console.error(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Nije moguće obraditi upit. Pokušajte ga preformulirati.',
