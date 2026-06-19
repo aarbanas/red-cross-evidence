@@ -1010,7 +1010,7 @@ const userRepository = {
             .where(
               and(
                 eq(profileEducationTerms.profileId, profiles.id),
-                ilike(educations.title, `%${course.name}%`),
+                sql`regexp_replace(${educations.title}, '"', '', 'g') ilike ${`%${course.name.replace(/"/g, '')}%`}`,
               ),
             ),
         ),

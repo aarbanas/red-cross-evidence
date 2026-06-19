@@ -11,6 +11,23 @@ const OLLAMA_MODEL = 'llama3.2:3b';
 const OPENAI_MODEL = 'gpt-4o-mini';
 let client: OpenAI | null = null;
 
+const sanitizeLLMResponse = (value: unknown): unknown => {
+  if (Array.isArray(value)) {
+    return value.filter((item) => item !== null).map(sanitizeLLMResponse);
+  }
+
+  if (value !== null && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([k, v]) => [
+        k,
+        sanitizeLLMResponse(v),
+      ]),
+    );
+  }
+
+  return value;
+};
+
 const getLLMResponse = async (prompt: string): Promise<string> => {
   if (env.LLM_PROVIDER === 'openai') {
     if (!client) {
@@ -69,10 +86,11 @@ export const searchRouter = createTRPCRouter({
         });
       }
 
-      const parsed = volunteerSearchQuerySchema.safeParse(
-        JSON.parse(responseText),
-      );
+      const raw = JSON.parse(responseText) as unknown;
+      const sanitized = sanitizeLLMResponse(raw);
+      const parsed = volunteerSearchQuerySchema.safeParse(sanitized);
 
+      console.log(JSON.stringify(parsed));
       if (!parsed.success) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
