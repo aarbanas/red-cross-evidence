@@ -2,6 +2,7 @@ import { countryRouter } from '@/server/api/routers/country';
 import { educationRouter } from '@/server/api/routers/educations';
 import { equipmentRouter } from '@/server/api/routers/equipment';
 import { postRouter } from '@/server/api/routers/post';
+import { searchRouter } from '@/server/api/routers/search';
 import { skillRouter } from '@/server/api/routers/skill';
 import { userRouter } from '@/server/api/routers/user';
 import { createCallerFactory, createTRPCRouter } from '@/server/api/trpc';
@@ -28,6 +29,7 @@ export const appRouter = createTRPCRouter({
   address: addressRouter,
   society: societyRouter,
   citySociety: citySocietyRouter,
+  search: searchRouter,
 });
 
 // export type definition of API

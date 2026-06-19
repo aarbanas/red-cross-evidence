@@ -1,4 +1,16 @@
-import { and, count, desc, eq, ilike, or, type SQL } from 'drizzle-orm';
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  exists,
+  ilike,
+  inArray,
+  or,
+  type SQL,
+  sql,
+} from 'drizzle-orm';
 import { db } from '@/server/db';
 import {
   type AddressType,
@@ -10,8 +22,9 @@ import {
   educations,
   educationTerms,
   equipment,
-  type LanguageLevel,
+  LanguageLevel,
   languages,
+  licenses,
   profileEducationTerms,
   profileEquipment,
   profileSkills,
@@ -28,6 +41,7 @@ import {
 } from '@/server/db/schema';
 import { prepareOrderBy, prepareWhere } from '@/server/db/utility';
 import type { FindQueryDTO, FindReturnDTO } from '@/server/db/utility/types';
+import type { VolunteerSearchQuery } from '@/server/search/volunteerSearchFields';
 import type {
   CreateUserAddressIdsDTO,
   CreateUserDTO,
@@ -925,6 +939,167 @@ const userRepository = {
         );
       }
     });
+  },
+  advancedSearch: async (data: {
+    filters: VolunteerSearchQuery;
+    page: number;
+    limit: number;
+  }) => {
+    const { filters, page, limit } = data;
+
+    const CEFR_MAPPING: Record<string, LanguageLevel[]> = {
+      osnovno: [LanguageLevel.A1, LanguageLevel.A2],
+      srednje: [LanguageLevel.B1, LanguageLevel.B2],
+      napredno: [LanguageLevel.C1, LanguageLevel.C2],
+      izvorno: [LanguageLevel.C2],
+    };
+
+    const conditions: SQL[] = [];
+
+    if (filters.location?.city) {
+      conditions.push(ilike(cities.name, `%${filters.location.city}%`));
+    }
+
+    if (filters.active !== null && filters.active !== undefined) {
+      conditions.push(eq(users.active, filters.active));
+    }
+
+    if (filters.age?.min != null) {
+      conditions.push(
+        sql`EXTRACT(YEAR FROM AGE(NOW(), ${profiles.birthDate}::date)) >= ${filters.age.min}`,
+      );
+    }
+
+    if (filters.age?.max != null) {
+      conditions.push(
+        sql`EXTRACT(YEAR FROM AGE(NOW(), ${profiles.birthDate}::date)) <= ${filters.age.max}`,
+      );
+    }
+
+    for (const license of filters.licenses ?? []) {
+      conditions.push(
+        exists(
+          db
+            .select({ id: profilesLicences.profileId })
+            .from(profilesLicences)
+            .innerJoin(licenses, eq(profilesLicences.licenceId, licenses.id))
+            .where(
+              and(
+                eq(profilesLicences.profileId, profiles.id),
+                eq(licenses.name, license.type),
+              ),
+            ),
+        ),
+      );
+    }
+
+    for (const course of filters.courses ?? []) {
+      conditions.push(
+        exists(
+          db
+            .select({ profileId: profileEducationTerms.profileId })
+            .from(profileEducationTerms)
+            .innerJoin(
+              educationTerms,
+              eq(profileEducationTerms.educationTermId, educationTerms.id),
+            )
+            .innerJoin(
+              educations,
+              eq(educationTerms.educationId, educations.id),
+            )
+            .where(
+              and(
+                eq(profileEducationTerms.profileId, profiles.id),
+                ilike(educations.title, `%${course.name}%`),
+              ),
+            ),
+        ),
+      );
+    }
+
+    for (const lang of filters.languages ?? []) {
+      const cefrLevels = lang.level ? CEFR_MAPPING[lang.level] : null;
+      conditions.push(
+        exists(
+          db
+            .select({ profileId: profilesLanguages.profileId })
+            .from(profilesLanguages)
+            .innerJoin(
+              languages,
+              eq(profilesLanguages.languageId, languages.id),
+            )
+            .where(
+              and(
+                eq(profilesLanguages.profileId, profiles.id),
+                ilike(languages.name, `%${lang.name}%`),
+                ...(cefrLevels
+                  ? [inArray(profilesLanguages.level, cefrLevels)]
+                  : []),
+              ),
+            ),
+        ),
+      );
+    }
+
+    const where = conditions.length > 0 ? and(...conditions) : undefined;
+
+    const { totalCount, returnData } = await db.transaction(
+      async (tx): Promise<FindReturnDTO<FindUserReturnDTO>> => {
+        const [totalCountRow] = await tx
+          .select({ count: count() })
+          .from(users)
+          .leftJoin(profiles, eq(users.id, profiles.userId))
+          .leftJoin(
+            profilesAddresses,
+            and(
+              eq(profiles.id, profilesAddresses.profileId),
+              eq(profilesAddresses.isPrimary, true),
+            ),
+          )
+          .leftJoin(addresses, eq(profilesAddresses.addressId, addresses.id))
+          .leftJoin(cities, eq(addresses.cityId, cities.id))
+          .where(where);
+
+        const returnData = await tx
+          .select({
+            id: users.id,
+            email: users.email,
+            active: users.active,
+            createdAt: users.createdAt,
+            profile: {
+              id: profiles.id,
+              firstName: profiles.firstName,
+              lastName: profiles.lastName,
+            },
+            city: cities.name,
+          })
+          .from(users)
+          .leftJoin(profiles, eq(users.id, profiles.userId))
+          .leftJoin(
+            profilesAddresses,
+            and(
+              eq(profiles.id, profilesAddresses.profileId),
+              eq(profilesAddresses.isPrimary, true),
+            ),
+          )
+          .leftJoin(addresses, eq(profilesAddresses.addressId, addresses.id))
+          .leftJoin(cities, eq(addresses.cityId, cities.id))
+          .where(where)
+          .orderBy(asc(users.createdAt))
+          .limit(limit)
+          .offset(page * limit);
+
+        return { totalCount: totalCountRow?.count ?? 0, returnData };
+      },
+    );
+
+    return {
+      data: returnData,
+      meta: {
+        count: totalCount,
+        limit,
+      },
+    };
   },
 };
 
