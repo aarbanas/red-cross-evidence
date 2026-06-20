@@ -24,6 +24,11 @@ const getRandomDate = (): Date => {
 
 export const populateEducationTerms = async (): Promise<EducationTerm[]> => {
   const educations = await getEducations();
+  if (!educations.length) {
+    console.log('Education term seeding skipped due to missing file');
+
+    return [];
+  }
 
   for (let i = 0; i < 35; i++) {
     const dateFrom = getRandomDate();
