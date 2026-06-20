@@ -28,8 +28,15 @@ export const env = createEnv({
       .transform((val) => val === 'true')
       .optional()
       .default('false'),
-    UPSTASH_REDIS_REST_URL: z.string().url(),
-    UPSTASH_REDIS_REST_TOKEN: z.string(),
+    // Upstash credentials are only required when the rate limiter is enabled.
+    UPSTASH_REDIS_REST_URL:
+      process.env.RATE_LIMITER_ENABLED === 'true'
+        ? z.string().url()
+        : z.string().url().optional(),
+    UPSTASH_REDIS_REST_TOKEN:
+      process.env.RATE_LIMITER_ENABLED === 'true'
+        ? z.string()
+        : z.string().optional(),
   },
 
   /**
