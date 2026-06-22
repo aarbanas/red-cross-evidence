@@ -219,7 +219,7 @@ const userRepository = {
           lastName: data.profile.lastName,
           oib: data.profile.oib,
           sex: data.profile.sex,
-          birthDate: data.profile.birthDate,
+          birthDate: data.profile.birthDate || null,
           birthPlace: data.profile.birthPlace,
           parentName: data.profile.parentName,
           nationality: data.profile.nationality,
@@ -359,6 +359,7 @@ const userRepository = {
           id: cities.id,
           name: cities.name,
           postalCode: cities.postalCode,
+          county: cities.county,
         },
         country: {
           id: countries.id,

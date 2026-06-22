@@ -8,6 +8,7 @@ import FormStreetSearch from '@/components/organisms/form/formStreetSearch/FormS
 import { Button } from '@/components/ui/button';
 import { AddressType } from '@/server/db/schema';
 import type { SearchCityReturnDTO } from '@/server/services/city/city.repository';
+import { api } from '@/trpc/react';
 
 export type AddressFormProps = {
   addresses: {
@@ -16,6 +17,7 @@ export type AddressFormProps = {
     streetNumber: string;
     city: string;
     postalCode: string;
+    county: string;
     country: string;
     isPrimary: boolean;
   }[];
@@ -32,6 +34,7 @@ type Props = {
 
 const AddressForm: FC<Props> = ({ countries }) => {
   const { register, watch, control, setValue } = useFormContext();
+  const { data: counties = [] } = api.city.getCounties.useQuery();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -57,6 +60,7 @@ const AddressForm: FC<Props> = ({ countries }) => {
       streetNumber: '',
       city: '',
       postalCode: '',
+      county: '',
       country: '',
       isPrimary: fields.length === 0, // First address is primary by default
     });
@@ -161,13 +165,14 @@ const AddressForm: FC<Props> = ({ countries }) => {
               })}
             </FormSelect>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-3 gap-6">
               <div>
                 <FormCitySearch
                   id={`city-${index}`}
                   label="Grad*"
                   cityFieldName={`addresses.${index}.city`}
                   postalCodeFieldName={`addresses.${index}.postalCode`}
+                  countyFieldName={`addresses.${index}.county`}
                   countryId={selectedCountry}
                 />
               </div>
@@ -180,6 +185,20 @@ const AddressForm: FC<Props> = ({ countries }) => {
                   })}
                   placeholder="Unesite poštanski broj"
                 />
+              </div>
+              <div>
+                <FormSelect
+                  id={`county-${index}`}
+                  label="Županija"
+                  {...register(`addresses.${index}.county`)}
+                  placeholder="Odaberite županiju"
+                >
+                  {counties.map((county) => (
+                    <option key={county} value={county}>
+                      {county}
+                    </option>
+                  ))}
+                </FormSelect>
               </div>
             </div>
 

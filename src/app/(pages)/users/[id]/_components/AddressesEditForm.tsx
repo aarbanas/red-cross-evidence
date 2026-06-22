@@ -20,7 +20,12 @@ type AddressEntry = {
   streetNumber: string;
   type: AddressType;
   isPrimary: boolean | null;
-  city: { id: string; name: string; postalCode: string | null } | null;
+  city: {
+    id: string;
+    name: string;
+    postalCode: string | null;
+    county: string | null;
+  } | null;
   country: { id: string; name: string } | null;
 };
 
@@ -30,6 +35,7 @@ type AddressFormValues = {
   type: string;
   city: string | SearchCityReturnDTO;
   postalCode: string;
+  county: string;
   country: string;
   isPrimary: boolean;
 };
@@ -144,7 +150,8 @@ const AddressesEditForm = ({ userId, addresses, countries }: Props) => {
                 </div>
                 <p className="text-gray-500 text-sm">
                   {addr.city?.name}
-                  {addr.city?.postalCode ? `, ${addr.city.postalCode}` : ''} —{' '}
+                  {addr.city?.postalCode ? `, ${addr.city.postalCode}` : ''}
+                  {addr.city?.county ? `, ${addr.city.county}` : ''} —{' '}
                   {addr.country?.name}
                 </p>
                 <p className="text-gray-500 text-sm">
@@ -185,6 +192,7 @@ const EditAddressForm = ({
       type: address.type,
       city: address.city ?? '',
       postalCode: address.city?.postalCode ?? '',
+      county: address.city?.county ?? '',
       country: address.country?.id ?? '',
       isPrimary: address.isPrimary ?? false,
     },
@@ -200,6 +208,8 @@ const EditAddressForm = ({
     typeof selectedCity === 'object' && selectedCity?.id
       ? selectedCity.id
       : undefined;
+
+  const { data: counties = [] } = api.city.getCounties.useQuery();
 
   const updateAddress = api.user.updateAddress.useMutation({
     onSuccess: () => {
@@ -262,6 +272,7 @@ const EditAddressForm = ({
             label="Grad*"
             cityFieldName="city"
             postalCodeFieldName="postalCode"
+            countyFieldName="county"
             countryId={selectedCountry}
           />
         </div>
@@ -271,6 +282,20 @@ const EditAddressForm = ({
             label="Poštanski broj*"
             {...form.register('postalCode', { required: true })}
           />
+        </div>
+        <div className="flex-1">
+          <FormSelect
+            id={`county-edit-${address.addressId}`}
+            label="Županija"
+            {...form.register('county')}
+            placeholder="Odaberite županiju"
+          >
+            {counties.map((county) => (
+              <option key={county} value={county}>
+                {county}
+              </option>
+            ))}
+          </FormSelect>
         </div>
       </div>
 
@@ -331,6 +356,7 @@ const NewAddressForm = ({
       type: AddressType.PERMANENT_RESIDENCE,
       city: '',
       postalCode: '',
+      county: '',
       country: '',
       isPrimary: false,
     },
@@ -346,6 +372,8 @@ const NewAddressForm = ({
     typeof selectedCity === 'object' && selectedCity?.id
       ? selectedCity.id
       : undefined;
+
+  const { data: counties = [] } = api.city.getCounties.useQuery();
 
   const addAddress = api.user.addAddress.useMutation({
     onSuccess: async () => {
@@ -425,6 +453,7 @@ const NewAddressForm = ({
                 label="Grad*"
                 cityFieldName="city"
                 postalCodeFieldName="postalCode"
+                countyFieldName="county"
                 disabled={!selectedCountry}
                 countryId={selectedCountry}
               />
@@ -436,6 +465,21 @@ const NewAddressForm = ({
                 label="Poštanski broj*"
                 {...form.register('postalCode', { required: true })}
               />
+            </div>
+            <div className="flex-1">
+              <FormSelect
+                id="new-county"
+                disabled={!selectedCountry}
+                label="Županija"
+                {...form.register('county')}
+                placeholder="Odaberite županiju"
+              >
+                {counties.map((county) => (
+                  <option key={county} value={county}>
+                    {county}
+                  </option>
+                ))}
+              </FormSelect>
             </div>
           </div>
 
