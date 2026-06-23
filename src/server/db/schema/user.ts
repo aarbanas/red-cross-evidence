@@ -246,6 +246,7 @@ export const cities = pgTable('city', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   postalCode: varchar('postal_code', { length: 10 }),
+  county: varchar('county', { length: 100 }),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at'),
   countryId: uuid('country_id').references(() => countries.id, {

@@ -1,0 +1,1 @@
+ALTER TABLE "city" ADD COLUMN "county" varchar(100);

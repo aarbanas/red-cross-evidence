@@ -12,6 +12,7 @@ export type SearchCityReturnDTO = {
   id: string;
   name: string;
   postalCode: string | null;
+  county: string | null;
 };
 
 const cityRepository = {
@@ -28,6 +29,7 @@ const cityRepository = {
         id: cities.id,
         name: cities.name,
         postalCode: cities.postalCode,
+        county: cities.county,
       })
       .from(cities)
       .where(

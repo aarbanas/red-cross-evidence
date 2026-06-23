@@ -301,15 +301,401 @@ async function generateAdmin(
   });
 }
 
+const CROATIAN_CITIES = [
+  { name: 'Zagreb', postalCode: '10000', county: 'Grad Zagreb' },
+  {
+    name: 'Split',
+    postalCode: '21000',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  {
+    name: 'Rijeka',
+    postalCode: '51000',
+    county: 'Primorsko-goranska županija',
+  },
+  { name: 'Osijek', postalCode: '31000', county: 'Osječko-baranjska županija' },
+  { name: 'Zadar', postalCode: '23000', county: 'Zadarska županija' },
+  {
+    name: 'Slavonski Brod',
+    postalCode: '35000',
+    county: 'Brodsko-posavska županija',
+  },
+  { name: 'Velika Gorica', postalCode: '10410', county: 'Zagrebačka županija' },
+  { name: 'Karlovac', postalCode: '47000', county: 'Karlovačka županija' },
+  { name: 'Pula', postalCode: '52100', county: 'Istarska županija' },
+  { name: 'Sisak', postalCode: '44000', county: 'Sisačko-moslavačka županija' },
+  { name: 'Šibenik', postalCode: '22000', county: 'Šibensko-kninska županija' },
+  { name: 'Varaždin', postalCode: '42000', county: 'Varaždinska županija' },
+  {
+    name: 'Dubrovnik',
+    postalCode: '20000',
+    county: 'Dubrovačko-neretvanska županija',
+  },
+  {
+    name: 'Bjelovar',
+    postalCode: '43000',
+    county: 'Bjelovarsko-bilogorska županija',
+  },
+  { name: 'Samobor', postalCode: '10430', county: 'Zagrebačka županija' },
+  {
+    name: 'Vinkovci',
+    postalCode: '32100',
+    county: 'Vukovarsko-srijemska županija',
+  },
+  {
+    name: 'Kaštela',
+    postalCode: '21212',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  {
+    name: 'Vukovar',
+    postalCode: '32000',
+    county: 'Vukovarsko-srijemska županija',
+  },
+  {
+    name: 'Koprivnica',
+    postalCode: '48000',
+    county: 'Koprivničko-križevačka županija',
+  },
+  { name: 'Čakovec', postalCode: '40000', county: 'Međimurska županija' },
+  { name: 'Đakovo', postalCode: '31400', county: 'Osječko-baranjska županija' },
+  { name: 'Požega', postalCode: '34000', county: 'Požesko-slavonska županija' },
+  {
+    name: 'Sinj',
+    postalCode: '21230',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  {
+    name: 'Kutina',
+    postalCode: '44320',
+    county: 'Sisačko-moslavačka županija',
+  },
+  {
+    name: 'Petrinja',
+    postalCode: '44250',
+    county: 'Sisačko-moslavačka županija',
+  },
+  { name: 'Zaprešić', postalCode: '10290', county: 'Zagrebačka županija' },
+  {
+    name: 'Virovitica',
+    postalCode: '33000',
+    county: 'Virovitičko-podravska županija',
+  },
+  {
+    name: 'Križevci',
+    postalCode: '48260',
+    county: 'Koprivničko-križevačka županija',
+  },
+  {
+    name: 'Solin',
+    postalCode: '21210',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  { name: 'Poreč', postalCode: '52440', county: 'Istarska županija' },
+  { name: 'Našice', postalCode: '31500', county: 'Osječko-baranjska županija' },
+  { name: 'Jastrebarsko', postalCode: '10450', county: 'Zagrebačka županija' },
+  {
+    name: 'Županja',
+    postalCode: '32270',
+    county: 'Vukovarsko-srijemska županija',
+  },
+  {
+    name: 'Sveti Ivan Zelina',
+    postalCode: '10380',
+    county: 'Zagrebačka županija',
+  },
+  {
+    name: 'Nova Gradiška',
+    postalCode: '35400',
+    county: 'Brodsko-posavska županija',
+  },
+  { name: 'Sveta Nedelja', postalCode: '10431', county: 'Zagrebačka županija' },
+  {
+    name: 'Omiš',
+    postalCode: '21310',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  {
+    name: 'Metković',
+    postalCode: '20350',
+    county: 'Dubrovačko-neretvanska županija',
+  },
+  { name: 'Knin', postalCode: '22300', county: 'Šibensko-kninska županija' },
+  { name: 'Ogulin', postalCode: '47300', county: 'Karlovačka županija' },
+  {
+    name: 'Slatina',
+    postalCode: '33520',
+    county: 'Virovitičko-podravska županija',
+  },
+  { name: 'Ivanić Grad', postalCode: '10310', county: 'Zagrebačka županija' },
+  { name: 'Vrbovec', postalCode: '10340', county: 'Zagrebačka županija' },
+  { name: 'Ivanec', postalCode: '42240', county: 'Varaždinska županija' },
+  {
+    name: 'Novska',
+    postalCode: '44330',
+    county: 'Sisačko-moslavačka županija',
+  },
+  { name: 'Dugo Selo', postalCode: '10370', county: 'Zagrebačka županija' },
+  { name: 'Rovinj', postalCode: '52210', county: 'Istarska županija' },
+  { name: 'Novi Marof', postalCode: '42220', county: 'Varaždinska županija' },
+  {
+    name: 'Makarska',
+    postalCode: '21300',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  {
+    name: 'Daruvar',
+    postalCode: '43500',
+    county: 'Bjelovarsko-bilogorska županija',
+  },
+  {
+    name: 'Trogir',
+    postalCode: '21220',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  { name: 'Gospić', postalCode: '53000', county: 'Ličko-senjska županija' },
+  {
+    name: 'Krapina',
+    postalCode: '49000',
+    county: 'Krapinsko-zagorska županija',
+  },
+  { name: 'Umag', postalCode: '52470', county: 'Istarska županija' },
+  {
+    name: 'Pleternica',
+    postalCode: '34310',
+    county: 'Požesko-slavonska županija',
+  },
+  {
+    name: 'Opatija',
+    postalCode: '51410',
+    county: 'Primorsko-goranska županija',
+  },
+  { name: 'Labin', postalCode: '52220', county: 'Istarska županija' },
+  {
+    name: 'Valpovo',
+    postalCode: '31550',
+    county: 'Osječko-baranjska županija',
+  },
+  { name: 'Duga Resa', postalCode: '47250', county: 'Karlovačka županija' },
+  {
+    name: 'Belišće',
+    postalCode: '31551',
+    county: 'Osječko-baranjska županija',
+  },
+  {
+    name: 'Garešnica',
+    postalCode: '43280',
+    county: 'Bjelovarsko-bilogorska županija',
+  },
+  {
+    name: 'Crikvenica',
+    postalCode: '51260',
+    county: 'Primorsko-goranska županija',
+  },
+  {
+    name: 'Beli Manastir',
+    postalCode: '31300',
+    county: 'Osječko-baranjska županija',
+  },
+  {
+    name: 'Ploče',
+    postalCode: '20340',
+    county: 'Dubrovačko-neretvanska županija',
+  },
+  {
+    name: 'Trilj',
+    postalCode: '21240',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  { name: 'Otočac', postalCode: '53220', county: 'Ličko-senjska županija' },
+  {
+    name: 'Donji Miholjac',
+    postalCode: '31540',
+    county: 'Osječko-baranjska županija',
+  },
+  {
+    name: 'Imotski',
+    postalCode: '21260',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  { name: 'Glina', postalCode: '44400', county: 'Sisačko-moslavačka županija' },
+  { name: 'Benkovac', postalCode: '23420', county: 'Zadarska županija' },
+  { name: 'Rab', postalCode: '51280', county: 'Primorsko-goranska županija' },
+  { name: 'Vodice', postalCode: '22211', county: 'Šibensko-kninska županija' },
+  { name: 'Zabok', postalCode: '49210', county: 'Krapinsko-zagorska županija' },
+  { name: 'Pazin', postalCode: '52000', county: 'Istarska županija' },
+  {
+    name: 'Čazma',
+    postalCode: '43240',
+    county: 'Bjelovarsko-bilogorska županija',
+  },
+  {
+    name: 'Kastav',
+    postalCode: '51215',
+    county: 'Primorsko-goranska županija',
+  },
+  {
+    name: 'Đurđevac',
+    postalCode: '48350',
+    county: 'Koprivničko-križevačka županija',
+  },
+  { name: 'Pakrac', postalCode: '34550', county: 'Požesko-slavonska županija' },
+  { name: 'Lepoglava', postalCode: '42250', county: 'Varaždinska županija' },
+  { name: 'Ludbreg', postalCode: '42230', county: 'Varaždinska županija' },
+  { name: 'Drniš', postalCode: '22320', county: 'Šibensko-kninska županija' },
+  {
+    name: 'Mali Lošinj',
+    postalCode: '51550',
+    county: 'Primorsko-goranska županija',
+  },
+  {
+    name: 'Ilok',
+    postalCode: '32236',
+    county: 'Vukovarsko-srijemska županija',
+  },
+  { name: 'Senj', postalCode: '53270', county: 'Ličko-senjska županija' },
+  { name: 'Ozalj', postalCode: '47280', county: 'Karlovačka županija' },
+  { name: 'Prelog', postalCode: '40323', county: 'Međimurska županija' },
+  { name: 'Bakar', postalCode: '51222', county: 'Primorsko-goranska županija' },
+  {
+    name: 'Otok',
+    postalCode: '32252',
+    county: 'Vukovarsko-srijemska županija',
+  },
+  {
+    name: 'Vrgorac',
+    postalCode: '21276',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  {
+    name: 'Grubišno Polje',
+    postalCode: '43290',
+    county: 'Bjelovarsko-bilogorska županija',
+  },
+  {
+    name: 'Kutjevo',
+    postalCode: '34340',
+    county: 'Požesko-slavonska županija',
+  },
+  {
+    name: 'Pregrada',
+    postalCode: '49218',
+    county: 'Krapinsko-zagorska županija',
+  },
+  {
+    name: 'Varaždinske Toplice',
+    postalCode: '42223',
+    county: 'Varaždinska županija',
+  },
+  { name: 'Lipik', postalCode: '34551', county: 'Požesko-slavonska županija' },
+  {
+    name: 'Mursko Središće',
+    postalCode: '40315',
+    county: 'Međimurska županija',
+  },
+  {
+    name: 'Zlatar',
+    postalCode: '49250',
+    county: 'Krapinsko-zagorska županija',
+  },
+  {
+    name: 'Delnice',
+    postalCode: '51300',
+    county: 'Primorsko-goranska županija',
+  },
+  {
+    name: 'Oroslavje',
+    postalCode: '49243',
+    county: 'Krapinsko-zagorska županija',
+  },
+  { name: 'Slunj', postalCode: '47240', county: 'Karlovačka županija' },
+  { name: 'Buzet', postalCode: '52420', county: 'Istarska županija' },
+  {
+    name: 'Vrbovsko',
+    postalCode: '51326',
+    county: 'Primorsko-goranska županija',
+  },
+  {
+    name: 'Donja Stubica',
+    postalCode: '49240',
+    county: 'Krapinsko-zagorska županija',
+  },
+  {
+    name: 'Korčula',
+    postalCode: '20260',
+    county: 'Dubrovačko-neretvanska županija',
+  },
+  {
+    name: 'Orahovica',
+    postalCode: '33515',
+    county: 'Virovitičko-podravska županija',
+  },
+  { name: 'Vodnjan', postalCode: '52215', county: 'Istarska županija' },
+  { name: 'Krk', postalCode: '51500', county: 'Primorsko-goranska županija' },
+  { name: 'Buje', postalCode: '52460', county: 'Istarska županija' },
+  {
+    name: 'Novi Vinodolski',
+    postalCode: '51250',
+    county: 'Primorsko-goranska županija',
+  },
+  { name: 'Biograd na Moru', postalCode: '23210', county: 'Zadarska županija' },
+  { name: 'Nin', postalCode: '23232', county: 'Zadarska županija' },
+  {
+    name: 'Kraljevica',
+    postalCode: '51262',
+    county: 'Primorsko-goranska županija',
+  },
+  { name: 'Čabar', postalCode: '51306', county: 'Primorsko-goranska županija' },
+  { name: 'Pag', postalCode: '23250', county: 'Zadarska županija' },
+  {
+    name: 'Hvar',
+    postalCode: '21450',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  { name: 'Novigrad', postalCode: '52466', county: 'Istarska županija' },
+  { name: 'Skradin', postalCode: '22222', county: 'Šibensko-kninska županija' },
+  {
+    name: 'Supetar',
+    postalCode: '21400',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  { name: 'Obrovac', postalCode: '23450', county: 'Zadarska županija' },
+  { name: 'Novalja', postalCode: '53291', county: 'Ličko-senjska županija' },
+  {
+    name: 'Opuzen',
+    postalCode: '20355',
+    county: 'Dubrovačko-neretvanska županija',
+  },
+  {
+    name: 'Klanjec',
+    postalCode: '49290',
+    county: 'Krapinsko-zagorska županija',
+  },
+  { name: 'Cres', postalCode: '51557', county: 'Primorsko-goranska županija' },
+  {
+    name: 'Stari Grad',
+    postalCode: '21460',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  {
+    name: 'Hrvatska Kostajnica',
+    postalCode: '44430',
+    county: 'Sisačko-moslavačka županija',
+  },
+  {
+    name: 'Vrlika',
+    postalCode: '21236',
+    county: 'Splitsko-dalmatinska županija',
+  },
+  { name: 'Vis', postalCode: '21480', county: 'Splitsko-dalmatinska županija' },
+  {
+    name: 'Komiža',
+    postalCode: '21485',
+    county: 'Splitsko-dalmatinska županija',
+  },
+];
+
 const generateCountriesWithCities = async (): Promise<string[]> => {
-  const _cities = [
-    { name: 'Rijeka', zip: '51000' },
-    { name: 'Zagreb', zip: '10000' },
-    { name: 'Split', zip: '21000' },
-    { name: 'Osijek', zip: '31000' },
-    { name: 'Dubrovnik', zip: '20000' },
-    { name: 'Ljubljana', zip: '1000' },
-  ];
   const _countries: string[] = [
     'Afganistan',
     'Albanija',
@@ -507,13 +893,9 @@ const generateCountriesWithCities = async (): Promise<string[]> => {
     'Zimbabve',
   ];
 
-  const existingCities = await db.query.cities.findMany({
-    columns: { id: true },
-  });
-  if (existingCities.length) return existingCities.map(({ id }) => id);
-
   const existingCountries = await db.query.countries.findMany();
   let insertedCountries: { name: string; insertedId: string }[];
+
   if (!existingCountries.length) {
     insertedCountries = await db
       .insert(countries)
@@ -530,21 +912,53 @@ const generateCountriesWithCities = async (): Promise<string[]> => {
     }));
   }
 
-  const insertedCities = await db
-    .insert(cities)
-    .values(
-      _cities.map((_city) => ({
-        name: _city.name,
-        postalCode: _city.zip,
-        countryId:
-          _city.name === 'Ljubljana'
-            ? insertedCountries.find((c) => c.name === 'Slovenija')?.insertedId
-            : insertedCountries.find((c) => c.name === 'Hrvatska')?.insertedId,
-      })),
-    )
-    .returning({ insertedId: cities.id });
+  const croatiaId = insertedCountries.find(
+    (c) => c.name === 'Hrvatska',
+  )?.insertedId;
+  if (!croatiaId) throw new Error('Croatia country not found');
 
-  return insertedCities.map(({ insertedId }) => insertedId);
+  const existingCroatianCities = await db
+    .select({ id: cities.id, name: cities.name, county: cities.county })
+    .from(cities)
+    .where(eq(cities.countryId, croatiaId));
+
+  const existingByName = new Map(
+    existingCroatianCities.map((c) => [c.name, c]),
+  );
+
+  const toInsert = CROATIAN_CITIES.filter((c) => !existingByName.has(c.name));
+  const toUpdate = CROATIAN_CITIES.filter((c) => existingByName.has(c.name));
+
+  let newCityIds: string[] = [];
+
+  if (toInsert.length > 0) {
+    const inserted = await db
+      .insert(cities)
+      .values(
+        toInsert.map((c) => ({
+          name: c.name,
+          postalCode: c.postalCode,
+          county: c.county,
+          countryId: croatiaId,
+        })),
+      )
+      .returning({ id: cities.id });
+    newCityIds = inserted.map((r) => r.id);
+  }
+
+  for (const city of toUpdate) {
+    const existing = existingByName.get(city.name)!;
+    await db
+      .update(cities)
+      .set({
+        county: city.county,
+        postalCode: city.postalCode,
+        updatedAt: new Date(),
+      })
+      .where(eq(cities.id, existing.id));
+  }
+
+  return [...existingCroatianCities.map((c) => c.id), ...newCityIds];
 };
 
 const generateAddresses = async (cityIds: string[]): Promise<string[]> => {

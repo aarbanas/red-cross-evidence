@@ -11,6 +11,7 @@ type Props = {
   cityFieldName: string;
   postalCodeFieldName: string;
   countryId: string;
+  countyFieldName?: string;
   disabled?: boolean;
 };
 
@@ -20,6 +21,7 @@ const FormCitySearch: React.FC<Props> = ({
   cityFieldName,
   postalCodeFieldName,
   countryId,
+  countyFieldName,
   disabled,
 }) => {
   'use no memo';
@@ -55,11 +57,13 @@ const FormCitySearch: React.FC<Props> = ({
       // City found in DB - store SearchCityReturnDTO
       setValue(cityFieldName, matchingCity);
       setValue(postalCodeFieldName, matchingCity.postalCode ?? '');
+      if (countyFieldName) setValue(countyFieldName, matchingCity.county ?? '');
     } else {
       // City not found - store as string for new city creation
       // setSelectedCity(null);
       setValue(cityFieldName, value);
       setValue(postalCodeFieldName, '');
+      if (countyFieldName) setValue(countyFieldName, '');
     }
 
     setIsOpen(value.length > 0);
@@ -71,6 +75,7 @@ const FormCitySearch: React.FC<Props> = ({
     setSearchTerm(city.name);
     setValue(cityFieldName, city); // Store full SearchCityReturnDTO
     setValue(postalCodeFieldName, city.postalCode ?? '');
+    if (countyFieldName) setValue(countyFieldName, city.county ?? '');
     setIsOpen(false);
   };
 

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import { CROATIAN_COUNTIES } from '@/server/constants/counties';
 import cityService from '@/server/services/city/city.service';
 
 export const cityRouter = createTRPCRouter({
@@ -14,4 +15,7 @@ export const cityRouter = createTRPCRouter({
       const { searchTerm, countryId } = input;
       return cityService.searchCities(searchTerm, countryId);
     }),
+  getCounties: protectedProcedure.query(() => {
+    return CROATIAN_COUNTIES;
+  }),
 });
