@@ -2,7 +2,7 @@ version: "3.8"
 services:
   postgres:
     container_name: red-cross-evidence-db
-    image: postgres
+    image: postgres:17
     restart: always
     env_file:
       - .env

@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { eq } from 'drizzle-orm';
@@ -77,6 +77,12 @@ export const getSocieties = async () => {
     process.cwd(),
     'scripts/societies_parser/societies.json',
   );
+  if (!existsSync(jsonPath)) {
+    console.log('Society seeding skipped due to missing file');
+
+    return [];
+  }
+
   const raw = readFileSync(jsonPath, 'utf-8');
   const data = JSON.parse(raw) as SocietiesJson;
 

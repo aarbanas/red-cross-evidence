@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import * as XLSX from 'xlsx';
 import { EducationType, educations } from '@/server/db/schema';
@@ -70,6 +70,12 @@ const readExcelFile = (filePath: string): Education[] => {
 
 const populateEducations = async () => {
   const filePath = 'scripts/educations_parser/edukacije.xlsx';
+  if (!existsSync(filePath)) {
+    console.log('Education seeding skipped due to missing file');
+
+    return [];
+  }
+
   const _educations = readExcelFile(filePath);
 
   return db.insert(educations).values(_educations).returning();
