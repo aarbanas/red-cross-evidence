@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { CROATIAN_COUNTIES } from '@/server/constants/counties';
 
 export const volunteerSearchQuerySchema = z.object({
   location: z
@@ -49,13 +50,16 @@ export interface FieldDescriptor {
   examples?: string[];
   outputType: string;
   normalization?: Record<string, string[]>;
+  validValues?: readonly string[];
 }
 
 export const VOLUNTEER_SEARCH_FIELDS: Record<string, FieldDescriptor> = {
   location: {
-    description: 'Prepoznaj grad i/ili županiju volontera.',
+    description:
+      'Prepoznaj grad i/ili županiju volontera. Za county koristi TOČNO jedan od dozvoljenih naziva županija.',
     outputType: '{ "city": string|null, "county": string|null }',
     examples: ['iz Rijeke', 'primorsko-goranska županija'],
+    validValues: CROATIAN_COUNTIES,
   },
   licenses: {
     description:

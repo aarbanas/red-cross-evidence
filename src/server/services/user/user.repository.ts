@@ -960,6 +960,25 @@ const userRepository = {
       conditions.push(ilike(cities.name, `%${filters.location.city}%`));
     }
 
+    if (filters.location?.county) {
+      const county = filters.location.county;
+      conditions.push(
+        exists(
+          db
+            .select({ id: profilesAddresses.profileId })
+            .from(profilesAddresses)
+            .innerJoin(addresses, eq(profilesAddresses.addressId, addresses.id))
+            .innerJoin(cities, eq(addresses.cityId, cities.id))
+            .where(
+              and(
+                eq(profilesAddresses.profileId, profiles.id),
+                eq(cities.county, county),
+              ),
+            ),
+        ),
+      );
+    }
+
     if (filters.active !== null && filters.active !== undefined) {
       conditions.push(eq(users.active, filters.active));
     }

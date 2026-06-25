@@ -9,6 +9,10 @@ export const buildSystemPrompt = (): string => {
         rule += `\n  Primjeri: ${descriptor.examples.join(' | ')}`;
       }
 
+      if (descriptor.validValues?.length) {
+        rule += `\n  Dozvoljene vrijednosti (koristi TOČNO jednu): ${descriptor.validValues.join(', ')}`;
+      }
+
       if (descriptor.normalization) {
         const mappings = Object.entries(descriptor.normalization)
           .map(
