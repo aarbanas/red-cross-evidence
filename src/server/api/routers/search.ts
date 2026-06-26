@@ -1,8 +1,10 @@
 import { TRPCError } from '@trpc/server';
+import { and, desc, eq } from 'drizzle-orm';
 import OpenAI from 'openai';
 import { z } from 'zod';
 import { env } from '@/env';
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import { searchHistory } from '@/server/db/schema/search';
 import { buildSystemPrompt } from '@/server/search/buildSearchPrompt';
 import { volunteerSearchQuerySchema } from '@/server/search/volunteerSearchFields';
 import llmUsageService from '@/server/services/config/llmUsage.service';
@@ -113,5 +115,41 @@ export const searchRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       return userService.advancedSearch(input);
+    }),
+
+  getHistory: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.db
+      .select()
+      .from(searchHistory)
+      .where(eq(searchHistory.userId, ctx.session.user.id))
+      .orderBy(desc(searchHistory.createdAt));
+  }),
+
+  saveHistory: protectedProcedure
+    .input(
+      z.object({
+        prompt: z.string().min(1),
+        filters: volunteerSearchQuerySchema,
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.insert(searchHistory).values({
+        userId: ctx.session.user.id,
+        prompt: input.prompt,
+        filters: input.filters,
+      });
+    }),
+
+  deleteHistoryEntry: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .delete(searchHistory)
+        .where(
+          and(
+            eq(searchHistory.id, input.id),
+            eq(searchHistory.userId, ctx.session.user.id),
+          ),
+        );
     }),
 });
