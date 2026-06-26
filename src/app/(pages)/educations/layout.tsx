@@ -24,6 +24,10 @@ const LIST_DETAIL_REGEX = /\/educations\/list\/([0-9a-f-]{36}|create)(\/|$)/;
 const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
   const pathname = usePathname();
   const [syncDialogOpen, setSyncDialogOpen] = useState(false);
+  const { data: overviewConfig } = api.config.getAppConfig.useQuery({
+    key: 'education_overview_url',
+  });
+  const educationOverviewUrl = overviewConfig?.[0]?.value;
   const syncMutation = api.education.list.sync.useMutation({
     onSuccess: ({ count }) =>
       toast.success(`Sinkronizirano ${count} edukacija.`),
@@ -79,14 +83,16 @@ const EducationLayout: FC<PropsWithChildren> = ({ children }) => {
             <DialogTitle>Sinkronizacija edukacija</DialogTitle>
             <DialogDescription>
               Pokretanjem sinkronizacije preuzet će se sve edukacije sa stranice{' '}
-              <Link
-                href="https://www.hck.hr/edukacije-publikacije/edukacije-hrvatskog-crvenog-kriza/74"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cursor-pointer underline"
-              >
-                https://www.hck.hr/edukacije-publikacije/edukacije-hrvatskog-crvenog-kriza/74
-              </Link>{' '}
+              {educationOverviewUrl && (
+                <Link
+                  href={educationOverviewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cursor-pointer underline"
+                >
+                  {educationOverviewUrl}
+                </Link>
+              )}{' '}
               i usporediti s postojećim podacima u bazi. Nove edukacije bit će
               dodane, a postojeće ažurirane. Ovaj proces može potrajati nekoliko
               minuta.
