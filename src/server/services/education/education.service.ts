@@ -74,6 +74,9 @@ const educationService = {
     removeParticipant: async (termId: string, profileId: string) => {
       return educationRepository.term.removeParticipant(termId, profileId);
     },
+    getAllTitles: async () => {
+      return educationRepository.term.getAllTitles();
+    },
     findByEducationId: async (
       educationId: string,
       excludeProfileId?: string,

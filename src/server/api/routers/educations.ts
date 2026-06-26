@@ -175,6 +175,9 @@ export const educationRouter = createTRPCRouter({
         );
         return { success: true };
       }),
+    getAllTitles: protectedProcedure.query(async () => {
+      return educationService.term.getAllTitles();
+    }),
     findByEducationId: protectedProcedure
       .input(
         z.object({

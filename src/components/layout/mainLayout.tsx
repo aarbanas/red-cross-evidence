@@ -5,6 +5,7 @@ import {
   Building2,
   IdCard,
   LogOut,
+  Settings,
   Shirt,
   Users,
 } from 'lucide-react';
@@ -129,6 +130,17 @@ const MainLayout: React.FC<Readonly<Props>> = ({
 
         <SidebarFooter>
           <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname.includes('/config')}
+              >
+                <Link href="/config">
+                  <Settings />
+                  <span>Konfiguracija</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton onClick={onLogoutClick}>
                 <LogOut />

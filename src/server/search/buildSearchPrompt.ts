@@ -50,6 +50,32 @@ Ispravan odgovor:
   "location": { "city": "Split", "county": null },
   "licenses": [],
   "courses": [{ "name": "tečaj prve pomoći", "completed": true }],
+  "coursesOperator": "AND",
+  "languages": [],
+  "age": { "min": null, "max": null },
+  "active": null
+}
+
+Primjer — upit: "Volonteri koji su položili edukaciju A ili edukaciju B."
+Ispravan odgovor:
+{
+  "location": { "city": null, "county": null },
+  "licenses": [],
+  "courses": [{ "name": "edukaciju A", "completed": true }, { "name": "edukaciju B", "completed": true }],
+  "coursesOperator": "OR",
+  "languages": [],
+  "age": { "min": null, "max": null },
+  "active": null
+}
+
+Primjer — upit: "Volonteri koji su položili edukaciju Osnovna edukacija o odnosima s javnostima HCK i Edukacija volontera za provedbu programa Mladi za bolji svijet."
+VAŽNO: "položili" završava na "ili" ali to NIJE veznik "ili" — to je glagolski nastavak. Veznik između dva naziva je "i".
+Ispravan odgovor:
+{
+  "location": { "city": null, "county": null },
+  "licenses": [],
+  "courses": [{ "name": "Osnovna edukacija o odnosima s javnostima HCK", "completed": true }, { "name": "Edukacija volontera za provedbu programa Mladi za bolji svijet", "completed": true }],
+  "coursesOperator": "AND",
   "languages": [],
   "age": { "min": null, "max": null },
   "active": null
@@ -61,6 +87,7 @@ Ispravan odgovor:
   "location": { "city": null, "county": "Primorsko-goranska županija" },
   "licenses": [],
   "courses": [],
+  "coursesOperator": "AND",
   "languages": [],
   "age": { "min": null, "max": null },
   "active": null

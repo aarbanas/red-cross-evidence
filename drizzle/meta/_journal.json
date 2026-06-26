@@ -106,6 +106,13 @@
       "when": 1782130289999,
       "tag": "0014_long_hemingway",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1782402318527,
+      "tag": "0015_bright_luckman",
+      "breakpoints": true
     }
   ]
 }

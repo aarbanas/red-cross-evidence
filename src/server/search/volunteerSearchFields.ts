@@ -23,6 +23,7 @@ export const volunteerSearchQuerySchema = z.object({
       }),
     )
     .optional(),
+  coursesOperator: z.enum(['AND', 'OR']).optional(),
   languages: z
     .array(
       z.object({
@@ -80,6 +81,17 @@ export const VOLUNTEER_SEARCH_FIELDS: Record<string, FieldDescriptor> = {
     examples: [
       'položio osnovna obuka spašavanja → { "name": "osnovna obuka spašavanja", "completed": true }',
       'završio edukaciju Prva pomoć → { "name": "Prva pomoć", "completed": true }',
+    ],
+  },
+  coursesOperator: {
+    description:
+      'Logički operator za kombiniranje više tečajeva/edukacija. Koristi "OR" ISKLJUČIVO ako se riječ "ili" pojavljuje KAO SAMOSTALNA RIJEČ (okružena razmacima) između naziva dvaju tečajeva/edukacija — ne unutar drugog konteksta. Koristi "AND" u svim ostalim slučajevima: ako su tečajevi odvojeni s "i", "AND", "and", ako postoji samo jedan tečaj, ili ako nisi siguran.',
+    outputType: '"AND" | "OR"',
+    examples: [
+      '"... položili edukaciju A ili edukaciju B" → "OR"  (samostalna riječ "ili" između dva naziva)',
+      '"... položili edukaciju A i edukaciju B" → "AND"  (veznik "i")',
+      '"... položili edukaciju A" → "AND"  (samo jedan tečaj)',
+      '"... položili edukaciju Osnovna edukacija o odnosima s javnostima HCK i Edukacija volontera..." → "AND"  ("i" je veznik, "položili" je glagol — ne sadrži "ili" kao veznik)',
     ],
   },
   languages: {

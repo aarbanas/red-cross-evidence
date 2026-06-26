@@ -5,6 +5,7 @@ import { env } from '@/env';
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
 import { buildSystemPrompt } from '@/server/search/buildSearchPrompt';
 import { volunteerSearchQuerySchema } from '@/server/search/volunteerSearchFields';
+import llmUsageService from '@/server/services/config/llmUsage.service';
 import userService from '@/server/services/user/user.service';
 
 const OLLAMA_MODEL = 'llama3.2:3b';
@@ -73,11 +74,12 @@ export const searchRouter = createTRPCRouter({
   parsePrompt: protectedProcedure
     .input(z.object({ prompt: z.string().min(1) }))
     .mutation(async ({ input }) => {
+      await llmUsageService.checkAndIncrementUsage();
+
       let responseText: string;
 
       try {
         responseText = await getLLMResponse(input.prompt);
-        console.log(responseText);
       } catch (error) {
         console.error(error);
         throw new TRPCError({

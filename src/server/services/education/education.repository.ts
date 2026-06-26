@@ -490,6 +490,13 @@ const educationRepository = {
         )
         .execute();
     },
+    getAllTitles: async () => {
+      return db
+        .select({ id: educationTerms.id, title: educationTerms.title })
+        .from(educationTerms)
+        .orderBy(asc(educationTerms.title))
+        .execute();
+    },
     findByEducationId: async (
       educationId: string,
       excludeProfileId?: string,
