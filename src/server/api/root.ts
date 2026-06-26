@@ -2,20 +2,17 @@ import { countryRouter } from '@/server/api/routers/country';
 import { educationRouter } from '@/server/api/routers/educations';
 import { equipmentRouter } from '@/server/api/routers/equipment';
 import { postRouter } from '@/server/api/routers/post';
+import { searchRouter } from '@/server/api/routers/search';
 import { skillRouter } from '@/server/api/routers/skill';
 import { userRouter } from '@/server/api/routers/user';
 import { createCallerFactory, createTRPCRouter } from '@/server/api/trpc';
 import { addressRouter } from './routers/address';
 import { cityRouter } from './routers/city';
 import { citySocietyRouter } from './routers/citySociety';
+import { configRouter } from './routers/config';
 import { licenseRouter } from './routers/license';
 import { societyRouter } from './routers/society';
 
-/**
- * This is the primary router for your server.
- *
- * All routers added in /api/routers should be manually added here.
- */
 export const appRouter = createTRPCRouter({
   post: postRouter,
   user: userRouter,
@@ -28,6 +25,8 @@ export const appRouter = createTRPCRouter({
   address: addressRouter,
   society: societyRouter,
   citySociety: citySocietyRouter,
+  search: searchRouter,
+  config: configRouter,
 });
 
 // export type definition of API

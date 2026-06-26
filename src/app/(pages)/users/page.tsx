@@ -1,5 +1,5 @@
 'use client';
-import { Plus } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -11,12 +11,15 @@ import {
   useState,
 } from 'react';
 import { toast } from 'react-toastify';
+import AdvancedSearchDialog from '@/app/(pages)/users/_components/AdvancedSearchDialog';
 import Users from '@/app/(pages)/users/_components/Users';
 import UsersSearch from '@/app/(pages)/users/_components/UsersSearch';
 import type { DropdownOption } from '@/components/atoms/Dropdown';
 import MainLayout from '@/components/layout/mainLayout';
 import LoadingSpinner from '@/components/organisms/loadingSpinner/LoadingSpinner';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import type { VolunteerSearchQuery } from '@/server/search/volunteerSearchFields';
 import { api } from '@/trpc/react';
 
 const UsersPageContent = () => {
@@ -24,6 +27,8 @@ const UsersPageContent = () => {
   const [filter, setFilter] = useState<Record<string, string> | undefined>(
     undefined,
   );
+  const [advancedFilters, setAdvancedFilters] =
+    useState<VolunteerSearchQuery | null>(null);
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {
@@ -52,6 +57,14 @@ const UsersPageContent = () => {
     setFilter(newFilter);
   }, []);
 
+  const handleFiltersApplied = useCallback((filters: VolunteerSearchQuery) => {
+    setAdvancedFilters(filters);
+  }, []);
+
+  const handleClearAdvancedFilters = useCallback(() => {
+    setAdvancedFilters(null);
+  }, []);
+
   return (
     <MainLayout
       headerChildren={
@@ -66,12 +79,24 @@ const UsersPageContent = () => {
         </div>
       }
     >
-      <div className="flex">
+      <div className="flex items-center gap-5">
         <UsersSearch onSearch={handleSearch} cities={cities} />
+        <AdvancedSearchDialog onFiltersApplied={handleFiltersApplied} />
       </div>
 
+      {advancedFilters && (
+        <div className="mt-2">
+          <Badge variant="outline" className="gap-1">
+            Aktivno napredno pretraživanje
+            <button type="button" onClick={handleClearAdvancedFilters}>
+              <X className="h-3 w-3" />
+            </button>
+          </Badge>
+        </div>
+      )}
+
       <Suspense fallback={<LoadingSpinner />}>
-        <Users filter={filter} />
+        <Users filter={filter} advancedFilters={advancedFilters} />
       </Suspense>
     </MainLayout>
   );

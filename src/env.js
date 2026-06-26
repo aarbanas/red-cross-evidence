@@ -30,6 +30,9 @@ export const env = createEnv({
       .default('false'),
     UPSTASH_REDIS_REST_URL: z.string().url(),
     UPSTASH_REDIS_REST_TOKEN: z.string(),
+    OLLAMA_BASE_URL: z.string().url(),
+    LLM_PROVIDER: z.enum(['ollama', 'openai']),
+    OPENAI_API_KEY: z.string(),
   },
 
   /**
@@ -54,6 +57,9 @@ export const env = createEnv({
     RATE_LIMITER_ENABLED: process.env.RATE_LIMITER_ENABLED,
     UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
     UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+    OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL,
+    LLM_PROVIDER: process.env.LLM_PROVIDER,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

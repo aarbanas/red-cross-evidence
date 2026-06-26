@@ -8,6 +8,7 @@ import type {
   WorkStatus,
 } from '@/server/db/schema';
 import type { FindQueryDTO } from '@/server/db/utility/types';
+import type { VolunteerSearchQuery } from '@/server/search/volunteerSearchFields';
 import addressRepository from '@/server/services/address/address.repository';
 import cityRepository from '@/server/services/city/city.repository';
 import type {
@@ -195,6 +196,13 @@ const userService = {
   },
   findByName: async (search: string) => {
     return userRepository.findByName(search);
+  },
+  advancedSearch: async (data: {
+    filters: VolunteerSearchQuery;
+    page: number;
+    limit: number;
+  }) => {
+    return userRepository.advancedSearch(data);
   },
   updateSkills: async (
     userId: string,
