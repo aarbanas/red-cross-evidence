@@ -2,7 +2,7 @@ import 'server-only';
 import * as cheerio from 'cheerio';
 import type { AnyNode, Element } from 'domhandler';
 import { Agent, fetch as undiciFetch } from 'undici';
-import { EducationType } from '@/server/db/schema';
+import type { EducationType } from '@/server/db/schema';
 
 const tlsAgent = new Agent({ connect: { rejectUnauthorized: false } });
 
@@ -17,21 +17,6 @@ export type ScrapedEducation = {
   topics: string | null;
   type: EducationType;
 };
-
-const CATEGORY_URLS: [string, EducationType][] = [
-  [
-    'https://www.hck.hr/edukacije-publikacije/edukacije-hrvatskog-crvenog-kriza/za-volontere/271',
-    EducationType.VOLUNTEERS,
-  ],
-  [
-    'https://www.hck.hr/edukacije-publikacije/edukacije-hrvatskog-crvenog-kriza/za-javnost/272',
-    EducationType.PUBLIC,
-  ],
-  [
-    'https://www.hck.hr/edukacije-publikacije/edukacije-hrvatskog-crvenog-kriza/za-djelatnike/270',
-    EducationType.EMPLOYEE,
-  ],
-];
 
 // Croatian label → schema field mapping (derived from existing seed/headerMapping)
 const LABEL_MAP: Record<
@@ -158,11 +143,12 @@ const collectCategoryUrls = async (
 };
 
 export const scrapeEducations = async (
+  categoryUrls: [string, EducationType][],
   onProgress?: (current: number, total: number) => void,
 ): Promise<ScrapedEducation[]> => {
   const allItems: Array<{ detailUrl: string; type: EducationType }> = [];
 
-  for (const [url, type] of CATEGORY_URLS) {
+  for (const [url, type] of categoryUrls) {
     const urls = await collectCategoryUrls(url, type);
     allItems.push(...urls);
   }

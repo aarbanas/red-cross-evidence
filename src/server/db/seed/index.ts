@@ -1,10 +1,13 @@
 import { getEducationTerms } from '@/server/db/seed/educationTerm.seed';
+import { seedConfig } from './config.seed';
 import { getEducations } from './education.seed';
 import { getLicenses } from './license.seed';
 import { getSocieties } from './society.seed';
 import { getAdmin, getUsers } from './user.seed';
 
 void (async () => {
+  await seedConfig();
+  console.log('Done seeding config.');
   await getLicenses();
   console.log('Done seeding licenses.');
   await getUsers();

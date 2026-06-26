@@ -4,17 +4,26 @@ import { db } from '@/server/db';
 import {
   cities,
   citySocieties,
+  type EducationType,
   educations,
   societies,
 } from '@/server/db/schema';
 import { scrapeEducations } from '@/server/scrapers/education.scraper';
 import { scrapeSocieties } from '@/server/scrapers/society.scraper';
+import appConfigService from '@/server/services/config/appConfig.service';
 
 const synchronisationParserService = {
   syncEducations: async (
     onProgress?: (current: number, total: number) => void,
   ): Promise<{ count: number }> => {
-    const scraped = await scrapeEducations(onProgress);
+    const configRows = await appConfigService.getRequiredByKey(
+      'education_category_url',
+    );
+    const categoryUrls: [string, EducationType][] = configRows.map((row) => [
+      row.value,
+      row.metadata as EducationType,
+    ]);
+    const scraped = await scrapeEducations(categoryUrls, onProgress);
 
     const existing = await db
       .select({ id: educations.id, title: educations.title })
@@ -45,8 +54,14 @@ const synchronisationParserService = {
     societiesCount: number;
     citySocietiesCount: number;
   }> => {
+    const configRows =
+      await appConfigService.getRequiredByKey('society_scrape_url');
+    const societyUrls: [string, string][] = configRows.map((row) => [
+      row.metadata!,
+      row.value,
+    ]);
     const { societies: scrapedSocieties, citySocieties: scrapedCitySocieties } =
-      await scrapeSocieties(onProgress);
+      await scrapeSocieties(societyUrls, onProgress);
 
     await db.transaction(async (tx) => {
       // --- societies ---

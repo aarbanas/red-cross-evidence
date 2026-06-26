@@ -22,6 +22,10 @@ import { api } from '@/trpc/react';
 const SocietiesLayout: FC<PropsWithChildren> = ({ children }) => {
   const pathname = usePathname();
   const [syncDialogOpen, setSyncDialogOpen] = useState(false);
+  const { data: overviewConfig } = api.config.getAppConfig.useQuery({
+    key: 'society_overview_url',
+  });
+  const societyOverviewUrl = overviewConfig?.[0]?.value;
   const syncMutation = api.society.sync.useMutation({
     onSuccess: ({ societiesCount, citySocietiesCount }) =>
       toast.success(
@@ -74,14 +78,16 @@ const SocietiesLayout: FC<PropsWithChildren> = ({ children }) => {
             <DialogDescription>
               Pokretanjem sinkronizacije preuzet će se sva županijska i gradska
               društva sa stranice{' '}
-              <Link
-                href="https://www.hck.hr/adresar/50"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cursor-pointer underline"
-              >
-                https://www.hck.hr/adresar/50
-              </Link>{' '}
+              {societyOverviewUrl && (
+                <Link
+                  href={societyOverviewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cursor-pointer underline"
+                >
+                  {societyOverviewUrl}
+                </Link>
+              )}{' '}
               i usporediti s postojećim podacima u bazi. Nova društva bit će
               dodana, a postojeća ažurirana. Ovaj proces može potrajati nekoliko
               minuta.

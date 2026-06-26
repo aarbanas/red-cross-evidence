@@ -1,4 +1,4 @@
-import { integer, pgTable, unique, uuid } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, unique, uuid } from 'drizzle-orm/pg-core';
 
 export const llmUsage = pgTable(
   'llm_usage',
@@ -17,3 +17,18 @@ export const llmConfig = pgTable('llm_config', {
   id: uuid('id').defaultRandom().primaryKey(),
   monthlyLimit: integer('monthly_limit').notNull().default(100),
 });
+
+export const appConfig = pgTable(
+  'app_config',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    key: text('key').notNull(),
+    value: text('value').notNull(),
+    metadata: text('metadata'),
+  },
+  (table) => ({
+    uniqueKeyMetadata: unique()
+      .on(table.key, table.metadata)
+      .nullsNotDistinct(),
+  }),
+);

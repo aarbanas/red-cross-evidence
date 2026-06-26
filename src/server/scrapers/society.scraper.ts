@@ -19,48 +19,6 @@ export type ScrapedCitySociety = ScrapedSociety & {
   societyName: string;
 };
 
-const URLS: [string, string][] = [
-  [
-    'bjelovarsko-bilogorska',
-    'https://www.hck.hr/adresar/bjelovarsko-bilogorska/51',
-  ],
-  ['brodsko-posavska', 'https://www.hck.hr/adresar/brodsko-posavska/52'],
-  [
-    'dubrovacko-neretvanska',
-    'https://www.hck.hr/adresar/dubrovacko-neretvanska/53',
-  ],
-  ['grad-zagreb', 'https://www.hck.hr/adresar/grad-zagreb/54'],
-  ['istarska', 'https://www.hck.hr/adresar/istarska/55'],
-  ['karlovacka', 'https://www.hck.hr/adresar/karlovacka/56'],
-  [
-    'koprivnicko-krizevacka',
-    'https://www.hck.hr/adresar/koprivnicko-krizevacka/57',
-  ],
-  ['krapinsko-zagorska', 'https://www.hck.hr/adresar/krapinsko-zagorska/58'],
-  ['licko-senjska', 'https://www.hck.hr/adresar/licko-senjska/59'],
-  ['medjimurska', 'https://www.hck.hr/adresar/medjimurska/60'],
-  ['osjecko-baranjska', 'https://www.hck.hr/adresar/osjecko-baranjska/61'],
-  ['pozesko-slavonska', 'https://www.hck.hr/adresar/pozesko-slavonska/62'],
-  ['primorsko-goranska', 'https://www.hck.hr/adresar/primorsko-goranska/63'],
-  ['sisacko-moslavacka', 'https://www.hck.hr/adresar/sisacko-moslavacka/64'],
-  [
-    'splitsko-dalmatinska',
-    'https://www.hck.hr/adresar/splitsko-dalmatinska/65',
-  ],
-  ['sibensko-kninska', 'https://www.hck.hr/adresar/sibensko-kninska/66'],
-  ['varazdinska', 'https://www.hck.hr/adresar/varazdinska/67'],
-  [
-    'viroviticko-podravska',
-    'https://www.hck.hr/adresar/viroviticko-podravska/68',
-  ],
-  [
-    'vukovarsko-srijemska',
-    'https://www.hck.hr/adresar/vukovarsko-srijemska/69',
-  ],
-  ['zadarska', 'https://www.hck.hr/adresar/zadarska/70'],
-  ['zagrebacka', 'https://www.hck.hr/adresar/zagrebacka/71'],
-];
-
 const isElement = (node: AnyNode): node is Element => node.type === 'tag';
 
 const cleanText = (text: string): string => {
@@ -240,6 +198,7 @@ const parsePage = async (
 };
 
 export const scrapeSocieties = async (
+  urls: [string, string][],
   onProgress?: (current: number, total: number) => void,
 ): Promise<{
   societies: ScrapedSociety[];
@@ -247,10 +206,10 @@ export const scrapeSocieties = async (
 }> => {
   const societies: ScrapedSociety[] = [];
   const citySocieties: ScrapedCitySociety[] = [];
-  const total = URLS.length;
+  const total = urls.length;
 
-  for (let i = 0; i < URLS.length; i++) {
-    const entry = URLS[i];
+  for (let i = 0; i < urls.length; i++) {
+    const entry = urls[i];
     if (!entry) continue;
     const [slug, url] = entry;
     const { society, citySocieties: cities } = await parsePage(slug, url);
