@@ -12,9 +12,10 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
-import { env } from '@/env'; // Import the environment variables
+import { env } from '@/env';
 import { auth } from '@/server/auth';
 import { db } from '@/server/db';
+import { UserRole } from '@/server/db/schema';
 
 /**
  * 1. CONTEXT
@@ -119,7 +120,29 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
 
   return next({
     ctx: {
-      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
+export const adminProcedure = t.procedure.use(async ({ ctx, next }) => {
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
+  }
+
+  if (ctx.session.user.role !== UserRole.ADMIN) {
+    throw new TRPCError({ code: 'FORBIDDEN' });
+  }
+
+  if (rateLimiter) {
+    const { success } = await rateLimiter.limit(ctx.session.user.id);
+    if (!success) {
+      throw new TRPCError({ code: 'TOO_MANY_REQUESTS' });
+    }
+  }
+
+  return next({
+    ctx: {
       session: { ...ctx.session, user: ctx.session.user },
     },
   });

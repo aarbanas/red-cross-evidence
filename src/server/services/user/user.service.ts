@@ -4,6 +4,7 @@ import type {
   EducationLevel,
   LanguageLevel,
   Sex,
+  UserRole,
   UserType,
   WorkStatus,
 } from '@/server/db/schema';
@@ -217,6 +218,9 @@ const userService = {
     } catch (error) {
       throw mapDbError(error);
     }
+  },
+  updateRole: async (userId: string, role: UserRole) => {
+    return userRepository.updateRole(userId, role);
   },
 };
 

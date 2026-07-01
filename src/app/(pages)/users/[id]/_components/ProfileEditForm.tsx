@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -13,7 +13,13 @@ import FormInput from '@/components/organisms/form/formInput/FormInput';
 import FormSelect from '@/components/organisms/form/formSelect/FormSelect';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { EducationLevel, Sex, UserType, WorkStatus } from '@/server/db/schema';
+import {
+  EducationLevel,
+  Sex,
+  UserRole,
+  UserType,
+  WorkStatus,
+} from '@/server/db/schema';
 import { api } from '@/trpc/react';
 
 type FormData = {
@@ -44,12 +50,22 @@ type Props = {
   defaultValues: FormData;
   email: string;
   active: boolean | null;
+  role: UserRole;
+  isAdmin: boolean;
 };
 
 const PGZ_SOCIETY_NAME = 'Društvo Crvenog Križa Primorsko-goranske županije';
 
-const ProfileEditForm = ({ userId, defaultValues, email, active }: Props) => {
+const ProfileEditForm = ({
+  userId,
+  defaultValues,
+  email,
+  active,
+  role,
+  isAdmin,
+}: Props) => {
   const form = useForm<FormData>({ defaultValues });
+  const [selectedRole, setSelectedRole] = useState<UserRole>(role);
   const { isSubmitting } = form.formState;
   const selectedSocietyId = useWatch({
     control: form.control,
@@ -104,33 +120,47 @@ const ProfileEditForm = ({ userId, defaultValues, email, active }: Props) => {
     },
   });
 
+  const updateRole = api.user.updateRole.useMutation({
+    onError: (error) => {
+      toast(error.message, { type: 'error' });
+    },
+  });
+
   const handleSubmit = async () => {
     const data = form.getValues();
 
-    await updateProfile.mutateAsync({
-      userId,
-      profile: {
-        firstName: data.profile.firstName,
-        lastName: data.profile.lastName,
-        oib: data.profile.oib,
-        sex: data.profile.sex as Sex,
-        type: data.profile.type as UserType,
-        birthDate: data.profile.birthDate || null,
-        birthPlace: data.profile.birthPlace || null,
-        parentName: data.profile.parentName || null,
-        nationality: data.profile.nationality || null,
-        phone: data.profile.phone || null,
-        societyId: data.profile.societyId || null,
-        citySocietyId: data.profile.citySocietyId || null,
-      },
-      workStatus: {
-        status: data.workStatus.status as WorkStatus,
-        educationLevel:
-          (data.workStatus.educationLevel as EducationLevel) || null,
-        profession: data.workStatus.profession || null,
-        institution: data.workStatus.institution || null,
-      },
-    });
+    const promises: Promise<unknown>[] = [
+      updateProfile.mutateAsync({
+        userId,
+        profile: {
+          firstName: data.profile.firstName,
+          lastName: data.profile.lastName,
+          oib: data.profile.oib,
+          sex: data.profile.sex as Sex,
+          type: data.profile.type as UserType,
+          birthDate: data.profile.birthDate || null,
+          birthPlace: data.profile.birthPlace || null,
+          parentName: data.profile.parentName || null,
+          nationality: data.profile.nationality || null,
+          phone: data.profile.phone || null,
+          societyId: data.profile.societyId || null,
+          citySocietyId: data.profile.citySocietyId || null,
+        },
+        workStatus: {
+          status: data.workStatus.status as WorkStatus,
+          educationLevel:
+            (data.workStatus.educationLevel as EducationLevel) || null,
+          profession: data.workStatus.profession || null,
+          institution: data.workStatus.institution || null,
+        },
+      }),
+    ];
+
+    if (isAdmin && selectedRole !== role) {
+      promises.push(updateRole.mutateAsync({ userId, role: selectedRole }));
+    }
+
+    await Promise.all(promises);
   };
 
   return (
@@ -146,6 +176,20 @@ const ProfileEditForm = ({ userId, defaultValues, email, active }: Props) => {
               disabled
             />
           </div>
+
+          {isAdmin && (
+            <div className="flex gap-10">
+              <FormSelect
+                id="role"
+                label="Rola"
+                value={selectedRole}
+                onChange={(e) => setSelectedRole(e.target.value as UserRole)}
+              >
+                <option value={UserRole.USER}>Korisnik</option>
+                <option value={UserRole.ADMIN}>Administrator</option>
+              </FormSelect>
+            </div>
+          )}
 
           <div className="flex gap-10">
             <FormInput
