@@ -8,29 +8,24 @@ import { db } from '@/server/db';
 import {
   accounts,
   sessions,
+  UserRole,
   users,
   verificationTokens,
 } from '@/server/db/schema';
 
-/**
- * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
- * object and keep type safety.
- *
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- */
 declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
+      role: UserRole;
     } & DefaultSession['user'];
   }
+}
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+declare module 'next-auth/jwt' {
+  interface JWT {
+    role?: UserRole;
+  }
 }
 
 /**
@@ -65,11 +60,11 @@ export const authConfig = {
         const isValid = await compare(password, user.password);
         if (!isValid) return null;
 
-        // Return user object with required fields for NextAuth
         return {
           id: user.id,
           email: user.email,
-          name: user.email, // Use email as name if no name field exists
+          name: user.email,
+          role: user.role,
         };
       },
     }),
@@ -90,9 +85,23 @@ export const authConfig = {
     verificationTokensTable: verificationTokens,
   }) as Adapter,
   callbacks: {
-    jwt: ({ token, user }) => {
+    jwt: async ({ token, user }) => {
       if (user) {
         token.sub = user.id;
+        token.role = (user as { role?: UserRole }).role;
+        return token;
+      }
+
+      if (token.sub) {
+        const [dbUser] = await db
+          .select({ role: users.role })
+          .from(users)
+          .where(eq(users.id, token.sub))
+          .limit(1);
+
+        if (dbUser) {
+          token.role = dbUser.role as UserRole;
+        }
       }
 
       return token;
@@ -102,6 +111,7 @@ export const authConfig = {
       user: {
         ...session.user,
         id: token.sub!,
+        role: token.role ?? UserRole.USER,
       },
     }),
   },

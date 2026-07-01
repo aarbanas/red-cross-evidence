@@ -20,6 +20,7 @@ import {
   profilesLicences,
   Sex,
   sizes,
+  UserRole,
   UserType,
   users,
   workStatuses,
@@ -247,6 +248,7 @@ async function generateAdmin(
         email,
         password: adminPassword,
         active: true,
+        role: UserRole.ADMIN,
         type: UserType.EMPLOYEE,
       })
       .returning();

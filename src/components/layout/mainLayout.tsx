@@ -12,7 +12,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import type React from 'react';
 import type { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -33,6 +33,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { UserRole } from '@/server/db/schema';
 
 type Props = {
   children: ReactNode;
@@ -85,11 +86,13 @@ const MainLayout: React.FC<Readonly<Props>> = ({
   headerChildren,
 }) => {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === UserRole.ADMIN;
 
-  async function onLogoutClick() {
+  const onLogoutClick = async () => {
     await signOut();
     window.location.href = '/';
-  }
+  };
 
   return (
     <SidebarProvider>
@@ -130,17 +133,19 @@ const MainLayout: React.FC<Readonly<Props>> = ({
 
         <SidebarFooter>
           <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                asChild
-                isActive={pathname.includes('/config')}
-              >
-                <Link href="/config">
-                  <Settings />
-                  <span>Konfiguracija</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            {isAdmin && (
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname.includes('/config')}
+                >
+                  <Link href="/config">
+                    <Settings />
+                    <span>Konfiguracija</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )}
             <SidebarMenuItem>
               <SidebarMenuButton onClick={onLogoutClick}>
                 <LogOut />

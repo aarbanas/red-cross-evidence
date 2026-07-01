@@ -34,6 +34,7 @@ import {
   profilesLicences,
   type Sex,
   sizes,
+  type UserRole,
   type UserType,
   users,
   type WorkStatus,
@@ -329,6 +330,7 @@ const userRepository = {
         id: users.id,
         email: users.email,
         active: users.active,
+        role: users.role,
         type: users.type,
         profile: {
           id: profiles.id,
@@ -1128,6 +1130,12 @@ const userRepository = {
         limit,
       },
     };
+  },
+  updateRole: async (userId: string, role: UserRole) => {
+    return db
+      .update(users)
+      .set({ role, updatedAt: new Date() })
+      .where(eq(users.id, userId));
   },
 };
 

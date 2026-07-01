@@ -16,6 +16,11 @@ import { profileEducationTerms } from '@/server/db/schema/education';
 import { profileEquipment } from '@/server/db/schema/equipment';
 import { licenses } from '@/server/db/schema/licence';
 
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
+
 export enum UserType {
   EMPLOYEE = 'EMPLOYEE',
   VOLUNTEER = 'VOLUNTEER',
@@ -71,6 +76,11 @@ export enum LanguageLevel {
   C2 = 'C2',
 }
 
+export const userRoleEnum = pgEnum(
+  'userrole',
+  Object.values(UserRole) as [string, ...string[]],
+);
+
 export const userTypeEnum = pgEnum(
   'usertype',
   Object.values(UserType) as [string, ...string[]],
@@ -113,6 +123,7 @@ export const users = pgTable(
     email: varchar('email', { length: 255 }).notNull().unique(),
     password: varchar('password', { length: 255 }),
     active: boolean('active').default(false),
+    role: userRoleEnum('role').notNull().default(UserRole.USER),
     type: userTypeEnum('type').notNull().default(UserType.VOLUNTEER),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at'),

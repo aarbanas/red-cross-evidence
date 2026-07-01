@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import { adminProcedure, createTRPCRouter } from '@/server/api/trpc';
 import appConfigService from '@/server/services/config/appConfig.service';
 import llmUsageService from '@/server/services/config/llmUsage.service';
 
@@ -10,23 +10,23 @@ const appConfigEntrySchema = z.object({
 });
 
 export const configRouter = createTRPCRouter({
-  getLlmUsage: protectedProcedure.query(async () => {
+  getLlmUsage: adminProcedure.query(async () => {
     return llmUsageService.getCurrentUsage();
   }),
 
-  setMonthlyLimit: protectedProcedure
+  setMonthlyLimit: adminProcedure
     .input(z.object({ limit: z.number().int().min(1).max(100000) }))
     .mutation(async ({ input }) => {
       await llmUsageService.setMonthlyLimit(input.limit);
     }),
 
-  getAppConfig: protectedProcedure
+  getAppConfig: adminProcedure
     .input(z.object({ key: z.string() }))
     .query(async ({ input }) => {
       return appConfigService.getByKey(input.key);
     }),
 
-  updateAppConfig: protectedProcedure
+  updateAppConfig: adminProcedure
     .input(z.object({ entries: z.array(appConfigEntrySchema) }))
     .mutation(async ({ input }) => {
       await appConfigService.updateBatch(input.entries);

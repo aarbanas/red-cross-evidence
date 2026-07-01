@@ -1,12 +1,17 @@
 import { z } from 'zod';
 import { createUserSchema, paginationQuerySchema } from '@/server/api/schema';
-import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import {
+  adminProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from '@/server/api/trpc';
 import {
   AddressType,
   ClothingSize,
   EducationLevel,
   LanguageLevel,
   Sex,
+  UserRole,
   UserType,
   WorkStatus,
 } from '@/server/db/schema';
@@ -214,5 +219,10 @@ export const userRouter = createTRPCRouter({
     .input(z.object({ search: z.string() }))
     .query(async ({ input }) => {
       return userService.findByName(input.search);
+    }),
+  updateRole: adminProcedure
+    .input(z.object({ userId: z.string(), role: z.nativeEnum(UserRole) }))
+    .mutation(async ({ input }) => {
+      return userService.updateRole(input.userId, input.role);
     }),
 });
